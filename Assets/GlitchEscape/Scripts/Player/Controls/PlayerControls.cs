@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerControls : MonoBehaviour
 {
     public float turnSpeed = 10f;
     public float jumpHeight = 1f;
@@ -11,25 +11,24 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody m_Rigidbody;
     private Vector3 m_Movement;
     private Quaternion m_Rotation = Quaternion.identity;
-    private Controls controls;
+    private Input input;
     private Vector2 movementInput;
-
+    private bool inInteraction = false;
 
     void Awake()
     {
-        controls = new Controls();
+        input = new Input();
         m_Animator = GetComponent<Animator>();
         m_Rigidbody = GetComponent<Rigidbody>();
     }
-    private void OnEnable() => controls.Player.Enable();
-    private void OnDisable() => controls.Player.Disable();
+    private void OnEnable() => input.Controls.Enable();
+    private void OnDisable() => input.Controls.Disable();
 
     void FixedUpdate() => Move();
 
-
     private void Move()
     {
-        var movementInput = controls.Player.Move.ReadValue<Vector2>();
+        var movementInput = input.Controls.Move.ReadValue<Vector2>();
 
         float horizontal = movementInput.x;
         float vertical = movementInput.y;
@@ -53,8 +52,37 @@ public class PlayerMovement : MonoBehaviour
         m_Rigidbody.MoveRotation(m_Rotation);
     }
 
-    public void Jump()
+    public void Jump() // disabled
     {
         transform.position = new Vector3(transform.position.x, transform.position.y + jumpHeight, transform.position.z);
     }
+
+    public void Interact()
+    {
+        if(inInteraction == true)
+        {
+            Debug.Log("switching levels");
+        } 
+        else
+        {
+            Debug.Log(inInteraction);
+        }
+    }
+
+    void OnTriggerEnter (Collider other)
+    {
+        if (other.tag == "Intersection")
+        {
+            inInteraction = true;
+        }
+    }
+
+    void OnTriggerExit (Collider other)
+    {
+        if (other.tag == "Intersection")
+        {
+            inInteraction = false;
+        }
+    }
+
 }
