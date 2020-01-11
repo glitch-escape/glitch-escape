@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayerControls : MonoBehaviour
 {
+    public GameObject maze;
+    public GameObject glitchMaze;
+
     public float turnSpeed = 10f;
     public float jumpHeight = 1f;
 
@@ -13,7 +16,7 @@ public class PlayerControls : MonoBehaviour
     private Quaternion m_Rotation = Quaternion.identity;
     private Input input;
     private Vector2 movementInput;
-    private bool inInteraction = false;
+    private static bool onSwitch = false;
 
     void Awake()
     {
@@ -21,7 +24,9 @@ public class PlayerControls : MonoBehaviour
         m_Animator = GetComponent<Animator>();
         m_Rigidbody = GetComponent<Rigidbody>();
     }
+
     private void OnEnable() => input.Controls.Enable();
+
     private void OnDisable() => input.Controls.Disable();
 
     void FixedUpdate() => Move();
@@ -52,36 +57,33 @@ public class PlayerControls : MonoBehaviour
         m_Rigidbody.MoveRotation(m_Rotation);
     }
 
-    public void Jump() // disabled
+    public void OnJump() // disabled
     {
-        transform.position = new Vector3(transform.position.x, transform.position.y + jumpHeight, transform.position.z);
+        // transform.position = new Vector3(transform.position.x, transform.position.y + jumpHeight, transform.position.z);
     }
 
-    public void Interact()
+    public void OnInteract()
     {
-        if(inInteraction == true)
+        if (onSwitch == true)
         {
-            Debug.Log("switching levels");
-        } 
-        else
-        {
-            Debug.Log(inInteraction);
+            maze.SetActive(!maze.activeInHierarchy);
+            glitchMaze.SetActive(!glitchMaze.activeInHierarchy);
         }
     }
 
-    void OnTriggerEnter (Collider other)
+    void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Intersection")
+        if (other.tag == "Switch")
         {
-            inInteraction = true;
+            onSwitch = true;
         }
     }
 
-    void OnTriggerExit (Collider other)
+    void OnTriggerExit(Collider other)
     {
-        if (other.tag == "Intersection")
+        if (other.tag == "Switch")
         {
-            inInteraction = false;
+            onSwitch = false;
         }
     }
 
