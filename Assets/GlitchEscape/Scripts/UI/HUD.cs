@@ -23,10 +23,10 @@ public class HUD : MonoBehaviour
             Application.LoadLevel(Application.loadedLevel);
         }
 
-        float minRemains = timeRemains / 60;
-        float secRemains = timeRemains % 60;
+        float minRemains = Mathf.Floor(timeRemains / 60f);
+        float secRemains = Mathf.Floor(timeRemains % 60f);
 
-        countdownText.text = "Time Left: " + minRemains.ToString("0") + ":" + secRemains.ToString("0");
+        countdownText.text = "Time Left: " + minRemains.ToString("00") + ":" + secRemains.ToString("00");
 
     }
 
