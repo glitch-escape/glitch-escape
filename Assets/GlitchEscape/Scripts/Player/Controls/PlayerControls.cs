@@ -31,6 +31,15 @@ public class PlayerControls : MonoBehaviour
 
     void FixedUpdate() => Move();
 
+    [System.Obsolete]
+    void Update()
+    {
+        if (transform.position.y < -5)
+        {
+            Application.LoadLevel(Application.loadedLevel);
+        }
+    }
+
     private void Move()
     {
         var movementInput = input.Controls.Move.ReadValue<Vector2>();
