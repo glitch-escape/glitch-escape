@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerControls : MonoBehaviour
 {
@@ -17,7 +19,9 @@ public class PlayerControls : MonoBehaviour
     private Input input;
     private Vector2 movementInput;
     private static bool onSwitch = false;
-
+    public float moveSpeed = 1.0f;
+    public Transform cameraTarget;
+    
     void Awake()
     {
         input = new Input();
@@ -29,7 +33,12 @@ public class PlayerControls : MonoBehaviour
 
     private void OnDisable() => input.Controls.Disable();
 
-    void FixedUpdate() => Move();
+    void FixedUpdate() {
+        Move();
+        if (transform.position.y < -10f) {
+            SceneManager.LoadScene("SampleScene");
+        }
+    }
 
     private void Move()
     {
@@ -39,7 +48,7 @@ public class PlayerControls : MonoBehaviour
         float vertical = movementInput.y;
 
         m_Movement.Set(horizontal, 0f, vertical);
-        m_Movement.Normalize();
+        // m_Movement.Normalize();
 
         bool hasHorizontalInput = !Mathf.Approximately(horizontal, 0f);
         bool hasVerticalInput = !Mathf.Approximately(vertical, 0f);
@@ -49,6 +58,14 @@ public class PlayerControls : MonoBehaviour
 
         Vector3 desiredForward = Vector3.RotateTowards(transform.forward, m_Movement, turnSpeed * Time.deltaTime, 0f);
         m_Rotation = Quaternion.LookRotation(desiredForward);
+
+        // var cameraDir = cameraTarget.position - transform.position;
+        // cameraDir.z = 0;
+        // var rot = Quaternion.FromToRotation(cameraDir, Vector3.forward);
+        
+        transform.Translate(m_Movement * Time.deltaTime * moveSpeed);
+        
+        
     }
 
     void OnAnimatorMove()
