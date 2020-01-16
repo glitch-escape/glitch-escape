@@ -1,11 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+// using Cinemachine;
+// [RequireComponent(typeof(CinemachineFreeLook))]
 
 public class PlayerControls : MonoBehaviour
 {
     public GameObject maze;
     public GameObject glitchMaze;
+    public Transform camera;
 
     public float turnSpeed = 10f;
     public float jumpHeight = 1f;
@@ -13,16 +16,22 @@ public class PlayerControls : MonoBehaviour
     private Animator m_Animator;
     private Rigidbody m_Rigidbody;
     private Vector3 m_Movement;
+    private Vector3 c_Direction;
     private Quaternion m_Rotation = Quaternion.identity;
     private Input input;
     private Vector2 movementInput;
     private static bool onSwitch = false;
+    // public CinemachineFreeLook freeLookCam;
+    // public Vector2 debugText;
 
     void Awake()
     {
         input = new Input();
         m_Animator = GetComponent<Animator>();
         m_Rigidbody = GetComponent<Rigidbody>();
+        // freeLookCam = GetComponent<CinemachineFreeLook>();
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 60;
     }
 
     private void OnEnable() => input.Controls.Enable();
@@ -43,32 +52,49 @@ public class PlayerControls : MonoBehaviour
     private void Move()
     {
         var movementInput = input.Controls.Move.ReadValue<Vector2>();
-
         float horizontal = movementInput.x;
         float vertical = movementInput.y;
+
+        bool hasHorizontalInput = !Mathf.Approximately(horizontal, 0f);
+        bool hasVerticalInput = !Mathf.Approximately(vertical, 0f);
+        bool isSprinting = hasHorizontalInput || hasVerticalInput;
+
+        m_Animator.SetBool("isSprinting", isSprinting);
 
         m_Movement.Set(horizontal, 0f, vertical);
         m_Movement.Normalize();
 
-        bool hasHorizontalInput = !Mathf.Approximately(horizontal, 0f);
-        bool hasVerticalInput = !Mathf.Approximately(vertical, 0f);
-        bool isWalking = hasHorizontalInput || hasVerticalInput;
+        var forward = camera.transform.forward;
+        var right = camera.transform.right;
 
-        m_Animator.SetBool("IsWalking", isWalking);
+        forward.y = 0f;
+        right.y = 0f;
+        forward.Normalize();
+        right.Normalize();
 
-        Vector3 desiredForward = Vector3.RotateTowards(transform.forward, m_Movement, turnSpeed * Time.deltaTime, 0f);
+        c_Direction = forward * vertical + right * horizontal;
+
+        Vector3 desiredForward = Vector3.RotateTowards(transform.forward, c_Direction, turnSpeed * Time.deltaTime, 0f);
         m_Rotation = Quaternion.LookRotation(desiredForward);
     }
 
     void OnAnimatorMove()
     {
-        m_Rigidbody.MovePosition(m_Rigidbody.position + m_Movement * m_Animator.deltaPosition.magnitude);
+        m_Rigidbody.MovePosition(m_Rigidbody.position + c_Direction * m_Animator.deltaPosition.magnitude);
         m_Rigidbody.MoveRotation(m_Rotation);
     }
 
     public void OnJump() // disabled
     {
         // transform.position = new Vector3(transform.position.x, transform.position.y + jumpHeight, transform.position.z);
+    }
+
+    public void OnLook()
+    {
+        // var lookInput = input.Controls.Look.ReadValue<Vector2>();
+        // debugText = lookInput;
+        // freeLookCam.m_XAxis.Value = lookInput.x * Screen.currentResolution.width;
+        // freeLookCam.m_YAxis.Value = lookInput.y;
     }
 
     public void OnInteract()
