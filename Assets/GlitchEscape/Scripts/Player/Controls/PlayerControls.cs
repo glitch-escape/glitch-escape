@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-// using Cinemachine;
+using Cinemachine;
 // [RequireComponent(typeof(CinemachineFreeLook))]
 
 public class PlayerControls : MonoBehaviour
@@ -9,29 +9,32 @@ public class PlayerControls : MonoBehaviour
     public GameObject maze;
     public GameObject glitchMaze;
     public Transform camera;
+    public CinemachineFreeLook freeLookCam;
 
+    public float cameraTurnSpeed = 1;
     public float turnSpeed = 10f;
     public float jumpHeight = 1f;
 
     private Animator m_Animator;
     private Rigidbody m_Rigidbody;
-    private Vector3 m_Movement;
-    private Vector3 c_Direction;
+    // private Vector3 m_Movement;
+    private Vector3 cameraDir;
     private Quaternion m_Rotation = Quaternion.identity;
     private Input input;
     private Vector2 movementInput;
     private static bool onSwitch = false;
-    // public CinemachineFreeLook freeLookCam;
+
     // public Vector2 debugText;
+    // public float debugTextx;
+    // public float debugTexty;
 
     void Awake()
     {
         input = new Input();
         m_Animator = GetComponent<Animator>();
         m_Rigidbody = GetComponent<Rigidbody>();
-        // freeLookCam = GetComponent<CinemachineFreeLook>();
-        QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = 60;
+        // QualitySettings.vSyncCount = 0;
+        // Application.targetFrameRate = 60;
     }
 
     private void OnEnable() => input.Controls.Enable();
@@ -43,6 +46,11 @@ public class PlayerControls : MonoBehaviour
     [System.Obsolete]
     void Update()
     {
+        // Camera Control using Unity Input System
+        var lookInput = input.Controls.Look.ReadValue<Vector2>();
+        freeLookCam.m_XAxis.Value = freeLookCam.m_XAxis.Value + lookInput.x * cameraTurnSpeed * Time.deltaTime;
+        freeLookCam.m_YAxis.Value = freeLookCam.m_YAxis.Value - lookInput.y * Time.deltaTime;
+
         if (transform.position.y < -5)
         {
             Application.LoadLevel(Application.loadedLevel);
@@ -61,8 +69,8 @@ public class PlayerControls : MonoBehaviour
 
         m_Animator.SetBool("isSprinting", isSprinting);
 
-        m_Movement.Set(horizontal, 0f, vertical);
-        m_Movement.Normalize();
+        // m_Movement.Set(horizontal, 0f, vertical);
+        // m_Movement.Normalize();
 
         var forward = camera.transform.forward;
         var right = camera.transform.right;
@@ -72,15 +80,15 @@ public class PlayerControls : MonoBehaviour
         forward.Normalize();
         right.Normalize();
 
-        c_Direction = forward * vertical + right * horizontal;
+        cameraDir = forward * vertical + right * horizontal;
 
-        Vector3 desiredForward = Vector3.RotateTowards(transform.forward, c_Direction, turnSpeed * Time.deltaTime, 0f);
+        Vector3 desiredForward = Vector3.RotateTowards(transform.forward, cameraDir, turnSpeed * Time.deltaTime, 0f);
         m_Rotation = Quaternion.LookRotation(desiredForward);
     }
 
     void OnAnimatorMove()
     {
-        m_Rigidbody.MovePosition(m_Rigidbody.position + c_Direction * m_Animator.deltaPosition.magnitude);
+        m_Rigidbody.MovePosition(m_Rigidbody.position + cameraDir * m_Animator.deltaPosition.magnitude);
         m_Rigidbody.MoveRotation(m_Rotation);
     }
 
@@ -89,13 +97,10 @@ public class PlayerControls : MonoBehaviour
         // transform.position = new Vector3(transform.position.x, transform.position.y + jumpHeight, transform.position.z);
     }
 
-    public void OnLook()
-    {
-        // var lookInput = input.Controls.Look.ReadValue<Vector2>();
-        // debugText = lookInput;
-        // freeLookCam.m_XAxis.Value = lookInput.x * Screen.currentResolution.width;
-        // freeLookCam.m_YAxis.Value = lookInput.y;
-    }
+    // public void OnLook()
+    // {
+
+    // }
 
     public void OnInteract()
     {
