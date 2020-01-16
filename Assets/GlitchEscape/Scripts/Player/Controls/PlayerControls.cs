@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerControls : MonoBehaviour
-{
+public class PlayerControls : MonoBehaviour{
     public GameObject maze;
     public GameObject glitchMaze;
 
@@ -52,9 +51,9 @@ public class PlayerControls : MonoBehaviour
 
         bool hasHorizontalInput = !Mathf.Approximately(horizontal, 0f);
         bool hasVerticalInput = !Mathf.Approximately(vertical, 0f);
-        bool isWalking = hasHorizontalInput || hasVerticalInput;
+        bool isSprinting = hasHorizontalInput || hasVerticalInput;
 
-        m_Animator.SetBool("IsWalking", isWalking);
+        m_Animator.SetBool("isSprinting", isSprinting);
 
         Vector3 desiredForward = Vector3.RotateTowards(transform.forward, m_Movement, turnSpeed * Time.deltaTime, 0f);
         m_Rotation = Quaternion.LookRotation(desiredForward);
