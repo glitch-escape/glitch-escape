@@ -23,7 +23,7 @@ public class PlayerControls : MonoBehaviour
     private Input input;
     private Vector2 movementInput;
     private static bool onSwitch = false;
-
+    private Vector3 savePoint;
     // public Vector2 debugText;
     // public float debugTextx;
     // public float debugTexty;
@@ -33,6 +33,7 @@ public class PlayerControls : MonoBehaviour
         input = new Input();
         m_Animator = GetComponent<Animator>();
         m_Rigidbody = GetComponent<Rigidbody>();
+        savePoint = new Vector3(0f, 0f, -2f);
         // QualitySettings.vSyncCount = 0;
         // Application.targetFrameRate = 60;
     }
@@ -53,7 +54,8 @@ public class PlayerControls : MonoBehaviour
 
         if (transform.position.y < -5)
         {
-            Application.LoadLevel(Application.loadedLevel);
+            // Application.LoadLevel(Application.loadedLevel);
+            Respawn();
         }
     }
 
@@ -97,10 +99,12 @@ public class PlayerControls : MonoBehaviour
         // transform.position = new Vector3(transform.position.x, transform.position.y + jumpHeight, transform.position.z);
     }
 
-    // public void OnLook()
-    // {
+    public void Respawn()
+    {
+        // Debug.Log("Respawning");
 
-    // }
+        transform.position = savePoint;
+    }
 
     public void OnInteract()
     {
@@ -108,6 +112,7 @@ public class PlayerControls : MonoBehaviour
         {
             maze.SetActive(!maze.activeInHierarchy);
             glitchMaze.SetActive(!glitchMaze.activeInHierarchy);
+            savePoint = transform.position;
         }
     }
 
