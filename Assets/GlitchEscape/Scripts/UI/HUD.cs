@@ -13,6 +13,7 @@ public class HUD : MonoBehaviour
     private float counter = 0f;
     private float timeRemains;
 
+    [System.Obsolete]
     void Update()
     {
         counter += 1 * Time.deltaTime;
@@ -20,9 +21,9 @@ public class HUD : MonoBehaviour
 
         if (timeRemains <= 0)
         {
-            // Application.LoadLevel(Application.loadedLevel);
-            playerControls.Respawn();
-            counter = 0;
+            Application.LoadLevel(Application.loadedLevel);
+            // playerControls.Respawn();
+            // counter = 0;
         }
 
         float minRemains = Mathf.Floor(timeRemains / 60f);
