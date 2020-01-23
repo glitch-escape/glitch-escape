@@ -33,7 +33,7 @@ public class PlayerControls : MonoBehaviour
         input = new Input();
         m_Animator = GetComponent<Animator>();
         m_Rigidbody = GetComponent<Rigidbody>();
-        savePoint = new Vector3(0f, 0f, -2f);
+        savePoint = new Vector3(-2f, 7.5f, 2f);
         // QualitySettings.vSyncCount = 0;
         // Application.targetFrameRate = 60;
     }
