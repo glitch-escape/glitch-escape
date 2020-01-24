@@ -253,7 +253,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6f3af09f1cff53f459a8d63b5ba3176a, type: 2}
+  - {fileID: 2100000, guid: 13edf5ed6eb1d4fae9ffd642bfa10e03, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -291,7 +291,7 @@ Transform:
   m_GameObject: {fileID: 359272447}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 10.318, y: 10.318, z: 10.318}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
@@ -5155,7 +5155,7 @@ MonoBehaviour:
     m_RecenteringTime: 2
     m_LegacyHeadingDefinition: -1
     m_LegacyVelocityFilterStrength: -1
-  m_BindingMode: 0
+  m_BindingMode: 3
   m_SplineCurvature: 0.2
   m_Orbits:
   - m_Height: 6.45
@@ -5509,7 +5509,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9384ab8608cdc3d479fe89cd51eed48f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_BindingMode: 0
+  m_BindingMode: 3
   m_FollowOffset: {x: 0, y: 2.5, z: -4.5}
   m_XDamping: 1
   m_YDamping: 1
@@ -5583,6 +5583,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dodgeMaxDistance: 1
   dodgeScaleFactor: 15
+  useKinematic: 0
+  minDodgeLength: 1.5
+  maxDoddgeLength: 5.3
+  dodgeSpeed: 28
+  minDodgeHoldTime: 0
+  maxDodgeHoldTime: 0.55
+  dodgeCooldown: 0.1
   dodgeGroundParticle: {fileID: 1268554788}
   dodgeAirParticle: {fileID: 485203206}
   animateLength: 0.1
@@ -10549,7 +10556,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9384ab8608cdc3d479fe89cd51eed48f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_BindingMode: 0
+  m_BindingMode: 3
   m_FollowOffset: {x: 0, y: 2.5, z: -4.5}
   m_XDamping: 1
   m_YDamping: 1
@@ -10743,7 +10750,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2067434591}
-  m_LocalRotation: {x: 0.25084132, y: 0.000000017297793, z: -0.000000004482309, w: 0.9680283}
+  m_LocalRotation: {x: 0.2508413, y: -0.000000019302487, z: 0.000000005001775, w: 0.9680283}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -10823,7 +10830,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9384ab8608cdc3d479fe89cd51eed48f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_BindingMode: 0
+  m_BindingMode: 3
   m_FollowOffset: {x: 0, y: 2.5, z: -4.5}
   m_XDamping: 1
   m_YDamping: 1
