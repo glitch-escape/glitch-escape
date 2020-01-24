@@ -313,7 +313,7 @@ public class @Input : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""be74f921-d3b7-428d-aba4-4ea2417fb202"",
-                    ""path"": ""<XInputController>/buttonSouth"",
+                    ""path"": ""<Gamepad>/buttonWest"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
@@ -328,6 +328,17 @@ public class @Input : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Dodge"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1c33d8e7-d550-4c40-93d1-33a43df8765e"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
                     ""action"": ""Dodge"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
