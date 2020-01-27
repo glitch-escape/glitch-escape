@@ -9,6 +9,7 @@ public class PlayerControls : MonoBehaviour
     public GameObject glitchMaze;
     public Transform playerCamera;
     public CinemachineFreeLook freeLookCam;
+    public HUD hud;
 
     [Range(60f, 360f)]
     public float cameraTurnSpeed = 180;
@@ -68,9 +69,12 @@ public class PlayerControls : MonoBehaviour
     private void Move()
     {
         // easy way for now, maybe later for collider check
-        if(playerRigidbody.velocity.y == 0) {
+        if (playerRigidbody.velocity.y == 0)
+        {
             onGround = true;
-        } else {
+        }
+        else
+        {
             onGround = false;
         }
 
@@ -114,6 +118,7 @@ public class PlayerControls : MonoBehaviour
     {
 
         transform.position = savePoint;
+        hud.TimerReset();
     }
 
     public void OnInteract()
@@ -123,6 +128,7 @@ public class PlayerControls : MonoBehaviour
             maze.SetActive(!maze.activeInHierarchy);
             glitchMaze.SetActive(!glitchMaze.activeInHierarchy);
             savePoint = transform.position;
+            hud.switchTimer();
         }
     }
 
