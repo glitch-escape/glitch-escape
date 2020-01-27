@@ -119,6 +119,8 @@ public class PlayerControls : MonoBehaviour
 
         transform.position = savePoint;
         hud.TimerReset();
+        maze.SetActive(true);
+        glitchMaze.SetActive(false);
     }
 
     public void OnInteract()
