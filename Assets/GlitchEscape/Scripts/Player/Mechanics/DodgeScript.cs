@@ -181,8 +181,11 @@ public class DodgeScript : MonoBehaviour
             EndDodgeVfx();
             
             // reapply velocity, plus gravity over time spent dashing
+            var elapsedTime = Time.time - dodgeStartTime;
+            Debug.Log("Applying additional velocity change after " + elapsedTime + " seconds: "
+                      + GRAVITY * elapsedTime);
             m_Rigidbody.velocity = savedDodgeVelocity +
-                                   Vector3.down * GRAVITY * elapsedDodgeTime;
+                                   Vector3.down * GRAVITY * elapsedTime;
             if (useKinematic) {
                 m_Rigidbody.isKinematic = false;
             }
