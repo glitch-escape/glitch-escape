@@ -3,12 +3,29 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 
 public class DodgeScript : MonoBehaviour
 {
     private Input input;
     private Rigidbody m_Rigidbody;
+    
+    #region InputCallbacks
+    
+    // is the dodge button currently pressed?
+    private bool dodgePressed = false;
+    void SetupInputActions() {
+        if (input == null) {
+            input = new Input();
+            input.Controls.Dodge.performed += context => {
+                bool pressed = context.ReadValue<float>() > 0f;
+                Debug.Log("dodge pressed!" + pressed);
+                dodgePressed = pressed;
+            };
+        }
+    }
+    #endregion
 
     #region DodgeMechanics
     #region ScriptProperties
@@ -46,9 +63,9 @@ public class DodgeScript : MonoBehaviour
     // is player currently dodging?
     private bool isDodging = false;
     
-    // was dodge button currently pressed last frame?
+    // was dodge button currently pressed as of last frame?
     private bool isDodgePressed = false;
-    
+
     // time that dodge started (seconds)
     private float dodgeStartTime = -10f;
     
@@ -79,9 +96,9 @@ public class DodgeScript : MonoBehaviour
     }
     #endregion
     #region DodgeImplementation
+
     public void Update() {
         // handle dodge press input
-        bool dodgePressed = input.Controls.Dodge.triggered ? !isDodgePressed : isDodgePressed;
         if (dodgePressed != isDodgePressed) {
             // Debug.Log("dodge state changed! "+isDodgePressed+" => "+dodgePressed);
             if (dodgePressed) {
@@ -181,7 +198,7 @@ public class DodgeScript : MonoBehaviour
         #endregion
     #region VfxImplementation
     void Awake() {
-        input = new Input();
+        SetupInputActions();
         m_Rigidbody = this.GetComponent<Rigidbody>();
 
         defaultMaterial = this.transform.Find("Body").GetComponent<Renderer>().material;
