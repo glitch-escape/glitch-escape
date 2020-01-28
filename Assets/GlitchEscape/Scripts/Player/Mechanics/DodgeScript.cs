@@ -8,6 +8,8 @@ using UnityEngine.InputSystem.Controls;
 
 public class DodgeScript : MonoBehaviour
 {
+    const float GRAVITY = 9.81f; // m/s^2
+    
     private Input input;
     private Rigidbody m_Rigidbody;
     
@@ -20,7 +22,7 @@ public class DodgeScript : MonoBehaviour
             input = new Input();
             input.Controls.Dodge.performed += context => {
                 bool pressed = context.ReadValue<float>() > 0f;
-                Debug.Log("dodge pressed!" + pressed);
+                // Debug.Log("dodge pressed!" + pressed);
                 dodgePressed = pressed;
             };
         }
@@ -75,6 +77,9 @@ public class DodgeScript : MonoBehaviour
     private float minDodgeDuration {
         get { return minDodgeLength / dodgeSpeed;  }
     }
+
+    // saved velocity (when dashing)
+    private Vector3 savedDodgeVelocity = Vector3.zero;
 
     // current strength of dodge press (depends on press time + min / max dodge hold time)
     private float getCurrentDodgePressStrength () {
@@ -159,6 +164,10 @@ public class DodgeScript : MonoBehaviour
         // begin dodge
         // Debug.Log("Start dodge!");
         BeginDodgeVfx();
+        
+        // save velocity
+        savedDodgeVelocity = m_Rigidbody.velocity;
+        
         if (useKinematic) {
             m_Rigidbody.isKinematic = true;
         }
@@ -170,10 +179,12 @@ public class DodgeScript : MonoBehaviour
             // end dodge
             // Debug.Log("Stop dodge!");
             EndDodgeVfx();
+            
+            // reapply velocity, plus gravity over time spent dashing
+            m_Rigidbody.velocity = savedDodgeVelocity +
+                                   Vector3.down * GRAVITY * elapsedDodgeTime;
             if (useKinematic) {
                 m_Rigidbody.isKinematic = false;
-            } else {
-                m_Rigidbody.velocity = Vector3.zero;
             }
         }
         isDodging = false;
