@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using UnityEngine.InputSystem;
 
 public class PlayerControls : MonoBehaviour
 {
@@ -11,12 +12,24 @@ public class PlayerControls : MonoBehaviour
     public CinemachineFreeLook freeLookCam;
     public HUD hud;
 
+    public AnimationCurve cameraInputCurve;
+
     [Range(60f, 360f)]
     public float cameraTurnSpeed = 180;
     [Range(5f, 50f)]
     public float turnSpeed = 10f;
-    [Range(1f, 15f)]
-    public float jumpVelocity = 5f;
+
+    private const float GRAVITY = 9.81f; // m/s^2
+
+    [Range(1f, 10f)]
+    public float jumpHeight = 2f;
+
+    public float jumpVelocity {
+        get { return Mathf.Sqrt(jumpHeight * GRAVITY * 2); }
+    }
+
+    // [Range(1f, 15f)]
+    // public float jumpVelocity = 5f;
     [Range(0.1f, 10f)]
     public float fallSpeed = 1.5f;
 
@@ -35,6 +48,7 @@ public class PlayerControls : MonoBehaviour
     private bool isSprinting;
     private bool onGround;
 
+
     void Awake()
     {
         input = new Input();
@@ -50,12 +64,22 @@ public class PlayerControls : MonoBehaviour
 
     void FixedUpdate() => Move();
 
+    private float ApplyInputCurve(float input, AnimationCurve curve) {
+        float sign = input >= 0 ? 1f : -1f;
+        return sign * curve.Evaluate((Mathf.Abs(input)));
+    }
     [System.Obsolete]
     void Update()
     {
         var lookInput = input.Controls.Look.ReadValue<Vector2>();
+        
+        // apply designer-defined input curve to make camera feel more responsive
+        lookInput.x = ApplyInputCurve(lookInput.x, cameraInputCurve);
+        lookInput.y = ApplyInputCurve(lookInput.y, cameraInputCurve);
+
         freeLookCam.m_XAxis.Value = freeLookCam.m_XAxis.Value + lookInput.x * cameraTurnSpeed * Time.deltaTime;
         freeLookCam.m_YAxis.Value = freeLookCam.m_YAxis.Value - lookInput.y * Time.deltaTime;
+
 
         if (transform.position.y < -5)
         {
@@ -123,10 +147,13 @@ public class PlayerControls : MonoBehaviour
         glitchMaze.SetActive(false);
     }
 
+    private float lastMazeSwitchTime = -10f;    // seconds
+    public float mazeSwitchCooldown = 0.1f;     // seconds
+
     public void OnInteract()
     {
-        if (onSwitch == true)
-        {
+        if (onSwitch == true && Time.time >= lastMazeSwitchTime + mazeSwitchCooldown) {
+            lastMazeSwitchTime = Time.time;
             maze.SetActive(!maze.activeInHierarchy);
             glitchMaze.SetActive(!glitchMaze.activeInHierarchy);
             savePoint = transform.position;

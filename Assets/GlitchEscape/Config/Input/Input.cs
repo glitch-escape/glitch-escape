@@ -57,6 +57,14 @@ public class @Input : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Dodge"",
+                    ""type"": ""Button"",
+                    ""id"": ""f74ebcc4-7219-49ec-8fab-f1114c66ba02"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press(behavior=2)""
                 }
             ],
             ""bindings"": [
@@ -195,21 +203,10 @@ public class @Input : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""c1f7a91b-d0fd-4a62-997e-7fb9b69bf235"",
-                    ""path"": ""<XInputController>/rightStick"",
+                    ""path"": ""<Gamepad>/rightStick"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
-                    ""action"": ""Look"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""3e5f5442-8668-4b27-a940-df99bad7e831"",
-                    ""path"": ""<Joystick>/{Hatswitch}"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Joystick"",
                     ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -293,8 +290,8 @@ public class @Input : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""350b47dd-2b15-4281-aa3e-fcc88b70301c"",
-                    ""path"": ""<XInputController>/buttonWest"",
+                    ""id"": ""1a565ecc-8c0a-465f-9ddb-cf2686379b47"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
@@ -316,11 +313,33 @@ public class @Input : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""be74f921-d3b7-428d-aba4-4ea2417fb202"",
-                    ""path"": ""<XInputController>/buttonSouth"",
+                    ""path"": ""<Gamepad>/buttonWest"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5c9853a2-c2b2-479c-9e92-606ef7c2f323"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Dodge"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1c33d8e7-d550-4c40-93d1-33a43df8765e"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Dodge"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -900,6 +919,7 @@ public class @Input : IInputActionCollection, IDisposable
         m_Controls_Look = m_Controls.FindAction("Look", throwIfNotFound: true);
         m_Controls_Fire = m_Controls.FindAction("Fire", throwIfNotFound: true);
         m_Controls_Interact = m_Controls.FindAction("Interact", throwIfNotFound: true);
+        m_Controls_Dodge = m_Controls.FindAction("Dodge", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -967,6 +987,7 @@ public class @Input : IInputActionCollection, IDisposable
     private readonly InputAction m_Controls_Look;
     private readonly InputAction m_Controls_Fire;
     private readonly InputAction m_Controls_Interact;
+    private readonly InputAction m_Controls_Dodge;
     public struct ControlsActions
     {
         private @Input m_Wrapper;
@@ -976,6 +997,7 @@ public class @Input : IInputActionCollection, IDisposable
         public InputAction @Look => m_Wrapper.m_Controls_Look;
         public InputAction @Fire => m_Wrapper.m_Controls_Fire;
         public InputAction @Interact => m_Wrapper.m_Controls_Interact;
+        public InputAction @Dodge => m_Wrapper.m_Controls_Dodge;
         public InputActionMap Get() { return m_Wrapper.m_Controls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1000,6 +1022,9 @@ public class @Input : IInputActionCollection, IDisposable
                 @Interact.started -= m_Wrapper.m_ControlsActionsCallbackInterface.OnInteract;
                 @Interact.performed -= m_Wrapper.m_ControlsActionsCallbackInterface.OnInteract;
                 @Interact.canceled -= m_Wrapper.m_ControlsActionsCallbackInterface.OnInteract;
+                @Dodge.started -= m_Wrapper.m_ControlsActionsCallbackInterface.OnDodge;
+                @Dodge.performed -= m_Wrapper.m_ControlsActionsCallbackInterface.OnDodge;
+                @Dodge.canceled -= m_Wrapper.m_ControlsActionsCallbackInterface.OnDodge;
             }
             m_Wrapper.m_ControlsActionsCallbackInterface = instance;
             if (instance != null)
@@ -1019,6 +1044,9 @@ public class @Input : IInputActionCollection, IDisposable
                 @Interact.started += instance.OnInteract;
                 @Interact.performed += instance.OnInteract;
                 @Interact.canceled += instance.OnInteract;
+                @Dodge.started += instance.OnDodge;
+                @Dodge.performed += instance.OnDodge;
+                @Dodge.canceled += instance.OnDodge;
             }
         }
     }
@@ -1188,6 +1216,7 @@ public class @Input : IInputActionCollection, IDisposable
         void OnLook(InputAction.CallbackContext context);
         void OnFire(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
+        void OnDodge(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
