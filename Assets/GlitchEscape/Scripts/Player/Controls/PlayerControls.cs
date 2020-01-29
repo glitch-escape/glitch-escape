@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using UnityEngine.InputSystem;
 
 public class PlayerControls : MonoBehaviour
 {
@@ -17,8 +18,18 @@ public class PlayerControls : MonoBehaviour
     public float cameraTurnSpeed = 180;
     [Range(5f, 50f)]
     public float turnSpeed = 10f;
-    [Range(1f, 15f)]
-    public float jumpVelocity = 5f;
+
+    private const float GRAVITY = 9.81f; // m/s^2
+
+    [Range(1f, 10f)]
+    public float jumpHeight = 2f;
+
+    public float jumpVelocity {
+        get { return Mathf.Sqrt(jumpHeight * GRAVITY * 2); }
+    }
+
+    // [Range(1f, 15f)]
+    // public float jumpVelocity = 5f;
     [Range(0.1f, 10f)]
     public float fallSpeed = 1.5f;
 
@@ -136,10 +147,13 @@ public class PlayerControls : MonoBehaviour
         glitchMaze.SetActive(false);
     }
 
+    private float lastMazeSwitchTime = -10f;    // seconds
+    public float mazeSwitchCooldown = 0.1f;     // seconds
+
     public void OnInteract()
     {
-        if (onSwitch == true)
-        {
+        if (onSwitch == true && Time.time >= lastMazeSwitchTime + mazeSwitchCooldown) {
+            lastMazeSwitchTime = Time.time;
             maze.SetActive(!maze.activeInHierarchy);
             glitchMaze.SetActive(!glitchMaze.activeInHierarchy);
             savePoint = transform.position;
