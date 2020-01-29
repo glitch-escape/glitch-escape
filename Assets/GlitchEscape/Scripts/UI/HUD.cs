@@ -37,8 +37,8 @@ public class HUD : MonoBehaviour
             counter += 1 * Time.deltaTime;
             timeRemains = timeLimit - counter;
 
-            if (timeRemains <= 0)
-            {
+            if (timeRemains <= 0) {
+                TimerReset();
                 playerControls.Respawn();
             }
 
@@ -52,6 +52,11 @@ public class HUD : MonoBehaviour
             countdownText.text = "";
 
         }
+    }
+
+    public void ClearTimer() {
+        timerOn = false; 
+        TimerReset();
     }
 
     public void switchTimer()
