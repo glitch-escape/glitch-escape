@@ -226,16 +226,19 @@ public class DodgeScript : MonoBehaviour
         dodgeGroundParticle.Emit(1);
         defaultMaterial.shader = dodgeShader;
         defaultMaterial.SetTexture("_Noise", noiseTex);
+        dodgeGroundParticle.transform.rotation = this.transform.rotation;
     }
     private void EndDodgeVfx() {
         defaultMaterial.shader = defaultShader;
         animateTime = 1.0f;
         dodgeHoldTime = 0f;
+        dodgeGroundParticle.transform.rotation = this.transform.rotation;
     }
     private void UpdateDodgeVfx() {
         defaultMaterial.SetFloat("_AlphaThreshold", animateTime);
         dodgeHoldTime += Time.deltaTime;
         dodgeGroundParticle.transform.position = this.transform.position + (-transform.forward * dodgeHoldTime * dodgeScaleFactor);
+        //rotate dodgeGroundParticle
         if (animateTime > -1)
         {
             animateTime -= Time.deltaTime / animateLength;
