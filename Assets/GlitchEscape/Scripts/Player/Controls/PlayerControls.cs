@@ -80,12 +80,6 @@ public class PlayerControls : MonoBehaviour
         freeLookCam.m_XAxis.Value = freeLookCam.m_XAxis.Value + lookInput.x * cameraTurnSpeed * Time.deltaTime;
         freeLookCam.m_YAxis.Value = freeLookCam.m_YAxis.Value - lookInput.y * Time.deltaTime;
 
-
-        if (transform.position.y < -5)
-        {
-            Respawn();
-        }
-
         if (playerRigidbody.velocity.y < 0)
             playerRigidbody.velocity += fallSpeed * Physics.gravity.y * Vector3.up * Time.deltaTime;
     }
