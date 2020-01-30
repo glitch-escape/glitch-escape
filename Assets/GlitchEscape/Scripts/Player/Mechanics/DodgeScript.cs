@@ -6,13 +6,17 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 
+[RequireComponent(typeof(PlayerStats))]
 public class DodgeScript : MonoBehaviour
 {
     const float GRAVITY = 9.81f; // m/s^2
     
     private Input input;
     private Rigidbody m_Rigidbody;
-    
+    private PlayerStats playerStats;
+
+    public float dashStaminaCost = 10f;
+
     #region InputCallbacks
     
     // is the dodge button currently pressed?
@@ -146,6 +150,11 @@ public class DodgeScript : MonoBehaviour
         }
     }                                                
     private void BeginDodge() {
+        // do we have enough stamina to perform this action? if no, cancel
+        if (!playerStats.TryUseAbility(dashStaminaCost)) {
+            return;
+        }
+        
         // check: can we dodge yet? if no, cancel
         if (Time.time < dodgeStartTime + dodgeCooldown) {
             // Debug.Log("dodge still on cooldown");
@@ -213,6 +222,7 @@ public class DodgeScript : MonoBehaviour
     #region VfxImplementation
     void Awake() {
         SetupInputActions();
+        playerStats = GetComponent<PlayerStats>();
         m_Rigidbody = this.GetComponent<Rigidbody>();
 
         defaultMaterial = this.transform.Find("Body").GetComponent<Renderer>().material;
