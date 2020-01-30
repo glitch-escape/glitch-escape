@@ -42,6 +42,10 @@ public class PlayerStatsView : MonoBehaviour {
         var s0 = initial.transform.localScale;
         scale.Set(s0.x * value, s0.y, s0.z);
         target.transform.localScale = scale;
+
+        var pos = target.transform.localPosition;
+        pos.x = initial.transform.localPosition.x - scale.x / 2 + s0.x / 2;
+        target.transform.localPosition = pos;
     }
     void Update() {
         float health = playerStats.health / playerStats.maxHealth;
