@@ -11,6 +11,7 @@ public class Enemy : MonoBehaviour
     public Transform player;
     public Transform[] patrolPoints;
     public float detectRad, wanderRange;
+    public float ptLeniency;
     NavMeshAgent m_Agent;
 
     private Vector3 origin;
@@ -68,6 +69,7 @@ public class Enemy : MonoBehaviour
     // Handles enemy actions when in idle state
     private void Guard() 
     {
+        gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
         if(DetectPlayer())
         {
             curState = State.CHASE;
@@ -77,10 +79,14 @@ public class Enemy : MonoBehaviour
     // Handles enemy actions when in patrol state
     private void Patrol() 
     {
+        gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.blue);
         // Update destination point if needed
-        if(m_Agent.destination.x == transform.position.x 
-            && m_Agent.destination.z == transform.position.z)
+       // if(m_Agent.destination.x == transform.position.x 
+       //     && m_Agent.destination.z == transform.position.z)
+       Debug.Log(Vector3.Distance(transform.position, m_Agent.destination));
+        if(Vector3.Distance(transform.position, m_Agent.destination) <= ptLeniency)
         {
+            Debug.Log("asdassa");
             if(isReturnTrip)
             {
                 curDest -= 1;
@@ -112,6 +118,7 @@ public class Enemy : MonoBehaviour
     // Handles how the enemy will chase the player
     private void Chase()
     {
+        gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
         // Update destination to current player position
         m_Agent.SetDestination(player.position);
 
@@ -125,6 +132,7 @@ public class Enemy : MonoBehaviour
     // Move enemy back to orignal position
     private void Return()
     {
+        gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.yellow);
         if(m_Agent.destination.x == transform.position.x 
             && m_Agent.destination.z == transform.position.z)
         {
@@ -149,6 +157,7 @@ public class Enemy : MonoBehaviour
     // Make the enemy move randomly thoughout the map until a player is detected
     private void Wander()
     {
+        gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.white);
         // Update destination point if needed
         if(m_Agent.destination.x == transform.position.x 
             && m_Agent.destination.z == transform.position.z)
