@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Resources;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerControls))]
+[RequireComponent(typeof(PlayerControls), typeof(PlayerStatsView))]
 public class PlayerStats : MonoBehaviour {
 
     public float maxStamina = 100f;
@@ -33,6 +33,13 @@ public class PlayerStats : MonoBehaviour {
     private float lowStaminaFlashingDuration { get {
         return lowStaminaFlashDuration * lowStaminaFlashCount;
     } }
+
+    public bool isHealthFlashing {
+        get { return shouldFlashHealth;  }
+    }
+    public bool isStaminaFlashing {
+        get { return shouldFlashStamina;  }
+    }
     
     
     private float m_health;
