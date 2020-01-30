@@ -2,40 +2,60 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
-// [RequireComponent(typeof(CinemachineFreeLook))]
+using UnityEngine.InputSystem;
 
 public class PlayerControls : MonoBehaviour
 {
     public GameObject maze;
     public GameObject glitchMaze;
-    public Transform camera;
+    public Transform playerCamera;
     public CinemachineFreeLook freeLookCam;
+    public HUD hud;
 
-    public float cameraTurnSpeed = 1;
+    public AnimationCurve cameraInputCurve;
+
+    [Range(60f, 360f)]
+    public float cameraTurnSpeed = 180;
+    [Range(5f, 50f)]
     public float turnSpeed = 10f;
-    public float jumpHeight = 1f;
 
-    private Animator m_Animator;
-    private Rigidbody m_Rigidbody;
-    // private Vector3 m_Movement;
+    private const float GRAVITY = 9.81f; // m/s^2
+
+    [Range(1f, 10f)]
+    public float jumpHeight = 2f;
+
+    public float jumpVelocity {
+        get { return Mathf.Sqrt(jumpHeight * GRAVITY * 2); }
+    }
+
+    // [Range(1f, 15f)]
+    // public float jumpVelocity = 5f;
+    [Range(0.1f, 10f)]
+    public float fallSpeed = 1.5f;
+
+    private Animator playerAnimator;
+    private Rigidbody playerRigidbody;
     private Vector3 cameraDir;
-    private Quaternion m_Rotation = Quaternion.identity;
+    private Quaternion playerRotation = Quaternion.identity;
     private Input input;
     private Vector2 movementInput;
     private static bool onSwitch = false;
     private Vector3 savePoint;
-    // public Vector2 debugText;
-    // public float debugTextx;
-    // public float debugTexty;
+    private float horizontal;
+    private float vertical;
+    private bool hasHorizontalInput;
+    private bool hasVerticalInput;
+    private bool isSprinting;
+    private bool onGround;
+
 
     void Awake()
     {
         input = new Input();
-        m_Animator = GetComponent<Animator>();
-        m_Rigidbody = GetComponent<Rigidbody>();
+        playerAnimator = GetComponent<Animator>();
+        playerRigidbody = GetComponent<Rigidbody>();
         savePoint = new Vector3(-2f, 7.5f, 2f);
-        // QualitySettings.vSyncCount = 0;
-        // Application.targetFrameRate = 60;
+        onGround = false;
     }
 
     private void OnEnable() => input.Controls.Enable();
@@ -44,38 +64,56 @@ public class PlayerControls : MonoBehaviour
 
     void FixedUpdate() => Move();
 
+    private float ApplyInputCurve(float input, AnimationCurve curve) {
+        float sign = input >= 0 ? 1f : -1f;
+        return sign * curve.Evaluate((Mathf.Abs(input)));
+    }
     [System.Obsolete]
     void Update()
     {
-        // Camera Control using Unity Input System
         var lookInput = input.Controls.Look.ReadValue<Vector2>();
+        
+        // apply designer-defined input curve to make camera feel more responsive
+        lookInput.x = ApplyInputCurve(lookInput.x, cameraInputCurve);
+        lookInput.y = ApplyInputCurve(lookInput.y, cameraInputCurve);
+
         freeLookCam.m_XAxis.Value = freeLookCam.m_XAxis.Value + lookInput.x * cameraTurnSpeed * Time.deltaTime;
         freeLookCam.m_YAxis.Value = freeLookCam.m_YAxis.Value - lookInput.y * Time.deltaTime;
 
+
         if (transform.position.y < -5)
         {
-            // Application.LoadLevel(Application.loadedLevel);
             Respawn();
         }
+
+        if (playerRigidbody.velocity.y < 0)
+            playerRigidbody.velocity += fallSpeed * Physics.gravity.y * Vector3.up * Time.deltaTime;
     }
 
     private void Move()
     {
+        // easy way for now, maybe later for collider check
+        if (playerRigidbody.velocity.y == 0)
+        {
+            onGround = true;
+        }
+        else
+        {
+            onGround = false;
+        }
+
         var movementInput = input.Controls.Move.ReadValue<Vector2>();
-        float horizontal = movementInput.x;
-        float vertical = movementInput.y;
+        horizontal = movementInput.x;
+        vertical = movementInput.y;
 
-        bool hasHorizontalInput = !Mathf.Approximately(horizontal, 0f);
-        bool hasVerticalInput = !Mathf.Approximately(vertical, 0f);
-        bool isSprinting = hasHorizontalInput || hasVerticalInput;
+        hasHorizontalInput = !Mathf.Approximately(horizontal, 0f);
+        hasVerticalInput = !Mathf.Approximately(vertical, 0f);
+        isSprinting = hasHorizontalInput || hasVerticalInput;
 
-        m_Animator.SetBool("isSprinting", isSprinting);
+        playerAnimator.SetBool("isSprinting", isSprinting);
 
-        // m_Movement.Set(horizontal, 0f, vertical);
-        // m_Movement.Normalize();
-
-        var forward = camera.transform.forward;
-        var right = camera.transform.right;
+        var forward = playerCamera.transform.forward;
+        var right = playerCamera.transform.right;
 
         forward.y = 0f;
         right.y = 0f;
@@ -85,34 +123,41 @@ public class PlayerControls : MonoBehaviour
         cameraDir = forward * vertical + right * horizontal;
 
         Vector3 desiredForward = Vector3.RotateTowards(transform.forward, cameraDir, turnSpeed * Time.deltaTime, 0f);
-        m_Rotation = Quaternion.LookRotation(desiredForward);
+        playerRotation = Quaternion.LookRotation(desiredForward);
     }
 
     void OnAnimatorMove()
     {
-        m_Rigidbody.MovePosition(m_Rigidbody.position + cameraDir * m_Animator.deltaPosition.magnitude);
-        m_Rigidbody.MoveRotation(m_Rotation);
+        playerRigidbody.MovePosition(playerRigidbody.position + cameraDir * playerAnimator.deltaPosition.magnitude);
+        playerRigidbody.MoveRotation(playerRotation);
     }
 
-    public void OnJump() // disabled
+    public void OnJump()
     {
-        // transform.position = new Vector3(transform.position.x, transform.position.y + jumpHeight, transform.position.z);
+        if (onGround)
+            playerRigidbody.velocity = jumpVelocity * Vector3.up;
     }
 
     public void Respawn()
     {
-        // Debug.Log("Respawning");
 
         transform.position = savePoint;
+        hud.TimerReset();
+        maze.SetActive(true);
+        glitchMaze.SetActive(false);
     }
+
+    private float lastMazeSwitchTime = -10f;    // seconds
+    public float mazeSwitchCooldown = 0.1f;     // seconds
 
     public void OnInteract()
     {
-        if (onSwitch == true)
-        {
+        if (onSwitch == true && Time.time >= lastMazeSwitchTime + mazeSwitchCooldown) {
+            lastMazeSwitchTime = Time.time;
             maze.SetActive(!maze.activeInHierarchy);
             glitchMaze.SetActive(!glitchMaze.activeInHierarchy);
             savePoint = transform.position;
+            hud.switchTimer();
         }
     }
 
