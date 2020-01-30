@@ -5,12 +5,13 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
-    private enum State { GUARD, PATROL, CHASE, RETURN }
+    private enum State { GUARD, PATROL, WANDER, CHASE, RETURN }
     private State curState;
 
     public Transform player;
     public Transform[] patrolPoints;
-    public float detectRad;
+    public float detectRad, wanderRange;
+    public float ptLeniency;
     NavMeshAgent m_Agent;
 
     private Vector3 origin;
@@ -52,6 +53,7 @@ public class Enemy : MonoBehaviour
         {
             case State.GUARD:   Guard();    break;
             case State.PATROL:  Patrol();   break;
+            case State.WANDER:  Wander();   break;
             case State.CHASE:   Chase();    break;
             case State.RETURN:  Return();   break;
             default:                        break;
@@ -67,6 +69,7 @@ public class Enemy : MonoBehaviour
     // Handles enemy actions when in idle state
     private void Guard() 
     {
+        gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
         if(DetectPlayer())
         {
             curState = State.CHASE;
@@ -76,39 +79,34 @@ public class Enemy : MonoBehaviour
     // Handles enemy actions when in patrol state
     private void Patrol() 
     {
+        gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.blue);
         // Update destination point if needed
-        if(m_Agent.destination.x == transform.position.x 
-            && m_Agent.destination.z == transform.position.z)
+       // if(m_Agent.destination.x == transform.position.x 
+       //     && m_Agent.destination.z == transform.position.z)
+       Debug.Log(Vector3.Distance(transform.position, m_Agent.destination));
+        if(Vector3.Distance(transform.position, m_Agent.destination) <= ptLeniency)
         {
+            Debug.Log("asdassa");
             if(isReturnTrip)
             {
-                if(curDest == 0)
+                curDest -= 1;
+                if(curDest < 0)
                 {
                     isReturnTrip = false;
                     curDest += 1;
                 }
-                else
-                {
-                    curDest -= 1;
-                }
             }
             else
             {
-                if(curDest == patrolPoints.Length - 1)
+                curDest += 1;
+                if(curDest >= patrolPoints.Length)
                 {
                     isReturnTrip = true;
                     curDest -= 1;
                 }
-                else
-                {
-                    curDest += 1;
-                }
             }
 
             m_Agent.SetDestination(patrolPoints[curDest].position);
-        }
-        else{
-            //Debug.Log(m_Agent.destination + " VS " + transform.position);
         }
 
         if(DetectPlayer())
@@ -120,6 +118,7 @@ public class Enemy : MonoBehaviour
     // Handles how the enemy will chase the player
     private void Chase()
     {
+        gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
         // Update destination to current player position
         m_Agent.SetDestination(player.position);
 
@@ -133,6 +132,7 @@ public class Enemy : MonoBehaviour
     // Move enemy back to orignal position
     private void Return()
     {
+        gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.yellow);
         if(m_Agent.destination.x == transform.position.x 
             && m_Agent.destination.z == transform.position.z)
         {
@@ -151,6 +151,32 @@ public class Enemy : MonoBehaviour
                 curState = State.GUARD;
             }
             
+        }
+    }
+
+    // Make the enemy move randomly thoughout the map until a player is detected
+    private void Wander()
+    {
+        gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.white);
+        // Update destination point if needed
+        if(m_Agent.destination.x == transform.position.x 
+            && m_Agent.destination.z == transform.position.z)
+        {
+            bool gotPoint = false;
+            while(true)
+            {
+                Vector3 randomDest = transform.position + Random.insideUnitSphere * wanderRange;
+                NavMeshHit hit;
+                if (NavMesh.SamplePosition(randomDest, out hit, 2.0f, NavMesh.AllAreas)) {
+                    m_Agent.SetDestination(hit.position);
+                    break;
+                }
+            }
+        }
+
+        if(DetectPlayer())
+        {
+            curState = State.CHASE;
         }
     }
 
