@@ -17,7 +17,7 @@
                     "name": "Jump",
                     "type": "Button",
                     "id": "9b7de8c6-ca3c-4723-bd8b-351bec6dd8a4",
-                    "expectedControlType": "",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press"
                 },
@@ -41,6 +41,14 @@
                     "name": "Interact",
                     "type": "Button",
                     "id": "40d43570-e07f-40cc-8b62-ffaa3014259d",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "Dodge",
+                    "type": "Button",
+                    "id": "f74ebcc4-7219-49ec-8fab-f1114c66ba02",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "Press"
@@ -182,21 +190,10 @@
                 {
                     "name": "",
                     "id": "c1f7a91b-d0fd-4a62-997e-7fb9b69bf235",
-                    "path": "<XInputController>/rightStick",
+                    "path": "<Gamepad>/rightStick",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "Look",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "3e5f5442-8668-4b27-a940-df99bad7e831",
-                    "path": "<Joystick>/{Hatswitch}",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Joystick",
                     "action": "Look",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -280,6 +277,17 @@
                 },
                 {
                     "name": "",
+                    "id": "1a565ecc-8c0a-465f-9ddb-cf2686379b47",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "da877910-caf3-4642-98db-424240436b91",
                     "path": "<Keyboard>/e",
                     "interactions": "",
@@ -292,11 +300,33 @@
                 {
                     "name": "",
                     "id": "be74f921-d3b7-428d-aba4-4ea2417fb202",
-                    "path": "<XInputController>/buttonSouth",
+                    "path": "<Gamepad>/buttonWest",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5c9853a2-c2b2-479c-9e92-606ef7c2f323",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Dodge",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1c33d8e7-d550-4c40-93d1-33a43df8765e",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Dodge",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

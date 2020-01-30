@@ -41,6 +41,14 @@ public class @SimpleControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""dodge"",
+                    ""type"": ""Button"",
+                    ""id"": ""7d963da3-1ec8-4a68-a0cb-14a382eef9a2"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -142,6 +150,17 @@ public class @SimpleControls : IInputActionCollection, IDisposable
                     ""action"": ""look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""388ffe77-03c6-4caa-8a43-c656138f11c5"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": ""Hold"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""dodge"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -153,6 +172,7 @@ public class @SimpleControls : IInputActionCollection, IDisposable
         m_gameplay_fire = m_gameplay.FindAction("fire", throwIfNotFound: true);
         m_gameplay_move = m_gameplay.FindAction("move", throwIfNotFound: true);
         m_gameplay_look = m_gameplay.FindAction("look", throwIfNotFound: true);
+        m_gameplay_dodge = m_gameplay.FindAction("dodge", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -205,6 +225,7 @@ public class @SimpleControls : IInputActionCollection, IDisposable
     private readonly InputAction m_gameplay_fire;
     private readonly InputAction m_gameplay_move;
     private readonly InputAction m_gameplay_look;
+    private readonly InputAction m_gameplay_dodge;
     public struct GameplayActions
     {
         private @SimpleControls m_Wrapper;
@@ -212,6 +233,7 @@ public class @SimpleControls : IInputActionCollection, IDisposable
         public InputAction @fire => m_Wrapper.m_gameplay_fire;
         public InputAction @move => m_Wrapper.m_gameplay_move;
         public InputAction @look => m_Wrapper.m_gameplay_look;
+        public InputAction @dodge => m_Wrapper.m_gameplay_dodge;
         public InputActionMap Get() { return m_Wrapper.m_gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -230,6 +252,9 @@ public class @SimpleControls : IInputActionCollection, IDisposable
                 @look.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnLook;
                 @look.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnLook;
                 @look.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnLook;
+                @dodge.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnDodge;
+                @dodge.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnDodge;
+                @dodge.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnDodge;
             }
             m_Wrapper.m_GameplayActionsCallbackInterface = instance;
             if (instance != null)
@@ -243,6 +268,9 @@ public class @SimpleControls : IInputActionCollection, IDisposable
                 @look.started += instance.OnLook;
                 @look.performed += instance.OnLook;
                 @look.canceled += instance.OnLook;
+                @dodge.started += instance.OnDodge;
+                @dodge.performed += instance.OnDodge;
+                @dodge.canceled += instance.OnDodge;
             }
         }
     }
@@ -252,5 +280,6 @@ public class @SimpleControls : IInputActionCollection, IDisposable
         void OnFire(InputAction.CallbackContext context);
         void OnMove(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
+        void OnDodge(InputAction.CallbackContext context);
     }
 }
