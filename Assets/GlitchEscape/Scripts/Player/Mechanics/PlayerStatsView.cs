@@ -60,8 +60,6 @@ public class PlayerStatsView : MonoBehaviour {
         activeStaminaBarMaterial.color =
             Color.Lerp(baseStaminaBarColor, staminaFlashColor, playerStats.isStaminaFlashing ? 1f : 0f);
         
-        
-
         if (hitPlayer) {
             hitPlayer = false; 
             playerStats.TakeDamage(15f);
