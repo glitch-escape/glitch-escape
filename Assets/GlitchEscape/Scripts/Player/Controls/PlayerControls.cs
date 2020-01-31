@@ -80,26 +80,34 @@ public class PlayerControls : MonoBehaviour
         freeLookCam.m_XAxis.Value = freeLookCam.m_XAxis.Value + lookInput.x * cameraTurnSpeed * Time.deltaTime;
         freeLookCam.m_YAxis.Value = freeLookCam.m_YAxis.Value - lookInput.y * Time.deltaTime;
 
-
-        if (transform.position.y < -5)
-        {
-            Respawn();
-        }
-
         if (playerRigidbody.velocity.y < 0)
             playerRigidbody.velocity += fallSpeed * Physics.gravity.y * Vector3.up * Time.deltaTime;
     }
 
     private void Move()
     {
-        // easy way for now, maybe later for collider check
-        if (playerRigidbody.velocity.y == 0)
+        if(Physics.Raycast(playerRigidbody.position, Vector3.down, .5f))
         {
             onGround = true;
         }
         else
         {
             onGround = false;
+        }
+        // easy way for now, maybe later for collider check
+        /*if (playerRigidbody.velocity.y == 0)
+        {
+            onGround = true;
+        }
+        else
+        {
+            onGround = false;
+        }*/
+
+        //work in progrss jump feel adjustments
+        if (playerRigidbody.velocity.y < 0)
+        {
+            playerRigidbody.velocity += Vector3.up * Physics.gravity.y * (fallSpeed - 1) * Time.deltaTime;
         }
 
         var movementInput = input.Controls.Move.ReadValue<Vector2>();
