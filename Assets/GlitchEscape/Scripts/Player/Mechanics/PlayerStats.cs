@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Resources;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerControls), typeof(PlayerStatsView))]
+[RequireComponent(typeof(PlayerManager), typeof(PlayerStatsView))]
 public class PlayerStats : MonoBehaviour {
 
     public float maxStamina = 100f;
@@ -52,9 +52,9 @@ public class PlayerStats : MonoBehaviour {
         get { return m_stamina;  }
     }
 
-    private PlayerControls m_playerControls;
+    private PlayerManager m_playerControls;
     void Start() {
-        m_playerControls = GetComponent<PlayerControls>();
+        m_playerControls = GetComponent<PlayerManager>();
         if (m_playerControls == null) {
             Debug.LogWarning("player stats component is missing player controls component!");
         }

@@ -6,7 +6,7 @@ using UnityEngine.Rendering.PostProcessing;
 
 public class HUD : MonoBehaviour
 {
-    public PlayerControls playerControls;
+    public PlayerManager playerControls;
     public Text countdownText;
     public GameObject globalPostProcess;
     public PostProcessProfile globalProfile;
