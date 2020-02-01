@@ -6,13 +6,13 @@ using UnityEngine.Rendering.PostProcessing;
 
 public class HUD : MonoBehaviour
 {
-    public PlayerManager playerControls;
     public Text countdownText;
     public GameObject globalPostProcess;
     public PostProcessProfile globalProfile;
     public PostProcessProfile pinkMazeProfile;
-
     public float timeLimit = 30f;
+
+    [System.NonSerialized] public PlayerManager playerControls;
 
     private float counter = 0f;
     private float timeRemains;
@@ -37,9 +37,10 @@ public class HUD : MonoBehaviour
             counter += 1 * Time.deltaTime;
             timeRemains = timeLimit - counter;
 
-            if (timeRemains <= 0) {
+            if (timeRemains <= 0)
+            {
                 TimerReset();
-                playerControls.Respawn();
+                playerControls.playerInteraction.Respawn();
             }
 
             float minRemains = Mathf.Floor(timeRemains / 60f);
@@ -54,8 +55,9 @@ public class HUD : MonoBehaviour
         }
     }
 
-    public void ClearTimer() {
-        timerOn = false; 
+    public void ClearTimer()
+    {
+        timerOn = false;
         TimerReset();
     }
 

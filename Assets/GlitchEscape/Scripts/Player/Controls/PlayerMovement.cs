@@ -1,13 +1,27 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    private PlayerManager playerControls;
+    private Vector3 cameraDir;
+    private Quaternion playerRotation = Quaternion.identity;
+    private float horizontal;
+    private float vertical;
+    private bool hasHorizontalInput;
+    private bool hasVerticalInput;
+    private bool isSprinting;
+    private Vector2 movementInput;
+    private Vector3 forward;
+    private Vector3 right;
+
+    void Awake()
+    {
+        playerControls = GetComponent<PlayerManager>();
+    }
 
     public void Move()
     {
-        var movementInput = input.Controls.Move.ReadValue<Vector2>();
+        movementInput = playerControls.input.Controls.Move.ReadValue<Vector2>();
         horizontal = movementInput.x;
         vertical = movementInput.y;
 
@@ -15,10 +29,10 @@ public class PlayerMovement : MonoBehaviour
         hasVerticalInput = !Mathf.Approximately(vertical, 0f);
         isSprinting = hasHorizontalInput || hasVerticalInput;
 
-        playerAnimator.SetBool("isSprinting", isSprinting);
+        playerControls.playerAnimator.SetBool("isSprinting", isSprinting);
 
-        var forward = playerCamera.transform.forward;
-        var right = playerCamera.transform.right;
+        forward = playerControls.mainCamera.transform.forward;
+        right = playerControls.mainCamera.transform.right;
 
         forward.y = 0f;
         right.y = 0f;
@@ -27,13 +41,13 @@ public class PlayerMovement : MonoBehaviour
 
         cameraDir = forward * vertical + right * horizontal;
 
-        Vector3 desiredForward = Vector3.RotateTowards(transform.forward, cameraDir, turnSpeed * Time.deltaTime, 0f);
+        Vector3 desiredForward = Vector3.RotateTowards(transform.forward, cameraDir, playerControls.turnSpeed * Time.deltaTime, 0f);
         playerRotation = Quaternion.LookRotation(desiredForward);
     }
 
     void OnAnimatorMove()
     {
-        playerRigidbody.MovePosition(playerRigidbody.position + cameraDir * playerAnimator.deltaPosition.magnitude);
-        playerRigidbody.MoveRotation(playerRotation);
+        playerControls.playerRigidbody.MovePosition(playerControls.playerRigidbody.position + cameraDir * playerControls.playerAnimator.deltaPosition.magnitude);
+        playerControls.playerRigidbody.MoveRotation(playerRotation);
     }
 }

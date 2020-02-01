@@ -1,25 +1,26 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerJump : MonoBehaviour
 {
+    private PlayerManager playerControls;
     private const float GRAVITY = 9.81f;
 
-    public void OnJump(Vector3 position, Vector3 velocity, float jumpHeight)
+    void Awake()
     {
-        if (CheckOnGround(position))
-            velocity = Mathf.Sqrt(jumpHeight * GRAVITY * 2) * Vector3.up;
+        playerControls = GetComponent<PlayerManager>();
     }
 
-    public void ApplyFallSpeed(Vector3 velocity, float fallSpeed)
+    public void OnJump()
     {
-        if (velocity.y < 0)
-            velocity += fallSpeed * Physics.gravity.y * Vector3.up * Time.deltaTime;
+        if (CheckOnGround())
+            playerControls.playerRigidbody.velocity = Mathf.Sqrt(playerControls.jumpHeight * GRAVITY * 2) * Vector3.up;
     }
 
-    public bool CheckOnGround(Vector3 position)
+    public void ApplyFallSpeed(float fallSpeed)
     {
-        return Physics.Raycast(position, Vector3.down, .5f);
+        if (playerControls.playerRigidbody.velocity.y < 0)
+            playerControls.playerRigidbody.velocity += fallSpeed * Physics.gravity.y * Vector3.up * Time.deltaTime;
     }
+
+    public bool CheckOnGround() => Physics.Raycast(playerControls.playerRigidbody.position, Vector3.down, .5f);
 }
