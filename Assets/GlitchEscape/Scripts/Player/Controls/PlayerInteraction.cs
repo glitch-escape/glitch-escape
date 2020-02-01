@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerInteraction : MonoBehaviour
 {
@@ -15,6 +13,11 @@ public class PlayerInteraction : MonoBehaviour
         playerControls = GetComponent<PlayerManager>();
     }
 
+    void Start()
+    {
+        savePoint = transform.position;
+    }
+
     public void OnInteract()
     {
         if (onSwitch == true && Time.time >= lastMazeSwitchTime + playerControls.mazeSwitchCooldown)
@@ -23,14 +26,14 @@ public class PlayerInteraction : MonoBehaviour
             playerControls.maze.SetActive(!playerControls.maze.activeInHierarchy);
             playerControls.glitchMaze.SetActive(!playerControls.glitchMaze.activeInHierarchy);
             savePoint = transform.position;
-            playerControls.hud.switchTimer();
+            playerControls.systemManager.hudManager.hudTimer.switchTimer();
         }
     }
 
     public void Respawn()
     {
         transform.position = savePoint;
-        playerControls.hud.TimerReset();
+        playerControls.systemManager.hudManager.hudTimer.TimerReset();
         playerControls.maze.SetActive(true);
         playerControls.glitchMaze.SetActive(false);
     }

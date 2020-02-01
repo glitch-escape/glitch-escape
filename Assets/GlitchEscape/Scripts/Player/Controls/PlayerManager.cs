@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using Cinemachine;
-using UnityEngine.InputSystem;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -8,7 +7,7 @@ public class PlayerManager : MonoBehaviour
     [Header("Objects")]
     public GameObject maze;
     public GameObject glitchMaze;
-    public GameObject canvas;
+    public GameObject system;
     public Transform mainCamera;
     public CinemachineFreeLook freeLookCam;
 
@@ -24,7 +23,7 @@ public class PlayerManager : MonoBehaviour
     [System.NonSerialized] public Rigidbody playerRigidbody;
 
     // Functional Scripts:
-    [System.NonSerialized] public HUD hud;
+    [System.NonSerialized] public SystemManager systemManager;
     [System.NonSerialized] public PlayerMovement playerMovement;
     [System.NonSerialized] public PlayerJump playerJump;
     [System.NonSerialized] public PlayerInteraction playerInteraction;
@@ -34,7 +33,7 @@ public class PlayerManager : MonoBehaviour
     void Awake()
     {
         // Get Scripts
-        hud = canvas.GetComponent<HUD>();
+        systemManager = system.GetComponent<SystemManager>();
         playerMovement = GetComponent<PlayerMovement>();
         playerJump = GetComponent<PlayerJump>();
         playerInteraction = GetComponent<PlayerInteraction>();
@@ -45,11 +44,6 @@ public class PlayerManager : MonoBehaviour
         playerRigidbody = GetComponent<Rigidbody>();
 
         input = new Input();
-    }
-
-    void Start()
-    {
-        // playerInteraction.savePoint = playerRigidbody.position;
     }
 
     void FixedUpdate() => playerMovement.Move();
