@@ -436,6 +436,14 @@ public class @Input : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""ControlTips"",
+                    ""type"": ""Button"",
+                    ""id"": ""26c8bddc-40ae-4b21-8d4e-803b1feaeb2e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
@@ -845,6 +853,28 @@ public class @Input : IInputActionCollection, IDisposable
                     ""action"": ""TrackedDeviceSelect"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4e641629-4fb8-488f-83d0-b58d95db2d62"",
+                    ""path"": ""<Keyboard>/t"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""ControlTips"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""18f33d80-839b-4b27-a853-b41882b562ec"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""ControlTips"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -933,6 +963,7 @@ public class @Input : IInputActionCollection, IDisposable
         m_UI_TrackedDevicePosition = m_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
         m_UI_TrackedDeviceSelect = m_UI.FindAction("TrackedDeviceSelect", throwIfNotFound: true);
+        m_UI_ControlTips = m_UI.FindAction("ControlTips", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1066,6 +1097,7 @@ public class @Input : IInputActionCollection, IDisposable
     private readonly InputAction m_UI_TrackedDevicePosition;
     private readonly InputAction m_UI_TrackedDeviceOrientation;
     private readonly InputAction m_UI_TrackedDeviceSelect;
+    private readonly InputAction m_UI_ControlTips;
     public struct UIActions
     {
         private @Input m_Wrapper;
@@ -1081,6 +1113,7 @@ public class @Input : IInputActionCollection, IDisposable
         public InputAction @TrackedDevicePosition => m_Wrapper.m_UI_TrackedDevicePosition;
         public InputAction @TrackedDeviceOrientation => m_Wrapper.m_UI_TrackedDeviceOrientation;
         public InputAction @TrackedDeviceSelect => m_Wrapper.m_UI_TrackedDeviceSelect;
+        public InputAction @ControlTips => m_Wrapper.m_UI_ControlTips;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1123,6 +1156,9 @@ public class @Input : IInputActionCollection, IDisposable
                 @TrackedDeviceSelect.started -= m_Wrapper.m_UIActionsCallbackInterface.OnTrackedDeviceSelect;
                 @TrackedDeviceSelect.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnTrackedDeviceSelect;
                 @TrackedDeviceSelect.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnTrackedDeviceSelect;
+                @ControlTips.started -= m_Wrapper.m_UIActionsCallbackInterface.OnControlTips;
+                @ControlTips.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnControlTips;
+                @ControlTips.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnControlTips;
             }
             m_Wrapper.m_UIActionsCallbackInterface = instance;
             if (instance != null)
@@ -1160,6 +1196,9 @@ public class @Input : IInputActionCollection, IDisposable
                 @TrackedDeviceSelect.started += instance.OnTrackedDeviceSelect;
                 @TrackedDeviceSelect.performed += instance.OnTrackedDeviceSelect;
                 @TrackedDeviceSelect.canceled += instance.OnTrackedDeviceSelect;
+                @ControlTips.started += instance.OnControlTips;
+                @ControlTips.performed += instance.OnControlTips;
+                @ControlTips.canceled += instance.OnControlTips;
             }
         }
     }
@@ -1231,5 +1270,6 @@ public class @Input : IInputActionCollection, IDisposable
         void OnTrackedDevicePosition(InputAction.CallbackContext context);
         void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
         void OnTrackedDeviceSelect(InputAction.CallbackContext context);
+        void OnControlTips(InputAction.CallbackContext context);
     }
 }

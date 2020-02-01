@@ -7,6 +7,7 @@ public class HUDManager : MonoBehaviour
     // Public Variables:
     [Header("Objects")]
     public GameObject system;
+    public GameObject controlTips;
     public Text countdownText;
     public GameObject globalPostProcess;
     public PostProcessProfile globalProfile;
