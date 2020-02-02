@@ -12,9 +12,7 @@ public class PlayerManager : MonoBehaviour
     public CinemachineFreeLook freeLookCam;
 
     [Header("Variables")]
-    public AnimationCurve cameraInputCurve;
     [Tooltip("degree")] [Range(60f, 360f)] public float cameraTurnSpeed = 180;
-    [Range(5f, 50f)] public float turnSpeed = 10f;
     [Range(1f, 10f)] public float jumpHeight = 2f;
     [Range(0.1f, 10f)] public float fallSpeed = 1.5f;
     [Tooltip("second")] [Range(0.1f, 1f)] public float mazeSwitchCooldown = 0.1f;
@@ -24,20 +22,20 @@ public class PlayerManager : MonoBehaviour
 
     // Functional Scripts:
     [System.NonSerialized] public SystemManager systemManager;
-    [System.NonSerialized] public PlayerMovement playerMovement;
+    [System.NonSerialized] public PlayerMovementController playerMovement;
     [System.NonSerialized] public PlayerJump playerJump;
     [System.NonSerialized] public PlayerInteraction playerInteraction;
-    [System.NonSerialized] public PlayerCamera playerCamera;
+    [System.NonSerialized] public PlayerCameraController playerCamera;
 
     // MonoBehaviour:
     void Awake()
     {
         // Get Scripts
         systemManager = system.GetComponent<SystemManager>();
-        playerMovement = GetComponent<PlayerMovement>();
+        playerMovement = GetComponent<PlayerMovementController>();
         playerJump = GetComponent<PlayerJump>();
         playerInteraction = GetComponent<PlayerInteraction>();
-        playerCamera = GetComponent<PlayerCamera>();
+        playerCamera = GetComponent<PlayerCameraController>();
 
         // Get Objects
         playerAnimator = GetComponent<Animator>();
@@ -46,11 +44,10 @@ public class PlayerManager : MonoBehaviour
         input = new Input();
     }
 
-    void FixedUpdate() => playerMovement.Move();
+    // void FixedUpdate() => playerMovement.Move();
 
     void Update()
     {
-        playerCamera.Camera();
         playerJump.ApplyFallSpeed(fallSpeed);
     }
 

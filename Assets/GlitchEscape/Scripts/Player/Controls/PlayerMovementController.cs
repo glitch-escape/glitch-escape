@@ -68,7 +68,7 @@ public class PlayerMovementController : MonoBehaviour, IPlayerControllerComponen
             Move(speed);
         }
     }
-    void Update() {
+    void FixedUpdate() {
         Debug.Log("input "+playerInput.Controls.Move);
         playerAnimator.SetBool("isSprinting", hasMoveInput);
         if (!useAnimationDerivedMoveSpeed) {
@@ -90,7 +90,7 @@ public class PlayerMovementController : MonoBehaviour, IPlayerControllerComponen
                 playerRigidbody.MoveRotation(playerRotation);
             } break;
             case PlayerMovementMode.Strafing: {
-                
+                /* TODO: implement strafing controls */
             } break;
         }
     }
