@@ -11365,14 +11365,7 @@ GameObject:
   - component: {fileID: 8895408351803887741}
   - component: {fileID: 8854132893365682231}
   - component: {fileID: 8918339876615520221}
-  - component: {fileID: 8914491684199058631}
-  - component: {fileID: 5491484922582036376}
-  - component: {fileID: 1242769636}
-  - component: {fileID: 6340885545353503906}
-  - component: {fileID: 849414022547178512}
   - component: {fileID: 1702069040316270786}
-  - component: {fileID: 1161516617708673680}
-  - component: {fileID: 6124615691173310524}
   - component: {fileID: 4687437238300326713}
   m_Layer: 0
   m_Name: Player
@@ -11449,128 +11442,6 @@ CapsuleCollider:
   m_Height: 1.76
   m_Direction: 1
   m_Center: {x: 0, y: 0.87, z: 0}
---- !u!114 &8914491684199058631
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8802028524927266407}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 614a2c46619e4a744a76254e4926cd5d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maze: {fileID: 0}
-  glitchMaze: {fileID: 0}
-  system: {fileID: 0}
-  mainCamera: {fileID: 0}
-  freeLookCam: {fileID: 0}
-  cameraInputCurve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  cameraTurnSpeed: 180
-  turnSpeed: 12
-  jumpHeight: 1
-  fallSpeed: 1.5
-  mazeSwitchCooldown: 0.1
---- !u!114 &5491484922582036376
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8802028524927266407}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: e9f1612db82eddd48b5cb116408b28e9,
-    type: 3}
-  m_NotificationBehavior: 0
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents: []
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: Controls
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
---- !u!114 &1242769636
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8802028524927266407}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a924bb6dfb4946746bd9c2b1d54efb0c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dashStaminaCost: 10
-  useKinematic: 0
-  minDodgeLength: 1.5
-  maxDoddgeLength: 5.3
-  dodgeSpeed: 28
-  minDodgeHoldTime: 0
-  maxDodgeHoldTime: 0.55
-  dodgeCooldown: 0.1
-  dodgeGroundParticle: {fileID: 0}
-  dodgeAirParticle: {fileID: 485203206}
-  animateLength: 0.1
-  dodgeScaleFactor: 15
-  noiseTex: {fileID: 2800000, guid: 68305fbab3966024b86bf757345409f6, type: 3}
---- !u!114 &6340885545353503906
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8802028524927266407}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f27c11061ab6a4a02a607143faff0d42, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healthBar: {fileID: 0}
-  staminaBar: {fileID: 0}
-  healthFlashColor: {r: 1, g: 0, b: 0, a: 1}
-  staminaFlashColor: {r: 1, g: 1, b: 1, a: 1}
-  hitPlayer: 0
-  useAbility: 0
-  currentHealth: 0
---- !u!114 &849414022547178512
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8802028524927266407}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3365640211a1547f291606b107dd2243, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxStamina: 100
-  maxHealth: 100
-  staminaRegenPerSec: 10
-  staminaRegenDelay: 0
-  healthRegenPerSec: 10
-  healthRegenDelay: 0
-  startingStaminaPercent: 1
-  startingHealthPercent: 1
-  lowStaminaFlashDuration: 0.5
-  lowStaminaFlashCount: 1
 --- !u!114 &1702069040316270786
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11583,30 +11454,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd0dadb06d4767849abaa9360fb2e7fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1161516617708673680
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8802028524927266407}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29aee1029d660734eaa9f1f65bf1326f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &6124615691173310524
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8802028524927266407}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b840ec0bd4b0ba24eb933a62cf954904, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  moveSpeed: 0
+  turnSpeed: 0
+  movementMode: 0
+  useAnimationDerivedMoveSpeed: 1
 --- !u!114 &4687437238300326713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11619,6 +11470,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f18fe16274d1dbc4d9a40710d428237b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mazeSwitchCooldown: 0.2
 --- !u!1 &8802040431441675437
 GameObject:
   m_ObjectHideFlags: 0

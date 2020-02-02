@@ -796,6 +796,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1472306837}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1227476559 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1584560517, guid: 7fb674626e4de46f49d82caad6d6ce93,
+    type: 3}
+  m_PrefabInstance: {fileID: 2108366781}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1247628879
 GameObject:
   m_ObjectHideFlags: 0
@@ -1400,6 +1406,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 738244083}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1617067409 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2094797350, guid: 7fb674626e4de46f49d82caad6d6ce93,
+    type: 3}
+  m_PrefabInstance: {fileID: 2108366781}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1660105382
 GameObject:
   m_ObjectHideFlags: 0
@@ -1418,7 +1430,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1660105383
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1905,12 +1917,12 @@ PrefabInstance:
     - target: {fileID: 4480004948019582980, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000000004300031
+      value: -0.00000000428642
       objectReference: {fileID: 0}
     - target: {fileID: 4480004948019582980, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -3.7714168e-10
+      value: 1.5927246e-10
       objectReference: {fileID: 0}
     - target: {fileID: 4480004948942281807, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
@@ -2034,6 +2046,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6058271898809227809, guid: 7fb674626e4de46f49d82caad6d6ce93, type: 3}
+    - {fileID: 1437385824898917395, guid: 7fb674626e4de46f49d82caad6d6ce93, type: 3}
+    - {fileID: 5747858153711944865, guid: 7fb674626e4de46f49d82caad6d6ce93, type: 3}
+    - {fileID: 1221256708812664973, guid: 7fb674626e4de46f49d82caad6d6ce93, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 7fb674626e4de46f49d82caad6d6ce93, type: 3}
 --- !u!20 &2108366782 stripped
 Camera:
@@ -2200,6 +2215,25 @@ MonoBehaviour:
   jumpDuration: 0.64
   downGravityFactor: 2.2
   upGravityFactor: 0.8
+--- !u!114 &2108366789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2108366783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f27c11061ab6a4a02a607143faff0d42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBar: {fileID: 1617067409}
+  staminaBar: {fileID: 1227476559}
+  healthFlashColor: {r: 1, g: 0, b: 0, a: 1}
+  staminaFlashColor: {r: 1, g: 1, b: 1, a: 1}
+  hitPlayer: 0
+  useAbility: 0
+  currentHealth: 0
 --- !u!1001 &2992111759593548827
 PrefabInstance:
   m_ObjectHideFlags: 0
