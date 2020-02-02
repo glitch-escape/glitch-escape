@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,7 +24,9 @@ public class PlayerController : MonoBehaviour {
     public Player player;
 
     // The active camera
-    public Camera camera;
+    public new Camera camera;
+
+    private bool isEnabled = false;
     
     void Awake() {
         // Get all references
@@ -33,11 +36,26 @@ public class PlayerController : MonoBehaviour {
 
         // setup player's controller reference
         player.controller = this;
-        
-        // Setup our sub-controllers on both this object and the player object
+
+        isEnabled = true;
         SetupSubControllers(player.GetComponents<IPlayerControllerComponent>());
         SetupSubControllers(GetComponents<IPlayerControllerComponent>());
     }
+    void OnEnable() {
+        player.input.Enable();
+        if (!isEnabled) {
+            isEnabled = true;
+            // Setup our sub-controllers on both this object and the player object
+            SetupSubControllers(player.GetComponents<IPlayerControllerComponent>());
+            SetupSubControllers(GetComponents<IPlayerControllerComponent>());
+        }
+    }
+
+    private void OnDisable() {
+        isEnabled = false;
+        player.input.Disable();
+    }
+
     private void SetupSubControllers(IPlayerControllerComponent[] components) {
         foreach (var component in components) {
             component.SetupControllerComponent(this);

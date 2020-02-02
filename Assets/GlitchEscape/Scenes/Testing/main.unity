@@ -140,6 +140,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 0}
+  maxStamina: 100
+  maxHealth: 100
+  staminaRegenPerSec: 10
+  staminaRegenDelay: 0
+  healthRegenPerSec: 10
+  healthRegenDelay: 0
+  startingStaminaPercent: 1
+  startingHealthPercent: 1
+  lowStaminaFlashDuration: 0.5
+  lowStaminaFlashCount: 1
 --- !u!1001 &227743567
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -352,6 +362,12 @@ MonoBehaviour:
   blendDistance: 0
   weight: 1
   priority: 0
+--- !u!198 &428578206 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 4903794389447859639, guid: 7fb674626e4de46f49d82caad6d6ce93,
+    type: 3}
+  m_PrefabInstance: {fileID: 2108366781}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &534493525
 GameObject:
   m_ObjectHideFlags: 0
@@ -1566,6 +1582,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2008085312}
   m_CullTransparentMesh: 0
+--- !u!198 &2042756008 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 4903794390073444327, guid: 7fb674626e4de46f49d82caad6d6ce93,
+    type: 3}
+  m_PrefabInstance: {fileID: 2108366781}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2048075151
 GameObject:
   m_ObjectHideFlags: 0
@@ -1799,7 +1821,7 @@ PrefabInstance:
     - target: {fileID: 1437385824898917395, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4480004948019582980, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
@@ -1859,7 +1881,7 @@ PrefabInstance:
     - target: {fileID: 5747858153711944865, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6022211836642953331, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
@@ -1997,6 +2019,31 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   cameraTurnSpeed: 360
+--- !u!114 &2108366786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2108366783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a924bb6dfb4946746bd9c2b1d54efb0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dashStaminaCost: 10
+  useKinematic: 0
+  minDodgeLength: 1.9
+  maxDoddgeLength: 5.3
+  dodgeSpeed: 28
+  minDodgeHoldTime: 0.5
+  maxDodgeHoldTime: 1.5
+  dodgeCooldown: 0.1
+  dodgeGroundParticle: {fileID: 2042756008}
+  dodgeAirParticle: {fileID: 428578206}
+  animateLength: 0.1
+  dodgeScaleFactor: 15
+  noiseTex: {fileID: 2800000, guid: 68305fbab3966024b86bf757345409f6, type: 3}
 --- !u!1001 &2992111759593548827
 PrefabInstance:
   m_ObjectHideFlags: 0

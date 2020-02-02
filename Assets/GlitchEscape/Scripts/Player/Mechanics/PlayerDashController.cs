@@ -6,32 +6,33 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 
-[RequireComponent(typeof(PlayerStats))]
-public class DodgeScript : MonoBehaviour
+public class PlayerDashController : MonoBehaviour, IPlayerControllerComponent
 {
     const float GRAVITY = 9.81f; // m/s^2
-    
+
+    private PlayerController controller;
+    private Player player;
     private Input input;
-    private Rigidbody m_Rigidbody;
-    private PlayerStats playerStats;
-
+    private new Rigidbody rigidbody;
+    public void SetupControllerComponent(PlayerController controller) {
+        this.controller = controller;
+        player = controller.player;
+        rigidbody = player.rigidbody;
+        input = player.input;
+        input.Controls.Dodge.performed += context => {
+            bool pressed = context.ReadValue<float>() > 0f;
+            Debug.Log("dodge pressed!" + pressed);
+            dodgePressed = pressed;
+        };
+        defaultMaterial = player.transform.Find("Body").GetComponent<Renderer>().material;
+        dodgeShader = Shader.Find("Custom/TeleportEffect");
+        defaultShader = Shader.Find("Custom/Toon");
+    }
+    
     public float dashStaminaCost = 10f;
-
-    #region InputCallbacks
     
     // is the dodge button currently pressed?
     private bool dodgePressed = false;
-    void SetupInputActions() {
-        if (input == null) {
-            input = new Input();
-            input.Controls.Dodge.performed += context => {
-                bool pressed = context.ReadValue<float>() > 0f;
-                // Debug.Log("dodge pressed!" + pressed);
-                dodgePressed = pressed;
-            };
-        }
-    }
-    #endregion
 
     #region DodgeMechanics
     #region ScriptProperties
@@ -141,9 +142,9 @@ public class DodgeScript : MonoBehaviour
             // var moveDir = Vector3.forward * moveInput.y + Vector3.right * moveInput.x;
             var moveDir = Vector3.forward;
             if (useKinematic) {
-                transform.Translate(moveDir * dodgeSpeed * Time.deltaTime);
+                player.transform.Translate(moveDir * dodgeSpeed * Time.deltaTime);
             } else {
-                m_Rigidbody.velocity = transform.rotation * moveDir * dodgeSpeed;
+                rigidbody.velocity = player.transform.rotation * moveDir * dodgeSpeed;
             }
             // update vfx
             UpdateDodgeVfx();
@@ -151,7 +152,7 @@ public class DodgeScript : MonoBehaviour
     }                                                
     private void BeginDodge() {
         // do we have enough stamina to perform this action? if no, cancel
-        if (!playerStats.TryUseAbility(dashStaminaCost)) {
+        if (!player.TryUseAbility(dashStaminaCost)) {
             return;
         }
         
@@ -175,10 +176,10 @@ public class DodgeScript : MonoBehaviour
         BeginDodgeVfx();
         
         // save velocity
-        savedDodgeVelocity = m_Rigidbody.velocity;
+        savedDodgeVelocity = rigidbody.velocity;
         
         if (useKinematic) {
-            m_Rigidbody.isKinematic = true;
+            rigidbody.isKinematic = true;
         }
         isDodging = true; 
         dodgeStartTime = Time.time;
@@ -193,10 +194,10 @@ public class DodgeScript : MonoBehaviour
             var elapsedTime = Time.time - dodgeStartTime;
             Debug.Log("Applying additional velocity change after " + elapsedTime + " seconds: "
                       + GRAVITY * elapsedTime);
-            m_Rigidbody.velocity = savedDodgeVelocity +
+            rigidbody.velocity = savedDodgeVelocity +
                                    Vector3.down * GRAVITY * elapsedTime;
             if (useKinematic) {
-                m_Rigidbody.isKinematic = false;
+                rigidbody.isKinematic = false;
             }
         }
         isDodging = false;
@@ -220,15 +221,6 @@ public class DodgeScript : MonoBehaviour
         private float dodgeHoldTime = 0f;
         #endregion
     #region VfxImplementation
-    void Awake() {
-        SetupInputActions();
-        playerStats = GetComponent<PlayerStats>();
-        m_Rigidbody = this.GetComponent<Rigidbody>();
-
-        defaultMaterial = this.transform.Find("Body").GetComponent<Renderer>().material;
-        dodgeShader = Shader.Find("Custom/TeleportEffect");
-        defaultShader = Shader.Find("Custom/Toon");
-    }
     private void BeginDodgeVfx() {
         //dodgeGroundParticle.Emit(1);
         dodgeAirParticle.Emit(30);
@@ -258,11 +250,6 @@ public class DodgeScript : MonoBehaviour
             animateTime = -1;
         }
     }
-    
     #endregion
     #endregion DodgeVfx
-    
-    private void OnEnable() => input.Controls.Enable();
-
-    private void OnDisable() => input.Controls.Disable();
 }
