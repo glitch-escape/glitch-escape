@@ -11,12 +11,14 @@ public class PlayerInteractionController : MonoBehaviour, IPlayerControllerCompo
     }
     private bool onSwitch = false;
     private float lastMazeSwitchTime = -10f;
+    private Transform lastSwitchTransform = null;
 
     [Range(0f, 1f)] public float mazeSwitchCooldown = 0.2f;
     
     public void OnInteract(InputAction.CallbackContext context) {
         if (context.performed && onSwitch && Time.time >= lastMazeSwitchTime + mazeSwitchCooldown) {
             lastMazeSwitchTime = Time.time;
+            playerController.SetSavePoint(lastSwitchTransform);
             playerController.SwitchMazes();
         }
     }
@@ -26,6 +28,7 @@ public class PlayerInteractionController : MonoBehaviour, IPlayerControllerCompo
         if (other.tag == "Switch")
         {
             onSwitch = true;
+            lastSwitchTransform = other.transform;
         }
     }
 
