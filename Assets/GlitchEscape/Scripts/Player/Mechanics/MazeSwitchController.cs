@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+// Manages maze switching etc.
+// TODO: add postprocessing effects to glitch maze (see inGlitchMaze and glitchPercentRemaining)
 public class MazeSwitchController : MonoBehaviour, IPlayerControllerComponent {
     private PlayerController controller;
     private Player player;
@@ -15,6 +17,7 @@ public class MazeSwitchController : MonoBehaviour, IPlayerControllerComponent {
         if (activeMaze == ActiveMaze.None) {
             SetMazeActive(ActiveMaze.Default);
         }
+        // TODO: get (or check) reference to postprocessing effects here
     }
     public Maze defaultMaze;
     public Maze glitchMaze;
@@ -30,7 +33,19 @@ public class MazeSwitchController : MonoBehaviour, IPlayerControllerComponent {
     private float timeInThisMaze => Time.time - lastMazeSwitchStartTime;
     [Tooltip("seconds")] 
     public float glitchMazeTimeLimit = 10f;
+    
+    // remaining time for this glitch maze (assumes that inGlitchMaze is true)
     private float glitchMazeTimeRemaining => glitchMazeTimeLimit - timeInThisMaze;
+    
+    // percentage (actually [0, 1] normalized value) of the way through the glitch timer.
+    // for eg. postprocessing effects, use
+    //     0 => no effect
+    //     ...
+    //     1 => maximum effect
+    private float glitchPercentRemaining => glitchMazeTimeRemaining / glitchMazeTimeLimit;
+    
+    // true iff glitch maze is currently active
+    public bool inGlitchMaze => activeMaze == ActiveMaze.Glitch;
     
     private Maze GetMaze(ActiveMaze maze) {
         switch (maze) {
@@ -62,7 +77,7 @@ public class MazeSwitchController : MonoBehaviour, IPlayerControllerComponent {
         SetMazeActive(activeMaze == ActiveMaze.Default ? ActiveMaze.Glitch : ActiveMaze.Default);
     }
     void Update() {
-        if (activeMaze == ActiveMaze.Glitch) {
+        if (inGlitchMaze) {
             if (timeInThisMaze >= glitchMazeTimeLimit) {
                 player.KillPlayer();
             } else {
@@ -70,6 +85,9 @@ public class MazeSwitchController : MonoBehaviour, IPlayerControllerComponent {
                 var minutes = (int)(timeRemaining / 60);
                 var seconds = (int) (timeRemaining % 60);
                 countdownTimerText.text = "" + minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+
+                var glitchPercent = glitchPercentRemaining;
+                // TODO: implement postprocessing effects here
             }
         }
     }

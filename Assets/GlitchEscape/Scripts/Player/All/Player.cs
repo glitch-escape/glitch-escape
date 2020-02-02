@@ -43,7 +43,7 @@ public class Player : MonoBehaviour {
             transform.position = initPosition;
             transform.rotation = initRotation;
         }
-        Reset();
+        ResetStats();
     }
 
     private Vector3 initPosition;
@@ -53,6 +53,7 @@ public class Player : MonoBehaviour {
         input.Enable();
         initPosition = transform.position;
         initRotation = transform.rotation;
+        ResetStats();
     }
 
     public float maxStamina = 100f;
@@ -100,16 +101,7 @@ public class Player : MonoBehaviour {
     public float stamina {
         get { return m_stamina;  }
     }
-
-    private PlayerManager m_playerControls;
-    void Start() {
-        m_playerControls = GetComponent<PlayerManager>();
-        if (m_playerControls == null) {
-            Debug.LogWarning("player stats component is missing player controls component!");
-        }
-        Reset();
-    }
-    private void Reset() {
+    private void ResetStats() {
         m_health = maxHealth * startingHealthPercent;
         m_stamina = maxStamina * startingStaminaPercent;
         lastStaminaUseTime = Time.time - Mathf.Max(staminaRegenDelay, 0f);

@@ -2,6 +2,16 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+// Jump implementation
+// Currently:
+// - player can jump anywhere, has up to N jumps
+// - jumps replenish when player "touches" the ground (via raycast)
+// - attempted a few approaches to try to make jumps feel better; one approach (setting an explicit curve for the
+// player's jump arc, and then taking the approximate differential along it), did sort of work (and allowed a fine
+// degree of control), but was suboptimal and didn't trivially work for multiple jumps.
+// Current appraoch, ie. to use what are effectively gravity multipliers (and *specifically* different modifiers
+// on the way down / way up), seems to work well. Default values here have been set to ones that seem to work
+// reasonably well.
 public class PlayerJumpController : MonoBehaviour, IPlayerControllerComponent
 {
     private PlayerController controller;
@@ -13,19 +23,24 @@ public class PlayerJumpController : MonoBehaviour, IPlayerControllerComponent
         player.input.Controls.Jump.performed += OnJump;
     }
 
-    [Tooltip("jump height (meters)")]
-    public float jumpHeight = 10f;
-    public float fallAccelerationRate = 1.5f;
+    [Tooltip("jump height (meters). Inaccurate if gravity factors != 1")]
+    public float jumpHeight = 2f;
+    
+    [Tooltip("maximum jumps (2 = double jump, etc)")]
     public uint maxJumpCount = 2;
     public uint jumpCount = 0;
-
+    
     private float jumpStartTime = 0f;
     private bool  isJumping = false;
 
     public AnimationCurve jumpCurve;
-    public float jumpDuration;
-    public float downGravityFactor = 1.5f;
-    public float upGravityFactor = 1.5f;
+    public float jumpDuration = 0.64f;
+    
+    [Tooltip("factor we increase downwards gravity by")]
+    public float downGravityFactor = 2.2f;
+    
+    [Tooltip("factor we increase upwards gravity by")]
+    public float upGravityFactor = 0.8f;
 
     private float CalculateJumpHeight(float height) {
         return Mathf.Sqrt(Mathf.Abs(height * Physics.gravity.y * 2));
