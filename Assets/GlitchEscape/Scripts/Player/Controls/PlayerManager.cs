@@ -23,7 +23,7 @@ public class PlayerManager : MonoBehaviour
     // Functional Scripts:
     [System.NonSerialized] public SystemManager systemManager;
     [System.NonSerialized] public PlayerMovementController playerMovement;
-    [System.NonSerialized] public PlayerJump playerJump;
+    [System.NonSerialized] public PlayerJumpController playerJump;
     [System.NonSerialized] public PlayerInteractionController playerInteraction;
     [System.NonSerialized] public PlayerCameraController playerCamera;
 
@@ -33,7 +33,7 @@ public class PlayerManager : MonoBehaviour
         // Get Scripts
         systemManager = system.GetComponent<SystemManager>();
         playerMovement = GetComponent<PlayerMovementController>();
-        playerJump = GetComponent<PlayerJump>();
+        playerJump = GetComponent<PlayerJumpController>();
         playerInteraction = GetComponent<PlayerInteractionController>();
         playerCamera = GetComponent<PlayerCameraController>();
 
@@ -48,7 +48,7 @@ public class PlayerManager : MonoBehaviour
 
     void Update()
     {
-        playerJump.ApplyFallSpeed(fallSpeed);
+        // playerJump.ApplyFallSpeed(fallSpeed);
     }
 
     // Private:
