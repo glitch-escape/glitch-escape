@@ -21,7 +21,6 @@ public class PlayerDashController : MonoBehaviour, IPlayerControllerComponent
         input = player.input;
         input.Controls.Dodge.performed += context => {
             bool pressed = context.ReadValue<float>() > 0f;
-            Debug.Log("dodge pressed!" + pressed);
             dodgePressed = pressed;
         };
         defaultMaterial = player.transform.Find("Body").GetComponent<Renderer>().material;
