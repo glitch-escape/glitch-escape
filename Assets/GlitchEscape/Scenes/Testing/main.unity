@@ -314,6 +314,18 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1443772884}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &296263800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 296263799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8489b957158684fcfb67d00c71a24302, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &326645278
 GameObject:
   m_ObjectHideFlags: 0
@@ -1291,6 +1303,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1443772884}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1456718013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1456718011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8489b957158684fcfb67d00c71a24302, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1472306837
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1826,12 +1850,12 @@ PrefabInstance:
     - target: {fileID: 4480004948019582980, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.00000000428642
+      value: 0.000000004300031
       objectReference: {fileID: 0}
     - target: {fileID: 4480004948019582980, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 1.5927246e-10
+      value: -3.7714168e-10
       objectReference: {fileID: 0}
     - target: {fileID: 4480004948942281807, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
@@ -1982,6 +2006,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 189568405}
   camera: {fileID: 2108366782}
+  savePointLocation: {fileID: 0}
 --- !u!114 &2108366785
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2044,6 +2069,21 @@ MonoBehaviour:
   animateLength: 0.1
   dodgeScaleFactor: 15
   noiseTex: {fileID: 2800000, guid: 68305fbab3966024b86bf757345409f6, type: 3}
+--- !u!114 &2108366787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2108366783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c42e5bff5f99945f29214d0767500653, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaze: {fileID: 1456718013}
+  glitchMaze: {fileID: 296263800}
+  activeMaze: 0
 --- !u!1001 &2992111759593548827
 PrefabInstance:
   m_ObjectHideFlags: 0

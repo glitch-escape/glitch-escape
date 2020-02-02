@@ -24,7 +24,7 @@ public class PlayerManager : MonoBehaviour
     [System.NonSerialized] public SystemManager systemManager;
     [System.NonSerialized] public PlayerMovementController playerMovement;
     [System.NonSerialized] public PlayerJump playerJump;
-    [System.NonSerialized] public PlayerInteraction playerInteraction;
+    [System.NonSerialized] public PlayerInteractionController playerInteraction;
     [System.NonSerialized] public PlayerCameraController playerCamera;
 
     // MonoBehaviour:
@@ -34,7 +34,7 @@ public class PlayerManager : MonoBehaviour
         systemManager = system.GetComponent<SystemManager>();
         playerMovement = GetComponent<PlayerMovementController>();
         playerJump = GetComponent<PlayerJump>();
-        playerInteraction = GetComponent<PlayerInteraction>();
+        playerInteraction = GetComponent<PlayerInteractionController>();
         playerCamera = GetComponent<PlayerCameraController>();
 
         // Get Objects

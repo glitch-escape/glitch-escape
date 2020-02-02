@@ -93,12 +93,8 @@ public class PlayerStats : MonoBehaviour {
         m_health -= damage;
         lastTimeTookDamage = Time.time;
         if (m_health <= 0f) {
-            KillPlayer();
+            // KillPlayer();
         }
-    }
-    public void KillPlayer() {
-        Reset();
-        m_playerControls.playerInteraction.Respawn();
     }
     void Update() {
         if (Time.time > lastTimeTookDamage + healthRegenDelay && m_health < maxHealth) {

@@ -5,7 +5,7 @@ public class PlayerCameraController : MonoBehaviour, IPlayerControllerComponent 
 
     private PlayerController controller;
     private CinemachineFreeLook freeLookCam;
-    private Camera camera;
+    private new Camera camera;
     private Input input;
     public void SetupControllerComponent(PlayerController controller) {
         Debug.Log("Setting up PlayerCameraController sub-component");

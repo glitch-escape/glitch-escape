@@ -35,9 +35,25 @@ public class Player : MonoBehaviour {
     // input instance singleton
     public Input input => m_input ?? (m_input = new Input());
     private Input m_input;
+    
+    public void RespawnAt(Transform savePoint) {
+        if (savePoint) {
+            transform.position = savePoint.position;
+            transform.rotation = savePoint.rotation;
+        } else {
+            transform.position = initPosition;
+            transform.rotation = initRotation;
+        }
+        Reset();
+    }
+
+    private Vector3 initPosition;
+    private Quaternion initRotation;
 
     void Awake() {
         input.Enable();
+        initPosition = transform.position;
+        initRotation = transform.rotation;
     }
 
     public float maxStamina = 100f;
@@ -130,10 +146,7 @@ public class Player : MonoBehaviour {
             KillPlayer();
         }
     }
-    public void KillPlayer() {
-        Reset();
-        m_playerControls.playerInteraction.Respawn();
-    }
+    public void KillPlayer() { controller.RespawnPlayer(); }
     void Update() {
         if (Time.time > lastTimeTookDamage + healthRegenDelay && m_health < maxHealth) {
             m_health = Mathf.Clamp(m_health + healthRegenPerSec * Time.deltaTime, 0f, maxHealth);

@@ -23,7 +23,6 @@ public class HUDTimer : MonoBehaviour
             if (timeRemains <= 0)
             {
                 TimerReset();
-                hudManager.systemManager.playerControls.playerInteraction.Respawn();
             }
 
             float minRemains = Mathf.Floor(timeRemains / 60f);
