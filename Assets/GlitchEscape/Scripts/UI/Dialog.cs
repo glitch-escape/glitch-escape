@@ -1,43 +1,58 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 using TMPro;
 
 public class Dialog : MonoBehaviour
 {
+    public Transform floatTextArea;
     public TextMeshProUGUI dialogText;
+    public TextMeshProUGUI staticText;
+    public TextMeshProUGUI floatText;
     public string[] sentences;
     public float charSpeed = 0.03f;
-    public float sentSpeed = 3;
+    public float sentenceSpeed = 3;
 
-    // private bool showNextSentence;
-    // private int length;
-    private int index;
-
-    void Awake()
-    {
-        // showNextSentence = true;
-    }
+    private string text = "";
+    private int index = 0;
+    private int dialogType = 0;
 
     void Start()
     {
-        // length = sentences.Length;
         StartCoroutine(DisplayByChar());
     }
 
-    void update()
+    void Update()
     {
-        // for (int i = 0; i < length; i++)
-        // {
-        //     if (showNextSentence) { nextSentence(); };
-        // }
+        dialogText.text = "";
+        staticText.text = "";
+        floatText.text = "";
+        switch (dialogType)
+        {
+            case 0:
+                dialogText.text = text;
+                break;
+            case 1:
+                staticText.text = text;
+                break;
+            case 2:
+                Vector3 dialogPos = Camera.main.WorldToScreenPoint(floatTextArea.position);
+                floatText.transform.position = dialogPos;
+                floatText.text = text;
+                break;
+            default:
+                break;
+        }
     }
 
     IEnumerator DisplayByChar()
     {
         foreach (char letter in sentences[index].ToCharArray())
         {
-            dialogText.text += letter;
+            text += letter;
+            // Line break detection here(not implemented)
             yield return new WaitForSeconds(charSpeed);
         }
         StartCoroutine(DisplayBySent());
@@ -45,7 +60,7 @@ public class Dialog : MonoBehaviour
 
     IEnumerator DisplayBySent()
     {
-        yield return new WaitForSeconds(sentSpeed);
+        yield return new WaitForSeconds(sentenceSpeed);
         nextSentence();
     }
 
@@ -54,13 +69,18 @@ public class Dialog : MonoBehaviour
         if (index < sentences.Length - 1)
         {
             index++;
-            dialogText.text = "";
+            text = "";
             StartCoroutine(DisplayByChar());
         }
         else
         {
-            dialogText.text = "";
+            text = "";
         }
+    }
+
+    public void changeDialogType(int i)
+    {
+        dialogType = i;
     }
 
 }
