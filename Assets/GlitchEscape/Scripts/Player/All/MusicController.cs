@@ -15,6 +15,7 @@ public class MusicController : MonoBehaviour {
     public bool useDpadToControlTracks = true;
     public bool useKeyboardToControlTracks = true;
     private AudioSource source;
+    private bool isPaused = false;
     
     void Start() {
         source = GetComponent<AudioSource>();
@@ -30,11 +31,13 @@ public class MusicController : MonoBehaviour {
         if (useDpadToControlTracks && Gamepad.current != null) {
             var dpad = Gamepad.current.dpad;
             if (dpad.up.wasPressedThisFrame) {
-                if (source.isPlaying) {
-                    source.Stop();
-                } else {
-                    source.Play();
-                }
+                // if (!isPaused) {
+                //     source.Pause();
+                //     isPaused = true;
+                // } else {
+                //     source.UnPause();
+                //     isPaused = false;
+                // }
             } else if (dpad.left.wasPressedThisFrame) {
                 PlayNextTrack();
             } else if (dpad.right.wasPressedThisFrame) {
@@ -45,11 +48,13 @@ public class MusicController : MonoBehaviour {
         if (useKeyboardToControlTracks && Keyboard.current != null) {
             var kb = Keyboard.current;
             if (kb.pKey.wasPressedThisFrame) {
-                if (source.isPlaying) {
-                    source.Stop();
-                } else {
-                    source.Play();
-                }
+                // if (!isPaused) {
+                //     source.Pause();
+                //     isPaused = true;
+                // } else {
+                //     source.UnPause();
+                //     isPaused = false;
+                // }
             } else if (kb.leftBracketKey.wasPressedThisFrame) {
                 PlayNextTrack();
             } else if (kb.rightBracketKey.wasPressedThisFrame) {
@@ -59,6 +64,7 @@ public class MusicController : MonoBehaviour {
     }
     public void PlayTrack(int track) {
         if (track >= 0 && track < audioTracks.Length) {
+            isPaused = false;
             if (source.isPlaying) {
                 source.Stop();
             }
@@ -69,11 +75,11 @@ public class MusicController : MonoBehaviour {
         PlayTrack(currentTrackIndex);
     }
     public void PlayNextTrack() {
-        currentTrackIndex = (currentTrackIndex + 1) % audioTracks.Length;
+        currentTrackIndex = currentTrackIndex < audioTracks.Length ? currentTrackIndex + 1 : 0;
         PlayTrack(currentTrackIndex);
     }
     public void PlayPrevTrack() {
-        currentTrackIndex = (currentTrackIndex - 1) % audioTracks.Length;
+        currentTrackIndex = currentTrackIndex > 0 ? currentTrackIndex - 1 : audioTracks.Length - 1;
         PlayTrack(currentTrackIndex);
     }
 }

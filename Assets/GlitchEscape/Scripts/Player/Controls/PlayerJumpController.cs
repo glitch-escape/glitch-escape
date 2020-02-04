@@ -101,6 +101,6 @@ public class PlayerJumpController : MonoBehaviour, IPlayerControllerComponent
         }
     }
 
-    public bool CheckOnGround() => Physics.Raycast(rigidbody.position, Vector3.down, .5f);
+    public bool CheckOnGround() => Physics.Raycast(rigidbody.position, Vector3.down, .7f);
     
 }
