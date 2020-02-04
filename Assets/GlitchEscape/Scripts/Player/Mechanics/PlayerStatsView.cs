@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerStats))]
-public class PlayerStatsView : MonoBehaviour {
-    private PlayerStats playerStats;
+public class PlayerStatsView : MonoBehaviour, IPlayerControllerComponent {
+    private Player player;
     private Camera mainCamera;
     public GameObject healthBar;
     public GameObject staminaBar;
@@ -22,10 +21,10 @@ public class PlayerStatsView : MonoBehaviour {
     public bool useAbility = false;
 
     public float currentHealth = 0f;
-    
-    void Start() {
-        playerStats = GetComponent<PlayerStats>();
-        mainCamera = Camera.current;
+
+    public void SetupControllerComponent(PlayerController controller) {
+        player = controller.player;
+        mainCamera = controller.camera;
         foregroundHealthBar = Instantiate(healthBar, healthBar.transform.parent);
         foregroundStaminaBar = GameObject.Instantiate(staminaBar, staminaBar.transform.parent);
         healthBar.SetActive(false);
@@ -36,7 +35,6 @@ public class PlayerStatsView : MonoBehaviour {
         activeHealthBarMaterial = foregroundHealthBar.GetComponent<Renderer>().material;
         activeStaminaBarMaterial = foregroundStaminaBar.GetComponent<Renderer>().material;
     }
-
     private void UpdateHealthBar(GameObject target, GameObject initial, float value) {
         var scale = target.transform.localScale;
         var s0 = initial.transform.localScale;
@@ -48,25 +46,25 @@ public class PlayerStatsView : MonoBehaviour {
         target.transform.localPosition = pos;
     }
     void Update() {
-        float health = playerStats.health / playerStats.maxHealth;
-        float stamina = playerStats.stamina / playerStats.maxStamina;
+        float health = player.health / player.maxHealth;
+        float stamina = player.stamina / player.maxStamina;
 
         currentHealth = health;
         
         UpdateHealthBar(foregroundHealthBar, healthBar, health);
         UpdateHealthBar(foregroundStaminaBar, staminaBar, stamina);
 
-        activeHealthBarMaterial.color = Color.Lerp(baseHealthBarColor, healthFlashColor, playerStats.isHealthFlashing ? 1f : 0f);
+        activeHealthBarMaterial.color = Color.Lerp(baseHealthBarColor, healthFlashColor, player.isHealthFlashing ? 1f : 0f);
         activeStaminaBarMaterial.color =
-            Color.Lerp(baseStaminaBarColor, staminaFlashColor, playerStats.isStaminaFlashing ? 1f : 0f);
+            Color.Lerp(baseStaminaBarColor, staminaFlashColor, player.isStaminaFlashing ? 1f : 0f);
         
         if (hitPlayer) {
             hitPlayer = false; 
-            playerStats.TakeDamage(15f);
+            player.TakeDamage(15f);
         }
         if (useAbility) {
             useAbility = false;
-            playerStats.TryUseAbility(25f);
+            player.TryUseAbility(25f);
         }
     }
 }
