@@ -68,8 +68,15 @@ public class PlayerMovementController : MonoBehaviour, IPlayerControllerComponen
             Move(speed);
         }
     }
+
+    private bool wasRunningLastFrame = false;
     void FixedUpdate() {
-        playerAnimator.SetBool("isSprinting", hasMoveInput);
+        playerAnimator.SetBool("isRunning", hasMoveInput);
+        if (hasMoveInput != wasRunningLastFrame) {
+            playerAnimator.SetTrigger(hasMoveInput ? "startRunning" : "stopRunning");
+        }
+        wasRunningLastFrame = hasMoveInput;
+        
         if (!useAnimationDerivedMoveSpeed) {
             Move(moveSpeed);
         }

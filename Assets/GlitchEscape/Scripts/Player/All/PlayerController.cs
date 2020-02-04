@@ -42,6 +42,11 @@ public class PlayerController : MonoBehaviour {
     public void RespawnPlayer() {
         mazeSwitcher.SetMazeActive(MazeSwitchController.ActiveMaze.Default);
         player.RespawnAt(savePointLocation);
+
+        var animator = player.animator;
+        animator.SetBool("isRunning", false);
+        animator.SetBool("isDashing", false);
+        animator.SetBool("isJumping", false);
     }
     
     private bool isEnabled = false;

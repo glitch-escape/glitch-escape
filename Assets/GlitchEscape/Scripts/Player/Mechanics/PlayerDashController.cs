@@ -13,19 +13,22 @@ public class PlayerDashController : MonoBehaviour, IPlayerControllerComponent
     private PlayerController controller;
     private Player player;
     private Input input;
+    private Animator animator;
     private new Rigidbody rigidbody;
     public void SetupControllerComponent(PlayerController controller) {
         this.controller = controller;
         player = controller.player;
         rigidbody = player.rigidbody;
+        animator = player.animator;
         input = player.input;
         input.Controls.Dodge.performed += context => {
             bool pressed = context.ReadValue<float>() > 0f;
             dodgePressed = pressed;
         };
-        defaultMaterial = player.transform.Find("Body").GetComponent<Renderer>().material;
+        // defaultMaterial = player.transform.Find("Body").GetComponent<Renderer>().material;
         dodgeShader = Shader.Find("Custom/TeleportEffect");
         defaultShader = Shader.Find("Custom/Toon");
+        animator.SetBool("isDashing", false);
     }
     
     public float dashStaminaCost = 10f;
@@ -169,7 +172,11 @@ public class PlayerDashController : MonoBehaviour, IPlayerControllerComponent
         if (isDodging) {
             EndDodge();
         }
-        
+        if (!animator.GetBool("isDashing")) {
+            Debug.Log("starting dash animation");
+            animator.SetBool("isDashing", true);
+            animator.SetTrigger("startDashing");
+        }
         // begin dodge
         // Debug.Log("Start dodge!");
         BeginDodgeVfx();
@@ -184,15 +191,21 @@ public class PlayerDashController : MonoBehaviour, IPlayerControllerComponent
         dodgeStartTime = Time.time;
     }
     private void EndDodge() {
+        if (animator.GetBool("isDashing")) {
+            Debug.Log("ending dash animation");
+            animator.SetBool("isDashing", false);
+            animator.SetTrigger("stopDashing");
+        }
         if (isDodging) {
+
             // end dodge
             // Debug.Log("Stop dodge!");
             EndDodgeVfx();
             
             // reapply velocity, plus gravity over time spent dashing
             var elapsedTime = Time.time - dodgeStartTime;
-            Debug.Log("Applying additional velocity change after " + elapsedTime + " seconds: "
-                      + GRAVITY * elapsedTime);
+            // Debug.Log("Applying additional velocity change after " + elapsedTime + " seconds: "
+            //           + GRAVITY * elapsedTime);
             rigidbody.velocity = savedDodgeVelocity +
                                    Vector3.down * GRAVITY * elapsedTime;
             if (useKinematic) {
@@ -225,18 +238,18 @@ public class PlayerDashController : MonoBehaviour, IPlayerControllerComponent
         dodgeAirParticle.Emit(30);
         dodgeGroundParticle.transform.position = transform.position;
         dodgeGroundParticle.Emit(1);
-        defaultMaterial.shader = dodgeShader;
-        defaultMaterial.SetTexture("_Noise", noiseTex);
+        // defaultMaterial.shader = dodgeShader;
+        // defaultMaterial.SetTexture("_Noise", noiseTex);
         dodgeGroundParticle.transform.rotation = this.transform.rotation;
     }
     private void EndDodgeVfx() {
-        defaultMaterial.shader = defaultShader;
+        // defaultMaterial.shader = defaultShader;
         animateTime = 1.0f;
         dodgeHoldTime = 0f;
         dodgeGroundParticle.transform.rotation = this.transform.rotation;
     }
     private void UpdateDodgeVfx() {
-        defaultMaterial.SetFloat("_AlphaThreshold", animateTime);
+        // defaultMaterial.SetFloat("_AlphaThreshold", animateTime);
         dodgeHoldTime += Time.deltaTime;
         dodgeGroundParticle.transform.position = this.transform.position + (-transform.forward * dodgeHoldTime * dodgeScaleFactor);
         //rotate dodgeGroundParticle
