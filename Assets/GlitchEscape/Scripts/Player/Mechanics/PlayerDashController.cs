@@ -39,6 +39,7 @@ public class PlayerDashController : MonoBehaviour, IPlayerControllerComponent
         animator.SetBool("isDashing", false);
     }
     void SetGlitchShader() {
+        glitchMaterial.SetFloat("t0", Time.time);
         foreach (var renderer in renderers) {
             var materials = renderer.materials;
             for (int i = 0; i < renderer.materials.Length; ++i) {
