@@ -15,6 +15,10 @@ public class PlayerDashController : MonoBehaviour, IPlayerControllerComponent
     private Input input;
     private Animator animator;
     private new Rigidbody rigidbody;
+    private List<Material> defaultMaterials;
+    private Renderer[] renderers;
+    public Material glitchMaterial;
+    
     public void SetupControllerComponent(PlayerController controller) {
         this.controller = controller;
         player = controller.player;
@@ -25,16 +29,44 @@ public class PlayerDashController : MonoBehaviour, IPlayerControllerComponent
             bool pressed = context.ReadValue<float>() > 0f;
             dodgePressed = pressed;
         };
-        // defaultMaterial = player.transform.Find("Body").GetComponent<Renderer>().material;
-        dodgeShader = Shader.Find("Custom/TeleportEffect");
-        defaultShader = Shader.Find("Custom/Toon");
+        renderers = GetComponentsInChildren<Renderer>();
+        defaultMaterials = new List<Material>();
+        foreach (var renderer in renderers) {
+            foreach (var material in renderer.materials) {
+                defaultMaterials.Add(material);
+            }
+        }
         animator.SetBool("isDashing", false);
     }
-    
+    void SetGlitchShader() {
+        glitchMaterial.SetFloat("t0", Time.time);
+        foreach (var renderer in renderers) {
+            var materials = renderer.materials;
+            for (int i = 0; i < renderer.materials.Length; ++i) {
+                materials[i] = glitchMaterial;
+            }
+            renderer.materials = materials;
+        }
+    }
+    void ClearGlitchShader() {
+        int matIndex = 0;
+        foreach (var renderer in renderers) {
+            var materials = renderer.materials;
+            for (int i = 0; i < renderer.materials.Length; ++i) {
+                materials[i] = defaultMaterials[matIndex++];
+            }
+
+            renderer.materials = materials;
+        }
+    }
+
     public float dashStaminaCost = 10f;
     
     // is the dodge button currently pressed?
     private bool dodgePressed = false;
+
+    private bool isVfxActive = false;
+    public float dodgeVfxDuration = 1.2f;
 
     #region DodgeMechanics
     #region ScriptProperties
@@ -136,6 +168,10 @@ public class PlayerDashController : MonoBehaviour, IPlayerControllerComponent
         if (Time.time > dodgeStartTime + dodgeDuration) {
             EndDodge();
         }
+        if (Time.time > dodgeStartTime + dodgeVfxDuration) {
+            isVfxActive = false;
+            EndDodgeVfx();
+        }
         
         // move the player if they're currently dodging, and update vfx
         if (isDodging) {
@@ -148,6 +184,9 @@ public class PlayerDashController : MonoBehaviour, IPlayerControllerComponent
             } else {
                 rigidbody.velocity = player.transform.rotation * moveDir * dodgeSpeed;
             }
+            
+        }
+        if (isVfxActive) {
             // update vfx
             UpdateDodgeVfx();
         }
@@ -180,6 +219,7 @@ public class PlayerDashController : MonoBehaviour, IPlayerControllerComponent
         // begin dodge
         // Debug.Log("Start dodge!");
         BeginDodgeVfx();
+        isVfxActive = true;
         
         // save velocity
         savedDodgeVelocity = rigidbody.velocity;
@@ -200,7 +240,7 @@ public class PlayerDashController : MonoBehaviour, IPlayerControllerComponent
 
             // end dodge
             // Debug.Log("Stop dodge!");
-            EndDodgeVfx();
+            // EndDodgeVfx();
             
             // reapply velocity, plus gravity over time spent dashing
             var elapsedTime = Time.time - dodgeStartTime;
@@ -238,11 +278,13 @@ public class PlayerDashController : MonoBehaviour, IPlayerControllerComponent
         dodgeAirParticle.Emit(30);
         dodgeGroundParticle.transform.position = transform.position;
         dodgeGroundParticle.Emit(1);
+        SetGlitchShader();
         // defaultMaterial.shader = dodgeShader;
         // defaultMaterial.SetTexture("_Noise", noiseTex);
         dodgeGroundParticle.transform.rotation = this.transform.rotation;
     }
     private void EndDodgeVfx() {
+        ClearGlitchShader();
         // defaultMaterial.shader = defaultShader;
         animateTime = 1.0f;
         dodgeHoldTime = 0f;
