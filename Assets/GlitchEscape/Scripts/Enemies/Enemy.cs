@@ -27,8 +27,8 @@ public class Enemy : MonoBehaviour {
         curState = State.GUARD;
         m_Agent = GetComponent<NavMeshAgent>();
         origin = gameObject.transform.position;
-
-        if(patrolPoints.Length > 0) {
+Debug.Log(patrolPoints);
+        if(patrolPoints != null) {
             curState = State.PATROL;
             m_Agent.SetDestination(patrolPoints[curDest].position);
         }
