@@ -64,7 +64,6 @@ public class Dialog : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(targetNearBy);
         if (dialogRunning)
         {
             dialogPannel.gameObject.SetActive(false);
