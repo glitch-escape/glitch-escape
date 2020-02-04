@@ -16,10 +16,12 @@ public class PlayerJumpController : MonoBehaviour, IPlayerControllerComponent
 {
     private PlayerController controller;
     private new Rigidbody rigidbody;
+    private Animator animator;
     public void SetupControllerComponent(PlayerController controller) {
         this.controller = controller;
         var player = controller.player;
         rigidbody = player.rigidbody;
+        animator = player.animator;
         player.input.Controls.Jump.performed += OnJump;
     }
 
@@ -49,6 +51,13 @@ public class PlayerJumpController : MonoBehaviour, IPlayerControllerComponent
     void Update() {
         if (jumpCount > 0 && CheckOnGround()) {
             jumpCount = 0;
+            if (isJumping) {
+                isJumping = false;
+            }
+            if (animator.GetBool("isJumping")) {
+                animator.SetBool("isJumping", false); 
+                animator.SetTrigger("stopJumping");
+            }
         }
     }
     public void OnJump(InputAction.CallbackContext context) {
@@ -57,6 +66,8 @@ public class PlayerJumpController : MonoBehaviour, IPlayerControllerComponent
             var deltaV = Vector3.up * CalculateJumpHeight(jumpHeight);
             if (rigidbody.velocity.y <= 0) rigidbody.velocity = deltaV;
             else rigidbody.velocity += deltaV;
+            animator.SetBool("isJumping", true);
+            animator.SetTrigger("startJumping");
             isJumping = true;
             jumpStartTime = Time.time;
             // ApplyJumpStep();
