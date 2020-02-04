@@ -23,7 +23,7 @@ public class PlayerDashController : MonoBehaviour, IPlayerControllerComponent
             bool pressed = context.ReadValue<float>() > 0f;
             dodgePressed = pressed;
         };
-        defaultMaterial = player.transform.Find("Body").GetComponent<Renderer>().material;
+        // defaultMaterial = player.transform.Find("Body").GetComponent<Renderer>().material;
         dodgeShader = Shader.Find("Custom/TeleportEffect");
         defaultShader = Shader.Find("Custom/Toon");
     }
@@ -225,18 +225,18 @@ public class PlayerDashController : MonoBehaviour, IPlayerControllerComponent
         dodgeAirParticle.Emit(30);
         dodgeGroundParticle.transform.position = transform.position;
         dodgeGroundParticle.Emit(1);
-        defaultMaterial.shader = dodgeShader;
-        defaultMaterial.SetTexture("_Noise", noiseTex);
+        // defaultMaterial.shader = dodgeShader;
+        // defaultMaterial.SetTexture("_Noise", noiseTex);
         dodgeGroundParticle.transform.rotation = this.transform.rotation;
     }
     private void EndDodgeVfx() {
-        defaultMaterial.shader = defaultShader;
+        // defaultMaterial.shader = defaultShader;
         animateTime = 1.0f;
         dodgeHoldTime = 0f;
         dodgeGroundParticle.transform.rotation = this.transform.rotation;
     }
     private void UpdateDodgeVfx() {
-        defaultMaterial.SetFloat("_AlphaThreshold", animateTime);
+        // defaultMaterial.SetFloat("_AlphaThreshold", animateTime);
         dodgeHoldTime += Time.deltaTime;
         dodgeGroundParticle.transform.position = this.transform.position + (-transform.forward * dodgeHoldTime * dodgeScaleFactor);
         //rotate dodgeGroundParticle

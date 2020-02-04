@@ -5905,7 +5905,7 @@ ParticleSystem:
         m_RotationOrder: 4
     separateAxes: 0
   RotationModule:
-    enabled: 1
+    enabled: 0
     x:
       serializedVersion: 2
       minMaxState: 0
@@ -11367,6 +11367,7 @@ GameObject:
   - component: {fileID: 8918339876615520221}
   - component: {fileID: 1702069040316270786}
   - component: {fileID: 4687437238300326713}
+  - component: {fileID: 189568405}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -11454,11 +11455,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd0dadb06d4767849abaa9360fb2e7fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 0
-  turnSpeed: 0
+  moveSpeed: 6.22
+  turnSpeed: 12
   movementMode: 0
-  useAnimationDerivedMoveSpeed: 1
+  useAnimationDerivedMoveSpeed: 0
 --- !u!114 &4687437238300326713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8802028524927266407}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f18fe16274d1dbc4d9a40710d428237b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mazeSwitchCooldown: 0.2
+--- !u!114 &189568405
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -11467,10 +11481,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 8802028524927266407}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f18fe16274d1dbc4d9a40710d428237b, type: 3}
+  m_Script: {fileID: 11500000, guid: 4ace673fd4b944325bfbbda3467f4779, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mazeSwitchCooldown: 0.2
+  controller: {fileID: 0}
+  maxStamina: 100
+  maxHealth: 100
+  staminaRegenPerSec: 10
+  staminaRegenDelay: 0
+  healthRegenPerSec: 10
+  healthRegenDelay: 0
+  startingStaminaPercent: 1
+  startingHealthPercent: 1
+  lowStaminaFlashDuration: 0.5
+  lowStaminaFlashCount: 1
 --- !u!1 &8802040431441675437
 GameObject:
   m_ObjectHideFlags: 0

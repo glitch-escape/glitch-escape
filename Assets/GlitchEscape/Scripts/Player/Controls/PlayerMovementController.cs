@@ -69,7 +69,7 @@ public class PlayerMovementController : MonoBehaviour, IPlayerControllerComponen
         }
     }
     void FixedUpdate() {
-        playerAnimator.SetBool("isSprinting", hasMoveInput);
+        playerAnimator.SetBool("isWalking", hasMoveInput);
         if (!useAnimationDerivedMoveSpeed) {
             Move(moveSpeed);
         }
