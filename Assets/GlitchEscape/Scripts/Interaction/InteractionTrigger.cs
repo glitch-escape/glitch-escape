@@ -47,7 +47,6 @@ public class InteractionTrigger : MonoBehaviour {
 
     private void OnPlayerEnterInteractionRadius(Player player) {
         foreach (var handler in attachedInteractionHandlers) {
-            Debug.Log("Calling callback! "+handler);
             handler.OnPlayerEnterInteractionRadius(player);
         }
     }
@@ -68,11 +67,9 @@ public class InteractionTrigger : MonoBehaviour {
     /// Does not check for the existence of a Player tag.
     /// </summary>
     void OnTriggerEnter(Collider collider) {
-        Debug.Log("OnTriggerEnter! hasPlayer? "+(collider.GetComponentInParent<Player>() != null));
         if (interactionTriggerType != InteractionTriggerType.PhysicsTrigger) return;
         var player = collider.GetComponentInParent<Player>();
         if (player != null && (!playerInInteractionRadius || onEnableCalledBeforeLastTriggerInteraction)) {
-            Debug.Log("Calling callbacks...");
             activePlayerInInteractionRadius = player;
             player.interactListeners += OnPlayerInteractPressed;
             OnPlayerEnterInteractionRadius(player);
