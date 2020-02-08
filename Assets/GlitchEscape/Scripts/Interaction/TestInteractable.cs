@@ -7,7 +7,7 @@ using UnityEngine;
 /// <summary>
 /// Example script to show how to implement player-interactive objects
 /// </summary>
-[RequireComponent(typeof(Interactable))]
+[RequireComponent(typeof(InteractionTrigger))]
 public class TestInteractable : MonoBehaviour, IPlayerInteractable {
     public TMP_Text displayText;
     public string interactMessage = "Press <interact> to interact";

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider))]
-public class Interactable : MonoBehaviour {
+public class InteractionTrigger : MonoBehaviour {
     /// <summary>
     /// Reference to the active / detected player object, if they're in interaction radius
     /// </summary>
