@@ -15,6 +15,10 @@
 .idea/**/workspace.xml
 .idea
 
+# ignore plain meta files (directories), but not metafiles with extensions (files)
+*.meta
+!**/*.*.meta
+
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta
 
