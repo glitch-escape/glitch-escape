@@ -8,9 +8,19 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour {
     
     // Getters / accessors
-    [HideInInspector]
-    public PlayerController controller; // set by controller.Awake()
     
+    /// <summary>
+    /// Reference to this player's PlayerController.
+    /// Use this to call methods on the player controller.
+    /// This is not set by this script, but by PlayerController.Awake().
+    /// Note that a Player object must:
+    /// - have a player script on the player object
+    /// - have a PlayerController script on that object, or, ideally, on a parent empty object.
+    /// </summary>
+    [HideInInspector]
+    public PlayerController controller;
+
+    #region PlayerProperties
     public new Rigidbody rigidbody {
         get {
             if (m_rigidbody) return m_rigidbody;
@@ -35,6 +45,46 @@ public class Player : MonoBehaviour {
     public Input input => m_input ?? (m_input = new Input());
     private Input m_input;
     
+    #endregion PlayerProperties
+    #region UnityUpdateAndAwake
+    void Awake() {
+        input.Enable();
+        SetInitialSpawnLocation(transform.position, transform.rotation);
+        ResetStats();
+    }
+    #endregion
+
+    #region PlayerInteractionCallbacks
+    public delegate void PlayerCallback (Player player);
+    
+    /// <summary>
+    /// Used by PlayerInteractionController
+    /// </summary>
+    public PlayerCallback interactListeners;
+    #endregion
+    
+    #region PlayerRespawnAtImplementation
+    
+    // save initial position + rotation for player respawns
+    private Vector3 initPosition;
+    private Quaternion initRotation;
+
+    /// <summary>
+    /// Sets initial spawn location that RespawnAt() uses.
+    /// Shouldn't need to call this externally, but it's here if / as needed.
+    /// </summary>
+    /// <param name="pos"></param>
+    /// <param name="rot"></param>
+    public void SetInitialSpawnLocation(Vector3 pos, Quaternion rot) {
+        initPosition = pos;
+        initRotation = rot;
+    }
+
+    /// <summary>
+    /// Respawn player at a specific transform location, or their starting location if the passed in transform is null.
+    /// Used by PlayerController.RespawnPlayer(), which handles tracking spawn locations.
+    /// </summary>
+    /// <param name="savePoint">Respawn location. If null, player respawns at their starting position / rotation</param>
     public void RespawnAt(Transform savePoint) {
         if (savePoint) {
             transform.position = savePoint.position;
@@ -45,16 +95,13 @@ public class Player : MonoBehaviour {
         }
         ResetStats();
     }
-
-    private Vector3 initPosition;
-    private Quaternion initRotation;
-
-    void Awake() {
-        input.Enable();
-        initPosition = transform.position;
-        initRotation = transform.rotation;
-        ResetStats();
-    }
+    
+    /// <summary>
+    /// Respawns the player at their last registered location (calls PlayerController.RespawnPlayer())
+    /// </summary>
+    public void Respawn () { controller.RespawnPlayer(); }
+    #endregion
+    #region HealthDamageAndStaminaImplementation
 
     public float maxStamina = 100f;
     public float maxHealth = 100f;
@@ -152,4 +199,5 @@ public class Player : MonoBehaviour {
     // private void FlashLowHealth () {
     //     timeUntilStopFlashingHealth = Time.time + lowHealthFlashDuration;
     // }
+    #endregion
 }
