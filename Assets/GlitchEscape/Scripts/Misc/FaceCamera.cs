@@ -11,10 +11,22 @@ public class FaceCamera : MonoBehaviour {
         FullAxes
     };
     public RotationMode rotationMode = RotationMode.FullAxes;
-    private Camera camera;
-    void Start() {
-        if (camera == null) { 
-            camera = Camera.main;
+    private Camera _camera;
+
+    // contrived fix to get the main camera, b/c Camera.current + Camera.main
+    // MAY BE NULL IN START / AWAKE?!!!!!!
+    Camera camera {
+        get {
+            if (_camera == null) {
+                _camera = 
+                    Camera.main ?? 
+                    Camera.current ??
+                    GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+                if (_camera == null) {
+                    Debug.LogError("COULD NOT LOCATE MAIN CAMERA?????");
+                }
+            }
+            return _camera;
         }
     }
     void TurnToFaceCamera() {
