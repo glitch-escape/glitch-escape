@@ -32,7 +32,8 @@ public class Enemy : MonoBehaviour, IEnemyControllerComponent {
     private Animator m_animator;
     #endregion
 
-    private enum State { GUARD, PATROL, WANDER, CHASE, RETURN, ATTACK }
+    private enum State { GUARD, PATROL, WANDER, CHASE, RETURN,
+                         STRIKE, CHARGE, RETREAT, SHOOT }
     private State curState;
 
     public Transform[] patrolPoints;
@@ -106,7 +107,10 @@ public class Enemy : MonoBehaviour, IEnemyControllerComponent {
             case State.WANDER:  Wander();   break;
             case State.CHASE:   Chase();    break;
             case State.RETURN:  Return();   break;
-            case State.ATTACK:  Attack();   break;
+            case State.STRIKE:  Strike();   break;
+            case State.CHARGE:  Charge();   break;
+            case State.RETREAT: Retreat();  break;
+            case State.SHOOT:   Shoot();    break;
             default:                        break;
         }
     }
@@ -176,11 +180,7 @@ public class Enemy : MonoBehaviour, IEnemyControllerComponent {
 
         float playerDist = Vector3.Distance(player.transform.position, transform.position);
         if(curAtk != null && curAtk.distance >= playerDist) {
-            curState = State.ATTACK;
-            if (!curAtk.gameObject.activeSelf) {
-                curAtk.gameObject.SetActive(true);
-            }
-            curAtk.StartAttack();
+            SetupAttack();
         }
     }
 
@@ -228,11 +228,81 @@ public class Enemy : MonoBehaviour, IEnemyControllerComponent {
     }
 
     // Chase player once the attack is over
-    private void Attack() {
+    private void Strike() {
         SetColor(ATTACK_COLOR);
         if(!curAtk.GetActive()) {
+            curAtk.gameObject.SetActive(false);
             curState = State.CHASE;
         }
+    }
+
+    #region Charge/Retreat
+    private void Charge() {
+        if (m_agent.remainingDistance <= ptLeniency) {
+            curState = State.RETREAT;
+
+            // Set retreat destination
+            NavMeshHit hit;
+            Vector3 target = player.transform.position - transform.position;
+            target = transform.position - (curAtk.GetRetreatDist() * target.normalized);
+            if (m_agent.Raycast(target, out hit)) {
+                m_agent.SetDestination(hit.position);
+            }
+            else {
+                m_agent.SetDestination(target);
+            }
+        }
+    }
+
+    // Note: works well only on straight paths. Need to improve how we find the
+    // location of the retreat
+    private void Retreat() {
+        if (m_agent.remainingDistance <= ptLeniency) {
+            curAtk.gameObject.SetActive(false);
+            curState = State.CHASE;
+        }
+    }
+    #endregion
+
+    private void Shoot() {
+        Vector3 dir = player.transform.position - transform.position;
+        if (curAtk.ShootBullets(dir, transform.position)) {
+            curAtk.gameObject.SetActive(false);
+            curState = State.CHASE;
+        }
+    }
+
+    private void SetupAttack() {
+        if (!curAtk.gameObject.activeSelf) {
+            curAtk.gameObject.SetActive(true);
+        }
+
+        // Start the attack based on its type
+        if (curAtk.IsStrike()) {
+            curState = State.STRIKE;
+            curAtk.StartAttack();
+        }
+        else if (curAtk.IsCharge()) {
+            curState = State.CHARGE;
+            curAtk.StartAttack();
+
+            // Set charge destination
+            NavMeshHit hit;
+            Vector3 target = player.transform.position - transform.position;
+            target = transform.position + (curAtk.GetChargeDist() * target.normalized);
+            if (m_agent.Raycast(target, out hit)) {
+                m_agent.SetDestination(hit.position);
+            }
+            else {
+                m_agent.SetDestination(target);
+            }
+        }
+        else if (curAtk.IsBullet()) {
+            // Stop moving and start shooting
+            m_agent.SetDestination(transform.position);
+            curState = State.SHOOT;
+        }
+
     }
 
 }
