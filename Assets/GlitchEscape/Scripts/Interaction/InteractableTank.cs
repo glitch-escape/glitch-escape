@@ -17,14 +17,14 @@ public class InteractableTank : MonoBehaviour, IPlayerInteractable
 
     private FloatingTextController floatingText;
     private InteractablePolysphere interactablePolysphere;
-    private ObjectiveCounter objectiveCounter;
+    private ObjectiveController objectiveController;
     private InteractablePortal interactablePortal;
     private Color color = Color.grey;
     private const int MAX_TANK = 6;
 
     void Awake()
     {
-        objectiveCounter = ObjectiveCounter.instance;
+        objectiveController = ObjectiveController.instance;
         interactablePortal = InteractablePortal.instance;
 
         // initialize and error check
@@ -79,6 +79,7 @@ public class InteractableTank : MonoBehaviour, IPlayerInteractable
         renderer.materials[0].SetColor("_EmissionColor", color);
         renderer = assignedKey.GetComponent<Renderer>();
         renderer.material.SetColor("_BaseColor", color);
+        interactablePolysphere.color = this.color;
     }
 
     public void OnInteract(Player player)
@@ -88,8 +89,8 @@ public class InteractableTank : MonoBehaviour, IPlayerInteractable
         {
             playerInTank.SetActive(false);
             floatingText.DisableText(floatTextArea);
-            objectiveCounter.CountUp();
-            if (objectiveCounter.objectiveCounter >= MAX_TANK)
+            objectiveController.CountUp();
+            if (objectiveController.objectiveCounter >= MAX_TANK)
             {
                 interactablePortal.OpenPortal();
             }

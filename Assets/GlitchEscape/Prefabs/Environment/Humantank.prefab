@@ -104,6 +104,7 @@ GameObject:
   - component: {fileID: 4084319799728546045}
   - component: {fileID: 5041055792235879115}
   - component: {fileID: 1642095204941882930}
+  - component: {fileID: 3979366717858628635}
   m_Layer: 0
   m_Name: Humantank
   m_TagString: Untagged
@@ -176,6 +177,20 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!136 &3979366717858628635
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1077823688784270062}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.078902856
+  m_Height: 0.3192057
+  m_Direction: 1
+  m_Center: {x: -0.000055134296, y: 0.08838282, z: -0.000000011175871}
 --- !u!1 &2113103927118000687
 GameObject:
   m_ObjectHideFlags: 0
@@ -439,9 +454,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e1178e9897c9b542930af23bd98abca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  assignedKey: {fileID: 0}
   playerInTank: {fileID: 3424189200679815514}
   floatTextArea: {fileID: 325022327971362652}
-  floatingText: {fileID: 0}
+  objective: 0
   interactMessage: '[Extract]'
 --- !u!1 &6913526292688088397
 GameObject:
