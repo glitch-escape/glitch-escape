@@ -9,8 +9,12 @@ public class InteractableTank : MonoBehaviour, IPlayerInteractable
 {
     public GameObject playerInTank;
     public Transform floatTextArea;
-    public FloatingText floatingText;
+    private FloatingTextController floatingText;
     public string interactMessage = "[Extract]";
+
+    void Awake() {
+        floatingText = FloatingTextController.instance;
+    }
 
     public void OnInteract(Player player)
     {

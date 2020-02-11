@@ -5,18 +5,31 @@ using UnityEngine.UI;
 
 using TMPro;
 
-public class FloatingText : MonoBehaviour
+public class FloatingTextController : MonoBehaviour
 {
+    private static FloatingTextController _instance = null;
+    public static FloatingTextController instance
+    {
+        get { return _instance; }
+    }
+
     private TextMeshProUGUI floatText;
-    private GameObject floatPannel;
+    private GameObject floatPanel;
     private Transform floatTextArea;
 
     void Awake()
     {
+        if (_instance == null)
+        {
+            _instance = this;
+            if (_instance == null)
+                Debug.LogError("No FloatingTextController instance in this scene!");
+        }
+
         // floatText = this.GetComponents<TextMeshProUGUI>();
         floatText = gameObject.GetComponent<TextMeshProUGUI>();
-        floatPannel = this.transform.parent.gameObject;
-        floatPannel.SetActive(false);
+        floatPanel = this.transform.parent.gameObject;
+        floatPanel.SetActive(false);
         floatTextArea = null;
     }
 
@@ -24,7 +37,7 @@ public class FloatingText : MonoBehaviour
     {
         if (floatTextArea != null)
         {
-            floatPannel.transform.position = Camera.main.WorldToScreenPoint(floatTextArea.position);
+            floatPanel.transform.position = Camera.main.WorldToScreenPoint(floatTextArea.position);
         }
     }
 
@@ -32,7 +45,7 @@ public class FloatingText : MonoBehaviour
     {
         floatText.text = text;
         floatTextArea = targetTransform;
-        floatPannel.SetActive(true);
+        floatPanel.SetActive(true);
     }
 
     public void DisableText(Transform targetTransform)
@@ -40,7 +53,7 @@ public class FloatingText : MonoBehaviour
         if (floatTextArea == targetTransform)
         {
             floatTextArea = null;
-            floatPannel.SetActive(false);
+            floatPanel.SetActive(false);
         }
     }
 }
