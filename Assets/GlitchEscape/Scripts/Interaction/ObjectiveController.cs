@@ -24,7 +24,10 @@ public class ObjectiveController : MonoBehaviour
     }
 
     public bool multiPickUp = false;
-    public GameObject keyIcon;
+    public GameObject key;
+
+    private List<Polysphere> keyColors = new List<Polysphere>();
+    private GameObject newKey;
 
     private int _objectiveCounter = 0;
     public int objectiveCounter => _objectiveCounter;
@@ -36,13 +39,19 @@ public class ObjectiveController : MonoBehaviour
     void Awake()
     {
         objectiveText = gameObject.GetComponent<TextMeshProUGUI>();
-        keyIcon.SetActive(false);
+
+        keyColors.Add(new Polysphere(Color.grey, false, null));
+        keyColors.Add(new Polysphere(Color.red, false, null));
+        keyColors.Add(new Polysphere(Color.yellow, false, null));
+        keyColors.Add(new Polysphere(Color.green, false, null));
+        keyColors.Add(new Polysphere(Color.blue, false, null));
+        keyColors.Add(new Polysphere(Color.cyan, false, null));
+        keyColors.Add(new Polysphere(Color.magenta, false, null));
     }
 
     public void CountUp()
     {
         _keyInHand = false;
-        keyIcon.SetActive(false);
         _objectiveCounter++;
         // update HUD display
         objectiveText.text = _objectiveCounter.ToString();
@@ -53,9 +62,32 @@ public class ObjectiveController : MonoBehaviour
         _keyInHand = true;
     }
 
-    public void ShowKey(Color newColor)
+    public void UpdateKey(Color inputColor, bool setInHand)
     {
-        keyIcon.SetActive(true);
-        keyIcon.GetComponent<Image>().color = newColor;
+        foreach (var keyColor in keyColors)
+        {
+            // update each cloned ui object's bool with input bool
+            if (keyColor.objectiveColor == inputColor) { keyColor.inHand = setInHand; }
+        }
+        ShowKey();
+    }
+
+    // rerendering key ui
+    public void ShowKey()
+    {
+        var pos = key.transform.position;
+
+        foreach (var keyColor in keyColors)
+        {
+            Destroy(keyColor.keyObject);
+            if (keyColor.inHand)
+            {
+                newKey = Instantiate(key, pos, Quaternion.identity) as GameObject;
+                pos.x += 30f;
+                newKey.GetComponent<Image>().color = keyColor.objectiveColor;
+                keyColor.keyObject = newKey;
+                newKey.transform.SetParent(gameObject.transform);
+            }
+        }
     }
 }

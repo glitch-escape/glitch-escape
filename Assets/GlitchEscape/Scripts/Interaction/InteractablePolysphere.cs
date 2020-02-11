@@ -32,8 +32,7 @@ public class InteractablePolysphere : MonoBehaviour, IPlayerInteractable
             this.transform.parent.gameObject.SetActive(false);
             floatingText.DisableText(floatTextArea);
             _pickedUp = true;
-            Debug.Log(_color);
-            objectiveController.ShowKey(_color);
+            objectiveController.UpdateKey(_color, true);
         }
 
     }

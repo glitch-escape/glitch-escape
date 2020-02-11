@@ -90,6 +90,7 @@ public class InteractableTank : MonoBehaviour, IPlayerInteractable
             playerInTank.SetActive(false);
             floatingText.DisableText(floatTextArea);
             objectiveController.CountUp();
+            objectiveController.UpdateKey(this.color, false);
             if (objectiveController.objectiveCounter >= MAX_TANK)
             {
                 interactablePortal.OpenPortal();
