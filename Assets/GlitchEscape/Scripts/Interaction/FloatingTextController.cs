@@ -7,6 +7,7 @@ using TMPro;
 
 public class FloatingTextController : MonoBehaviour
 {
+    // singleton
     private static FloatingTextController _instance = null;
     public static FloatingTextController instance
     {
@@ -52,12 +53,13 @@ public class FloatingTextController : MonoBehaviour
     public void DisableText(Transform targetTransform)
     {
         // only disable if there is the last in-range interactable item.
-        if (isCurrentTarget(targetTransform))
+        if (IsCurrentTarget(targetTransform))
         {
             floatTextArea = null;
             floatPanel.SetActive(false);
         }
     }
 
-    public bool isCurrentTarget(Transform targetTransform) => floatTextArea == targetTransform;
+    // check if player's current target is the one stored
+    public bool IsCurrentTarget(Transform targetTransform) => floatTextArea == targetTransform;
 }

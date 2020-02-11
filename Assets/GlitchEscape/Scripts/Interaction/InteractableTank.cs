@@ -17,10 +17,16 @@ public class InteractableTank : MonoBehaviour, IPlayerInteractable
 
     private FloatingTextController floatingText;
     private InteractablePolysphere interactablePolysphere;
+    private ObjectiveCounter objectiveCounter;
+    private InteractablePortal interactablePortal;
     private Color color = Color.grey;
+    private const int MAX_TANK = 6;
 
     void Awake()
     {
+        objectiveCounter = ObjectiveCounter.instance;
+        interactablePortal = InteractablePortal.instance;
+
         // initialize and error check
         floatingText = FloatingTextController.instance;
         interactablePolysphere = assignedKey.GetComponentInChildren<InteractablePolysphere>();
@@ -28,7 +34,20 @@ public class InteractableTank : MonoBehaviour, IPlayerInteractable
         {
             Debug.LogError("Missing objective color on: " + this.transform.parent.name);
         }
-
+        InteractableTank[] interactableTanks = FindObjectsOfType(typeof(InteractableTank)) as InteractableTank[];
+        // Debug.Log("Found " + interactableTanks.Length + " instances with this script attached");
+        int counter = 0;
+        foreach (InteractableTank interactableTank in interactableTanks)
+        {
+            if (interactableTank.objective == this.objective)
+            {
+                counter++;
+            }
+            if (counter > 1)
+            {
+                Debug.LogError("Duplicated color on: " + interactableTank.transform.parent.name);
+            }
+        }
         // set color corresponding to polysphere
         switch (objective)
         {
@@ -56,27 +75,30 @@ public class InteractableTank : MonoBehaviour, IPlayerInteractable
             default:
                 break;
         }
-        Renderer rend = this.transform.parent.GetComponent<Renderer>();
-        rend.material.shader = Shader.Find("_Color");
-        rend.material.SetColor("_Color", color);
-        Debug.Log(this.transform.parent.name + " is " + color);
-        rend = assignedKey.GetComponent<Renderer>();
-        rend.material.shader = Shader.Find("_Color");
-        rend.material.SetColor("_Color", color);
-
+        Renderer renderer = this.transform.parent.GetComponent<Renderer>();
+        renderer.materials[0].SetColor("_EmissionColor", color);
+        renderer = assignedKey.GetComponent<Renderer>();
+        renderer.material.SetColor("_BaseColor", color);
     }
 
     public void OnInteract(Player player)
     {
-        if (playerInTank.activeInHierarchy && interactablePolysphere.pickedUp && floatingText.isCurrentTarget(floatTextArea))
+        // only apply interact when not yet picked up and is the last approached object.
+        if (playerInTank.activeInHierarchy && interactablePolysphere.pickedUp && floatingText.IsCurrentTarget(floatTextArea))
         {
             playerInTank.SetActive(false);
             floatingText.DisableText(floatTextArea);
+            objectiveCounter.CountUp();
+            if (objectiveCounter.objectiveCounter >= MAX_TANK)
+            {
+                interactablePortal.OpenPortal();
+            }
         }
     }
 
     public void OnPlayerEnterInteractionRadius(Player player)
     {
+        // only apply enter interact when not yet picked up.
         if (playerInTank.activeInHierarchy && interactablePolysphere.pickedUp)
         {
             floatingText.EnableText(floatTextArea, interactMessage);

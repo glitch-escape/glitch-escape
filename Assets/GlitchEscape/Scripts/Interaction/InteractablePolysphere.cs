@@ -13,13 +13,8 @@ public class InteractablePolysphere : MonoBehaviour, IPlayerInteractable
     private InteractableTank interactableTank;
 
     private bool _pickedUp = false;
-    public bool pickedUp
-    {
-        get
-        {
-            return _pickedUp;
-        }
-    }
+    public bool pickedUp => _pickedUp;
+
     void Awake()
     {
         floatingText = FloatingTextController.instance;
