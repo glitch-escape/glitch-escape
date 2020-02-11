@@ -10,7 +10,16 @@ public class FloatingTextController : MonoBehaviour
     private static FloatingTextController _instance = null;
     public static FloatingTextController instance
     {
-        get { return _instance; }
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = GameObject.FindObjectOfType<FloatingTextController>();
+                if (_instance == null)
+                    Debug.LogError("No FloatingTextController instance in this scene!");
+            }
+            return _instance;
+        }
     }
 
     private TextMeshProUGUI floatText;
@@ -19,14 +28,6 @@ public class FloatingTextController : MonoBehaviour
 
     void Awake()
     {
-        if (_instance == null)
-        {
-            _instance = this;
-            if (_instance == null)
-                Debug.LogError("No FloatingTextController instance in this scene!");
-        }
-
-        // floatText = this.GetComponents<TextMeshProUGUI>();
         floatText = gameObject.GetComponent<TextMeshProUGUI>();
         floatPanel = this.transform.parent.gameObject;
         floatPanel.SetActive(false);
@@ -50,10 +51,13 @@ public class FloatingTextController : MonoBehaviour
 
     public void DisableText(Transform targetTransform)
     {
-        if (floatTextArea == targetTransform)
+        // only disable if there is the last in-range interactable item.
+        if (isCurrentTarget(targetTransform))
         {
             floatTextArea = null;
             floatPanel.SetActive(false);
         }
     }
+
+    public bool isCurrentTarget(Transform targetTransform) => floatTextArea == targetTransform;
 }
