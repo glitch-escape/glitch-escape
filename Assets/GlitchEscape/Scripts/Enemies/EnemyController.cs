@@ -8,15 +8,22 @@ public interface IEnemyControllerComponent {
     void SetupControllerComponent(EnemyController controller);
 }
 
-public interface IEnemyBehavior {
+public interface IEnemyBehavior : IEnemyControllerComponent {
     
 }
 public interface IEnemyIdleBehavior : IEnemyBehavior {}
 public interface IEnemyChaseBehavior : IEnemyBehavior {}
 public interface IEnemyAttackBehavior : IEnemyBehavior {}
 
-public interface IEnemySightRadius {
-    bool CanSeePlayer(Enemy agent, Player player);
+public interface IEnemyObjectiveMarker {}
+
+public interface IEnemyVisionController : IEnemyControllerComponent {
+    bool CanSeePlayer();
+    bool HasLastKnownPlayerPosition(out Vector3 lastPosition);
+    void SetVisionDistanceFactor(float factor);
+    void DebugShowDetectionRadius(bool enabled);
+    List<IEnemyObjectiveMarker> GetKnownObjectiveMarkers();
+    void ClearKnownObjectiveMarkers();
 }
 
 /// <summary>
@@ -69,12 +76,16 @@ public class EnemyController : MonoBehaviour {
     public Enemy enemy;
     public Player player;
 
+    public void OnPlayerDetected(Player player) { }
+    public void OnPlayerLost(Player player) { }
+    public void OnObjectiveDetected(IEnemyObjectiveMarker objective) { }
+    
     private void Awake() {
         // Get all references
         if (!enemy) { Debug.LogError("EnemyController: Enemy reference missing!"); }
         if (!player) { player = GameObject.FindObjectOfType<Player>(); }
 
-        // Setup enemy's controller reference
+        // Setup enemy's controller references
         enemy.controller = this;
         SetupSubControllers(enemy.GetComponents<IEnemyControllerComponent>());
         SetupSubControllers(GetComponents<IEnemyControllerComponent>());
