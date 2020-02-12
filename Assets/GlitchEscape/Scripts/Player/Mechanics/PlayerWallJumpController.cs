@@ -27,5 +27,9 @@ public class PlayerWallJumpController : MonoBehaviour
         
     }
 
+    public bool CheckOnGround() => Physics.Raycast(rigidbody.position, Vector3.down, .7f);
+
+
+
     #endregion
 }

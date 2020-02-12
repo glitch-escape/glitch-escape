@@ -91,8 +91,11 @@ public class PlayerMovementController : MonoBehaviour, IPlayerControllerComponen
                     turnSpeed * Time.deltaTime, 
                     0f);
                 var playerRotation = Quaternion.LookRotation(desiredForward);
-                
-                playerRigidbody.MovePosition(playerRigidbody.position + cameraDir * speed * Time.deltaTime);
+
+                //playerRigidbody.MovePosition(playerRigidbody.position + cameraDir * speed * Time.deltaTime);
+                Vector3 tempVelocity = playerRigidbody.velocity;
+                tempVelocity = cameraDir * speed * Time.deltaTime * 30;
+                playerRigidbody.velocity = new Vector3(tempVelocity.x, playerRigidbody.velocity.y, tempVelocity.z);
                 playerRigidbody.MoveRotation(playerRotation);
             } break;
             case PlayerMovementMode.Strafing: {
