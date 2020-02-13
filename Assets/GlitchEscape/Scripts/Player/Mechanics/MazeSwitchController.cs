@@ -8,7 +8,19 @@ using UnityEngine.UI;
 public class MazeSwitchController : MonoBehaviour, IPlayerControllerComponent {
     private PlayerController controller;
     private Player player;
+
+    private static MazeSwitchController _instance;
+    public static MazeSwitchController instance {
+        get {
+            if (_instance == null) {
+                Debug.LogError("No MazeSwitchController in this level!");
+            }
+            return _instance;
+        }
+    }
+    
     public void SetupControllerComponent(PlayerController controller) {
+        _instance = this;
         this.controller = controller;
         player = controller.player;
         if (!defaultMaze) { Debug.LogError("MazeSwitchController: default Maze missing!"); }
