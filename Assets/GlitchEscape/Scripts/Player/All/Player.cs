@@ -68,6 +68,7 @@ public class Player : MonoBehaviour {
     // save initial position + rotation for player respawns
     private Vector3 initPosition;
     private Quaternion initRotation;
+    public float playerSpawnHeight = 1f;
 
     /// <summary>
     /// Sets initial spawn location that RespawnAt() uses.
@@ -87,8 +88,8 @@ public class Player : MonoBehaviour {
     /// <param name="savePoint">Respawn location. If null, player respawns at their starting position / rotation</param>
     public void RespawnAt(Transform savePoint) {
         if (savePoint) {
-            transform.position = savePoint.position;
-            transform.rotation = savePoint.rotation;
+            transform.position = savePoint.position + Vector3.up * playerSpawnHeight;
+            transform.rotation = initRotation;
         } else {
             transform.position = initPosition;
             transform.rotation = initRotation;

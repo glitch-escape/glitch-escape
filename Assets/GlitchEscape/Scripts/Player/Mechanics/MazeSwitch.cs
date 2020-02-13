@@ -41,6 +41,7 @@ public class MazeSwitch : MonoBehaviour, IPlayerInteractable {
     }
 
     public void OnInteract(Player player) {
+        player.controller.SetSavePoint(transform);
         MazeSwitchController.instance.TriggerMazeSwitch();
     }
 
