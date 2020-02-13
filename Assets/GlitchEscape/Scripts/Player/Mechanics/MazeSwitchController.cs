@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.UI;
+using Debug = UnityEngine.Debug;
 
 // Manages maze switching etc.
 // TODO: add postprocessing effects to glitch maze (see inGlitchMaze and glitchPercentRemaining)
@@ -88,6 +90,23 @@ public class MazeSwitchController : MonoBehaviour, IPlayerControllerComponent {
     public void SwitchMazes() {
         SetMazeActive(activeMaze == ActiveMaze.Default ? ActiveMaze.Glitch : ActiveMaze.Default);
     }
+
+    private float lastMazeSwitchTime = -10f;
+    [Range(0f, 1f)] public float mazeSwitchCooldown = 0.2f;
+
+    /// <summary>
+    /// Call this function to switch mazes (with a cooldown, ie. this call may fail)
+    /// </summary>
+    /// <returns></returns>
+    public bool TriggerMazeSwitch() {
+        if (Time.time > lastMazeSwitchTime + mazeSwitchCooldown) {
+            lastMazeSwitchTime = Time.time;
+            SwitchMazes();
+            return true;
+        }
+        return false;
+    }
+    
     void Update() {
         if (inGlitchMaze) {
             if (timeInThisMaze >= glitchMazeTimeLimit) {

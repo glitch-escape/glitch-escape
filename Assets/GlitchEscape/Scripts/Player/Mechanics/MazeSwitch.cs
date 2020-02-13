@@ -7,8 +7,8 @@ using UnityEngine;
 /// See: Player.cs, MazeSwitchController.cs
 /// </summary>
 [RequireComponent(typeof(MeshRenderer))]
-[RequireComponent(typeof(Collider))]
-public class MazeSwitch : MonoBehaviour {
+[RequireComponent(typeof(InteractionTrigger))]
+public class MazeSwitch : MonoBehaviour, IPlayerInteractable {
     private Material material;
     private float speedWhenActive;
     private Color colorWhenActive;
@@ -25,20 +25,6 @@ public class MazeSwitch : MonoBehaviour {
         colorWhenActive = material.GetColor(COLOR_PARAM);
         SetMazeSwitchActive(false);
     }
-    void OnTriggerEnter(Collider collider) {
-        // got player?
-        var player = collider.GetComponent<Player>();
-        if (player != null) {
-            player.SetActiveMazeSwitch(this);
-        }
-    }
-    void OnTriggerExit(Collider collider) {
-        // got player?
-        var player = collider.GetComponent<Player>();
-        if (player != null) {
-            player.ClearActiveMazeSwitch(this);
-        }
-    }
     /// <summary>
     /// Called by Player's maze switch impl as a response to SetActiveMazeSwitch() + ClearActiveMazeSwitch()
     /// Used to set material to show when the maze switch is active or not
@@ -52,5 +38,17 @@ public class MazeSwitch : MonoBehaviour {
             material.SetFloat(SPEED_PARAM, speedWhenDisabled);
             material.SetColor(COLOR_PARAM, colorWhenDisabled);
         }
+    }
+
+    public void OnInteract(Player player) {
+        MazeSwitchController.instance.TriggerMazeSwitch();
+    }
+
+    public void OnPlayerEnterInteractionRadius(Player player) {
+        player.SetActiveMazeSwitch(this);
+    }
+
+    public void OnPlayerExitInteractionRadius(Player player) {
+        player.ClearActiveMazeSwitch(this);
     }
 }
