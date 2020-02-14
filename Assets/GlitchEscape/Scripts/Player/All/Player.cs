@@ -68,6 +68,7 @@ public class Player : MonoBehaviour {
     // save initial position + rotation for player respawns
     private Vector3 initPosition;
     private Quaternion initRotation;
+    public float playerSpawnHeight = 1f;
 
     /// <summary>
     /// Sets initial spawn location that RespawnAt() uses.
@@ -87,8 +88,8 @@ public class Player : MonoBehaviour {
     /// <param name="savePoint">Respawn location. If null, player respawns at their starting position / rotation</param>
     public void RespawnAt(Transform savePoint) {
         if (savePoint) {
-            transform.position = savePoint.position;
-            transform.rotation = savePoint.rotation;
+            transform.position = savePoint.position + Vector3.up * playerSpawnHeight;
+            transform.rotation = initRotation;
         } else {
             transform.position = initPosition;
             transform.rotation = initRotation;
@@ -199,5 +200,36 @@ public class Player : MonoBehaviour {
     // private void FlashLowHealth () {
     //     timeUntilStopFlashingHealth = Time.time + lowHealthFlashDuration;
     // }
+    #endregion
+    #region MazeSwitchImplementation
+    /// <summary>
+    /// Returns true if the player is currently standing on a maze switch
+    /// </summary>
+    public bool canMazeSwitch => activeMazeSwitch != null;
+    private MazeSwitch activeMazeSwitch = null;
+    
+    /// <summary>
+    /// Called by a MazeSwitch script to register itself as an active maze switch.
+    /// Expects SetMazeSwitch() called in response
+    /// </summary>
+    /// <param name="activeSwitch"></param>
+    public void SetActiveMazeSwitch(MazeSwitch activeSwitch) {
+        if (activeMazeSwitch != null) {
+            activeMazeSwitch.SetMazeSwitchActive(false);
+        }
+        activeMazeSwitch = activeSwitch;
+        activeSwitch.SetMazeSwitchActive(true);
+    }
+    /// <summary>
+    /// Called by a MazeSwitch script to clear itself from being an active maze switch.
+    /// Expects SetMazeSwitch() called in response
+    /// </summary>
+    /// <param name="activeSwitch"></param>
+    public void ClearActiveMazeSwitch(MazeSwitch activeSwitch) {
+        if (activeMazeSwitch == activeSwitch) {
+            activeMazeSwitch = null;
+        }
+        activeSwitch.SetMazeSwitchActive(false);
+    }
     #endregion
 }
