@@ -10,16 +10,32 @@ public class PolysphereTest : MonoBehaviour {
     void ExplodeMesh() {
         var mf = GetComponent<MeshFilter>();
         var mesh = initialMesh;
-        var vertices = mesh.vertices;
-        var n = mesh.vertexCount;
+        var v0 = mesh.vertices;
+        var t0 = mesh.triangles;
+        var u0 = mesh.uv;
+        var n = mesh.triangles.Length;
+
+        var tris = new int[n];
+        var verts = new Vector3[n];
+        var uvs = new Vector2[n];
+
+        var yoffset = Random.Range(-1f, 1f);
         for (int i = 0; i < n; ++i) {
-            vertices[i].z = Random.Range(-1f, 1f);
+            if (i % 3 == 0) {
+                yoffset = Random.Range(-0.5f, 0.5f);
+            }
+            tris[i] = i;
+            verts[i] = v0[t0[i]];
+            verts[i].z += yoffset + Random.Range(-0.05f, 0.05f);
+            uvs[i] = u0[t0[i]];
         }
         var newMesh = new Mesh();
-        newMesh.vertices = vertices;
-        newMesh.uv = mesh.uv;
-        newMesh.normals = mesh.normals;
-        newMesh.triangles = mesh.triangles;
+        newMesh.vertices = verts;
+        newMesh.uv = uvs;
+        newMesh.triangles = tris;
+        newMesh.RecalculateNormals();
+        newMesh.RecalculateTangents();
+        newMesh.RecalculateBounds();
         mf.mesh = newMesh;
     }
 
@@ -35,5 +51,6 @@ public class PolysphereTest : MonoBehaviour {
             if (initialMesh != null)
                 GetComponent<MeshFilter>().mesh = initialMesh;
         }
+        // transform.Rotate(Vector3.up, 360f * 0.7f * Time.deltaTime);
     }
 }
