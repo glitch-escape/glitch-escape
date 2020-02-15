@@ -20,13 +20,18 @@ public class PolysphereTest : MonoBehaviour {
         var uvs = new Vector2[n];
 
         var yoffset = Random.Range(-1f, 1f);
+        var camera = Camera.main;
         for (int i = 0; i < n; ++i) {
             if (i % 3 == 0) {
                 yoffset = Random.Range(-0.5f, 0.5f);
             }
             tris[i] = i;
             verts[i] = v0[t0[i]];
-            verts[i].z += yoffset + Random.Range(-0.05f, 0.05f);
+            var worldPoint = v0[t0[i]];
+            var screenPoint = camera.WorldToScreenPoint(worldPoint);
+            var ray = camera.ScreenPointToRay(screenPoint);
+            var distance = Vector3.Distance(worldPoint, camera.transform.position);
+            verts[i] = ray.GetPoint(distance + yoffset + Random.Range(-0.05f, 0.05f));
             uvs[i] = u0[t0[i]];
         }
         var newMesh = new Mesh();
