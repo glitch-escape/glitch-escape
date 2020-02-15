@@ -1,11 +1,18 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using Random = UnityEngine.Random;
 
 [ExecuteInEditMode]
 [RequireComponent(typeof(MeshFilter))]
 public class PolysphereTest : MonoBehaviour {
     public Mesh initialMesh;
+    public float majorOffsetRange = 0.5f;
+    public float minorOffsetRange = 0.05f;
+    public float rotationYawSpeed = 180f;
+    public float rotationPitchSpeed = 180f;
 
     void ExplodeMesh() {
         var mf = GetComponent<MeshFilter>();
@@ -19,11 +26,11 @@ public class PolysphereTest : MonoBehaviour {
         var verts = new Vector3[n];
         var uvs = new Vector2[n];
 
-        var yoffset = Random.Range(-1f, 1f);
+        float yoffset = 0f;
         var camera = Camera.main;
         for (int i = 0; i < n; ++i) {
             if (i % 3 == 0) {
-                yoffset = Random.Range(-0.5f, 0.5f);
+                yoffset = Random.Range(-majorOffsetRange, +majorOffsetRange);
             }
             tris[i] = i;
             verts[i] = v0[t0[i]];
@@ -31,7 +38,7 @@ public class PolysphereTest : MonoBehaviour {
             var screenPoint = camera.WorldToScreenPoint(worldPoint);
             var ray = camera.ScreenPointToRay(screenPoint);
             var distance = Vector3.Distance(worldPoint, camera.transform.position);
-            verts[i] = ray.GetPoint(distance + yoffset + Random.Range(-0.05f, 0.05f));
+            verts[i] = ray.GetPoint(distance + yoffset + Random.Range(-minorOffsetRange, +minorOffsetRange));
             uvs[i] = u0[t0[i]];
         }
         var newMesh = new Mesh();
@@ -47,6 +54,15 @@ public class PolysphereTest : MonoBehaviour {
     public bool reset = false;
     public bool explodedMesh = false;
 
+    private float yaw = 0f;
+    private float pitch = 0f;
+    public float snapThreshold = 2.0f; // degrees
+
+    void Start() {
+        ExplodeMesh();
+        yaw = Random.Range(-180f, +180f);
+        pitch = Random.Range(-180f, +180f);
+    }
     void Update() {
         if (!explodedMesh) {
             explodedMesh = true;
@@ -56,6 +72,33 @@ public class PolysphereTest : MonoBehaviour {
             if (initialMesh != null)
                 GetComponent<MeshFilter>().mesh = initialMesh;
         }
-        // transform.Rotate(Vector3.up, 360f * 0.7f * Time.deltaTime);
+
+        var gamepad = Gamepad.current;
+        if (gamepad != null) {
+            var input = gamepad.rightStick.ReadValue();
+            var newYaw = yaw + input.x * rotationYawSpeed * Time.deltaTime;
+            var newPitch = pitch + input.y * rotationPitchSpeed * Time.deltaTime;
+
+            if (Mathf.Abs(newYaw) < snapThreshold) {
+                newYaw = 0f;
+            }
+            if (Mathf.Abs(newPitch) < snapThreshold) {
+                newPitch = 0f;
+            }
+            pitch = newPitch;
+            yaw = newYaw;
+
+            transform.rotation = Quaternion.Euler(new Vector3(
+                pitch, yaw, 0f
+            ));
+            // if (input.y != 0f) {
+            //     yaw += 
+            //     
+            //     transform.Rotate(Vector3.right, );   
+            // }
+            // if (input.x != 0f) {
+            //     transform.Rotate(Vector3.up, input.x * rotationYawSpeed * Time.deltaTime);   
+            // }
+        }
     }
 }
