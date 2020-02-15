@@ -54,16 +54,33 @@ public class PolysphereTest : MonoBehaviour {
     public bool reset = false;
     public bool explodedMesh = false;
 
-    private float yaw = 0f;
-    private float pitch = 0f;
-    public float snapThreshold = 2.0f; // degrees
+    public AnimationCurve inputCurve;
 
-    void Start() {
-        ExplodeMesh();
+    public float yaw = 0f;
+    public float pitch = 0f;
+    public float snapThreshold = 2.0f; // degrees
+    public float winThreshold = 1f; // degrees
+    private bool finishedPuzzle = false;
+    private float puzzleFinishTime = 0f;
+    public float puzzleFinishDelay = 2f; // seconds
+
+    private float ApplyInputCurve(float input) {
+        var sign = input >= 0f ? 1f : -1f;
+        return inputCurve.Evaluate(Mathf.Abs(input)) * sign;
+    }
+    void Restart() {
+        finishedPuzzle = false;
         yaw = Random.Range(-180f, +180f);
         pitch = Random.Range(-180f, +180f);
+        transform.rotation = Quaternion.identity;
+        ExplodeMesh();
+        
     }
-    void Update() {
+    void Start() {
+        Restart(); 
+    }
+
+    void EditorDebugUpdate() {
         if (!explodedMesh) {
             explodedMesh = true;
             ExplodeMesh();
@@ -72,10 +89,40 @@ public class PolysphereTest : MonoBehaviour {
             if (initialMesh != null)
                 GetComponent<MeshFilter>().mesh = initialMesh;
         }
+    }
+
+    public float yawDist;
+    public float pitchDist;
+    public float distance;
+    
+    void Update() {
+        EditorDebugUpdate();
+
+        if (finishedPuzzle) {
+            if (Time.time >= puzzleFinishTime) {
+                Restart();
+            }
+            return;
+        }
+        // yawDist = yaw % 360f;
+        // yawDist = Mathf.Min(yawDist, 180f - yawDist);
+        // pitchDist = Mathf.Abs(pitch % 360f);
+        // pitchDist = Mathf.Min(pitchDist, 180f - pitchDist);
+        yawDist = Mathf.Abs(yaw) % 180f;
+        pitchDist = Mathf.Abs(pitch) % 180f;
+        distance = Mathf.Sqrt(yawDist * yawDist + pitchDist * pitchDist);
+        if (distance < winThreshold) {
+            finishedPuzzle = true;
+            puzzleFinishTime = Time.time + puzzleFinishDelay;
+            GetComponent<MeshFilter>().mesh = initialMesh;
+            return;
+        }
 
         var gamepad = Gamepad.current;
         if (gamepad != null) {
             var input = gamepad.rightStick.ReadValue();
+            input.x = ApplyInputCurve(input.x);
+            input.y = ApplyInputCurve(input.y);
             var newYaw = yaw + input.x * rotationYawSpeed * Time.deltaTime;
             var newPitch = pitch + input.y * rotationPitchSpeed * Time.deltaTime;
 
@@ -91,14 +138,6 @@ public class PolysphereTest : MonoBehaviour {
             transform.rotation = Quaternion.Euler(new Vector3(
                 pitch, yaw, 0f
             ));
-            // if (input.y != 0f) {
-            //     yaw += 
-            //     
-            //     transform.Rotate(Vector3.right, );   
-            // }
-            // if (input.x != 0f) {
-            //     transform.Rotate(Vector3.up, input.x * rotationYawSpeed * Time.deltaTime);   
-            // }
         }
     }
 }
