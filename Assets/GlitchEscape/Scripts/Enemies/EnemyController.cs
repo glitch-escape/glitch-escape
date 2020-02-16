@@ -211,6 +211,7 @@ public class EnemyController : MonoBehaviour {
                     if (attackActions.Length > 0) {
                         SetState(EnemyBehaviorState.AttackingPlayer);
                     }
+                    break;
                 default: break;
             }
         }
