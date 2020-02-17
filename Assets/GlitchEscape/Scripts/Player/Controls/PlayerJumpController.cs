@@ -20,6 +20,9 @@ public class PlayerJumpController : MonoBehaviour, IPlayerControllerComponent
     [Tooltip("jump height (meters). Inaccurate if gravity factors != 1")]
     public float jumpHeight = 2f;
 
+    [Tooltip("factor to increase wall jump height by")]
+    public float wallJumpMultiplier = 1.5f;
+
     [Tooltip("maximum jumps (2 = double jump, etc)")]
     public uint maxJumpCount = 2;
     public uint jumpCount = 0;
@@ -81,18 +84,21 @@ public class PlayerJumpController : MonoBehaviour, IPlayerControllerComponent
             }
         }
     }
+
     public void OnJump(InputAction.CallbackContext context)
     {
-        bool wallCheck = CheckOnWall(new Vector3(moveInputRelativeToCamera.x, 0, moveInputRelativeToCamera.y));
-        //Debug.Log(wallCheck);
+        bool wallCheck = CheckOnWall();
+        if (!wallCheck) { Debug.Log(wallCheck); }
         if (context.performed && jumpCount + 1 < maxJumpCount && !wallCheck) //not wall jump
         {
             ++jumpCount;
             rigidbody.velocity += new Vector3(0, jumpVelocity, 0);
         }
-        else if (context.performed && jumpCount + 1 < maxJumpCount && wallCheck) //wall jump
+        else if (context.performed && wallCheck) //wall jump
         {
             //this is where wall jump implementation WILL go (but not yet)
+            jumpCount = 0;
+            rigidbody.velocity += new Vector3(0, jumpVelocity * wallJumpMultiplier, 0) + (currentWallNormal * jumpVelocity);
         }
     }
 
@@ -111,19 +117,17 @@ public class PlayerJumpController : MonoBehaviour, IPlayerControllerComponent
         }
         if (rigidbody.velocity.y != 0f && !CheckOnGround())
         {
-            //var velocity = rigidbody.velocity;
             if (rigidbody.velocity.y <= 0f) rigidbody.velocity += Physics.gravity * (downGravityFactor - 1f) * Time.fixedDeltaTime;
             else rigidbody.velocity -= Physics.gravity * (upGravityFactor - 1f) * Time.fixedDeltaTime;
-            //rigidbody.velocity = velocity;
         }
     }
 
     public bool CheckOnGround() => Physics.Raycast(rigidbody.position, Vector3.down, .7f);
 
-    public bool CheckOnWall(Vector3 inputDirection)
+    public bool CheckOnWall()
     {
         RaycastHit wallInfo;
-        bool wallHit = Physics.Raycast(rigidbody.position, inputDirection, out wallInfo, .6f);
+        bool wallHit = Physics.Raycast(rigidbody.position + Vector3.up, player.transform.forward, out wallInfo, 1.5f);
         if (wallInfo.collider == null)
             return false;
         lastWallNormal = currentWallNormal;
