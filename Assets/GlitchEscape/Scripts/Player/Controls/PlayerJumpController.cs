@@ -88,13 +88,12 @@ public class PlayerJumpController : MonoBehaviour, IPlayerControllerComponent
     public void OnJump(InputAction.CallbackContext context)
     {
         bool wallCheck = CheckOnWall();
-        if (!wallCheck) { Debug.Log(wallCheck); }
         if (context.performed && jumpCount + 1 < maxJumpCount && !wallCheck) //not wall jump
         {
             ++jumpCount;
             rigidbody.velocity += new Vector3(0, jumpVelocity, 0);
         }
-        else if (context.performed && wallCheck) //wall jump
+        else if (context.performed && wallCheck && (lastWallNormal != currentWallNormal || lastWallNormal == Vector3.zero)) //wall jump
         {
             //this is where wall jump implementation WILL go (but not yet)
             jumpCount = 0;
