@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 
 [RequireComponent(typeof(InteractionTrigger))]
 public class InteractablePortal : MonoBehaviour, IPlayerInteractable
@@ -25,12 +26,16 @@ public class InteractablePortal : MonoBehaviour, IPlayerInteractable
     public Transform floatTextArea;
     public string interactMessage = "[Go through]";
 
+    public PlayableDirector portalCutscene;
     private FloatingTextController floatingText;
     private InteractableTank interactableTank;
 
     void Awake()
     {
         floatingText = FloatingTextController.instance;
+        // portalCutscene = GetComponent<PlayableDirector>();
+        portalCutscene.Play();
+        portalCutscene.Pause();
     }
     void Start()
     {
@@ -55,6 +60,7 @@ public class InteractablePortal : MonoBehaviour, IPlayerInteractable
 
     public void OpenPortal()
     {
-        this.transform.parent.gameObject.SetActive(true);
+        portalCutscene.Resume();
+        // this.transform.parent.gameObject.SetActive(true);
     }
 }
