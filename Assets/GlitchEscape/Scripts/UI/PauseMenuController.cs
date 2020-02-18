@@ -23,6 +23,13 @@ public class PauseMenuController : MonoBehaviour
             pauseMenu.SetActive(true);
             resumeButtom.Select();
         }
+        else
+        {
+            Time.timeScale = 1;
+            AudioListener.pause = false;
+            pauseMenu.SetActive(false);
+            EventSystem.current.SetSelectedGameObject(null);
+        }
     }
 
     public void GameResume()
