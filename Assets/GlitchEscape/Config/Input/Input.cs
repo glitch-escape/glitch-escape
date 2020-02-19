@@ -474,14 +474,6 @@ public class @Input : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": ""Press""
-                },
-                {
-                    ""name"": ""PauseMenu"",
-                    ""type"": ""Button"",
-                    ""id"": ""dad2c43b-6cdf-4280-9a52-6873818cda92"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
@@ -913,28 +905,6 @@ public class @Input : IInputActionCollection, IDisposable
                     ""action"": ""ControlTips"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""8f53eaa9-f1ec-49b5-923d-cdebdc5e74f0"",
-                    ""path"": ""<Keyboard>/escape"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""PauseMenu"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""c54f5c8e-3d24-4ab4-a883-e56bcbab9041"",
-                    ""path"": ""<Gamepad>/start"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""PauseMenu"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1025,7 +995,6 @@ public class @Input : IInputActionCollection, IDisposable
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
         m_UI_TrackedDeviceSelect = m_UI.FindAction("TrackedDeviceSelect", throwIfNotFound: true);
         m_UI_ControlTips = m_UI.FindAction("ControlTips", throwIfNotFound: true);
-        m_UI_PauseMenu = m_UI.FindAction("PauseMenu", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1168,7 +1137,6 @@ public class @Input : IInputActionCollection, IDisposable
     private readonly InputAction m_UI_TrackedDeviceOrientation;
     private readonly InputAction m_UI_TrackedDeviceSelect;
     private readonly InputAction m_UI_ControlTips;
-    private readonly InputAction m_UI_PauseMenu;
     public struct UIActions
     {
         private @Input m_Wrapper;
@@ -1185,7 +1153,6 @@ public class @Input : IInputActionCollection, IDisposable
         public InputAction @TrackedDeviceOrientation => m_Wrapper.m_UI_TrackedDeviceOrientation;
         public InputAction @TrackedDeviceSelect => m_Wrapper.m_UI_TrackedDeviceSelect;
         public InputAction @ControlTips => m_Wrapper.m_UI_ControlTips;
-        public InputAction @PauseMenu => m_Wrapper.m_UI_PauseMenu;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1231,9 +1198,6 @@ public class @Input : IInputActionCollection, IDisposable
                 @ControlTips.started -= m_Wrapper.m_UIActionsCallbackInterface.OnControlTips;
                 @ControlTips.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnControlTips;
                 @ControlTips.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnControlTips;
-                @PauseMenu.started -= m_Wrapper.m_UIActionsCallbackInterface.OnPauseMenu;
-                @PauseMenu.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnPauseMenu;
-                @PauseMenu.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnPauseMenu;
             }
             m_Wrapper.m_UIActionsCallbackInterface = instance;
             if (instance != null)
@@ -1274,9 +1238,6 @@ public class @Input : IInputActionCollection, IDisposable
                 @ControlTips.started += instance.OnControlTips;
                 @ControlTips.performed += instance.OnControlTips;
                 @ControlTips.canceled += instance.OnControlTips;
-                @PauseMenu.started += instance.OnPauseMenu;
-                @PauseMenu.performed += instance.OnPauseMenu;
-                @PauseMenu.canceled += instance.OnPauseMenu;
             }
         }
     }
@@ -1350,6 +1311,5 @@ public class @Input : IInputActionCollection, IDisposable
         void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
         void OnTrackedDeviceSelect(InputAction.CallbackContext context);
         void OnControlTips(InputAction.CallbackContext context);
-        void OnPauseMenu(InputAction.CallbackContext context);
     }
 }
