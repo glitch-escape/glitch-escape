@@ -168,6 +168,7 @@ public class PlayerManifestController : MonoBehaviour, IPlayerControllerComponen
         isManifesting = true;
         manifestStartTime = Time.time;
     }
+
     private void EndManifest()
     {
         /*if (animator.GetBool("isDashing"))
