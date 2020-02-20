@@ -8,10 +8,16 @@ public class FieldBarrier : MonoBehaviour {
         Collider
     };
     public CollisionType collisionType;
-    public Player activePlayer { get; private set; } = null;
-    public Collider collider => _collider ?? (_collider = GetComponent<Collider>()) 
-                                ?? (Debug.LogError("FieldBarrier.cs: missing collider!"), null));
-    private IFieldBarrierEffect[] effects => _effects ?? (_effects = GetComponents<IFieldBarrierEffect>());
+    public bool isTrigger {
+        get { return collisionType == CollisionType.Trigger; }
+        set {
+            collisionType = value ? CollisionType.Trigger : CollisionType.Collider;
+            collider.isTrigger = value;
+        }
+    }
+    private Collider collider => _collider ?? Enforcements.GetComponent(this, out _collider);
+    private IFieldBarrierEffect[] effects => _effects ?? Enforcements.GetComponents(this, out _effects);
+    
     private Collider _collider = null;
     private IFieldBarrierEffect[] _effects = null;
 
