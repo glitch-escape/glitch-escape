@@ -54,7 +54,7 @@ public class PlayerAffectorField : MonoBehaviour {
     /// </summary>
     public enum CollisionType { Trigger, Collider
     };
-    private CollisionType collisionType;
+    public CollisionType collisionType = CollisionType.Trigger;
     
     #endregion
     
@@ -76,40 +76,40 @@ public class PlayerAffectorField : MonoBehaviour {
         }
     }
     private void OnTriggerEnter(Collider other) {
-        if (collisionType == CollisionType.Trigger) {
+        // if (collisionType == CollisionType.Trigger) {
             var player = other.GetComponent<Player>();
             if (player != null) { 
                 if (activePlayer) { OnPlayerExit(player); }
                 OnPlayerEnter(activePlayer = player);
             }
-        }
+        // }
     }
     private void OnCollisionEnter(Collision other) {
-        if (collisionType == CollisionType.Trigger) {
+        // if (collisionType == CollisionType.Collider) {
             var player = other.collider.GetComponent<Player>();
             if (player != null) {
                 if (activePlayer) { OnPlayerExit(player); }
                 OnPlayerEnter(activePlayer = player);
             }
-        }
+        // }
     }
     private void OnTriggerExit(Collider other) {
-        if (collisionType == CollisionType.Trigger) {
+        // if (collisionType == CollisionType.Trigger) {
             var player = other.GetComponent<Player>();
-            if (player == activePlayer) {
+            if (player != null && player == activePlayer) {
                 activePlayer = null;
                 OnPlayerExit(player);
             }
-        }
+        // }
     }
     private void OnCollisionExit(Collision other) {
-        if (collisionType == CollisionType.Trigger) {
+        // if (collisionType == CollisionType.Collider) {
             var player = other.collider.GetComponent<Player>();
-            if (player == activePlayer) {
+            if (player != null &&  player == activePlayer) {
                 activePlayer = null;
                 OnPlayerExit(player);
             }
-        }
+        // }
     }
     #endregion
 }
