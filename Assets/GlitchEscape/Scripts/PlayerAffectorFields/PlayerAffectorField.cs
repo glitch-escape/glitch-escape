@@ -72,15 +72,15 @@ public class PlayerAffectorField : MonoBehaviour {
     }
     private void Update() {
         if (activePlayer != null) {
-            OnPlayerTick(activePlayer);
+            OnPlayerTick?.Invoke(activePlayer);
         }
     }
     private void OnTriggerEnter(Collider other) {
         // if (collisionType == CollisionType.Trigger) {
             var player = other.GetComponent<Player>();
             if (player != null) { 
-                if (activePlayer) { OnPlayerExit(player); }
-                OnPlayerEnter(activePlayer = player);
+                if (activePlayer) { OnPlayerExit?.Invoke(player); }
+                OnPlayerEnter?.Invoke(activePlayer = player);
             }
         // }
     }
@@ -88,8 +88,8 @@ public class PlayerAffectorField : MonoBehaviour {
         // if (collisionType == CollisionType.Collider) {
             var player = other.collider.GetComponent<Player>();
             if (player != null) {
-                if (activePlayer) { OnPlayerExit(player); }
-                OnPlayerEnter(activePlayer = player);
+                if (activePlayer) { OnPlayerExit?.Invoke(player); }
+                OnPlayerEnter?.Invoke(activePlayer = player);
             }
         // }
     }
@@ -98,16 +98,16 @@ public class PlayerAffectorField : MonoBehaviour {
             var player = other.GetComponent<Player>();
             if (player != null && player == activePlayer) {
                 activePlayer = null;
-                OnPlayerExit(player);
+                OnPlayerExit?.Invoke(player);
             }
         // }
     }
     private void OnCollisionExit(Collision other) {
         // if (collisionType == CollisionType.Collider) {
             var player = other.collider.GetComponent<Player>();
-            if (player != null &&  player == activePlayer) {
+            if (player != null && player == activePlayer) {
                 activePlayer = null;
-                OnPlayerExit(player);
+                OnPlayerExit?.Invoke(player);
             }
         // }
     }
