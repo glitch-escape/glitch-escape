@@ -8,10 +8,6 @@ using UnityEngine.Analytics;
 public interface IEnemyControllerComponent {
     void SetupControllerComponent(EnemyController controller);
 }
-
-public interface IEnemyBehavior : IEnemyControllerComponent {
-    
-}
 public interface IEnemyObjectiveMarker {}
 
 public interface IEnemyVisionController : IEnemyControllerComponent {
@@ -53,7 +49,7 @@ public enum EnemyBehaviorState {
     SearchingForPlayer,
 }
 
-public interface IEnemyBehaviorState : IEnemyBehavior {
+public interface IEnemyBehaviorState : IEnemyControllerComponent {
     void StartAction();
     void EndAction();
     void UpdateAction();
