@@ -426,7 +426,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1299641571806894736}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: f29dc036a0ace7b45a9abca84f9f291b, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.4
@@ -445,7 +445,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f18fe16274d1dbc4d9a40710d428237b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mazeSwitchCooldown: 0.2
 --- !u!114 &434094261
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -475,6 +474,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 0}
+  playerSpawnHeight: 1
   maxStamina: 100
   maxHealth: 100
   staminaRegenPerSec: 10
