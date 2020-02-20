@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IFieldBarrierEffect {
-    void SetupFieldBarrier(FieldBarrier barrier);
+public interface IFieldEffect {
+    void SetupField(PlayerAffectorField barrier);
     void OnPlayerEnter(Player player);
     void OnPlayerExit(Player player);
     void OnPlayerTick(Player player);
