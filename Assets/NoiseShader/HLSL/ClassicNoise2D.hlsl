@@ -48,7 +48,7 @@ float2 fade(float2 t) {
 }
 
 // Classic Perlin noise
-float cnoise(float2 P)
+void cnoise_float(float2 P, out float result)
 {
   float4 Pi = floor(P.xyxy) + float4(0.0, 0.0, 1.0, 1.0);
   float4 Pf = frac (P.xyxy) - float4(0.0, 0.0, 1.0, 1.0);
@@ -84,11 +84,11 @@ float cnoise(float2 P)
   float2 fade_xy = fade(Pf.xy);
   float2 n_x = lerp(float2(n00, n01), float2(n10, n11), fade_xy.x);
   float n_xy = lerp(n_x.x, n_x.y, fade_xy.y);
-  return 2.3 * n_xy;
+  result = 2.3 * n_xy;
 }
 
 // Classic Perlin noise, periodic variant
-float pnoise(float2 P, float2 rep)
+void pnoise_float(float2 P, float2 rep, out float result)
 {
   float4 Pi = floor(P.xyxy) + float4(0.0, 0.0, 1.0, 1.0);
   float4 Pf = frac (P.xyxy) - float4(0.0, 0.0, 1.0, 1.0);
@@ -125,5 +125,5 @@ float pnoise(float2 P, float2 rep)
   float2 fade_xy = fade(Pf.xy);
   float2 n_x = lerp(float2(n00, n01), float2(n10, n11), fade_xy.x);
   float n_xy = lerp(n_x.x, n_x.y, fade_xy.y);
-  return 2.3 * n_xy;
+  result = 2.3 * n_xy;
 }

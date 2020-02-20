@@ -53,7 +53,7 @@ float3 fade(float3 t) {
 }
 
 // Classic Perlin noise
-float cnoise(float3 P)
+void cnoise_float(float3 P, out float result)
 {
   float3 Pi0 = floor(P); // Integer part for indexing
   float3 Pi1 = Pi0 + (float3)1.0; // Integer part + 1
@@ -120,11 +120,11 @@ float cnoise(float3 P)
   float4 n_z = lerp(float4(n000, n100, n010, n110), float4(n001, n101, n011, n111), fade_xyz.z);
   float2 n_yz = lerp(n_z.xy, n_z.zw, fade_xyz.y);
   float n_xyz = lerp(n_yz.x, n_yz.y, fade_xyz.x);
-  return 2.2 * n_xyz;
+  result = 2.2 * n_xyz;
 }
 
 // Classic Perlin noise, periodic variant
-float pnoise(float3 P, float3 rep)
+void pnoise_float(float3 P, float3 rep, out float result)
 {
   float3 Pi0 = mod(floor(P), rep); // Integer part, modulo period
   float3 Pi1 = mod(Pi0 + (float3)1.0, rep); // Integer part + 1, mod period
@@ -190,5 +190,5 @@ float pnoise(float3 P, float3 rep)
   float4 n_z = lerp(float4(n000, n100, n010, n110), float4(n001, n101, n011, n111), fade_xyz.z);
   float2 n_yz = lerp(n_z.xy, n_z.zw, fade_xyz.y);
   float n_xyz = lerp(n_yz.x, n_yz.y, fade_xyz.x);
-  return 2.2 * n_xyz;
+  result = 2.2 * n_xyz;
 }
