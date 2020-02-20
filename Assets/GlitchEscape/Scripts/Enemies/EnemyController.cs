@@ -12,10 +12,6 @@ public interface IEnemyControllerComponent {
 public interface IEnemyBehavior : IEnemyControllerComponent {
     
 }
-public interface IEnemyIdleBehavior : IEnemyBehavior {}
-public interface IEnemyChaseBehavior : IEnemyBehavior {}
-public interface IEnemyAttackBehavior : IEnemyBehavior {}
-
 public interface IEnemyObjectiveMarker {}
 
 public interface IEnemyVisionController : IEnemyControllerComponent {
@@ -82,8 +78,8 @@ public interface IEnemyIdleAction : IEnemyBehaviorState { }
 [RequireComponent(typeof(IEnemyAttackAction))]
 [RequireComponent(typeof(IEnemySearchForPlayerAction))]
 public class EnemyController : MonoBehaviour {
-    private Enemy enemy;
-    private Player player;
+    public Enemy enemy;
+    public Player player;
 
     private IEnemyAttackAction[] attackActions;
     private IEnemyPursuitAction[] pursueActions;
@@ -102,6 +98,7 @@ public class EnemyController : MonoBehaviour {
     
     public bool isHostileToPlayer = true;
     private IEnemyBehaviorState activeState = null;
+    public EnemyBehaviorState behaviorState => _behaviorState;
     
     #region BehaviorStateProperties
     private EnemyBehaviorState _behaviorState = EnemyBehaviorState.None;
@@ -170,7 +167,7 @@ public class EnemyController : MonoBehaviour {
         activeState = action;
         if (activeState != null) {
             activeState.StartAction();
-        } else if (action != EnemyBehaviorState.None) {
+        } else if (_behaviorState != EnemyBehaviorState.None) {
             Debug.LogWarning(
                 "no active state for "+action+" on EnemyController for "+gameObject+
                        ": switching to null (None) state");
