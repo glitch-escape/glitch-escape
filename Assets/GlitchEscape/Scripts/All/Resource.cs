@@ -40,6 +40,153 @@ public struct Resource {
     }
 }
 
+class Interpolator {
+    public enum InterpolationType {
+        Linear, Quadratic, Sqrt, AnimationCurve
+    }
+    [SerializeField]
+    public InterpolationType interpolationType;
+    [SerializeField]
+    public AnimationCurve animationCurve;
+    public float duration = 1f;
+    public float minValue = 0f;
+    public float maxValue = 1f;
+    public float Evaluate(float t) {
+        t = Mathf.Clamp01(t / duration);
+        switch (interpolationType) {
+            case InterpolationType.Linear: break;
+            case InterpolationType.Quadratic: t = t * t; break;
+            case InterpolationType.Sqrt: t = Mathf.Sqrt(t); break;
+            case InterpolationType.AnimationCurve: t = animationCurve.Evaluate(t); break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+        return minValue + t * (maxValue - minValue);
+    }
+}
+
+struct StatefulInterpolator {
+    enum State { None, Running, Paused, Finished }
+    private State state;
+    private float startTime;
+    private float stopTime;
+    private Interpolator interp;
+    public bool running => state == State.Running;
+    public bool started => state != State.None;
+    public bool finished => state == State.Finished;
+
+    public float timeElapsed {
+        get {
+            switch (state) {
+                case State.None: return 0f;
+                case State.Running: return Time.time - startTime;
+                case State.Paused: return stopTime - startTime;
+                case State.Finished: return stopTime - startTime;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+    }
+    public float currentValue {
+        get {
+            var t = timeElapsed;
+            if (running && t >= interp.duration) {
+                state = State.Finished;
+            }
+            return interp.Evaluate(t);
+        }
+    }
+    public void Start(Interpolator interpolator) {
+        interp = interpolator;
+        if (state == State.Paused) {
+            startTime = Time.time - timeElapsed;
+        } else {
+            startTime = Time.time;
+        }
+        state = State.Running;
+    }
+    public void Stop() {
+        state = State.Paused;
+        stopTime = Time.time;
+    }
+    public void Finish() {
+        state = State.Finished;
+        stopTime = Time.time;
+    }
+    public void Reset() {
+        state = State.None;
+    }
+}
+
+class ResourceState {
+    private float value;
+    private float maximum;
+}
+interface IResourceEffect {
+    void Apply(ResourceState state);
+    void Start();
+    void Reset();
+    void Terminate();
+    void TerminateImmediately();
+    bool active { get; }
+}
+class BoostMaxResource : IResourceEffect {
+    private StatefulInterpolator interpolator;
+    public float maxValue = 100f, minValue = 0f;
+    public Interpolator boostInterpolation;
+    public Interpolator unboostInterpolation;
+    public bool useSeparateUnboostInterpolator;
+    private enum State {
+        None,
+        Boosting,
+        Boosted,
+        Unboosting
+    };
+    private State state;
+    public bool active => state != State.None;
+    public void Reset() {
+        state = State.None;
+        boostInterpolation.maxValue = maxValue;
+        boostInterpolation.minValue = minValue;
+    }
+    public void Start() {
+        Reset();
+        if (boostInterpolation.duration > 0f) {
+            state = State.Boosting;
+            interpolator.Start(boostInterpolation);
+        } else {
+            state = State.Boosted;
+        }
+    }
+    public void Terminate() {
+        if (boostInterpolation.duration > 0f) {
+            state = State.Unboosting;
+            interpolator.Start(useSeparateUnboostInterpolator ? unboostInterpolation : boostInterpolation);
+        } else {
+            state = State.None;
+        }
+    }
+    public void TerminateImmediately() {
+        state = State.None;
+    }
+    public void Apply(ResourceState state) {
+        
+        
+        
+        
+        state.maximum += 
+    }
+}
+
+
+
+
+
+
+
+
+
+
 
 class ResourceBoostEffect {
     public float minValue;
