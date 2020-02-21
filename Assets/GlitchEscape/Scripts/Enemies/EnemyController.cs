@@ -81,15 +81,17 @@ public class EnemyController : MonoBehaviour {
     private IEnemyPursuitAction[] pursueActions;
     private IEnemySearchForPlayerAction[] searchForPlayerActions;
     private IEnemyIdleAction[] idleActions;
+    private IEnemyVisionController vision;
     
     /// <summary>
     /// Called at startup in Awake()
     /// </summary>
     private void InitActionLists() {
-        attackActions = GetComponents<IEnemyAttackAction>();
+        attackActions = GetComponentsInChildren<IEnemyAttackAction>();
         pursueActions = GetComponents<IEnemyPursuitAction>();
         searchForPlayerActions = GetComponents<IEnemySearchForPlayerAction>();
         idleActions = GetComponents<IEnemyIdleAction>();
+        vision = GetComponent<IEnemyVisionController>();
     }
     
     public bool isHostileToPlayer = true;
@@ -104,7 +106,7 @@ public class EnemyController : MonoBehaviour {
     public bool isAttackingPlayer =>
         _behaviorState == EnemyBehaviorState.AttackingPlayer;
     public bool isActivelyChasingPlayer =>
-        _behaviorState == EnemyBehaviorState.AttackingPlayer;
+        _behaviorState == EnemyBehaviorState.ChasingPlayer;
     public bool isPassivelyChasingPlayer =>
         _behaviorState == EnemyBehaviorState.SearchingForPlayer;
     public bool isChasingOrAttackingPlayer =>
@@ -172,6 +174,7 @@ public class EnemyController : MonoBehaviour {
     }
 
     void Update() {
+        Debug.Log(_behaviorState);
         if (isChasingOrAttackingPlayer) {
             EnemyBehaviorState _;
             if (activeState != null && isAttackingPlayer && !activeState.ActionFinished(out _)) {
@@ -193,7 +196,9 @@ public class EnemyController : MonoBehaviour {
             } else {
                 activeState.UpdateAction();
             }
+           // Debug.Log(_behaviorState);
         } else {
+            Debug.Log(_behaviorState);
             switch (_behaviorState) {
                 case EnemyBehaviorState.None:
                     if (idleActions.Length > 0) {
@@ -209,7 +214,10 @@ public class EnemyController : MonoBehaviour {
             }
         }
     }
-    
+
+    public bool PlayerDetected() {
+        return vision.CanSeePlayer();
+    }
     public void OnPlayerDetected(Player player) {
         if (isHostileToPlayer && isIdle) {
             SetState(EnemyBehaviorState.ChasingPlayer);
@@ -238,6 +246,9 @@ public class EnemyController : MonoBehaviour {
     private void OnEnable() {
         SetupSubControllers(enemy.GetComponents<IEnemyControllerComponent>());
         SetupSubControllers(GetComponents<IEnemyControllerComponent>());
+        foreach (Transform child in transform) {
+            SetupSubControllers(child.gameObject.GetComponents<IEnemyControllerComponent>());
+        }
     }
 
     private void SetupSubControllers(IEnemyControllerComponent[] components) {
