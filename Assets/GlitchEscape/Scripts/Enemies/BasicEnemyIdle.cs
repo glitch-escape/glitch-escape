@@ -23,8 +23,8 @@ public class BasicEnemyIdle : MonoBehaviour, IEnemyIdleAction {
     public void EndAction() { }
     public void UpdateAction() {
         // Start chasing once player is detected
-        if (enemyController.PlayerDetected())
-            enemyController.OnPlayerDetected(player);
+     //   if (enemyController.PlayerDetected())
+     //       enemyController.OnPlayerDetected(player);
     }
     public bool ActionFinished(out EnemyBehaviorState nextAction) {
         nextAction = EnemyBehaviorState.Idle;

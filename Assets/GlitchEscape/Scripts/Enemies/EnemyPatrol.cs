@@ -35,7 +35,7 @@ public class EnemyPatrol : MonoBehaviour, IEnemySearchForPlayerAction {
     public void EndAction() { }
     public void UpdateAction() {
         // Update destination point if needed
-        if (Vector3.Distance(transform.position, agent.destination) <= ptLeniency) {
+        if (Vector3.Distance(enemy.transform.position, agent.destination) <= ptLeniency) {
             if (isReturnTrip) {
                 curDest -= 1;
                 if (curDest < 0) {
@@ -53,10 +53,6 @@ public class EnemyPatrol : MonoBehaviour, IEnemySearchForPlayerAction {
 
             agent.SetDestination(patrolPoints[curDest].position);
         }
-
-        // Start chasing once player is detected
-        if (enemyController.PlayerDetected())
-            enemyController.OnPlayerDetected(player);
     }
 
     public bool ActionFinished(out EnemyBehaviorState nextAction) {
@@ -66,7 +62,6 @@ public class EnemyPatrol : MonoBehaviour, IEnemySearchForPlayerAction {
         else {
             nextAction = EnemyBehaviorState.SearchingForPlayer;
         }
-
         return isIdle;
     }
     public bool CanActivate(Player player) {

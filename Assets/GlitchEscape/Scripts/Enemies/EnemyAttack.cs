@@ -48,6 +48,7 @@ public class EnemyAttack : MonoBehaviour, IEnemyAttackAction {
     public void EndAction() {
         atkStart = 0;
         hasHit = false;
+        mesh.enabled = false;
     }
     // Update variables of the attack
     public void UpdateAction() {

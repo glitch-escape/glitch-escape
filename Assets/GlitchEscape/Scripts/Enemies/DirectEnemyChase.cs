@@ -29,10 +29,6 @@ public class DirectEnemyChase : MonoBehaviour, IEnemyPursuitAction {
         // Update destination to current player position
         agent.SetDestination(player.transform.position);
 
-        if (!enemyController.PlayerDetected()) { 
-            enemyController.OnPlayerLost(player);
-        }
-
 /*
         float playerDist = Vector3.Distance(player.transform.position, transform.position);
         if (curAtk != null && curAtk.distance >= playerDist) {

@@ -81,7 +81,6 @@ public class EnemyController : MonoBehaviour {
     private IEnemyPursuitAction[] pursueActions;
     private IEnemySearchForPlayerAction[] searchForPlayerActions;
     private IEnemyIdleAction[] idleActions;
-    private IEnemyVisionController vision;
     
     /// <summary>
     /// Called at startup in Awake()
@@ -91,7 +90,6 @@ public class EnemyController : MonoBehaviour {
         pursueActions = GetComponents<IEnemyPursuitAction>();
         searchForPlayerActions = GetComponents<IEnemySearchForPlayerAction>();
         idleActions = GetComponents<IEnemyIdleAction>();
-        vision = GetComponent<IEnemyVisionController>();
     }
     
     public bool isHostileToPlayer = true;
@@ -215,9 +213,6 @@ public class EnemyController : MonoBehaviour {
         }
     }
 
-    public bool PlayerDetected() {
-        return vision.CanSeePlayer();
-    }
     public void OnPlayerDetected(Player player) {
         if (isHostileToPlayer && isIdle) {
             SetState(EnemyBehaviorState.ChasingPlayer);
@@ -248,6 +243,9 @@ public class EnemyController : MonoBehaviour {
         SetupSubControllers(GetComponents<IEnemyControllerComponent>());
         foreach (Transform child in transform) {
             SetupSubControllers(child.gameObject.GetComponents<IEnemyControllerComponent>());
+            foreach (Transform grandkid in child.transform) {
+                SetupSubControllers(grandkid.gameObject.GetComponents<IEnemyControllerComponent>());
+            }
         }
     }
 
