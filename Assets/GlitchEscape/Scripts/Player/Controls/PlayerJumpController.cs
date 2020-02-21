@@ -20,6 +20,9 @@ public class PlayerJumpController : MonoBehaviour, IPlayerControllerComponent
     [Tooltip("jump height (meters). Inaccurate if gravity factors != 1")]
     public float jumpHeight = 2f;
 
+    [Tooltip("factor to increase wall jump height by")]
+    public float wallJumpMultiplier = 1.5f;
+
     [Tooltip("maximum jumps (2 = double jump, etc)")]
     public uint maxJumpCount = 2;
     public uint jumpCount = 0;
@@ -42,6 +45,8 @@ public class PlayerJumpController : MonoBehaviour, IPlayerControllerComponent
     private Vector3 lastWallNormal = Vector3.zero;
     private Vector3 currentWallNormal = Vector3.zero;
 
+    private LayerMask walls;
+
     private Vector2 moveInput => player.input.Controls.Move.ReadValue<Vector2>();
 
     private Vector3 moveInputRelativeToCamera
@@ -63,41 +68,46 @@ public class PlayerJumpController : MonoBehaviour, IPlayerControllerComponent
     void Awake()
     {
         jumpVelocity = (float)Math.Sqrt(2 * upGravityFactor * -Physics.gravity.y * jumpHeight);
+        walls = LayerMask.GetMask("Wall");
     }
 
-    void Update()
-    {
-        if (jumpCount > 0 && CheckOnGround())
-        {
-            jumpCount = 0;
-            if (isJumping)
-            {
-                isJumping = false;
-            }
-            if (animator.GetBool("isJumping"))
-            {
-                animator.SetBool("isJumping", false);
-                animator.SetTrigger("stopJumping");
-            }
-        }
-    }
+
     public void OnJump(InputAction.CallbackContext context)
     {
-        bool wallCheck = CheckOnWall(new Vector3(moveInputRelativeToCamera.x, 0, moveInputRelativeToCamera.y));
-        //Debug.Log(wallCheck);
+        bool wallCheck = CheckOnWall();
         if (context.performed && jumpCount + 1 < maxJumpCount && !wallCheck) //not wall jump
         {
-            ++jumpCount;
+            jumpCount++;
             rigidbody.velocity += new Vector3(0, jumpVelocity, 0);
         }
-        else if (context.performed && jumpCount + 1 < maxJumpCount && wallCheck) //wall jump
+        else if (context.performed && wallCheck && !CheckOnGround() && (lastWallNormal != currentWallNormal)) //wall jump
         {
-            //this is where wall jump implementation WILL go (but not yet)
+            jumpCount = 0;
+            rigidbody.velocity += new Vector3(0, jumpVelocity * wallJumpMultiplier, 0) + (currentWallNormal * jumpVelocity);
         }
+        lastWallNormal = currentWallNormal;
     }
 
     void FixedUpdate()
     {
+        if(CheckOnGround())
+        {
+            if (jumpCount > 0)
+            {
+                jumpCount = 0;
+                if (isJumping)
+                {
+                    isJumping = false;
+                }
+                if (animator.GetBool("isJumping"))
+                {
+                    animator.SetBool("isJumping", false);
+                    animator.SetTrigger("stopJumping");
+                }
+            }
+            currentWallNormal = Vector3.zero;
+        }
+        
         if (isJumping)
         {
             if (Time.time >= jumpStartTime + jumpDuration)
@@ -111,21 +121,22 @@ public class PlayerJumpController : MonoBehaviour, IPlayerControllerComponent
         }
         if (rigidbody.velocity.y != 0f && !CheckOnGround())
         {
-            //var velocity = rigidbody.velocity;
             if (rigidbody.velocity.y <= 0f) rigidbody.velocity += Physics.gravity * (downGravityFactor - 1f) * Time.fixedDeltaTime;
             else rigidbody.velocity -= Physics.gravity * (upGravityFactor - 1f) * Time.fixedDeltaTime;
-            //rigidbody.velocity = velocity;
         }
     }
 
     public bool CheckOnGround() => Physics.Raycast(rigidbody.position, Vector3.down, .7f);
 
-    public bool CheckOnWall(Vector3 inputDirection)
+    public bool CheckOnWall()
     {
         RaycastHit wallInfo;
-        bool wallHit = Physics.Raycast(rigidbody.position, inputDirection, out wallInfo, .6f);
+        bool wallHit = Physics.Raycast(rigidbody.position + Vector3.up, player.transform.forward, out wallInfo, 1f, walls);
         if (wallInfo.collider == null)
+        {
+            currentWallNormal = Vector3.zero;
             return false;
+        }
         lastWallNormal = currentWallNormal;
         currentWallNormal = wallInfo.normal;
         return true;

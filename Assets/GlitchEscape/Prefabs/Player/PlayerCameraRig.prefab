@@ -236,8 +236,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.080961, y: 2.761407e-17, z: -2.7991672e-18, w: 0.9967173}
-  m_LocalPosition: {x: 0, y: 2.4096303, z: 0.45096922}
+  m_LocalRotation: {x: 0.090910345, y: -6.9101605e-18, z: 6.3081724e-19, w: 0.9958591}
+  m_LocalPosition: {x: 0, y: 2.5, z: -4.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1102068784}
@@ -660,7 +660,6 @@ GameObject:
   - component: {fileID: 2108366784}
   - component: {fileID: 2108366785}
   - component: {fileID: 2108366786}
-  - component: {fileID: 523512321844037535}
   - component: {fileID: 5845934389603087960}
   - component: {fileID: 2108366787}
   - component: {fileID: 2108366788}
@@ -769,30 +768,6 @@ MonoBehaviour:
   animateLength: 0.1
   dodgeScaleFactor: 15
   noiseTex: {fileID: 2800000, guid: 68305fbab3966024b86bf757345409f6, type: 3}
---- !u!114 &523512321844037535
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 778320031773460715}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62bdb20165c60414bb3bda67695eda65, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  jumpHeight: 2
-  maxJumpCount: 2
-  jumpCount: 0
-  jumpCurve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  jumpDuration: 0.64
-  downGravityFactor: 2.2
-  upGravityFactor: 0.8
 --- !u!114 &5845934389603087960
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -828,6 +803,7 @@ MonoBehaviour:
   countdownTimerText: {fileID: 572548759}
   activeMaze: 0
   glitchMazeTimeLimit: 10
+  mazeSwitchCooldown: 0.2
 --- !u!114 &2108366788
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1314,7 +1290,7 @@ PrefabInstance:
     - target: {fileID: 3505488081541777551, guid: d2ebc241853cd416cb4411bbc3550e8b,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 5.5886278e-11
+      value: 5.588627e-11
       objectReference: {fileID: 0}
     - target: {fileID: 3505488081541777551, guid: d2ebc241853cd416cb4411bbc3550e8b,
         type: 3}
