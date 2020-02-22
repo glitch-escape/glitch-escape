@@ -22,7 +22,7 @@ public struct Resource {
     [SerializeField] public float regenRate;
     [SerializeField] public AnimationCurve regenRateCurve;
     [SerializeField] private float regenStartTime;
-    public Resource(ResourceType type) { resourceType = type; }
+    // public Resource(ResourceType type) { resourceType = type; }
     
     public float currentMaxValue => maxValue;
     public float currentMinValue => minValue;
@@ -32,8 +32,8 @@ public struct Resource {
     
     public void Reset() {
         currentValue = maxValue;
-        currentMaxValue = maxValue;
-        currentMinValue = minValue;
+        // currentMaxValue = maxValue;
+        // currentMinValue = minValue;
     }
     public void Update() {
         
@@ -171,22 +171,8 @@ class BoostMaxResource : IResourceEffect {
     }
     public void Apply(ResourceState state) {
         
-        
-        
-        
-        state.maximum += 
     }
 }
-
-
-
-
-
-
-
-
-
-
 
 class ResourceBoostEffect {
     public float minValue;

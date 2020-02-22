@@ -1,70 +1,54 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class PlayerStatsView : MonoBehaviour, IPlayerControllerComponent {
-    private Player player;
-    private Camera mainCamera;
-    public GameObject healthBar;
-    public GameObject staminaBar;
-    private GameObject foregroundHealthBar;
-    private GameObject foregroundStaminaBar;
-    private Material activeHealthBarMaterial;
-    private Material activeStaminaBarMaterial;
-    private Color baseHealthBarColor;
-    private Color baseStaminaBarColor;
-    public Color healthFlashColor = Color.red;
-    public Color staminaFlashColor = Color.white;
+[RequireComponent(typeof(Renderer))]
+public class PlayerStatsView : MonoBehaviour {
+    private Player _player = null;
+    private Player player => _player ?? Enforcements.GetSingleComponentInScene<Player>(this);
 
-    public bool hitPlayer = false;
-    public bool useAbility = false;
+    private const int HEALTH_BAR_MATEIRAL_INDEX = 1;
+    private const int STAMINA_BAR_MATERIAL_INDEX = 0;
+    private const string MATERIAL_FILL_VAR = "FillPercent_974DFA7B";
 
-    public float currentHealth = 0f;
-
-    public void SetupControllerComponent(PlayerController controller) {
-        player = controller.player;
-        mainCamera = controller.camera;
-        foregroundHealthBar = Instantiate(healthBar, healthBar.transform.parent);
-        foregroundStaminaBar = GameObject.Instantiate(staminaBar, staminaBar.transform.parent);
-        healthBar.SetActive(false);
-        staminaBar.SetActive(false);
-
-        baseHealthBarColor = healthBar.GetComponent<Renderer>().material.color;
-        baseStaminaBarColor = staminaBar.GetComponent<Renderer>().material.color;
-        activeHealthBarMaterial = foregroundHealthBar.GetComponent<Renderer>().material;
-        activeStaminaBarMaterial = foregroundStaminaBar.GetComponent<Renderer>().material;
+    private struct AttribBarSetter {
+        private float minFill, maxFill;
+        private Material material;
+        public AttribBarSetter(float minFill, float maxFill) {
+            this.minFill = minFill;
+            this.maxFill = maxFill;
+            this.material = null;
+        }
+        public void SetMaterial(Material material) {
+            this.material = material; 
+        }
+        public void Update(float value) {
+            if (material == null) return;
+            value = Mathf.Clamp01(value);
+            value = minFill + (maxFill - minFill) * value;
+            // Debug.Log("setting "+material+" fill to "+ value);
+            material.SetFloat(MATERIAL_FILL_VAR, value);   
+        }
     }
-    private void UpdateHealthBar(GameObject target, GameObject initial, float value) {
-        var scale = target.transform.localScale;
-        var s0 = initial.transform.localScale;
-        scale.Set(s0.x * value, s0.y, s0.z);
-        target.transform.localScale = scale;
+    private AttribBarSetter healthSetter = new AttribBarSetter(0.081f, 0.82f);
+    private AttribBarSetter staminaSetter = new AttribBarSetter(0.079f, 0.592f);
 
-        var pos = target.transform.localPosition;
-        pos.x = initial.transform.localPosition.x - scale.x / 2 + s0.x / 2;
-        target.transform.localPosition = pos;
+    private void OnEnable() {
+        var renderer = Enforcements.GetComponent<Renderer>(this);
+        healthSetter.SetMaterial(renderer.materials[HEALTH_BAR_MATEIRAL_INDEX]);
+        staminaSetter.SetMaterial(renderer.materials[STAMINA_BAR_MATERIAL_INDEX]);
     }
+    private void OnDisable() {
+        healthSetter.SetMaterial(null);
+        staminaSetter.SetMaterial(null);
+    }
+    
     void Update() {
         float health = player.health / player.maxHealth;
         float stamina = player.stamina / player.maxStamina;
-
-        currentHealth = health;
-        
-        UpdateHealthBar(foregroundHealthBar, healthBar, health);
-        UpdateHealthBar(foregroundStaminaBar, staminaBar, stamina);
-
-        activeHealthBarMaterial.color = Color.Lerp(baseHealthBarColor, healthFlashColor, player.isHealthFlashing ? 1f : 0f);
-        activeStaminaBarMaterial.color =
-            Color.Lerp(baseStaminaBarColor, staminaFlashColor, player.isStaminaFlashing ? 1f : 0f);
-        
-        if (hitPlayer) {
-            hitPlayer = false; 
-            player.TakeDamage(15f);
-        }
-        if (useAbility) {
-            useAbility = false;
-            player.TryUseAbility(25f);
-        }
+        healthSetter.Update(health);
+        staminaSetter.Update(stamina);
     }
 }
