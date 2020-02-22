@@ -12,32 +12,32 @@ public enum ResourceType {
 /// Implements a resource (ie. health, stamina, etc)
 /// </summary>
 public struct Resource {
-    // [SerializeField]
-    // public ResourceType resourceType { get; private set; }
-    //
-    // [SerializeField] public float maxValue;
-    // [SerializeField] public float minValue;
-    // [SerializeField] public float currentValue;
-    // [SerializeField] public float regenDelay;
-    // [SerializeField] public float regenRate;
-    // [SerializeField] public AnimationCurve regenRateCurve;
-    // [SerializeField] private float regenStartTime;
+    [SerializeField]
+    public ResourceType resourceType { get; private set; }
+    
+    [SerializeField] public float maxValue;
+    [SerializeField] public float minValue;
+    [SerializeField] public float currentValue;
+    [SerializeField] public float regenDelay;
+    [SerializeField] public float regenRate;
+    [SerializeField] public AnimationCurve regenRateCurve;
+    [SerializeField] private float regenStartTime;
     // public Resource(ResourceType type) { resourceType = type; }
-    //
-    // public float currentMaxValue => maxValue;
-    // public float currentMinValue => minValue;
-    // public float currentValuePct => 
-    //     (currentValue - currentMaxValue) / (currentMaxValue - currentMinValue);
-    //
-    //
-    // public void Reset() {
-    //     currentValue = maxValue;
-    //     currentMaxValue = maxValue;
-    //     currentMinValue = minValue;
-    // }
-    // public void Update() {
-    //     
-    // }
+    
+    public float currentMaxValue => maxValue;
+    public float currentMinValue => minValue;
+    public float currentValuePct => 
+        (currentValue - currentMaxValue) / (currentMaxValue - currentMinValue);
+    
+    
+    public void Reset() {
+        // currentValue = maxValue;
+        // currentMaxValue = maxValue;
+        // currentMinValue = minValue;
+    }
+    public void Update() {
+        
+    }
 }
 
 class Interpolator {
@@ -175,6 +175,15 @@ class BoostMaxResource : IResourceEffect {
 }
 
 class ResourceBoostEffect {
+    public float minValue { get; set; } = 0f;
+    public float maxValue { get; set; } = 1f;
+    public float boostTime { get; set; } = 1f;
+    public float unboostTime { get; set; } = 1f;
+    public AnimationCurve boostCurve { get; set; } = null;
+    public AnimationCurve unboostCurve { get; set; } = null;
+    public bool useBoostCurve { get; set; } = false;
+    public bool useUnboostCurve { get; set; } = false;
+    public bool useSeparateUnboostValues { get; set; } = false;
     
     enum State { None, Boosting, Boosted, Unboosting }
     private State state;
