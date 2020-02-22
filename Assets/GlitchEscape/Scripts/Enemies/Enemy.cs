@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+// [RequireComponent(typeof(EnemyController))]
 [RequireComponent(typeof(NavMeshAgent))] 
 [RequireComponent(typeof(Animator))] 
-public class Enemy : MonoBehaviour, IEnemyControllerComponent {
+public class Enemy : MonoBehaviour {
 
     [HideInInspector]
     public EnemyController controller;
@@ -52,10 +53,13 @@ public class Enemy : MonoBehaviour, IEnemyControllerComponent {
     private bool isReturnTrip;
     private Player player;
 
-    public void SetupControllerComponent(EnemyController controller) {
-        this.controller = controller;
-        player = controller.player;
+    void OnEnable() {
+        player = Enforcements.GetSingleComponentInScene<Player>(this);
     }
+    // public void SetupControllerComponent(EnemyController controller) {
+    //     this.controller = controller;
+    //     player = controller.player;
+    // }
 
     #region UnityUpdateAndAwake
     void Awake() {
