@@ -15,7 +15,7 @@ public class FaceCamera : MonoBehaviour {
 
     // contrived fix to get the main camera, b/c Camera.current + Camera.main
     // MAY BE NULL IN START / AWAKE?!!!!!!
-    Camera camera {
+    new Camera camera {
         get {
             if (_camera == null) {
                 _camera = 
