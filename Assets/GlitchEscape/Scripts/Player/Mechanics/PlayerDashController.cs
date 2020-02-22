@@ -29,7 +29,7 @@ public class PlayerDashController : MonoBehaviour, IPlayerControllerComponent
             bool pressed = context.ReadValue<float>() > 0f;
             dodgePressed = pressed;
         };
-        renderers = GetComponentsInChildren<Renderer>();
+        renderers = player.GetComponentsInChildren<Renderer>();
         defaultMaterials = new List<Material>();
         foreach (var renderer in renderers) {
             foreach (var material in renderer.materials) {
