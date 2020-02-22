@@ -170,19 +170,11 @@ class BoostMaxResource : IResourceEffect {
         state = State.None;
     }
     public void Apply(ResourceState state) {
+        
     }
 }
 
 class ResourceBoostEffect {
-    public float minValue { get; set; } = 0f;
-    public float maxValue { get; set; } = 1f;
-    public float boostTime { get; set; } = 1f;
-    public float unboostTime { get; set; } = 1f;
-    public AnimationCurve boostCurve { get; set; } = null;
-    public AnimationCurve unboostCurve { get; set; } = null;
-    public bool useBoostCurve { get; set; } = false;
-    public bool useUnboostCurve { get; set; } = false;
-    public bool useSeparateUnboostValues { get; set; } = false;
     
     enum State { None, Boosting, Boosted, Unboosting }
     private State state;

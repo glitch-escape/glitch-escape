@@ -6,7 +6,6 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Animator))]
 public class Player : MonoBehaviour {
-    
     // Getters / accessors
     
     /// <summary>
