@@ -62,7 +62,7 @@ public class PlayerAffectorField : MonoBehaviour {
     /// <summary>
     /// collider reference - hidden from other scripts
     /// </summary>
-    private Collider collider => _collider ?? Enforcements.GetComponent(this, out _collider);
+    private new Collider collider => _collider ?? Enforcements.GetComponent(this, out _collider);
     private Collider _collider = null;
 
     void Awake() {
