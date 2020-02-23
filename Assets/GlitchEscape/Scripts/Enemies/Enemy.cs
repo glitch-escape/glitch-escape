@@ -71,7 +71,7 @@ public class Enemy : MonoBehaviour {
         material = GetComponentInChildren<Renderer>().materials[1];
         if (!material) { Debug.LogError("Enemy.cs: Could not find material reference!"); }
 
-        m_animator.SetFloat("walkSpeed", m_agent.speed);
+        m_animator.SetFloat("WalkSpeed", m_agent.speed);
 
         // Start in guard state if there's no patrol points
         if(patrolPoints != null) {
@@ -98,8 +98,8 @@ public class Enemy : MonoBehaviour {
 
     void Update() {
         Behave();
-        m_animator.SetBool("isWalking", !m_agent.isStopped);
-        Debug.Log(curState);
+        m_animator.SetBool("IsWalking", !m_agent.isStopped);
+        // Debug.Log(curState);
     }
     #endregion
 
