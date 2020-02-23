@@ -200,11 +200,6 @@ public class PlayerDashController : MonoBehaviour, IPlayerControllerComponent
         }
     }                                                
     private void BeginDodge() {
-        // do we have enough stamina to perform this action? if no, cancel
-        if (!player.TryUseAbility(dashStaminaCost)) {
-            return;
-        }
-        
         // check: can we dodge yet? if no, cancel
         if (Time.time < dodgeStartTime + dodgeCooldown) {
             // Debug.Log("dodge still on cooldown");
@@ -212,6 +207,10 @@ public class PlayerDashController : MonoBehaviour, IPlayerControllerComponent
         }
         // check: are we moving? if no, cancel
         if (input.Controls.Move.ReadValue<Vector2>().magnitude == 0f) {
+            return;
+        }
+        // do we have enough stamina to perform this action? if no, cancel
+        if (!player.TryUseAbility(dashStaminaCost)) {
             return;
         }
         
