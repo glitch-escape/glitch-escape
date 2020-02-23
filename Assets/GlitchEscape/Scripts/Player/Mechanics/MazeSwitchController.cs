@@ -25,8 +25,8 @@ public class MazeSwitchController : MonoBehaviour, IPlayerControllerComponent {
         _instance = this;
         this.controller = controller;
         player = controller.player;
-        if (!defaultMaze) { Debug.LogError("MazeSwitchController: default Maze missing!"); }
-        if (!glitchMaze) { Debug.LogError("MazeSwitchController: glitch Maze missing!"); }
+        if (!defaultMaze) { Debug.LogWarning("MazeSwitchController: default Maze missing!"); }
+        if (!glitchMaze) { Debug.LogWarning("MazeSwitchController: default Maze missing!"); }
         if (!countdownTimerText) { Debug.LogError("MazeSwitchController: countdown timer text missing!"); }
         if (activeMaze == ActiveMaze.None) {
             SetMazeActive(ActiveMaze.Default);

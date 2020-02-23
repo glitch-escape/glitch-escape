@@ -219,7 +219,7 @@ public class PlayerDashController : MonoBehaviour, IPlayerControllerComponent
             EndDodge();
         }
         if (!animator.GetBool("isDashing")) {
-            Debug.Log("starting dash animation");
+            // Debug.Log("starting dash animation");
             animator.SetBool("isDashing", true);
             animator.SetTrigger("startDashing");
         }
@@ -239,7 +239,7 @@ public class PlayerDashController : MonoBehaviour, IPlayerControllerComponent
     }
     private void EndDodge() {
         if (animator.GetBool("isDashing")) {
-            Debug.Log("ending dash animation");
+            // Debug.Log("ending dash animation");
             animator.SetBool("isDashing", false);
             animator.SetTrigger("stopDashing");
         }
