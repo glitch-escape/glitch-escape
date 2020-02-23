@@ -18,6 +18,7 @@ public class PlayerDashController : MonoBehaviour, IPlayerControllerComponent
     private List<Material> defaultMaterials;
     private Renderer[] renderers;
     public Material glitchMaterial;
+    public float glitchEffectDuration = 3f;
     
     public void SetupControllerComponent(PlayerController controller) {
         this.controller = controller;
@@ -38,8 +39,15 @@ public class PlayerDashController : MonoBehaviour, IPlayerControllerComponent
         }
         animator.SetBool("isDashing", false);
     }
+
+    // TeleportEffectGraph variables
+    public const string GLITCH_MATERIAL_EMISSION_COLOR = "EmissionColor_9A7229B8";
+    public const string GLITCH_MATERIAL_START_TIME = "StartTime_B9ED4C73";
+    public const string GLITCH_MATERIAL_DURATION = "Duration_2B114277";
+    
     void SetGlitchShader() {
-        glitchMaterial.SetFloat("t0", Time.time);
+        glitchMaterial.SetFloat(GLITCH_MATERIAL_START_TIME, Time.time);
+        glitchMaterial.SetFloat(GLITCH_MATERIAL_DURATION, glitchEffectDuration);
         foreach (var renderer in renderers) {
             var materials = renderer.materials;
             for (int i = 0; i < renderer.materials.Length; ++i) {
