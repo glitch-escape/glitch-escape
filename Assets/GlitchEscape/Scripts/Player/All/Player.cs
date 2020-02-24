@@ -173,6 +173,7 @@ public class Player : MonoBehaviour {
             lastStaminaUseTime = Time.time;
             return true;
         } else {
+            PlayerStatsView.instance?.FlashLowStamina();
             FlashLowStamina();
             return false;
         }
