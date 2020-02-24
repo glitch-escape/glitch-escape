@@ -36,6 +36,7 @@ public class PlayerStatsView : MonoBehaviour {
                 material.SetFloat(MATERIAL_FLASH_PERIOD, period);
                 material.SetColor(MATERIAL_FLASH_COLOR, color);
                 material.SetInt(MATERIAL_FLASHING, 1);
+                this.startTime = Time.time;
                 this.duration = duration;
                 this.isFlashing = true;
             }
