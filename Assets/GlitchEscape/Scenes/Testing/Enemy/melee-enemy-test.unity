@@ -416,12 +416,12 @@ PrefabInstance:
     - target: {fileID: 4480004948019582980, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.0000000021398079
+      value: 0.000000002153418
       objectReference: {fileID: 0}
     - target: {fileID: 4480004948019582980, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 2.5168858e-11
+      value: -2.4303826e-10
       objectReference: {fileID: 0}
     - target: {fileID: 4480004948019582980, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
@@ -584,6 +584,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8489b957158684fcfb67d00c71a24302, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &1935964393 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3271633102576873558, guid: b0821361a6a7941f58f21f424ea1ff78,
+    type: 3}
+  m_PrefabInstance: {fileID: 3271633103820316332}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1988816762 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3271633103160393028, guid: b0821361a6a7941f58f21f424ea1ff78,
+    type: 3}
+  m_PrefabInstance: {fileID: 3271633103820316332}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2131225982
 GameObject:
   m_ObjectHideFlags: 0
@@ -740,6 +752,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3256376843566429772, guid: b0821361a6a7941f58f21f424ea1ff78,
+        type: 3}
+      propertyPath: patrolPoints.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3256376843566429772, guid: b0821361a6a7941f58f21f424ea1ff78,
+        type: 3}
+      propertyPath: patrolPoints.Array.data[0]
+      value: 
+      objectReference: {fileID: 1988816762}
+    - target: {fileID: 3256376843566429772, guid: b0821361a6a7941f58f21f424ea1ff78,
+        type: 3}
+      propertyPath: patrolPoints.Array.data[1]
+      value: 
+      objectReference: {fileID: 1935964393}
     - target: {fileID: 3256376843566429809, guid: b0821361a6a7941f58f21f424ea1ff78,
         type: 3}
       propertyPath: player
@@ -749,6 +776,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: MeleeEnemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 3271633103773117733, guid: b0821361a6a7941f58f21f424ea1ff78,
+        type: 3}
+      propertyPath: angleRange
+      value: 360
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b0821361a6a7941f58f21f424ea1ff78, type: 3}

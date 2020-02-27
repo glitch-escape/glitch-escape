@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider))]
-public class Bullet : MonoBehaviour {
+public class Projectile : MonoBehaviour {
 
     private Vector3 direction;
     public float speed, damage;

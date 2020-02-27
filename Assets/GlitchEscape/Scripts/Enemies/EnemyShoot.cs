@@ -10,7 +10,7 @@ public class EnemyShoot : MonoBehaviour, IEnemyAttackAction {
 
     // Attack variables
     public float cooldown, strikeDist;
-    public Bullet bullPrefab;
+    public Projectile bullPrefab;
     public int bulletAmt;
     public float bulletRate;
 
@@ -79,7 +79,7 @@ public class EnemyShoot : MonoBehaviour, IEnemyAttackAction {
             shotsMade += 1;
 
             // Spawn bullet
-            Bullet bullet = Instantiate(bullPrefab, origin, Quaternion.identity);
+            Projectile bullet = Instantiate(bullPrefab, origin, Quaternion.identity);
             bullet.gameObject.SetActive(true);
             bullet.SetDirection(direction);
 
