@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -416,12 +416,12 @@ PrefabInstance:
     - target: {fileID: 4480004948019582980, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.0000000021398079
+      value: 0.000000002153418
       objectReference: {fileID: 0}
     - target: {fileID: 4480004948019582980, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 2.5168858e-11
+      value: -2.4303826e-10
       objectReference: {fileID: 0}
     - target: {fileID: 4480004948019582980, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
@@ -750,5 +750,39 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1444283577}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7258304957322541156, guid: 8f3f5a6ee90ee4f2281157b5f19e1c1a, type: 3}
+    - {fileID: 7258304957322541155, guid: 8f3f5a6ee90ee4f2281157b5f19e1c1a, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 8f3f5a6ee90ee4f2281157b5f19e1c1a, type: 3}
+--- !u!1 &7272601336240230585 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9175966260721250584, guid: 8f3f5a6ee90ee4f2281157b5f19e1c1a,
+    type: 3}
+  m_PrefabInstance: {fileID: 7272601336240230584}
+  m_PrefabAsset: {fileID: 0}
+--- !u!135 &7272601336240230586
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7272601336240230585}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7272601336240230587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7272601336240230585}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 638fe4b5bbcb0468f94f30726e0cdc93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detectionRadius: 10

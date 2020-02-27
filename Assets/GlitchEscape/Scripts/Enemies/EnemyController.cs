@@ -68,7 +68,7 @@ public interface IEnemyIdleAction : IEnemyBehaviorState { }
 /// Uses attached IEnemyBehaviors to determine how this agent acts + behaves, and in turn manages + switches between
 /// different IEnemyBehaviorStates that represent specific actions that this agent is executing right now.
 /// </summary>
-[RequireComponent(typeof(IEnemyVisionController))]
+//[RequireComponent(typeof(IEnemyVisionController))]
 [RequireComponent(typeof(IEnemyPursuitAction))]
 [RequireComponent(typeof(IEnemyIdleAction))]
 [RequireComponent(typeof(IEnemyAttackAction))]
