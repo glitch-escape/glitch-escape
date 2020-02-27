@@ -190,13 +190,14 @@ public class EnemyController : MonoBehaviour {
             EnemyBehaviorState nextActionType;
             if (activeState.ActionFinished(out nextActionType)) {
                 // action finished - contextually activate next action
+                Debug.Log(nextActionType);
                 SetState(nextActionType);
             } else {
                 activeState.UpdateAction();
             }
            // Debug.Log(_behaviorState);
         } else {
-            Debug.Log(_behaviorState);
+            ///Debug.Log(_behaviorState);
             switch (_behaviorState) {
                 case EnemyBehaviorState.None:
                     if (idleActions.Length > 0) {
@@ -214,7 +215,7 @@ public class EnemyController : MonoBehaviour {
     }
 
     public void OnPlayerDetected(Player player) {
-        if (isHostileToPlayer && isIdle) {
+        if (isHostileToPlayer && (isIdle || isPassivelyChasingPlayer)) {
             SetState(EnemyBehaviorState.ChasingPlayer);
         }
     }

@@ -14,6 +14,7 @@ public class EnemyAttack : MonoBehaviour, IEnemyAttackAction {
     public float duration, cooldown;
     public float firstActive, activeLen; // Determine interval attack is active
     public float damage, strikeDist;
+    public float angleRange;
 
     // Other variables
     private float atkStart, curCooldwn;
@@ -77,6 +78,14 @@ public class EnemyAttack : MonoBehaviour, IEnemyAttackAction {
         Vector3 playPos = player.transform.position;
         if (Vector3.Distance(foePos, playPos) > strikeDist)
             return false;
+
+        // Make sure enemy is facing player
+        Vector3 playerDir = playPos - foePos;
+        if (Vector3.Angle(playerDir, enemy.transform.forward) > angleRange) {
+            Debug.Log(Vector3.Angle(playerDir, enemy.transform.forward));
+            return false;
+        }
+           
 
         return true;
     }
