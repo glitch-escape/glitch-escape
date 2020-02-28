@@ -10,7 +10,7 @@ public class Projectile : MonoBehaviour {
     public float lifetime;
 
     void Awake() {
-        Destroy(this, lifetime);
+        Destroy(gameObject, lifetime);
     }
 
     void Update() {
