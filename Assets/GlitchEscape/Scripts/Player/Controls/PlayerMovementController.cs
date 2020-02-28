@@ -103,4 +103,12 @@ public class PlayerMovementController : MonoBehaviour, IPlayerControllerComponen
             } break;
         }
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.CompareTag("Knockback"))
+        {
+            //do a knockback
+        }
+    }
 }
