@@ -1,18 +1,32 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.UI;
+using Debug = UnityEngine.Debug;
 
 // Manages maze switching etc.
 // TODO: add postprocessing effects to glitch maze (see inGlitchMaze and glitchPercentRemaining)
 public class MazeSwitchController : MonoBehaviour, IPlayerControllerComponent {
     private PlayerController controller;
     private Player player;
+
+    private static MazeSwitchController _instance;
+    public static MazeSwitchController instance {
+        get {
+            if (_instance == null) {
+                Debug.LogError("No MazeSwitchController in this level!");
+            }
+            return _instance;
+        }
+    }
+    
     public void SetupControllerComponent(PlayerController controller) {
+        _instance = this;
         this.controller = controller;
         player = controller.player;
-        if (!defaultMaze) { Debug.LogError("MazeSwitchController: default Maze missing!"); }
-        if (!glitchMaze) { Debug.LogError("MazeSwitchController: glitch Maze missing!"); }
+        if (!defaultMaze) { Debug.LogWarning("MazeSwitchController: default Maze missing!"); }
+        if (!glitchMaze) { Debug.LogWarning("MazeSwitchController: default Maze missing!"); }
         if (!countdownTimerText) { Debug.LogError("MazeSwitchController: countdown timer text missing!"); }
         if (activeMaze == ActiveMaze.None) {
             SetMazeActive(ActiveMaze.Default);
@@ -76,6 +90,23 @@ public class MazeSwitchController : MonoBehaviour, IPlayerControllerComponent {
     public void SwitchMazes() {
         SetMazeActive(activeMaze == ActiveMaze.Default ? ActiveMaze.Glitch : ActiveMaze.Default);
     }
+
+    private float lastMazeSwitchTime = -10f;
+    [Range(0f, 1f)] public float mazeSwitchCooldown = 0.2f;
+
+    /// <summary>
+    /// Call this function to switch mazes (with a cooldown, ie. this call may fail)
+    /// </summary>
+    /// <returns></returns>
+    public bool TriggerMazeSwitch() {
+        if (Time.time > lastMazeSwitchTime + mazeSwitchCooldown) {
+            lastMazeSwitchTime = Time.time;
+            SwitchMazes();
+            return true;
+        }
+        return false;
+    }
+    
     void Update() {
         if (inGlitchMaze) {
             if (timeInThisMaze >= glitchMazeTimeLimit) {

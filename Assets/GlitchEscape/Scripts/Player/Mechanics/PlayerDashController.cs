@@ -18,6 +18,7 @@ public class PlayerDashController : MonoBehaviour, IPlayerControllerComponent
     private List<Material> defaultMaterials;
     private Renderer[] renderers;
     public Material glitchMaterial;
+    public float glitchEffectDuration = 3f;
     
     public void SetupControllerComponent(PlayerController controller) {
         this.controller = controller;
@@ -29,7 +30,7 @@ public class PlayerDashController : MonoBehaviour, IPlayerControllerComponent
             bool pressed = context.ReadValue<float>() > 0f;
             dodgePressed = pressed;
         };
-        renderers = GetComponentsInChildren<Renderer>();
+        renderers = player.GetComponentsInChildren<Renderer>();
         defaultMaterials = new List<Material>();
         foreach (var renderer in renderers) {
             foreach (var material in renderer.materials) {
@@ -38,8 +39,15 @@ public class PlayerDashController : MonoBehaviour, IPlayerControllerComponent
         }
         animator.SetBool("isDashing", false);
     }
+
+    // TeleportEffectGraph variables
+    public const string GLITCH_MATERIAL_EMISSION_COLOR = "EmissionColor_9A7229B8";
+    public const string GLITCH_MATERIAL_START_TIME = "StartTime_B9ED4C73";
+    public const string GLITCH_MATERIAL_DURATION = "Duration_2B114277";
+    
     void SetGlitchShader() {
-        glitchMaterial.SetFloat("t0", Time.time);
+        glitchMaterial.SetFloat(GLITCH_MATERIAL_START_TIME, Time.time);
+        glitchMaterial.SetFloat(GLITCH_MATERIAL_DURATION, glitchEffectDuration);
         foreach (var renderer in renderers) {
             var materials = renderer.materials;
             for (int i = 0; i < renderer.materials.Length; ++i) {
@@ -192,11 +200,6 @@ public class PlayerDashController : MonoBehaviour, IPlayerControllerComponent
         }
     }                                                
     private void BeginDodge() {
-        // do we have enough stamina to perform this action? if no, cancel
-        if (!player.TryUseAbility(dashStaminaCost)) {
-            return;
-        }
-        
         // check: can we dodge yet? if no, cancel
         if (Time.time < dodgeStartTime + dodgeCooldown) {
             // Debug.Log("dodge still on cooldown");
@@ -206,13 +209,17 @@ public class PlayerDashController : MonoBehaviour, IPlayerControllerComponent
         if (input.Controls.Move.ReadValue<Vector2>().magnitude == 0f) {
             return;
         }
+        // do we have enough stamina to perform this action? if no, cancel
+        if (!player.TryUseAbility(dashStaminaCost)) {
+            return;
+        }
         
         // if already dodging, end that + restart
         if (isDodging) {
             EndDodge();
         }
         if (!animator.GetBool("isDashing")) {
-            Debug.Log("starting dash animation");
+            // Debug.Log("starting dash animation");
             animator.SetBool("isDashing", true);
             animator.SetTrigger("startDashing");
         }
@@ -232,7 +239,7 @@ public class PlayerDashController : MonoBehaviour, IPlayerControllerComponent
     }
     private void EndDodge() {
         if (animator.GetBool("isDashing")) {
-            Debug.Log("ending dash animation");
+            // Debug.Log("ending dash animation");
             animator.SetBool("isDashing", false);
             animator.SetTrigger("stopDashing");
         }
