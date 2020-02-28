@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(BoxCollider))]
 public class Projectile : MonoBehaviour {
 
     private Vector3 direction;
@@ -14,7 +13,7 @@ public class Projectile : MonoBehaviour {
     }
 
     void Update() {
-        transform.Translate(direction * speed);
+        transform.Translate(direction.x * speed, 0, direction.z * speed);
     }
 
     void OnTriggerEnter(Collider other) {
