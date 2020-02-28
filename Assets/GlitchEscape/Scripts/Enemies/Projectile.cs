@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider))]
-public class Bullet : MonoBehaviour {
+public class Projectile : MonoBehaviour {
 
     private Vector3 direction;
     public float speed, damage;
     public float lifetime;
 
     void Awake() {
-        Destroy(this, lifetime);
+        Destroy(gameObject, lifetime);
     }
 
     void Update() {
