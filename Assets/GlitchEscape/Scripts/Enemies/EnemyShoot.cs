@@ -32,15 +32,15 @@ public class EnemyShoot : MonoBehaviour, IEnemyAttackAction {
     #region AttackActionImplementation
     // Initialize variables of the attack
     public void StartAction() {
-        Debug.Log(curCooldwn);
         curAtkTime = 0;
         curCooldwn = 0;
+        shotsMade = 0;
     }
     // Reset variables of the attack
     public void EndAction() {
         curCooldwn = Time.time;
         curAtkTime = 0;
-        shotsMade = 0;
+        
     }
     // Update variables of the attack
     public void UpdateAction() {
@@ -51,9 +51,9 @@ public class EnemyShoot : MonoBehaviour, IEnemyAttackAction {
     // Informs if the attack has completed
     public bool ActionFinished(out EnemyBehaviorState nextAction) {
         if (shotsMade >= bulletAmt) {
+            Debug.Log("ended");
             nextAction = EnemyBehaviorState.ChasingPlayer;
             EndAction();
-            Debug.Log("WE IN");
             return true;
         }
         nextAction = EnemyBehaviorState.AttackingPlayer;
