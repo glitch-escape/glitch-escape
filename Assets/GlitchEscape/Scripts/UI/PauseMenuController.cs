@@ -10,10 +10,8 @@ public class PauseMenuController : MonoBehaviour
 {
     public GameObject menus;
     public GameObject main;
-    public GameObject keybinds;
 
     public Button mainResumeButtom;
-    public Button returnButtom;
 
     void Awake()
     {
@@ -82,7 +80,7 @@ public class PauseMenuController : MonoBehaviour
         {
             child.gameObject.SetActive(false);
         }
-        menus.SetActive(false);
         main.SetActive(true);
+        menus.SetActive(false);
     }
 }
