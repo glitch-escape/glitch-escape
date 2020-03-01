@@ -8,13 +8,11 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuController : MonoBehaviour
 {
-    public Scene scene;
-
-    public Button DefaultButtom;
+    public Button defaultButtom;
 
     void Start()
     {
-        DefaultButtom.Select();
+        defaultButtom.Select();
     }
 
     // basic navigating for different Menus 
@@ -36,7 +34,7 @@ public class MainMenuController : MonoBehaviour
 
     public void GameStart()
     {
-        SceneManager.LoadScene(scene.name);
+        Loader.Load(Loader.Scene.Opening);
     }
 
     public void GameExit()
