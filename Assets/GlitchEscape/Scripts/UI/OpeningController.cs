@@ -8,36 +8,66 @@ using UnityEngine.SceneManagement;
 
 public class OpeningController : MonoBehaviour
 {
-    public Scene scene;
+    public Button continueButtom;
 
-    public Button defaultButtom;
-
-    public List<GameObject> ops;
+    public List<Image> images;
 
     private int counter = 1;
+    
+    private static float FADE_INTERVAL = 0.05f;
+    private static float FADE_DELAY = 0.01f;
 
     void Start()
     {
-        foreach (GameObject op in ops)
+        foreach (Image image in images)
         {
-            op.SetActive(false);
+            Color c = image.color;
+            c.a = 0f;
+            image.color = c;
         }
-        defaultButtom.Select();
-        ops[0].SetActive(true);
+        continueButtom.Select();
+        Color cc = images[0].color;
+        cc.a = 1f;
+        images[0].color = cc;
     }
 
-    // basic navigating for different Menus 
+    IEnumerator FadeOutCoroutine(Image image)
+    {
+        EventSystem.current.SetSelectedGameObject(null);
+        continueButtom.gameObject.SetActive(false);
+        for (float f = 1; f >= -FADE_INTERVAL; f -= FADE_INTERVAL)
+        {
+            Color c = image.color;
+            c.a = f;
+            image.color = c;
+            yield return new WaitForSeconds(FADE_DELAY);
+        }
+        StartCoroutine(FadeInCoroutine(images[counter]));
+    }
+
+    IEnumerator FadeInCoroutine(Image image)
+    {
+        for (float f = 0; f <= 1; f += FADE_INTERVAL)
+        {
+            Color c = image.color;
+            c.a = f;
+            image.color = c;
+            yield return new WaitForSeconds(FADE_DELAY);
+        }
+        counter++;
+        continueButtom.gameObject.SetActive(true);
+        continueButtom.Select();
+    }
+
     public void OnContinue()
     {
-        if (counter >= ops.Count)
+        if (counter >= images.Count)
         {
             GameStart();
         }
         else
         {
-            ops[counter - 1].SetActive(false);
-            ops[counter].SetActive(true);
-            counter++;
+            StartCoroutine(FadeOutCoroutine(images[counter - 1]));
         }
 
     }
