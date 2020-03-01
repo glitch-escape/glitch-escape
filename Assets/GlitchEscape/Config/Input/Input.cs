@@ -468,12 +468,12 @@ public class @Input : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""ControlTips"",
+                    ""name"": ""PauseMenu"",
                     ""type"": ""Button"",
-                    ""id"": ""26c8bddc-40ae-4b21-8d4e-803b1feaeb2e"",
+                    ""id"": ""33218ca8-5c1a-4687-9a69-ea6cc81a43e5"",
                     ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": ""Press""
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -886,23 +886,34 @@ public class @Input : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""4e641629-4fb8-488f-83d0-b58d95db2d62"",
-                    ""path"": ""<Keyboard>/t"",
+                    ""id"": ""676088db-feec-4864-9f0d-449ca196e5ae"",
+                    ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""ControlTips"",
+                    ""action"": ""PauseMenu"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""18f33d80-839b-4b27-a853-b41882b562ec"",
-                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""id"": ""2343a334-29ec-4aa9-9a5c-cc325d8ac1bf"",
+                    ""path"": ""<DualShockGamepad>/start"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""ControlTips"",
+                    ""action"": ""PauseMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5e15ed84-4c2a-4acc-90f6-46154a6c52c8"",
+                    ""path"": ""<XInputController>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PauseMenu"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -994,7 +1005,7 @@ public class @Input : IInputActionCollection, IDisposable
         m_UI_TrackedDevicePosition = m_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
         m_UI_TrackedDeviceSelect = m_UI.FindAction("TrackedDeviceSelect", throwIfNotFound: true);
-        m_UI_ControlTips = m_UI.FindAction("ControlTips", throwIfNotFound: true);
+        m_UI_PauseMenu = m_UI.FindAction("PauseMenu", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1136,7 +1147,7 @@ public class @Input : IInputActionCollection, IDisposable
     private readonly InputAction m_UI_TrackedDevicePosition;
     private readonly InputAction m_UI_TrackedDeviceOrientation;
     private readonly InputAction m_UI_TrackedDeviceSelect;
-    private readonly InputAction m_UI_ControlTips;
+    private readonly InputAction m_UI_PauseMenu;
     public struct UIActions
     {
         private @Input m_Wrapper;
@@ -1152,7 +1163,7 @@ public class @Input : IInputActionCollection, IDisposable
         public InputAction @TrackedDevicePosition => m_Wrapper.m_UI_TrackedDevicePosition;
         public InputAction @TrackedDeviceOrientation => m_Wrapper.m_UI_TrackedDeviceOrientation;
         public InputAction @TrackedDeviceSelect => m_Wrapper.m_UI_TrackedDeviceSelect;
-        public InputAction @ControlTips => m_Wrapper.m_UI_ControlTips;
+        public InputAction @PauseMenu => m_Wrapper.m_UI_PauseMenu;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1195,9 +1206,9 @@ public class @Input : IInputActionCollection, IDisposable
                 @TrackedDeviceSelect.started -= m_Wrapper.m_UIActionsCallbackInterface.OnTrackedDeviceSelect;
                 @TrackedDeviceSelect.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnTrackedDeviceSelect;
                 @TrackedDeviceSelect.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnTrackedDeviceSelect;
-                @ControlTips.started -= m_Wrapper.m_UIActionsCallbackInterface.OnControlTips;
-                @ControlTips.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnControlTips;
-                @ControlTips.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnControlTips;
+                @PauseMenu.started -= m_Wrapper.m_UIActionsCallbackInterface.OnPauseMenu;
+                @PauseMenu.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnPauseMenu;
+                @PauseMenu.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnPauseMenu;
             }
             m_Wrapper.m_UIActionsCallbackInterface = instance;
             if (instance != null)
@@ -1235,9 +1246,9 @@ public class @Input : IInputActionCollection, IDisposable
                 @TrackedDeviceSelect.started += instance.OnTrackedDeviceSelect;
                 @TrackedDeviceSelect.performed += instance.OnTrackedDeviceSelect;
                 @TrackedDeviceSelect.canceled += instance.OnTrackedDeviceSelect;
-                @ControlTips.started += instance.OnControlTips;
-                @ControlTips.performed += instance.OnControlTips;
-                @ControlTips.canceled += instance.OnControlTips;
+                @PauseMenu.started += instance.OnPauseMenu;
+                @PauseMenu.performed += instance.OnPauseMenu;
+                @PauseMenu.canceled += instance.OnPauseMenu;
             }
         }
     }
@@ -1310,6 +1321,6 @@ public class @Input : IInputActionCollection, IDisposable
         void OnTrackedDevicePosition(InputAction.CallbackContext context);
         void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
         void OnTrackedDeviceSelect(InputAction.CallbackContext context);
-        void OnControlTips(InputAction.CallbackContext context);
+        void OnPauseMenu(InputAction.CallbackContext context);
     }
 }
