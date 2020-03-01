@@ -10,6 +10,7 @@ public class EnemyShoot : MonoBehaviour, IEnemyAttackAction {
 
     // Attack variables
     public float cooldown, strikeDist;
+    public float yShift;
     public Projectile bullPrefab;
     public int bulletAmt;
     public float bulletRate;
@@ -33,18 +34,24 @@ public class EnemyShoot : MonoBehaviour, IEnemyAttackAction {
     public void StartAction() {
         curAtkTime = 0;
         curCooldwn = 0;
+        shotsMade = 0;
     }
     // Reset variables of the attack
-    public void EndAction() { StartAction(); }
+    public void EndAction() {
+        curCooldwn = Time.time;
+        curAtkTime = 0;
+        
+    }
     // Update variables of the attack
     public void UpdateAction() {
         Vector3 dir = player.transform.position - enemy.transform.position;
-        ShootBullets(dir, enemy.transform.position);
+        ShootBullet(dir, enemy.transform.position);
     }
 
     // Informs if the attack has completed
     public bool ActionFinished(out EnemyBehaviorState nextAction) {
         if (shotsMade >= bulletAmt) {
+            Debug.Log("ended");
             nextAction = EnemyBehaviorState.ChasingPlayer;
             EndAction();
             return true;
@@ -56,7 +63,7 @@ public class EnemyShoot : MonoBehaviour, IEnemyAttackAction {
     // Determine if the attack can be preformed
     public bool CanActivate(Player player) {
         // Check if attack is in cooldown
-        if (curCooldwn > 0)
+        if (Time.time - curCooldwn < cooldown)
             return false;
         // Check if attack is in range
         Vector3 foePos = enemy.transform.position;
@@ -64,6 +71,7 @@ public class EnemyShoot : MonoBehaviour, IEnemyAttackAction {
         if (Vector3.Distance(foePos, playPos) > strikeDist)
             return false;
 
+        Debug.Log("asdsadas");
         return true;
     }
     #endregion
@@ -73,12 +81,13 @@ public class EnemyShoot : MonoBehaviour, IEnemyAttackAction {
     public void UpdateCooldown() { curCooldwn -= Time.deltaTime; }
 
     // Returns true when attack is over
-    public void ShootBullets(Vector3 direction, Vector3 origin) {
+    public void ShootBullet(Vector3 direction, Vector3 origin) {
         curAtkTime += Time.deltaTime;
         if (shotsMade * bulletRate < curAtkTime) {
             shotsMade += 1;
 
             // Spawn bullet
+            origin.y += yShift;
             Projectile bullet = Instantiate(bullPrefab, origin, Quaternion.identity);
             bullet.gameObject.SetActive(true);
             bullet.SetDirection(direction);

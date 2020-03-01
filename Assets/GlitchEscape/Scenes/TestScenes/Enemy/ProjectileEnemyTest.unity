@@ -400,6 +400,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 963194227, guid: 7fb674626e4de46f49d82caad6d6ce93, type: 3}
+      propertyPath: field of view
+      value: 60
+      objectReference: {fileID: 0}
     - target: {fileID: 963194228, guid: 7fb674626e4de46f49d82caad6d6ce93, type: 3}
       propertyPath: m_LocalRotation.y
       value: -0
@@ -411,6 +415,22 @@ PrefabInstance:
     - target: {fileID: 963194228, guid: 7fb674626e4de46f49d82caad6d6ce93, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0.09091034
+      objectReference: {fileID: 0}
+    - target: {fileID: 963194228, guid: 7fb674626e4de46f49d82caad6d6ce93, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9958591
+      objectReference: {fileID: 0}
+    - target: {fileID: 963194228, guid: 7fb674626e4de46f49d82caad6d6ce93, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 963194228, guid: 7fb674626e4de46f49d82caad6d6ce93, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 963194228, guid: 7fb674626e4de46f49d82caad6d6ce93, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -4.5
       objectReference: {fileID: 0}
     - target: {fileID: 2108366787, guid: 7fb674626e4de46f49d82caad6d6ce93, type: 3}
       propertyPath: glitchMaze
@@ -519,6 +539,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8205065932806022779, guid: 7fb674626e4de46f49d82caad6d6ce93,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -69.6001
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7fb674626e4de46f49d82caad6d6ce93, type: 3}
@@ -762,7 +787,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 7301142849850432953, guid: fdf9367cf27694b6bbcca492fa145960,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: fdf9367cf27694b6bbcca492fa145960, type: 3}
 --- !u!1001 &7272601336240230584
 PrefabInstance:
@@ -841,17 +872,6 @@ PrefabInstance:
       propertyPath: patrolPoints.Array.data[1]
       value: 
       objectReference: {fileID: 612560494}
-    - target: {fileID: 7258304957322541146, guid: 8f3f5a6ee90ee4f2281157b5f19e1c1a,
-        type: 3}
-      propertyPath: bullPrefab
-      value: 
-      objectReference: {fileID: 1644138091257428884, guid: fdf9367cf27694b6bbcca492fa145960,
-        type: 3}
-    - target: {fileID: 7258304957322541146, guid: 8f3f5a6ee90ee4f2281157b5f19e1c1a,
-        type: 3}
-      propertyPath: bulletAmt
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 7258304957322541154, guid: 8f3f5a6ee90ee4f2281157b5f19e1c1a,
         type: 3}
       propertyPath: m_Name

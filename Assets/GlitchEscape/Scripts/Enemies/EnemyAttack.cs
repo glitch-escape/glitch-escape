@@ -48,6 +48,7 @@ public class EnemyAttack : MonoBehaviour, IEnemyAttackAction {
     // Reset variables of the attack
     public void EndAction() {
         atkStart = 0;
+        curCooldwn = Time.time;
         hasHit = false;
         mesh.enabled = false;
     }
@@ -71,7 +72,7 @@ public class EnemyAttack : MonoBehaviour, IEnemyAttackAction {
     // Determine if the attack can be preformed
     public bool CanActivate(Player player) {
         // Check if attack is in cooldown
-        if (curCooldwn > 0)
+        if (Time.time - curCooldwn < cooldown)
             return false;
         // Check if attack is in range
         Vector3 foePos = enemy.transform.position;
@@ -92,9 +93,6 @@ public class EnemyAttack : MonoBehaviour, IEnemyAttackAction {
     #endregion
 
     #region OtherFunctions
-    // Update the cooldown tracker
-    public void UpdateCooldown() { curCooldwn -= Time.deltaTime; }
-
     // See if the player was hit
     void OnTriggerStay(Collider other) {
         if (isActive && !hasHit) {
