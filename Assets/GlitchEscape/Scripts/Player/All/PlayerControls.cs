@@ -8,9 +8,8 @@ using UnityEngine.InputSystem.DualShock;
 using UnityEngine.InputSystem.Users;
 
 public class PlayerControls : MonoBehaviour {
-    // private Input m_input = null;
-    // public Input input => m_input ?? (m_input = new Input());
-    public Input input { get; private set; } = new Input();
+    private Input m_input = null;
+    public Input input => m_input ?? (m_input = new Input());
     
     private static PlayerControls m_instance = null;
     public static PlayerControls instance => m_instance ?? 
@@ -28,7 +27,7 @@ public class PlayerControls : MonoBehaviour {
         DualshockGamepad,
         XboxGamepad
     };
-    private static InputControlType activeControlType =>
+    public static InputControlType activeControlType =>
         m_instance == null ? InputControlType.None :
         Gamepad.current != null 
             && Gamepad.current.lastUpdateTime >=
@@ -53,6 +52,7 @@ public class PlayerControls : MonoBehaviour {
         m_lastControlType = InputControlType.None;
     }
     private void OnEnable() {
+        input.Enable();
         if (onInputControlTypeChanged != null) {
             onInputControlTypeChanged(activeControlType);
         }
