@@ -107,6 +107,7 @@ public class PlayerControls : MonoBehaviour {
             if (kb.dKey.isPressed) { input.x += 1f; buttonPollInfo.lastKeyboardPressTime = Time.time; }
             if (kb.sKey.isPressed) { input.y -= 1f; buttonPollInfo.lastKeyboardPressTime = Time.time; }
             if (kb.wKey.isPressed) { input.y += 1f; buttonPollInfo.lastKeyboardPressTime = Time.time; }
+            if (input.magnitude > 1f) input.Normalize();
             return input;
         }
     }
@@ -121,7 +122,9 @@ public class PlayerControls : MonoBehaviour {
             if (mouseInput.magnitude > 0f) {
                 buttonPollInfo.lastKeyboardPressTime = Time.time;
             }
-            return input + mouseInput;
+            input += mouseInput;
+            if (input.magnitude > 1f) input.Normalize();
+            return input;
         }
     }
 
