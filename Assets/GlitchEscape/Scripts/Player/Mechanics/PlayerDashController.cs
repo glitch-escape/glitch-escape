@@ -102,12 +102,17 @@ public class PlayerDashController : MonoBehaviour, IPlayerControllerComponent
 
     // is player currently dashing?
     private bool isDashing = false;
+    private float pressTimeLimit = Mathf.Infinity;
     public float dashPressStrength =>
-        dashPressCurve.Evaluate(Mathf.Clamp(dashInput.pressTime / maxDashPressDuration, 0f, 1f));
+        dashPressCurve.Evaluate(Mathf.Clamp(
+            Mathf.Min(pressTimeLimit, dashInput.pressTime) / maxDashPressDuration, 0f, 1f));
     public float currentDashDuration =>
         Mathf.Lerp(dashPressStrength, minDashLength, maxDashLength) / dashSpeed;
+
+    public float minDashStrength => dashPressCurve.Evaluate(0f);
     private float dashStartTime;
     private Vector3 savedDashVelocity = Vector3.zero;
+    private float usedStamina = 0f;
     
     #endregion
     #region DashImplementation
@@ -118,9 +123,18 @@ public class PlayerDashController : MonoBehaviour, IPlayerControllerComponent
     public void Update() {
         if (dashInput.wasPressedThisFrame) {
             BeginDash();
+        } else if (dashInput.isPressed && usedStamina < dashStaminaCost) {
+            // drain stamina up to maximum cost while dash is pressed
+            float staminaCostIncrease = dashStaminaCost * dashPressStrength - usedStamina;
+            if (staminaCostIncrease > 0f && !player.TryUseAbility(staminaCostIncrease)) {
+                // if we run out of stamina, cap the max dash strength (ie. cut dash short)
+                pressTimeLimit = dashInput.pressTime;
+            }
+            usedStamina += staminaCostIncrease;
         }
+
         // terminate dash effect after max dash time
-        if (Time.time > dashStartTime + currentDashDuration) {
+        if (isDashing && Time.time > dashStartTime + currentDashDuration) {
             EndDash();
         }
         if (Time.time > dashStartTime + dashVfxDuration) {
@@ -152,10 +166,12 @@ public class PlayerDashController : MonoBehaviour, IPlayerControllerComponent
         if (PlayerControls.instance.moveInput.magnitude < 1e-4f) {
             return;
         }
-        // do we have enough stamina to perform this action? if no, cancel
-        if (!player.TryUseAbility(dashStaminaCost)) {
+        // do we have enough stamina to perform the -minimum- cost of this action? if no, cancel
+        if (!player.TryUseAbility(dashStaminaCost * minDashStrength)) {
             return;
         }
+        pressTimeLimit = Mathf.Infinity;
+        usedStamina = dashStaminaCost * minDashStrength;
         
         // if already dashing, end that + restart
         if (isDashing) {
