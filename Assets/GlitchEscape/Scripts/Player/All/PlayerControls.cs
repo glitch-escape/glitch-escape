@@ -7,14 +7,17 @@ using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.DualShock;
 using UnityEngine.InputSystem.Users;
 
-public class PlayerControls : MonoBehaviour {
-    private Input m_input = null;
-    public Input input => m_input ?? (m_input = new Input());
-    
+public class PlayerControls : MonoBehaviour {    
     private static PlayerControls m_instance = null;
     public static PlayerControls instance => m_instance ?? 
                                           (m_instance = Enforcements.GetSingleComponentInScene<PlayerControls>());
-    
+
+    private void Awake() {
+        if (instance != this) {
+            Debug.LogError("Duplicate PlayerControls in scene! " + instance + ", " + this);
+        }
+    }
+
     //
     // Inspector properties
     //
@@ -32,9 +35,9 @@ public class PlayerControls : MonoBehaviour {
         }
     }
     private Vector2 GetNormalizedMouseInput() {
-        var input = Mouse.current.delta.ReadValue();
-        input.x *= mouseSensitivity / Screen.width;
-        input.y *= mouseSensitivity / Screen.height;
+        var input = Mouse.current.delta.ReadValue() * mouseSensitivity / Screen.width;
+        // input.x *= mouseSensitivity / Screen.width;
+        // input.y *= mouseSensitivity / Screen.height;
         return input;
     }
     
@@ -54,7 +57,7 @@ public class PlayerControls : MonoBehaviour {
     public HybridButtonControl dash =>
         m_dash ?? (m_dash = new HybridButtonControl(
             new IndirectButtonControl(Keyboard.current.leftShiftKey),
-            new IndirectButtonControl(() => Gamepad.current?.rightTrigger)));
+            new IndirectButtonControl(() => Gamepad.current?.rightShoulder)));
     
     /// <summary>
     /// Provides hardcoded button state + callbacks for the Dodge action
@@ -189,7 +192,6 @@ public class PlayerControls : MonoBehaviour {
         m_lastControlType = InputControlType.None;
     }
     private void OnEnable() {
-        input.Enable();
         if (onInputControlTypeChanged != null) {
             onInputControlTypeChanged(activeControlType);
         }

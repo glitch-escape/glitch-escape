@@ -12,7 +12,6 @@ public class PlayerDashController : MonoBehaviour, IPlayerControllerComponent
 
     private PlayerController controller;
     private Player player;
-    private Input input;
     private Animator animator;
     private new Rigidbody rigidbody;
     private List<Material> defaultMaterials;
@@ -25,11 +24,6 @@ public class PlayerDashController : MonoBehaviour, IPlayerControllerComponent
         player = controller.player;
         rigidbody = player.rigidbody;
         animator = player.animator;
-        input = player.input;
-        input.Controls.Dodge.performed += context => {
-            bool pressed = context.ReadValue<float>() > 0f;
-            dodgePressed = pressed;
-        };
         renderers = player.GetComponentsInChildren<Renderer>();
         defaultMaterials = new List<Material>();
         foreach (var renderer in renderers) {
@@ -111,15 +105,11 @@ public class PlayerDashController : MonoBehaviour, IPlayerControllerComponent
 
     // is player currently dodging?
     private bool isDodging = false;
-    
-    // was dodge button currently pressed as of last frame?
-    private bool isDodgePressed = false;
 
-    // time that dodge started (seconds)
-    private float dodgeStartTime = -10f;
-    
-    // time that dodge has been pressed so far
-    private float dodgePressTime = 0f;
+    private bool dashPressed => PlayerControls.instance.dash.isPressed;
+    private float dashPressTime => PlayerControls.instance.dash.pressTime;
+
+    private float dodgeStartTime = 0f;
     
     private float minDodgeDuration {
         get { return minDodgeLength / dodgeSpeed;  }
@@ -130,7 +120,7 @@ public class PlayerDashController : MonoBehaviour, IPlayerControllerComponent
 
     // current strength of dodge press (depends on press time + min / max dodge hold time)
     private float getCurrentDodgePressStrength () {
-        var pressTime = dodgePressTime - minDodgeHoldTime;
+        var pressTime = Mathf.Max(0f, dashPressTime - minDodgeHoldTime);
         var maxPressTime = maxDodgeHoldTime - minDodgeHoldTime;
         var value = (pressTime + 1e-9f) / (maxPressTime + 1e-9f);    // add small # to avoid divide by zero
         return Mathf.Clamp(value, 0f, 1f);
@@ -149,8 +139,12 @@ public class PlayerDashController : MonoBehaviour, IPlayerControllerComponent
     #endregion
     #region DodgeImplementation
 
+    private bool isDodgePressed = false;
+    private float dodgePressTime = 0f;
+
     public void Update() {
         // handle dodge press input
+        var dodgePressed = PlayerControls.instance.dash.isPressed;
         if (dodgePressed != isDodgePressed) {
             // Debug.Log("dodge state changed! "+isDodgePressed+" => "+dodgePressed);
             if (dodgePressed) {
@@ -206,7 +200,7 @@ public class PlayerDashController : MonoBehaviour, IPlayerControllerComponent
             return;
         }
         // check: are we moving? if no, cancel
-        if (input.Controls.Move.ReadValue<Vector2>().magnitude == 0f) {
+        if (PlayerControls.instance.moveInput.magnitude < 1e-4f) {
             return;
         }
         // do we have enough stamina to perform this action? if no, cancel

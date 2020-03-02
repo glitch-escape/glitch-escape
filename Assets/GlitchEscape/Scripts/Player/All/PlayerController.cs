@@ -19,6 +19,7 @@ public interface IPlayerControllerComponent {
 // across all scenes) by just placing / editing a single prefab containing the player, camera, UI, etc.
 //
 [RequireComponent(typeof(MazeSwitchController))]
+[RequireComponent(typeof(PlayerControls))]
 public class PlayerController : MonoBehaviour {
     
     // The actual player object (external to this object)
