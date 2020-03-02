@@ -5,6 +5,7 @@ using UnityEngine;
 public class StationaryCanonAttack : MonoBehaviour, IEnemyAttackAction {
     private Enemy enemy;
     private EnemyController enemyController;
+    private Player player;
 
     // Attack variables
     public float projYShift;
@@ -18,7 +19,8 @@ public class StationaryCanonAttack : MonoBehaviour, IEnemyAttackAction {
     public void SetupControllerComponent(EnemyController controller) {
         // Get references
         enemyController = controller;
-        enemy = controller.enemy;
+        enemy = enemyController.enemy;
+        player = enemyController.player;
 
         if (!bullPrefab) { Debug.LogError("Bullet prefab missing!"); }
     }
@@ -59,6 +61,7 @@ public class StationaryCanonAttack : MonoBehaviour, IEnemyAttackAction {
             origin.y += projYShift;
             Projectile bullet = Instantiate(bullPrefab, origin, forward);
             bullet.gameObject.SetActive(true);
+            bullet.SetPlayerPos(player.transform);
         }
     }
     #endregion

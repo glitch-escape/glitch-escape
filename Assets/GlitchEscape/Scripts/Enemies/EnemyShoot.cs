@@ -25,8 +25,8 @@ public class EnemyShoot : MonoBehaviour, IEnemyAttackAction {
     public void SetupControllerComponent(EnemyController controller) {
         // Get references
         enemyController = controller;
-        enemy = controller.enemy;
-        player = controller.player;
+        enemy = enemyController.enemy;
+        player = enemyController.player;
 
         if (!bullPrefab) { Debug.LogError("Bullet prefab missing!"); }
     }
@@ -100,6 +100,7 @@ public class EnemyShoot : MonoBehaviour, IEnemyAttackAction {
             Quaternion quat = Quaternion.LookRotation(direction, Vector3.up);
             Projectile bullet = Instantiate(bullPrefab, origin, quat);
             bullet.gameObject.SetActive(true);
+            bullet.SetPlayerPos(player.transform);
         }
     }
     #endregion
