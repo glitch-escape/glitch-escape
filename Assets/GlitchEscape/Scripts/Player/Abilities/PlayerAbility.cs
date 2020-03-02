@@ -128,7 +128,10 @@ public abstract class PlayerAbility : MonoBehaviour, IPlayerControllerComponent 
     public bool varyStaminaCostDependingOnPressTime = true;
     public bool varyDurationDependingOnPressTime = true;
     
+    [SerializeField]
     public float maxPressTime = 0.25f;
+    
+    [SerializeField]
     public AnimationCurve pressTimeFunction;
 
     private float abilityStartTime = 0f;

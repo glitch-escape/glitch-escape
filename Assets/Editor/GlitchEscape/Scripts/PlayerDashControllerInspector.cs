@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(PlayerDashController))]
+// [CustomEditor(typeof(PlayerDashController))]
+// [CanEditMultipleObjects]
 public class PlayerDashControllerInspector : Editor {
     private PlayerDashController m_target;
     void OnEnable() {  }
@@ -35,7 +36,7 @@ public class PlayerDashControllerInspector : Editor {
     private bool showEtc = true;
     
     public override void OnInspectorGUI() {
-        var t = (PlayerDashController)target;
+        var t = (PlayerDashController)serializedObject.targetObject;
         showPressInfo = EditorGUILayout.Foldout(showPressInfo, "press info");
         if (showPressInfo) {
             t.maxPressTime = EditorGUILayout.Slider(
@@ -43,7 +44,14 @@ public class PlayerDashControllerInspector : Editor {
                              t.maxPressTime, 
                              1e-2f, 
                              1.5f);
-            t.pressTimeFunction = EditorGUILayout.CurveField("press time function", t.pressTimeFunction);
+            if (t.pressTimeFunction == null) {
+                Keyframe[] keys = new[] {
+                    new Keyframe(0f, 0f, 0.5f, 0.4f),
+                    new Keyframe(1f, 1f, 0.3f, 0.2f),
+                };
+                t.pressTimeFunction = new AnimationCurve(keys);
+            }
+            t.pressTimeFunction = EditorGUILayout.CurveField("press time function", t.pressTimeFunction ?? new AnimationCurve());
             EditorGUILayout.BeginHorizontal();
             t.varyStaminaCostDependingOnPressTime = EditorGUILayout.Toggle("affect stamina", t.varyStaminaCostDependingOnPressTime);
             t.varyDurationDependingOnPressTime =
@@ -89,5 +97,6 @@ public class PlayerDashControllerInspector : Editor {
         }
         t.varyStrengthDependingOnPressTime = false;
         t.maxEffectStrength = 1f;
+        serializedObject.ApplyModifiedProperties();
     }
 }
