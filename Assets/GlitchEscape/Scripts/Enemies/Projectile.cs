@@ -5,19 +5,32 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Projectile : MonoBehaviour {
 
-     private Vector3 direction;
     public float acceleration;
     public float speed, damage;
     public float lifetime;
 
+    private Vector3 direction;
+
+    public new Rigidbody rigidbody {
+        get {
+            if (m_rigidbody) return m_rigidbody;
+            m_rigidbody = GetComponent<Rigidbody>();
+            if (!m_rigidbody) { Debug.LogError("Projectile missing Rigidbody!"); }
+            return m_rigidbody;
+        }
+    }
+    private Rigidbody m_rigidbody;
+
     void Awake() {
+        m_rigidbody = rigidbody;
+        direction = transform.rotation * Vector3.forward;
+
         Destroy(gameObject, lifetime);
-        GetComponent<Rigidbody>().velocity = Vector3.forward * speed;
+        m_rigidbody.velocity = direction * speed;
     }
 
     void Update() {
-        GetComponent<Rigidbody>().AddForce(Vector3.forward * acceleration);
-
+        m_rigidbody.AddForce(direction * acceleration);
     }
 
     void OnTriggerEnter(Collider other) {
@@ -25,9 +38,6 @@ public class Projectile : MonoBehaviour {
         if (player != null) { player.TakeDamage(damage); }
     }
 
-    
-    public void SetDirection(Vector3 dir) {
-        direction = dir;
-    }
+
     
 }

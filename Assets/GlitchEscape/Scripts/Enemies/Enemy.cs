@@ -17,7 +17,7 @@ public class Enemy : MonoBehaviour {
         get {
             if (m_agent) return m_agent;
             m_agent = GetComponent<NavMeshAgent>();
-            if (!m_agent) { Debug.LogError("Player missing Rigidbody!"); }
+            if (!m_agent) { Debug.LogError("Enemy missing Rigidbody!"); }
             return m_agent;
         }
     }
@@ -27,7 +27,7 @@ public class Enemy : MonoBehaviour {
         get {
             if (m_animator) return m_animator;
             m_animator = GetComponent<Animator>();
-            if (!m_animator) { Debug.LogError(("Player missing Animator!")); }
+            if (!m_animator) { Debug.LogError(("Enemy missing Animator!")); }
             return m_animator;
         }
     }

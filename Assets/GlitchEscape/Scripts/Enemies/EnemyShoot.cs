@@ -10,7 +10,7 @@ public class EnemyShoot : MonoBehaviour, IEnemyAttackAction {
 
     // Attack variables
     public float cooldown, strikeDist;
-    public float yShift;
+    public float projYShift;
     public Projectile bullPrefab;
     public int bulletAmt;
     public float bulletRate;
@@ -35,12 +35,14 @@ public class EnemyShoot : MonoBehaviour, IEnemyAttackAction {
         curAtkTime = 0;
         curCooldwn = 0;
         shotsMade = 0;
+
+        // Make the enemy stand still
+        enemy.navMeshAgent.SetDestination(enemy.transform.position);
     }
     // Reset variables of the attack
     public void EndAction() {
         curCooldwn = Time.time;
         curAtkTime = 0;
-        
     }
     // Update variables of the attack
     public void UpdateAction() {
@@ -51,7 +53,6 @@ public class EnemyShoot : MonoBehaviour, IEnemyAttackAction {
     // Informs if the attack has completed
     public bool ActionFinished(out EnemyBehaviorState nextAction) {
         if (shotsMade >= bulletAmt) {
-            Debug.Log("ended");
             nextAction = EnemyBehaviorState.ChasingPlayer;
             EndAction();
             return true;
@@ -71,7 +72,6 @@ public class EnemyShoot : MonoBehaviour, IEnemyAttackAction {
         if (Vector3.Distance(foePos, playPos) > strikeDist)
             return false;
 
-        Debug.Log("asdsadas");
         return true;
     }
     #endregion
@@ -87,11 +87,10 @@ public class EnemyShoot : MonoBehaviour, IEnemyAttackAction {
             shotsMade += 1;
 
             // Spawn bullet
-            origin.y += yShift;
-            Projectile bullet = Instantiate(bullPrefab, origin, Quaternion.identity);
+            origin.y += projYShift;
+            Quaternion quat = Quaternion.LookRotation(direction, Vector3.up);
+            Projectile bullet = Instantiate(bullPrefab, origin, quat);
             bullet.gameObject.SetActive(true);
-            bullet.SetDirection(direction);
-
         }
     }
     #endregion

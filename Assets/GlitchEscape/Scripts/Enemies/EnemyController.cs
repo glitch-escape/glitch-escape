@@ -177,10 +177,8 @@ public class EnemyController : MonoBehaviour {
             EnemyBehaviorState _;
             if (activeState != null && isAttackingPlayer && !activeState.ActionFinished(out _)) {
             } else {
-                Debug.Log("asjhdgjahsgdjas");
                 foreach (var attack in attackActions) {
                     if (attack.CanActivate(player)) {
-                        Debug.Log("GOT ITTT");
                         _behaviorState = EnemyBehaviorState.AttackingPlayer;
                         SetActiveAction(attack);
                     }
