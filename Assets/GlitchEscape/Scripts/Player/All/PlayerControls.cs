@@ -26,7 +26,7 @@ public class PlayerControls : MonoBehaviour {
     /// - others, like Gamepad (Gamepad.current) do not, but we can wrap this with a small function call that returns
     /// either a ButtonControl or null at runtime. (ie. () => Gamepad.current?.buttonSouth)
     /// </summary>
-    public class IndirectButtonControl {
+    public struct IndirectButtonControl {
         private ButtonControl control;
         private ButtonControlGetter controlGetter;
         public IndirectButtonControl(ButtonControlGetter getter) {
@@ -47,6 +47,13 @@ public class PlayerControls : MonoBehaviour {
             control?.wasReleasedThisFrame ??
             controlGetter()?.wasReleasedThisFrame ?? false;
     }
+
+    public delegate void ButtonPressCallback(bool pressed, HybridButtonControl button);
+
+    public struct ButtonPollInfo {
+        public float lastGamepadPressTime;
+        public float lastKeyboardPressTime;
+    }
     
     /// <summary>
     /// Combines two ıuttonControls, or callbacks that may return a ButtonControl, via IndirectButtonControl.
@@ -55,16 +62,50 @@ public class PlayerControls : MonoBehaviour {
     /// using that approach
     /// </summary>
     public class HybridButtonControl {
-        private IndirectButtonControl first;
-        private IndirectButtonControl second;
+        private IndirectButtonControl keyboardButton;
+        private IndirectButtonControl gamepadButton;
 
-        public HybridButtonControl(IndirectButtonControl first, IndirectButtonControl second) {
-            this.first = first;
-            this.second = second;
+        public HybridButtonControl(IndirectButtonControl keyboardButton, IndirectButtonControl gamepadButton) {
+            this.keyboardButton = keyboardButton;
+            this.gamepadButton = gamepadButton;
         }
-        public bool isPressed => first.isPressed || second.isPressed;
-        public bool wasPressedThisFrame => first.wasPressedThisFrame || second.wasPressedThisFrame;
-        public bool wasReleasedThisFrame => first.wasReleasedThisFrame || second.wasReleasedThisFrame;
+        public bool isPressed => keyboardButton.isPressed || gamepadButton.isPressed;
+        public bool wasPressedThisFrame => keyboardButton.wasPressedThisFrame || gamepadButton.wasPressedThisFrame;
+        public bool wasReleasedThisFrame => keyboardButton.wasReleasedThisFrame || gamepadButton.wasReleasedThisFrame;
+
+        public ButtonPressCallback onPressed;
+        public ButtonPressCallback onReleased;
+        public ButtonPressCallback onChanged;
+
+        private float m_startPressTime;
+
+        public void PollAndDispatchEvents(ref ButtonPollInfo pollInfo) {
+            bool keyPressed = false;
+            bool keyReleased = false;
+            
+            // check individual press states to update key press + track device press states
+            if (keyboardButton.wasPressedThisFrame) {
+                pollInfo.lastKeyboardPressTime = Time.time;
+                keyPressed = true;
+            } else if (gamepadButton.wasPressedThisFrame) {
+                pollInfo.lastGamepadPressTime = Time.time;
+                keyPressed = true;
+            }
+            if (keyboardButton.wasReleasedThisFrame) {
+                pollInfo.lastKeyboardPressTime = Time.time;
+                keyReleased = true;
+            } else if (gamepadButton.wasReleasedThisFrame) {
+                pollInfo.lastGamepadPressTime = Time.time;
+                keyReleased = true;
+            }
+            // fire release + press events
+            // important: if concurrent, fire key release first
+            if (keyReleased && onReleased != null) { onReleased(false, this); }
+            if (keyPressed && onPressed != null)  { onPressed(true, this); }
+            if ((keyPressed || keyReleased) && onChanged != null) {
+                onChanged(keyPressed, this);
+            }
+        }
     }
     
     //
@@ -134,7 +175,7 @@ public class PlayerControls : MonoBehaviour {
         DualshockGamepad,
         XboxGamepad
     };
-    
+
     /// <summary>
     /// Get the currently active input device, determined using <device>.lastUpdateTime + then checking, if this is
     /// a gamepad, which gamepad device is currently active.
@@ -145,15 +186,16 @@ public class PlayerControls : MonoBehaviour {
     /// Potential, albeit labor intensive fix: manually poll all inputs + thus manually check for when a mouse,
     /// keyboard, or gamepad button / axis is pressed or reports any other kind of input 
     /// </summary>
-    public static InputControlType activeControlType =>
-        m_instance == null ? InputControlType.None :
-        Gamepad.current != null 
-            && Gamepad.current.lastUpdateTime >=
-                Math.Max(Keyboard.current.lastUpdateTime, Mouse.current.lastUpdateTime)
-            ? (DualShockGamepad.current != null
-                ? InputControlType.DualshockGamepad
-                : InputControlType.XboxGamepad)
-            : InputControlType.MouseAndKeyboard;
+    // public static InputControlType activeControlType =>
+    //     m_instance == null ? InputControlType.None :
+    //     Gamepad.current != null 
+    //         && Gamepad.current.lastUpdateTime >=
+    //             Math.Max(Keyboard.current.lastUpdateTime, Mouse.current.lastUpdateTime)
+    //         ? (DualShockGamepad.current != null
+    //             ? InputControlType.DualshockGamepad
+    //             : InputControlType.XboxGamepad)
+    //         : InputControlType.MouseAndKeyboard;
+    public static InputControlType activeControlType { get; private set; } = InputControlType.None;
     
     public delegate void InputControlTypeChanged (InputControlType newType);
     
@@ -166,7 +208,21 @@ public class PlayerControls : MonoBehaviour {
     public event InputControlTypeChanged onInputControlTypeChanged;
     private InputControlType m_lastControlType = InputControlType.None;
 
+    private ButtonPollInfo buttonPollInfo = new ButtonPollInfo();
+    
     void Update() {
+        // check buttons + send callback events
+        m_dash?.PollAndDispatchEvents(ref buttonPollInfo);
+        m_dodge?.PollAndDispatchEvents(ref buttonPollInfo);
+        m_manifest?.PollAndDispatchEvents(ref buttonPollInfo);
+        m_jump?.PollAndDispatchEvents(ref buttonPollInfo);
+        m_interact?.PollAndDispatchEvents(ref buttonPollInfo);
+
+        activeControlType = buttonPollInfo.lastGamepadPressTime >= buttonPollInfo.lastKeyboardPressTime
+            ? DualShockGamepad.current != null ? InputControlType.DualshockGamepad : InputControlType.XboxGamepad
+            : InputControlType.MouseAndKeyboard;
+        
+        // check activeControlType + dispatch onInputControlTypeChanged event
         var controlType = activeControlType;
         if (controlType != m_lastControlType && onInputControlTypeChanged != null) {
             m_lastControlType = controlType;
