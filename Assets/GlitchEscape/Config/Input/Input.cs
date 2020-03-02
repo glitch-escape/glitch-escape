@@ -73,6 +73,14 @@ public class @Input : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": ""Press(behavior=2)""
+                },
+                {
+                    ""name"": ""Dash"",
+                    ""type"": ""Button"",
+                    ""id"": ""0429f3a1-a891-48d7-9040-7d2493812ad8"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press(behavior=2)""
                 }
             ],
             ""bindings"": [
@@ -332,7 +340,7 @@ public class @Input : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""5c9853a2-c2b2-479c-9e92-606ef7c2f323"",
-                    ""path"": ""<Keyboard>/leftShift"",
+                    ""path"": ""<Keyboard>/c"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
@@ -370,6 +378,28 @@ public class @Input : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Manifest"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0918636c-b13e-4e6a-a444-2cac87b3d90a"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d81b831e-48e7-41fa-9c96-ab3340c8047a"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -992,6 +1022,7 @@ public class @Input : IInputActionCollection, IDisposable
         m_Controls_Interact = m_Controls.FindAction("Interact", throwIfNotFound: true);
         m_Controls_Dodge = m_Controls.FindAction("Dodge", throwIfNotFound: true);
         m_Controls_Manifest = m_Controls.FindAction("Manifest", throwIfNotFound: true);
+        m_Controls_Dash = m_Controls.FindAction("Dash", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1062,6 +1093,7 @@ public class @Input : IInputActionCollection, IDisposable
     private readonly InputAction m_Controls_Interact;
     private readonly InputAction m_Controls_Dodge;
     private readonly InputAction m_Controls_Manifest;
+    private readonly InputAction m_Controls_Dash;
     public struct ControlsActions
     {
         private @Input m_Wrapper;
@@ -1073,6 +1105,7 @@ public class @Input : IInputActionCollection, IDisposable
         public InputAction @Interact => m_Wrapper.m_Controls_Interact;
         public InputAction @Dodge => m_Wrapper.m_Controls_Dodge;
         public InputAction @Manifest => m_Wrapper.m_Controls_Manifest;
+        public InputAction @Dash => m_Wrapper.m_Controls_Dash;
         public InputActionMap Get() { return m_Wrapper.m_Controls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1103,6 +1136,9 @@ public class @Input : IInputActionCollection, IDisposable
                 @Manifest.started -= m_Wrapper.m_ControlsActionsCallbackInterface.OnManifest;
                 @Manifest.performed -= m_Wrapper.m_ControlsActionsCallbackInterface.OnManifest;
                 @Manifest.canceled -= m_Wrapper.m_ControlsActionsCallbackInterface.OnManifest;
+                @Dash.started -= m_Wrapper.m_ControlsActionsCallbackInterface.OnDash;
+                @Dash.performed -= m_Wrapper.m_ControlsActionsCallbackInterface.OnDash;
+                @Dash.canceled -= m_Wrapper.m_ControlsActionsCallbackInterface.OnDash;
             }
             m_Wrapper.m_ControlsActionsCallbackInterface = instance;
             if (instance != null)
@@ -1128,6 +1164,9 @@ public class @Input : IInputActionCollection, IDisposable
                 @Manifest.started += instance.OnManifest;
                 @Manifest.performed += instance.OnManifest;
                 @Manifest.canceled += instance.OnManifest;
+                @Dash.started += instance.OnDash;
+                @Dash.performed += instance.OnDash;
+                @Dash.canceled += instance.OnDash;
             }
         }
     }
@@ -1307,6 +1346,7 @@ public class @Input : IInputActionCollection, IDisposable
         void OnInteract(InputAction.CallbackContext context);
         void OnDodge(InputAction.CallbackContext context);
         void OnManifest(InputAction.CallbackContext context);
+        void OnDash(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
