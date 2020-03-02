@@ -75,6 +75,12 @@ public abstract class PlayerAbility : MonoBehaviour, IPlayerControllerComponent 
     /// specifies the button control that this ability uses
     /// </summary>
     protected abstract PlayerControls.HybridButtonControl inputButton { get; }
+
+    /// <summary>
+    /// predicate that can be used to conditionally stop this ability from triggering
+    /// </summary>
+    /// <returns></returns>
+    protected virtual bool CanStartAbility() { return true; }
     
     /// <summary>
     /// called after initialization by SetupPlayerComponent()
@@ -164,7 +170,7 @@ public abstract class PlayerAbility : MonoBehaviour, IPlayerControllerComponent 
     
     private float usedStamina;
 
-    private void OnGUI() {
+    public void DrawPlayerAbilityDebugGUI() {
         GUILayout.Label("current state: " + m_state);
         GUILayout.Label("button pressed?: " + inputButton.isPressed);
         GUILayout.Label("button pressed duration: " + inputButton.pressTime);
@@ -177,9 +183,12 @@ public abstract class PlayerAbility : MonoBehaviour, IPlayerControllerComponent 
         GUILayout.Label("ability duration: " + currentAbilityDuration);
         GUILayout.Label("ability strength: " + currentAbilityStrength);
         GUILayout.Label("elapsed time: " + elapsedTime);
-
     }
 
+    public bool drawPlayerAbilityDebugGUI = false;
+    private void OnGUI() {
+        if (drawPlayerAbilityDebugGUI) DrawPlayerAbilityDebugGUI();
+    }
 
     private enum State { None, ActivePressed, Active, Ending }
     private State m_state = State.None;
@@ -218,6 +227,8 @@ public abstract class PlayerAbility : MonoBehaviour, IPlayerControllerComponent 
     }
 
     public bool TryStartAbility() {
+        if (!CanStartAbility()) return false;
+
         if (Time.time - abilityStartTime < abilityCooldown) {
             return false;
         }
