@@ -9,7 +9,7 @@ public static class Loader
 
     public enum Scene
     {
-        Loading, MainMenu, Opening, Level1
+        Loading, MainMenu, Opening, Vertical_Main_Level
     }
 
     private static Action onLoadCallback;
@@ -17,14 +17,18 @@ public static class Loader
 
     public static void Load(Scene scene)
     {
-        onLoadCallback = () =>
-        {
-            GameObject loadingGameObject = new GameObject("Loading Game Object");
-            loadingGameObject.AddComponent<LoadingMonoBehavior>().StartCoroutine(LoadSceneAsync(scene));
-        };
-
-
-        SceneManager.LoadScene(Scene.Loading.ToString());
+        //-------------------
+        // To enable loading screen, uncomment below
+        // onLoadCallback = () =>
+        // {
+        // GameObject loadingGameObject = new GameObject("Loading Game Object");
+        //     loadingGameObject.AddComponent<LoadingMonoBehavior>().StartCoroutine(LoadSceneAsync(scene));
+        // };
+        // SceneManager.LoadScene(Scene.Loading.ToString());
+        //-------------------
+        // and comment out below
+        SceneManager.LoadScene(scene.ToString());
+        //-------------------
     }
 
     private static IEnumerator LoadSceneAsync(Scene scene)
