@@ -13,6 +13,14 @@ public class PlayerDashController : PlayerAbility {
     protected override PlayerControls.HybridButtonControl inputButton
         => m_inputButton ?? (m_inputButton = PlayerControls.instance.dash);
 
+    /// <summary>
+    /// Can trigger iff the player is already moving
+    /// </summary>
+    /// <returns></returns>
+    protected override bool CanStartAbility() {
+        return PlayerControls.instance.moveInput.magnitude > 0f;
+    }
+
     protected override void SetupAbility() {
         animator.SetBool("isDashing", false);
     }

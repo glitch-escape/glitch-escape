@@ -85,6 +85,7 @@ public class PlayerDashControllerInspector : Editor {
             }
             t.dashVfxDuration = EditorGUILayout.Slider("extra vfx duration", t.dashVfxDuration, 0f, 5f);
             t.abilityCooldown = EditorGUILayout.Slider("cooldown", t.abilityCooldown, 0f, 5f);
+            t.drawPlayerAbilityDebugGUI = EditorGUILayout.Toggle("draw debug GUI", t.drawPlayerAbilityDebugGUI);
         }
         t.varyStrengthDependingOnPressTime = false;
         t.maxEffectStrength = 1f;
