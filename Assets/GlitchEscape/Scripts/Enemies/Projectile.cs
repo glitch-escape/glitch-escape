@@ -8,6 +8,7 @@ public class Projectile : MonoBehaviour {
     public float acceleration;
     public float speed, damage;
     public float lifetime;
+    public float growthRate;
 
     private Vector3 direction;
 
@@ -31,6 +32,8 @@ public class Projectile : MonoBehaviour {
 
     void Update() {
         m_rigidbody.AddForce(direction * acceleration);
+        Vector3 growth = Vector3.one * growthRate * Time.deltaTime;
+        transform.localScale += growth; 
     }
 
     void OnTriggerEnter(Collider other) {
