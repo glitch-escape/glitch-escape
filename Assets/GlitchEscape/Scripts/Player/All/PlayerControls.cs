@@ -13,7 +13,7 @@ public class PlayerControls : MonoBehaviour {
                                           (m_instance = Enforcements.GetSingleComponentInScene<PlayerControls>());
 
     private void Awake() {
-        if (instance != this) {
+        if (instance != null && instance != this) {
             Debug.LogError("Duplicate PlayerControls in scene! " + instance + ", " + this);
         }
     }
