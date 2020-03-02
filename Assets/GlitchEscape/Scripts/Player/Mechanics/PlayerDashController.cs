@@ -18,9 +18,11 @@ public class PlayerDashController : MonoBehaviour, IPlayerControllerComponent
     private Renderer[] renderers;
     public Material glitchMaterial;
     public float glitchEffectDuration = 3f;
+    private PlayerControls.HybridButtonControl dashInput;
     
     public void SetupControllerComponent(PlayerController controller) {
         this.controller = controller;
+        dashInput = PlayerControls.instance.dash;
         player = controller.player;
         rigidbody = player.rigidbody;
         animator = player.animator;
@@ -63,140 +65,87 @@ public class PlayerDashController : MonoBehaviour, IPlayerControllerComponent
     }
 
     public float dashStaminaCost = 10f;
-    
-    // is the dodge button currently pressed?
-    private bool dodgePressed = false;
 
     private bool isVfxActive = false;
-    public float dodgeVfxDuration = 1.2f;
+    public float dashVfxDuration = 1.2f;
 
-    #region DodgeMechanics
+    #region DashMechanics
     #region ScriptProperties
     
     [Tooltip("use kinematic vs velocity updates")]
     public bool useKinematic = false;
     
     [Range(0f, 20f)]
-    [Tooltip("minimum dodge distance (meters)")]
-    public float minDodgeLength = 2f;
+    [Tooltip("minimum dash distance (meters)")]
+    public float minDashLength = 2f;
 
     [Range(0f, 20f)]
-    [Tooltip("maximum dodge distance (meters)")]
-    public float maxDoddgeLength = 4f;
+    [Tooltip("maximum dash distance (meters)")]
+    public float maxDashLength = 4f;
 
     [Range(0f, 200f)]
-    [Tooltip("dodge speed (m/s)")] 
-    public float dodgeSpeed = 10f;
-    
+    [Tooltip("dash speed (m/s)")] 
+    public float dashSpeed = 10f;
+
     [Range(0f, 10f)]
-    [Tooltip("min dodge hold time (seconds), after which length of dodge will be extended")]
-    public float minDodgeHoldTime = 0.5f;
-    
-    [Range(0f, 10f)]
-    [Tooltip("max dodge hold time (seconds), at which length of dodge will be capped")]
-    public float maxDodgeHoldTime = 1.5f;
+    [Tooltip("max dash hold time (seconds), at which length of dash will be capped")]
+    public float maxDashPressDuration = 1.5f;
+
+    public AnimationCurve dashPressCurve;
 
     [Range(0f, 2f)]
-    [Tooltip("minimum time between dodges")]
-    public float dodgeCooldown = 0.2f;
+    [Tooltip("minimum time between dashs")]
+    public float dashCooldown = 0.2f;
     
     #endregion
     #region PrivateVariablesAndDerivedProperties
 
-    // is player currently dodging?
-    private bool isDodging = false;
-
-    private bool dashPressed => PlayerControls.instance.dash.isPressed;
-    private float dashPressTime => PlayerControls.instance.dash.pressTime;
-
-    private float dodgeStartTime = 0f;
+    // is player currently dashing?
+    private bool isDashing = false;
+    public float dashPressStrength =>
+        dashPressCurve.Evaluate(Mathf.Clamp(dashInput.pressTime / maxDashPressDuration, 0f, 1f));
+    public float currentDashDuration =>
+        Mathf.Lerp(dashPressStrength, minDashLength, maxDashLength) / dashSpeed;
+    private float dashStartTime;
+    private Vector3 savedDashVelocity = Vector3.zero;
     
-    private float minDodgeDuration {
-        get { return minDodgeLength / dodgeSpeed;  }
-    }
-
-    // saved velocity (when dashing)
-    private Vector3 savedDodgeVelocity = Vector3.zero;
-
-    // current strength of dodge press (depends on press time + min / max dodge hold time)
-    private float getCurrentDodgePressStrength () {
-        var pressTime = Mathf.Max(0f, dashPressTime - minDodgeHoldTime);
-        var maxPressTime = maxDodgeHoldTime - minDodgeHoldTime;
-        var value = (pressTime + 1e-9f) / (maxPressTime + 1e-9f);    // add small # to avoid divide by zero
-        return Mathf.Clamp(value, 0f, 1f);
-    }
-    
-    // current duration of dodge (depends on press time)
-    private float getCurrentDodgeDuration () {
-        var dodgeLength = getCurrentDodgePressStrength() * (maxDoddgeLength - minDodgeLength) + minDodgeLength;
-        return dodgeLength / dodgeSpeed;
-    }
-    
-    // time that dodge has been active so far
-    private float elapsedDodgeTime {
-        get { return Time.time - dodgeStartTime;  }
-    }
     #endregion
-    #region DodgeImplementation
+    #region DashImplementation
 
-    private bool isDodgePressed = false;
-    private float dodgePressTime = 0f;
+    private bool isDashPressed = false;
+    private float dashPressTime = 0f;
 
     public void Update() {
-        // handle dodge press input
-        var dodgePressed = PlayerControls.instance.dash.isPressed;
-        if (dodgePressed != isDodgePressed) {
-            // Debug.Log("dodge state changed! "+isDodgePressed+" => "+dodgePressed);
-            if (dodgePressed) {
-                isDodgePressed = true;
-                BeginDodge();
-            } else { 
-                // dodge button released
-                isDodgePressed = false;
-            }
-        } else if (isDodgePressed) {
-            // update dodge press time
-            dodgePressTime = Time.time - dodgePressTime;
-
-            // ignore additional press time after we exceed the maximum
-            if (dodgePressTime > maxDodgeHoldTime) {
-                dodgePressTime = maxDodgeHoldTime;
-                isDodgePressed = false;
-            }
+        if (dashInput.wasPressedThisFrame) {
+            BeginDash();
         }
-        
-        // terminate dodge effect after max dodge time
-        var dodgeDuration = getCurrentDodgeDuration();
-        if (Time.time > dodgeStartTime + dodgeDuration) {
-            EndDodge();
+        // terminate dash effect after max dash time
+        if (Time.time > dashStartTime + currentDashDuration) {
+            EndDash();
         }
-        if (Time.time > dodgeStartTime + dodgeVfxDuration) {
+        if (Time.time > dashStartTime + dashVfxDuration) {
             isVfxActive = false;
-            EndDodgeVfx();
+            EndDashVfx();
         }
-        
-        // move the player if they're currently dodging, and update vfx
-        if (isDodging) {
-            // var rawMoveInput = input.Controls.Move.ReadValue<Vector2>();
-            // var moveInput = rawMoveInput.magnitude > 0f ? rawMoveInput.normalized : Vector2.up;
-            // var moveDir = Vector3.forward * moveInput.y + Vector3.right * moveInput.x;
+        // move the player if they're currently dashing, and update vfx
+        if (isDashing) {
             var moveDir = Vector3.forward;
             if (useKinematic) {
-                player.transform.Translate(moveDir * dodgeSpeed * Time.deltaTime);
+                player.transform.Translate(moveDir * dashSpeed * Time.deltaTime);
             } else {
-                rigidbody.velocity = player.transform.rotation * moveDir * dodgeSpeed;
+                rigidbody.velocity = player.transform.rotation * moveDir * dashSpeed;
             }
             
         }
         if (isVfxActive) {
             // update vfx
-            UpdateDodgeVfx();
+            UpdateDashVfx();
         }
     }                                                
-    private void BeginDodge() {
-        // check: can we dodge yet? if no, cancel
-        if (Time.time < dodgeStartTime + dodgeCooldown) {
-            // Debug.Log("dodge still on cooldown");
+    private void BeginDash() {
+        // check: can we dash yet? if no, cancel
+        if (Time.time < dashStartTime + dashCooldown) {
+            // Debug.Log("dash still on cooldown");
             return;
         }
         // check: are we moving? if no, cancel
@@ -208,103 +157,75 @@ public class PlayerDashController : MonoBehaviour, IPlayerControllerComponent
             return;
         }
         
-        // if already dodging, end that + restart
-        if (isDodging) {
-            EndDodge();
+        // if already dashing, end that + restart
+        if (isDashing) {
+            EndDash();
         }
         if (!animator.GetBool("isDashing")) {
             // Debug.Log("starting dash animation");
             animator.SetBool("isDashing", true);
             animator.SetTrigger("startDashing");
         }
-        // begin dodge
-        // Debug.Log("Start dodge!");
-        BeginDodgeVfx();
+        // begin dash
+        // Debug.Log("Start dash!");
+        BeginDashVfx();
         isVfxActive = true;
         
         // save velocity
-        savedDodgeVelocity = rigidbody.velocity;
+        savedDashVelocity = rigidbody.velocity;
         
         if (useKinematic) {
             rigidbody.isKinematic = true;
         }
-        isDodging = true; 
-        dodgeStartTime = Time.time;
+        isDashing = true; 
+        dashStartTime = Time.time;
     }
-    private void EndDodge() {
+    private void EndDash() {
         if (animator.GetBool("isDashing")) {
             // Debug.Log("ending dash animation");
             animator.SetBool("isDashing", false);
             animator.SetTrigger("stopDashing");
         }
-        if (isDodging) {
+        if (isDashing) {
 
-            // end dodge
-            // Debug.Log("Stop dodge!");
-            // EndDodgeVfx();
+            // end dash
+            // Debug.Log("Stop dash!");
+            // EndDashVfx();
             
             // reapply velocity, plus gravity over time spent dashing
-            var elapsedTime = Time.time - dodgeStartTime;
+            var elapsedTime = Time.time - dashStartTime;
             // Debug.Log("Applying additional velocity change after " + elapsedTime + " seconds: "
             //           + GRAVITY * elapsedTime);
-            rigidbody.velocity = savedDodgeVelocity +
+            rigidbody.velocity = savedDashVelocity +
                                    Vector3.down * GRAVITY * elapsedTime;
             if (useKinematic) {
                 rigidbody.isKinematic = false;
             }
         }
-        isDodging = false;
+        isDashing = false;
     }
     #endregion
     #endregion
     
-    #region DodgeVfx
+    #region DashVfx
     #region ScriptProperties
-        public ParticleSystem dodgeGroundParticle;
-        public ParticleSystem dodgeAirParticle;
-        public float animateLength = .01f;
-        public float dodgeScaleFactor = 15f;
-        public Texture noiseTex;
     #endregion
     #region PrivateVariables
         private Material defaultMaterial;
-        private Shader dodgeShader;
+        private Shader dashShader;
         private Shader defaultShader;
         private float animateTime = 1.0f;
-        private float dodgeHoldTime = 0f;
+        private float dashHoldTime = 0f;
         #endregion
     #region VfxImplementation
-    private void BeginDodgeVfx() {
-        //dodgeGroundParticle.Emit(1);
-        dodgeAirParticle.Emit(30);
-        dodgeGroundParticle.transform.position = transform.position;
-        dodgeGroundParticle.Emit(1);
+    private void BeginDashVfx() {
         SetGlitchShader();
-        // defaultMaterial.shader = dodgeShader;
-        // defaultMaterial.SetTexture("_Noise", noiseTex);
-        dodgeGroundParticle.transform.rotation = this.transform.rotation;
     }
-    private void EndDodgeVfx() {
+    private void EndDashVfx() {
         ClearGlitchShader();
-        // defaultMaterial.shader = defaultShader;
-        animateTime = 1.0f;
-        dodgeHoldTime = 0f;
-        dodgeGroundParticle.transform.rotation = this.transform.rotation;
     }
-    private void UpdateDodgeVfx() {
-        // defaultMaterial.SetFloat("_AlphaThreshold", animateTime);
-        dodgeHoldTime += Time.deltaTime;
-        dodgeGroundParticle.transform.position = this.transform.position + (-transform.forward * dodgeHoldTime * dodgeScaleFactor);
-        //rotate dodgeGroundParticle
-        if (animateTime > -1)
-        {
-            animateTime -= Time.deltaTime / animateLength;
-        }
-        else
-        {
-            animateTime = -1;
-        }
+    private void UpdateDashVfx() {
     }
     #endregion
-    #endregion DodgeVfx
+    #endregion DashVfx
 }

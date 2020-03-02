@@ -258,9 +258,9 @@ public class PlayerControls : MonoBehaviour {
         public bool wasPressedThisFrame => keyboardButton.wasPressedThisFrame || gamepadButton.wasPressedThisFrame;
         public bool wasReleasedThisFrame => keyboardButton.wasReleasedThisFrame || gamepadButton.wasReleasedThisFrame;
 
-        public ButtonPressCallback onPressed;
-        public ButtonPressCallback onReleased;
-        public ButtonPressCallback onChanged;
+        public event ButtonPressCallback onPressed;
+        public event ButtonPressCallback onReleased;
+        public event ButtonPressCallback onChanged;
 
         private float m_startPressTime = 0f;
         private float m_endPressTime = 0f;
