@@ -21,11 +21,20 @@ public class PlayerControlsTest : MonoBehaviour {
         }
     }
 
-    public bool press;
+    private void LogInputEvent(string message) {
+        inputActionEventList.Add(message);
+    }
+
+    private void pollButton(PlayerControls.HybridButtonControl button, string name) {
+        if (button.wasPressedThisFrame) LogInputEvent(name + " pressed");
+        if (button.wasReleasedThisFrame) LogInputEvent(name + " released");
+    }
     private void Update() {
-        if (Mouse.current.leftButton.isPressed) {
-            inputActionEventList.Add("Hello, world!");
-        }
+        pollButton(PlayerControls.instance.interact, "interact");
+        pollButton(PlayerControls.instance.dodge, "dodge");
+        pollButton(PlayerControls.instance.dash, "dash");
+        pollButton(PlayerControls.instance.manifest, "manifest");
+        pollButton(PlayerControls.instance.jump, "jump");
     }
 
     private Vector2 scrollPos = Vector2.zero;
@@ -41,30 +50,5 @@ public class PlayerControlsTest : MonoBehaviour {
             Debug.Log(""+i+" "+inputActionEventList[i]);
         }
         GUILayout.EndScrollView();
-    }
-
-    void AddCallbacks(InputAction action, string actionName) {
-        action.performed += context => inputActionEventList.Add("Performed " + actionName + "? type=" +
-                                                                context.valueType
-                                                                + " performed=" + context.performed + " cancelled=" +
-                                                                context.canceled);
-        
-        action.canceled += context => inputActionEventList.Add("Canceled " + actionName + "? type=" +
-                                                                context.valueType
-                                                                + " performed=" + context.performed + " cancelled=" +
-                                                                context.canceled);
-        action.started += context => inputActionEventList.Add("Started " + actionName + "? type=" +
-                                                                context.valueType
-                                                                + " performed=" + context.performed + " cancelled=" +
-                                                                context.canceled);
-    }
-    void OnEnable() {
-        PlayerControls.instance.onInputControlTypeChanged += type
-            => inputActionEventList.Add("switched active controls to " + type);
-        
-        AddCallbacks(PlayerControls.instance.dash, "dash");
-        AddCallbacks(PlayerControls.instance.dodge, "dodge");
-        AddCallbacks(PlayerControls.instance.jump, "jump");
-        AddCallbacks(PlayerControls.instance.manifest, "manifest");
     }
 }
