@@ -1086,8 +1086,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.053878706, y: -0, z: -0, w: 0.9985475}
-  m_LocalPosition: {x: -15.9, y: 9.8, z: -7}
+  m_LocalRotation: {x: 0.09091039, y: 6.9101605e-18, z: -6.3081755e-19, w: 0.9958591}
+  m_LocalPosition: {x: 7.83, y: 17.1, z: -43.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1102068784}
@@ -1119,7 +1119,7 @@ Camera:
     height: 1
   near clip plane: 0.1
   far clip plane: 5000
-  field of view: 106
+  field of view: 60
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -2065,40 +2065,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a924bb6dfb4946746bd9c2b1d54efb0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  glitchMaterial: {fileID: 2100000, guid: 704320e0540eb44b6be205d2e2107c66, type: 2}
-  glitchEffectDuration: 1
-  dashStaminaCost: 35
-  dashVfxDuration: 1.2
-  useKinematic: 0
-  minDashLength: 3
-  maxDashLength: 10
-  dashSpeed: 10
-  maxDashPressDuration: 0.25
-  dashPressCurve:
+  abilityCooldown: 0.1
+  maxStaminaCost: 45
+  minStaminaCost: 25
+  minEffectStrength: 3
+  maxEffectStrength: 10
+  minDuration: 0.2
+  maxDuration: 0.5
+  varyStrengthDependingOnPressTime: 0
+  varyStaminaCostDependingOnPressTime: 1
+  varyDurationDependingOnPressTime: 1
+  maxPressTime: 0.25
+  pressTimeFunction:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0.005577066
-      value: 0.69619375
-      inSlope: 0.10390271
-      outSlope: 0.10390271
+      time: 0
+      value: 0
+      inSlope: 0.4286516
+      outSlope: 0.4286516
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.17009751
+      outWeight: 0.07898462
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 0.66483516
-      outSlope: 0.66483516
+      inSlope: 1.8264548
+      outSlope: 1.8264548
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.12350824
+      inWeight: 0.059743643
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  dashCooldown: 0.2
+  glitchMaterial: {fileID: 2100000, guid: 704320e0540eb44b6be205d2e2107c66, type: 2}
+  glitchEffectDuration: 1
+  dashVfxDuration: 1.2
+  useKinematic: 0
+  dashSpeed: 10
 --- !u!114 &5845934389603087960
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5392,12 +5398,12 @@ PrefabInstance:
     - target: {fileID: 3505488081016921733, guid: d2ebc241853cd416cb4411bbc3550e8b,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.0000000019793382
+      value: -0.0000000021459468
       objectReference: {fileID: 0}
     - target: {fileID: 3505488081016921733, guid: d2ebc241853cd416cb4411bbc3550e8b,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 1.2365357e-10
+      value: 1.3406197e-10
       objectReference: {fileID: 0}
     - target: {fileID: 3505488081016921733, guid: d2ebc241853cd416cb4411bbc3550e8b,
         type: 3}
@@ -5417,7 +5423,7 @@ PrefabInstance:
     - target: {fileID: 3505488081541777551, guid: d2ebc241853cd416cb4411bbc3550e8b,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 3.0885264e-18
+      value: 1.7103333e-18
       objectReference: {fileID: 0}
     - target: {fileID: 3505488081541777551, guid: d2ebc241853cd416cb4411bbc3550e8b,
         type: 3}
@@ -5427,7 +5433,7 @@ PrefabInstance:
     - target: {fileID: 3505488081541777551, guid: d2ebc241853cd416cb4411bbc3550e8b,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -3.3832283e-17
+      value: -1.8735494e-17
       objectReference: {fileID: 0}
     - target: {fileID: 3505488081541777551, guid: d2ebc241853cd416cb4411bbc3550e8b,
         type: 3}
@@ -5467,12 +5473,12 @@ PrefabInstance:
     - target: {fileID: 3505488081973172942, guid: d2ebc241853cd416cb4411bbc3550e8b,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 4.940306e-19
+      value: -6.3735524e-18
       objectReference: {fileID: 0}
     - target: {fileID: 3505488081973172942, guid: d2ebc241853cd416cb4411bbc3550e8b,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -4.1015747e-18
+      value: 4.8097707e-18
       objectReference: {fileID: 0}
     - target: {fileID: 3505488081973172942, guid: d2ebc241853cd416cb4411bbc3550e8b,
         type: 3}
@@ -5591,7 +5597,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 434094261, guid: c565e2b6a6a6b4a729579b6c59da6f29, type: 3}
       propertyPath: moveSpeed
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 434094262, guid: c565e2b6a6a6b4a729579b6c59da6f29, type: 3}
       propertyPath: m_Center.y
