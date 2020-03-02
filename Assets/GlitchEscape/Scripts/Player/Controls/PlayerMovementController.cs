@@ -35,8 +35,13 @@ public class PlayerMovementController : MonoBehaviour, IPlayerControllerComponen
     public PlayerMovementMode movementMode = PlayerMovementMode.TurnToFaceMoveDirection;
     public enum PlayerMovementMode {
         TurnToFaceMoveDirection,
-        Strafing
+        Strafing,
+        Stunned
     }
+
+    [Tooltip("Time (s) for player to be stunned after knockback occurs")]
+    public float stunTime;
+    private float currentStunTime = 0;
 
     [Tooltip("Use animator for move speed?")]
     public bool useAnimationDerivedMoveSpeed = true;
@@ -80,6 +85,17 @@ public class PlayerMovementController : MonoBehaviour, IPlayerControllerComponen
         if (!useAnimationDerivedMoveSpeed) {
             Move(moveSpeed);
         }
+
+        if(movementMode == PlayerMovementMode.Stunned)
+        {
+            currentStunTime += Time.fixedDeltaTime;
+        }
+        if(currentStunTime >= stunTime)
+        {
+            movementMode = PlayerMovementMode.TurnToFaceMoveDirection;
+            currentStunTime = 0;
+            playerRigidbody.velocity = Vector3.zero;
+        }
     }
     private void Move (float speed) {
         var cameraDir = moveInputRelativeToCamera;
@@ -101,6 +117,9 @@ public class PlayerMovementController : MonoBehaviour, IPlayerControllerComponen
             case PlayerMovementMode.Strafing: {
                 /* TODO: implement strafing controls */
             } break;
+            case PlayerMovementMode.Stunned:{
+                    //do nothing (for now)
+            } break;
         }
     }
 
@@ -108,7 +127,8 @@ public class PlayerMovementController : MonoBehaviour, IPlayerControllerComponen
     {
         if(collision.gameObject.CompareTag("Knockback"))
         {
-            //do a knockback
+            movementMode = PlayerMovementMode.Stunned;
+            playerRigidbody.velocity += -transform.forward * 3;
         }
     }
 }
