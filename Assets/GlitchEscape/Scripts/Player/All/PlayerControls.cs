@@ -14,7 +14,187 @@ public class PlayerControls : MonoBehaviour {
     private static PlayerControls m_instance = null;
     public static PlayerControls instance => m_instance ?? 
                                           (m_instance = Enforcements.GetSingleComponentInScene<PlayerControls>());
+    
+    //
+    // Inspector properties
+    //
+    public AnimationCurve gamepadAnalogInputCurve;
+    public float mouseSensitivity = 1f;
+    
+    static float ApplyInputCurve(float input, AnimationCurve inputCurve) {
+        var sign = input >= 0f ? 1f : -1f;
+        return inputCurve.Evaluate(Mathf.Abs(input)) * sign;
+    }
+    private void ApplyGamepadInputCurve(ref Vector2 input) {
+        if (gamepadAnalogInputCurve != null) {
+            input.x = ApplyInputCurve(input.x, gamepadAnalogInputCurve);
+            input.y = ApplyInputCurve(input.y, gamepadAnalogInputCurve);
+        }
+    }
+    private Vector2 GetNormalizedMouseInput() {
+        var input = Mouse.current.delta.ReadValue();
+        input.x *= mouseSensitivity / Screen.width;
+        input.y *= mouseSensitivity / Screen.height;
+        return input;
+    }
+    
+    //
+    // Lazy button properties (assemble these lazily / on an as-needed basis b/c we *cannot* construct these
+    // in this object's constructor, b/c of how monobehaviors + script lifetimes + scriptable object lifetimes work)
+    // 
+    private HybridButtonControl m_dash = null;
+    private HybridButtonControl m_dodge = null;
+    private HybridButtonControl m_jump = null;
+    private HybridButtonControl m_manifest = null;
+    private HybridButtonControl m_interact = null;
 
+    /// <summary>
+    /// Provides hardcoded button state + callbacks for the Dash action
+    /// </summary>
+    public HybridButtonControl dash =>
+        m_dash ?? (m_dash = new HybridButtonControl(
+            new IndirectButtonControl(Keyboard.current.leftShiftKey),
+            new IndirectButtonControl(() => Gamepad.current?.rightTrigger)));
+    
+    /// <summary>
+    /// Provides hardcoded button state + callbacks for the Dodge action
+    /// </summary>
+    public HybridButtonControl dodge =>
+        
+        m_dodge ?? (m_dodge = new HybridButtonControl(
+            new IndirectButtonControl(Keyboard.current.cKey),
+            new IndirectButtonControl(() => Gamepad.current?.buttonEast)));
+   
+    /// <summary>
+    /// Provides hardcoded button state + callbacks for the Jump action
+    /// </summary>
+    public HybridButtonControl jump =>
+        m_jump ?? (m_jump = new HybridButtonControl(
+            new IndirectButtonControl(Keyboard.current.spaceKey),
+            new IndirectButtonControl(() => Gamepad.current?.buttonSouth)));
+    
+    /// <summary>
+    /// Provides hardcoded button state + callbacks for the Manifest action
+    /// </summary>
+    public HybridButtonControl manifest =>
+        m_manifest ?? (m_manifest = new HybridButtonControl(
+            new IndirectButtonControl(Keyboard.current.tKey),
+            new IndirectButtonControl(() => Gamepad.current?.leftShoulder)));
+    
+    /// <summary>
+    /// Provides hardcoded button state + callbacks for the Interact action
+    /// </summary>
+    public HybridButtonControl interact =>
+        m_interact ?? (m_interact = new HybridButtonControl(
+            new IndirectButtonControl(Keyboard.current.eKey),
+            new IndirectButtonControl(() => Gamepad.current?.buttonWest)));
+    
+    //
+    // getters for 2d move + look inputs
+    //
+    public Vector2 moveInput {
+        get {
+            var input = Gamepad.current?.leftStick.ReadValue() ?? Vector2.zero;
+            if (input.magnitude > 0f) {
+                buttonPollInfo.lastGamepadPressTime = Time.time;
+                ApplyGamepadInputCurve(ref input);
+            }
+            var kb = Keyboard.current;
+            if (kb.aKey.isPressed) { input.x -= 1f; buttonPollInfo.lastKeyboardPressTime = Time.time; }
+            if (kb.dKey.isPressed) { input.x += 1f; buttonPollInfo.lastKeyboardPressTime = Time.time; }
+            if (kb.sKey.isPressed) { input.y -= 1f; buttonPollInfo.lastKeyboardPressTime = Time.time; }
+            if (kb.wKey.isPressed) { input.y += 1f; buttonPollInfo.lastKeyboardPressTime = Time.time; }
+            return input;
+        }
+    }
+    public Vector2 lookInput {
+        get {
+            var input = Gamepad.current?.rightStick.ReadValue() ?? Vector2.zero;
+            if (input.magnitude > 0f) {
+                buttonPollInfo.lastGamepadPressTime = Time.time;
+                ApplyGamepadInputCurve(ref input);
+            }
+            var mouseInput = GetNormalizedMouseInput();
+            if (mouseInput.magnitude > 0f) {
+                buttonPollInfo.lastKeyboardPressTime = Time.time;
+            }
+            return input + mouseInput;
+        }
+    }
+
+    /// <summary>
+    /// Describes the currently active input device (Mouse + Keyboard or gamepad, and if so, which type)
+    /// </summary>
+    public enum InputControlType {
+        None,
+        MouseAndKeyboard,
+        DualshockGamepad,
+        XboxGamepad
+    };
+
+    /// <summary>
+    /// Get the currently active input device, determined using <device>.lastUpdateTime + then checking, if this is
+    /// a gamepad, which gamepad device is currently active.
+    ///
+    /// FIXME: currently somewhat broken for DS4 controllers on macos - controller aggressively updates + thus
+    /// reports itself as active. w/ an xbox controller this seems to work fine.
+    ///
+    /// Potential, albeit labor intensive fix: manually poll all inputs + thus manually check for when a mouse,
+    /// keyboard, or gamepad button / axis is pressed or reports any other kind of input 
+    /// </summary>
+    // public static InputControlType activeControlType =>
+    //     m_instance == null ? InputControlType.None :
+    //     Gamepad.current != null 
+    //         && Gamepad.current.lastUpdateTime >=
+    //             Math.Max(Keyboard.current.lastUpdateTime, Mouse.current.lastUpdateTime)
+    //         ? (DualShockGamepad.current != null
+    //             ? InputControlType.DualshockGamepad
+    //             : InputControlType.XboxGamepad)
+    //         : InputControlType.MouseAndKeyboard;
+    public static InputControlType activeControlType { get; private set; } = InputControlType.None;
+    
+    public delegate void InputControlTypeChanged (InputControlType newType);
+    
+    /// <summary>
+    /// Callback you can subscribe to that will report when the currently active / most active input device
+    /// changes.
+    ///
+    /// FIXME: currently slightly broken in some cases; see activeControllerType
+    /// </summary>
+    public event InputControlTypeChanged onInputControlTypeChanged;
+    private InputControlType m_lastControlType = InputControlType.None;
+
+    private ButtonPollInfo buttonPollInfo = new ButtonPollInfo();
+    
+    void Update() {
+        // check buttons + send callback events
+        m_dash?.PollAndDispatchEvents(ref buttonPollInfo);
+        m_dodge?.PollAndDispatchEvents(ref buttonPollInfo);
+        m_manifest?.PollAndDispatchEvents(ref buttonPollInfo);
+        m_jump?.PollAndDispatchEvents(ref buttonPollInfo);
+        m_interact?.PollAndDispatchEvents(ref buttonPollInfo);
+
+        activeControlType = buttonPollInfo.lastGamepadPressTime >= buttonPollInfo.lastKeyboardPressTime
+            ? DualShockGamepad.current != null ? InputControlType.DualshockGamepad : InputControlType.XboxGamepad
+            : InputControlType.MouseAndKeyboard;
+        
+        // check activeControlType + dispatch onInputControlTypeChanged event
+        var controlType = activeControlType;
+        if (controlType != m_lastControlType && onInputControlTypeChanged != null) {
+            m_lastControlType = controlType;
+            onInputControlTypeChanged(controlType);
+        }
+    }
+    void OnDisable() {
+        m_lastControlType = InputControlType.None;
+    }
+    private void OnEnable() {
+        input.Enable();
+        if (onInputControlTypeChanged != null) {
+            onInputControlTypeChanged(activeControlType);
+        }
+    }
+    
     public delegate ButtonControl ButtonControlGetter ();
     /// <summary>
     /// Wraps an InputSystem ButtonControl. Constructor takes either a ButtonControl argument (which it forwards
@@ -115,137 +295,6 @@ public class PlayerControls : MonoBehaviour {
                 onPressed?.Invoke(true, this);
                 onChanged?.Invoke(true, this);
             }
-        }
-    }
-    
-    //
-    // Lazy button properties (assemble these lazily / on an as-needed basis b/c we *cannot* construct these
-    // in this object's constructor, b/c of how monobehaviors + script lifetimes + scriptable object lifetimes work)
-    // 
-
-    private HybridButtonControl m_dash = null;
-    private HybridButtonControl m_dodge = null;
-    private HybridButtonControl m_jump = null;
-    private HybridButtonControl m_manifest = null;
-    private HybridButtonControl m_interact = null;
-
-    /// <summary>
-    /// Provides hardcoded button state + callbacks for the Dash action
-    /// </summary>
-    public HybridButtonControl dash =>
-        m_dash ?? (m_dash = new HybridButtonControl(
-            new IndirectButtonControl(Keyboard.current.leftShiftKey),
-            new IndirectButtonControl(() => Gamepad.current?.rightTrigger)));
-    
-    /// <summary>
-    /// Provides hardcoded button state + callbacks for the Dodge action
-    /// </summary>
-    public HybridButtonControl dodge =>
-        
-        m_dodge ?? (m_dodge = new HybridButtonControl(
-            new IndirectButtonControl(Keyboard.current.cKey),
-            new IndirectButtonControl(() => Gamepad.current?.buttonEast)));
-   
-    /// <summary>
-    /// Provides hardcoded button state + callbacks for the Jump action
-    /// </summary>
-    public HybridButtonControl jump =>
-        m_jump ?? (m_jump = new HybridButtonControl(
-            new IndirectButtonControl(Keyboard.current.spaceKey),
-            new IndirectButtonControl(() => Gamepad.current?.buttonSouth)));
-    
-    /// <summary>
-    /// Provides hardcoded button state + callbacks for the Manifest action
-    /// </summary>
-    public HybridButtonControl manifest =>
-        m_manifest ?? (m_manifest = new HybridButtonControl(
-            new IndirectButtonControl(Keyboard.current.tKey),
-            new IndirectButtonControl(() => Gamepad.current?.leftShoulder)));
-    
-    /// <summary>
-    /// Provides hardcoded button state + callbacks for the Interact action
-    /// </summary>
-    public HybridButtonControl interact =>
-        m_interact ?? (m_interact = new HybridButtonControl(
-            new IndirectButtonControl(Keyboard.current.eKey),
-            new IndirectButtonControl(() => Gamepad.current?.buttonWest)));
-    
-    //
-    // getters for 2d move + look inputs
-    //
-    public Vector2 moveInput => instance.input.Controls.Move.ReadValue<Vector2>();
-    public Vector2 lookInput => instance.input.Controls.Look.ReadValue<Vector2>();
-
-    /// <summary>
-    /// Describes the currently active input device (Mouse + Keyboard or gamepad, and if so, which type)
-    /// </summary>
-    public enum InputControlType {
-        None,
-        MouseAndKeyboard,
-        DualshockGamepad,
-        XboxGamepad
-    };
-
-    /// <summary>
-    /// Get the currently active input device, determined using <device>.lastUpdateTime + then checking, if this is
-    /// a gamepad, which gamepad device is currently active.
-    ///
-    /// FIXME: currently somewhat broken for DS4 controllers on macos - controller aggressively updates + thus
-    /// reports itself as active. w/ an xbox controller this seems to work fine.
-    ///
-    /// Potential, albeit labor intensive fix: manually poll all inputs + thus manually check for when a mouse,
-    /// keyboard, or gamepad button / axis is pressed or reports any other kind of input 
-    /// </summary>
-    // public static InputControlType activeControlType =>
-    //     m_instance == null ? InputControlType.None :
-    //     Gamepad.current != null 
-    //         && Gamepad.current.lastUpdateTime >=
-    //             Math.Max(Keyboard.current.lastUpdateTime, Mouse.current.lastUpdateTime)
-    //         ? (DualShockGamepad.current != null
-    //             ? InputControlType.DualshockGamepad
-    //             : InputControlType.XboxGamepad)
-    //         : InputControlType.MouseAndKeyboard;
-    public static InputControlType activeControlType { get; private set; } = InputControlType.None;
-    
-    public delegate void InputControlTypeChanged (InputControlType newType);
-    
-    /// <summary>
-    /// Callback you can subscribe to that will report when the currently active / most active input device
-    /// changes.
-    ///
-    /// FIXME: currently slightly broken in some cases; see activeControllerType
-    /// </summary>
-    public event InputControlTypeChanged onInputControlTypeChanged;
-    private InputControlType m_lastControlType = InputControlType.None;
-
-    private ButtonPollInfo buttonPollInfo = new ButtonPollInfo();
-    
-    void Update() {
-        // check buttons + send callback events
-        m_dash?.PollAndDispatchEvents(ref buttonPollInfo);
-        m_dodge?.PollAndDispatchEvents(ref buttonPollInfo);
-        m_manifest?.PollAndDispatchEvents(ref buttonPollInfo);
-        m_jump?.PollAndDispatchEvents(ref buttonPollInfo);
-        m_interact?.PollAndDispatchEvents(ref buttonPollInfo);
-
-        activeControlType = buttonPollInfo.lastGamepadPressTime >= buttonPollInfo.lastKeyboardPressTime
-            ? DualShockGamepad.current != null ? InputControlType.DualshockGamepad : InputControlType.XboxGamepad
-            : InputControlType.MouseAndKeyboard;
-        
-        // check activeControlType + dispatch onInputControlTypeChanged event
-        var controlType = activeControlType;
-        if (controlType != m_lastControlType && onInputControlTypeChanged != null) {
-            m_lastControlType = controlType;
-            onInputControlTypeChanged(controlType);
-        }
-    }
-    void OnDisable() {
-        m_lastControlType = InputControlType.None;
-    }
-    private void OnEnable() {
-        input.Enable();
-        if (onInputControlTypeChanged != null) {
-            onInputControlTypeChanged(activeControlType);
         }
     }
 }
