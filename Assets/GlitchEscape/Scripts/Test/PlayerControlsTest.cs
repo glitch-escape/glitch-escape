@@ -27,7 +27,7 @@ public class PlayerControlsTest : MonoBehaviour {
 
     private void pollButton(PlayerControls.HybridButtonControl button, string name) {
         if (button.wasPressedThisFrame) LogInputEvent(name + " pressed");
-        if (button.wasReleasedThisFrame) LogInputEvent(name + " released");
+        if (button.wasReleasedThisFrame) LogInputEvent(name + " released (press time: " + button.pressTime+")");
     }
     private void Update() {
         pollButton(PlayerControls.instance.interact, "interact");

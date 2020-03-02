@@ -77,8 +77,11 @@ public class PlayerControls : MonoBehaviour {
         public ButtonPressCallback onReleased;
         public ButtonPressCallback onChanged;
 
-        private float m_startPressTime;
-
+        private float m_startPressTime = 0f;
+        private float m_endPressTime = 0f;
+        private bool m_isPressed = false;
+        public float pressTime => (m_isPressed ? Time.time : m_endPressTime) - m_startPressTime;
+        
         public void PollAndDispatchEvents(ref ButtonPollInfo pollInfo) {
             bool keyPressed = false;
             bool keyReleased = false;
@@ -100,10 +103,17 @@ public class PlayerControls : MonoBehaviour {
             }
             // fire release + press events
             // important: if concurrent, fire key release first
-            if (keyReleased && onReleased != null) { onReleased(false, this); }
-            if (keyPressed && onPressed != null)  { onPressed(true, this); }
-            if ((keyPressed || keyReleased) && onChanged != null) {
-                onChanged(keyPressed, this);
+            if (keyReleased) {
+                m_endPressTime = Time.time;
+                m_isPressed = false;
+                onReleased?.Invoke(false, this);
+                onChanged?.Invoke(false, this);
+            }
+            if (keyPressed) {
+                m_startPressTime = Time.time;
+                m_isPressed = true;
+                onPressed?.Invoke(true, this);
+                onChanged?.Invoke(true, this);
             }
         }
     }
