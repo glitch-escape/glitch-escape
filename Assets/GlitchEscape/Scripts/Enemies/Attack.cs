@@ -81,7 +81,7 @@ public class Attack : MonoBehaviour {
             // Spawn bullet
             Projectile bullet = Instantiate(bullPrefab, origin, Quaternion.identity);
             bullet.gameObject.SetActive(true);
-            bullet.SetDirection(direction);
+           // bullet.SetDirection(direction);
 
         }
         if (shotsMade >= bulletAmt)

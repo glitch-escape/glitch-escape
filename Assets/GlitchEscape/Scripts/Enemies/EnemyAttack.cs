@@ -93,6 +93,11 @@ public class EnemyAttack : MonoBehaviour, IEnemyAttackAction {
     #endregion
 
     #region OtherFunctions
+    // Remove cooldown on enable
+    void OnEnable() {
+        curCooldwn = -cooldown;
+    }
+
     // See if the player was hit
     void OnTriggerStay(Collider other) {
         if (isActive && !hasHit) {
