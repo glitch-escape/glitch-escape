@@ -36,6 +36,13 @@ public class Enforcements {
         }
         return component;
     }
+    public static T GetSingleComponentInScene<T> () where T: Object {
+        var component = GameObject.FindObjectOfType<T>();
+        if (component == null) {
+            Debug.LogError(" no component in this scene! " + typeof(T) + "!");
+        }
+        return component;
+    }
     public static T[] GetAllComponentsInScene<T>(MonoBehaviour script) where T: Object{
         var component = GameObject.FindObjectsOfType<T>();
         if (component == null  || component.Length == 0) {
