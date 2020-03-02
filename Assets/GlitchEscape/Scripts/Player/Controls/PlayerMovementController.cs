@@ -11,7 +11,7 @@ public class PlayerMovementController : MonoBehaviour, IPlayerControllerComponen
     private Transform playerTransform;
     private Rigidbody playerRigidbody;
     private Animator  playerAnimator;
-    private Input playerInput;
+    private PlayerControls playerInput;
     
     // Initialize player references
     public void SetupControllerComponent(PlayerController controller) {
@@ -20,7 +20,7 @@ public class PlayerMovementController : MonoBehaviour, IPlayerControllerComponen
         playerTransform = player.transform;
         playerRigidbody = player.rigidbody;
         playerAnimator = player.animator;
-        playerInput = player.input;
+        playerInput = PlayerControls.instance;
     }
     
     // Public properties
@@ -46,7 +46,7 @@ public class PlayerMovementController : MonoBehaviour, IPlayerControllerComponen
     public float actualMoveSpeed => useAnimationDerivedMoveSpeed ? currentAnimationSpeed : moveSpeed;
 
     // Input values
-    private Vector2 moveInput => playerInput.Controls.Move.ReadValue<Vector2>();
+    private Vector2 moveInput => playerInput.moveInput;
     private bool hasMoveInput => moveInput.magnitude > 1e-6;
     private Vector3 moveInputRelativeToCamera {
         get {

@@ -1,19 +1,19 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerInteractionController : MonoBehaviour, IPlayerControllerComponent {
-
-    private PlayerController playerController;
     private Player player;
-
     public void SetupControllerComponent(PlayerController controller) {
         player = controller.player;
-        player.input.Controls.Interact.performed += OnInteract;
     }
-
-    public void OnInteract(InputAction.CallbackContext context) {
-        if (!context.performed) return;
-
+    private void OnEnable() {
+        PlayerControls.instance.interact.onPressed += OnInteract;
+    }
+    private void OnDisable() {
+        PlayerControls.instance.interact.onPressed -= OnInteract;
+    }
+    public void OnInteract(bool pressed, PlayerControls.HybridButtonControl control) {
         // notify player interact listeners
         player.interactListeners(player);
     }

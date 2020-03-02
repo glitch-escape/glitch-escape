@@ -1362,8 +1362,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.053878706, y: 6.928815e-18, z: -3.7385862e-19, w: 0.9985475}
-  m_LocalPosition: {x: -15.9, y: 9.8, z: -7}
+  m_LocalRotation: {x: 0.09091039, y: 6.9101605e-18, z: -6.3081755e-19, w: 0.9958591}
+  m_LocalPosition: {x: 7.83, y: 17.1, z: -43.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1102068784}
@@ -1395,7 +1395,7 @@ Camera:
     height: 1
   near clip plane: 0.1
   far clip plane: 5000
-  field of view: 106
+  field of view: 60
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -2990,6 +2990,7 @@ GameObject:
   - component: {fileID: 5845934389603087960}
   - component: {fileID: 2108366787}
   - component: {fileID: 2108366788}
+  - component: {fileID: 6613838391056729168}
   m_Layer: 0
   m_Name: PlayerCameraRig
   m_TagString: Untagged
@@ -3043,30 +3044,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29aee1029d660734eaa9f1f65bf1326f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraInputCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0.0010795593
-      value: 0
-      inSlope: 0.48736492
-      outSlope: 0.48736492
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.46054074
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 2.0379624
-      outSlope: 2.0379624
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.02702704
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
   cameraTurnSpeed: 360
 --- !u!114 &2108366786
 MonoBehaviour:
@@ -3082,8 +3059,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   glitchMaterial: {fileID: 2100000, guid: 704320e0540eb44b6be205d2e2107c66, type: 2}
   glitchEffectDuration: 1
-  dashStaminaCost: 30
-  dodgeVfxDuration: 0.8
+  dashStaminaCost: 35
+  dashVfxDuration: 1.2
   useKinematic: 0
   minDodgeLength: 1.9
   maxDoddgeLength: 5.3
@@ -3193,6 +3170,43 @@ MonoBehaviour:
   jumpDuration: 0.64
   downGravityFactor: 2.2
   upGravityFactor: 0.8
+--- !u!114 &6613838391056729168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 778320031773460715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5dcd579211414439b28ab9c20b47864, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gamepadAnalogInputCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.5283019
+      outSlope: 0.5283019
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.8125
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  mouseSensitivity: 200
 --- !u!1 &820751301919058194
 GameObject:
   m_ObjectHideFlags: 0
@@ -6663,6 +6677,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7934903708078051019}
     m_Modifications:
+    - target: {fileID: 434094261, guid: c565e2b6a6a6b4a729579b6c59da6f29, type: 3}
+      propertyPath: moveSpeed
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 434094262, guid: c565e2b6a6a6b4a729579b6c59da6f29, type: 3}
       propertyPath: m_Center.y
       value: 0.6
@@ -6670,6 +6688,10 @@ PrefabInstance:
     - target: {fileID: 434094262, guid: c565e2b6a6a6b4a729579b6c59da6f29, type: 3}
       propertyPath: m_Height
       value: 1.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 434094263, guid: c565e2b6a6a6b4a729579b6c59da6f29, type: 3}
+      propertyPath: staminaRegenPerSec
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 662557835728997480, guid: c565e2b6a6a6b4a729579b6c59da6f29,
         type: 3}
@@ -8614,18 +8636,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c565e2b6a6a6b4a729579b6c59da6f29, type: 3}
---- !u!198 &10476466486760514 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 4911456106150991091, guid: c565e2b6a6a6b4a729579b6c59da6f29,
-    type: 3}
-  m_PrefabInstance: {fileID: 4903794389647376561}
-  m_PrefabAsset: {fileID: 0}
---- !u!198 &10476465859038738 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 4911456105671675555, guid: c565e2b6a6a6b4a729579b6c59da6f29,
-    type: 3}
-  m_PrefabInstance: {fileID: 4903794389647376561}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &4903794389532508166 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 434094263, guid: c565e2b6a6a6b4a729579b6c59da6f29,
