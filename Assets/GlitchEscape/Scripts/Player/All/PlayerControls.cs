@@ -17,9 +17,11 @@ public class PlayerControls : MonoBehaviour {
     
     public Vector2 moveInput => instance.input.Controls.Move.ReadValue<Vector2>();
     public Vector2 lookInput => instance.input.Controls.Look.ReadValue<Vector2>();
-
-    // public ButtonControl dash => instance.input.Controls.Dash;
-    // public ButtonControl dodge => instance.input.Controls.Dodge;
+    
+    public InputAction dash => instance.input.Controls.Dash;
+    public InputAction dodge => instance.input.Controls.Dodge;
+    public InputAction jump => instance.input.Controls.Jump;
+    public InputAction manifest => instance.input.Controls.Manifest;
 
     public enum InputControlType {
         None,
