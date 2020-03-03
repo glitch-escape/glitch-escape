@@ -78,12 +78,20 @@ public class PlayerJumpController : MonoBehaviour, IPlayerControllerComponent
         if (context.performed && jumpCount + 1 < maxJumpCount && !wallCheck) //not wall jump
         {
             jumpCount++;
-            rigidbody.velocity += new Vector3(0, jumpVelocity, 0);
+            if (rigidbody.velocity.y < 0f) {
+                rigidbody.velocity = Vector3.up * jumpVelocity;
+            } else {
+                rigidbody.velocity += Vector3.up * jumpVelocity;
+            }
         }
         else if (context.performed && wallCheck && !CheckOnGround() && (lastWallNormal != currentWallNormal)) //wall jump
         {
             jumpCount = 0;
-            rigidbody.velocity += new Vector3(0, jumpVelocity * wallJumpMultiplier, 0) + (currentWallNormal * jumpVelocity);
+            if (rigidbody.velocity.y < 0f) { 
+                rigidbody.velocity = Vector3.up * jumpVelocity * wallJumpMultiplier + currentWallNormal * jumpVelocity;
+            } else {
+                rigidbody.velocity += Vector3.up * jumpVelocity * wallJumpMultiplier + currentWallNormal * jumpVelocity;
+            }
         }
         lastWallNormal = currentWallNormal;
     }
