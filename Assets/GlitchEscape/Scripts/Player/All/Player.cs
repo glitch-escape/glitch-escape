@@ -39,6 +39,10 @@ public class Player : MonoBehaviour {
         }
     }
     private Animator m_animator;
+
+    //audio management variables
+    public AudioClip[] soundfx;
+    public AudioSource soundSource;
     
     // input instance singleton
     public Input input => m_input ?? (m_input = new Input());
@@ -50,6 +54,8 @@ public class Player : MonoBehaviour {
         input.Enable();
         SetInitialSpawnLocation(transform.position, transform.rotation);
         ResetStats();
+        soundfx = new AudioClip[5];
+        soundSource = GetComponent<AudioSource>();
     }
     #endregion
 
@@ -230,6 +236,12 @@ public class Player : MonoBehaviour {
             activeMazeSwitch = null;
         }
         activeSwitch.SetMazeSwitchActive(false);
+    }
+    #endregion
+    #region Audio
+    void PlaySound(int soundIndex)
+    {
+        soundSource.PlayOneShot(soundfx[soundIndex]);
     }
     #endregion
 }
