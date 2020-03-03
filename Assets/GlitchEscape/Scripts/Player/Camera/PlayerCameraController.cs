@@ -7,7 +7,6 @@ public class PlayerCameraController : MonoBehaviour, IPlayerControllerComponent 
     private CinemachineFreeLook freeLookCam;
     private new Camera camera;
     public void SetupControllerComponent(PlayerController controller) {
-        Debug.Log("Setting up PlayerCameraController sub-component");
         this.controller = controller;
         camera = controller.camera;
         freeLookCam = controller.GetComponentInChildren<CinemachineFreeLook>();

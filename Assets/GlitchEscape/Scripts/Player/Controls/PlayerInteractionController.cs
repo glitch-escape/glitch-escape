@@ -15,6 +15,7 @@ public class PlayerInteractionController : MonoBehaviour, IPlayerControllerCompo
     }
     public void OnInteract(bool pressed, PlayerControls.HybridButtonControl control) {
         // notify player interact listeners
+        Debug.Log("interaction pressed at " + Time.time);
         player.interactListeners(player);
     }
 }
