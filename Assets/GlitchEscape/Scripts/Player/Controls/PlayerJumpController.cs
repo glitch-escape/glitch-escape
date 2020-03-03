@@ -17,6 +17,10 @@ public class PlayerJumpController : MonoBehaviour, IPlayerControllerComponent
         player.input.Controls.Jump.performed += OnJump;
     }
 
+    public void OnPlayerRespawn() {
+        
+    }
+
     [Tooltip("jump height (meters). Inaccurate if gravity factors != 1")]
     public float jumpHeight = 2f;
 

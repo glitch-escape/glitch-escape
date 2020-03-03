@@ -33,6 +33,10 @@ public class MazeSwitchController : MonoBehaviour, IPlayerControllerComponent {
         }
         // TODO: get (or check) reference to postprocessing effects here
     }
+    public void OnPlayerRespawn() {
+        
+    }
+
     public Maze defaultMaze;
     public Maze glitchMaze;
     public Text countdownTimerText;

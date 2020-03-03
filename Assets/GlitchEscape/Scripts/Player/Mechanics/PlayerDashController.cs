@@ -25,6 +25,11 @@ public class PlayerDashController : PlayerAbility {
         animator.SetBool("isDashing", false);
     }
 
+    protected override void ResetAbility() {
+        Debug.Log("re-setting dash ability");
+        savedDashVelocity = Vector3.zero;
+    }
+
     protected override void OnAbilityStateChange(PlayerAbilityState prevState, PlayerAbilityState newState) {
         // Debug.Log("Setting state " + prevState + " => " + newState);
         switch (newState) {
@@ -100,14 +105,15 @@ public class PlayerDashController : PlayerAbility {
         player.PlaySound(3);//play static
     }
     private void EndDash() {
+        Debug.Log("Ending dash + setting velocity to " + savedDashVelocity);
         if (animator.GetBool("isDashing")) {
             // Debug.Log("ending dash animation");
             animator.SetBool("isDashing", false);
             animator.SetTrigger("stopDashing");
         }
         // reapply velocity, plus gravity over time spent dashing
-        rigidbody.velocity = savedDashVelocity +
-                             Vector3.down * Mathf.Abs(Physics.gravity.y) * elapsedTime;
+        // rigidbody.velocity = savedDashVelocity +
+        //                      Vector3.down * Mathf.Abs(Physics.gravity.y) * elapsedTime;
         if (useKinematic) {
             rigidbody.isKinematic = false;
         }

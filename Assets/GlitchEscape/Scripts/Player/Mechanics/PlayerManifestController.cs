@@ -42,6 +42,10 @@ public class PlayerManifestController : MonoBehaviour, IPlayerControllerComponen
         //animator.SetBool("isDashing", false);
     }
 
+    public void OnPlayerRespawn() {
+        
+    }
+
     public float manifestStaminaCost = 10f;
 
     // is the manifest button currently pressed?

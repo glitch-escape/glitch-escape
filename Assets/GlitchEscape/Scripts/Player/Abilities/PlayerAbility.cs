@@ -105,12 +105,16 @@ public abstract class PlayerAbility : MonoBehaviour, IPlayerControllerComponent 
     /// <returns>true iff this ability is finished + should return to a None state</returns>
     protected abstract bool IsAbilityFinished();
 
+    protected abstract void ResetAbility();
+
     public void SetupControllerComponent(PlayerController controller) {
         player = controller.player;
-        state = PlayerAbilityState.None;
-        
-        
         SetupAbility();
+    }
+    
+    public void OnPlayerRespawn() {
+        state = PlayerAbilityState.None;
+        ResetAbility();
     }
 
     public float abilityCooldown = 0f;

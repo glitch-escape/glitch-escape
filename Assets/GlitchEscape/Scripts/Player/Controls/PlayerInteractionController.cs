@@ -7,6 +7,10 @@ public class PlayerInteractionController : MonoBehaviour, IPlayerControllerCompo
     public void SetupControllerComponent(PlayerController controller) {
         player = controller.player;
     }
+    public void OnPlayerRespawn() {
+        
+    }
+
     private void OnEnable() {
         PlayerControls.instance.interact.onPressed += OnInteract;
     }

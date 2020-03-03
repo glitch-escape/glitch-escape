@@ -21,12 +21,14 @@ public class PlayerMovementController : MonoBehaviour, IPlayerControllerComponen
         playerRigidbody = player.rigidbody;
         playerAnimator = player.animator;
         playerInput = PlayerControls.instance;
-        
+    }
+
+    public void OnPlayerRespawn() {
         // clear velocity
         movementMode = PlayerMovementMode.TurnToFaceMoveDirection;
         playerRigidbody.velocity = Vector3.zero;
     }
-    
+
     // Public properties
 
     [Tooltip("Player movement speed (meters / second)")]

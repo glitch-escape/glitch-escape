@@ -8,6 +8,7 @@ using UnityEngine;
 // in a deterministic manner.
 public interface IPlayerControllerComponent {
     void SetupControllerComponent(PlayerController controller);
+    void OnPlayerRespawn();
 }
 
 // Central player controller script, with behaviors broken into components (see IPlayerControllerComponent)
@@ -43,13 +44,12 @@ public class PlayerController : MonoBehaviour {
     public void RespawnPlayer() {
         mazeSwitcher.SetMazeActive(MazeSwitchController.ActiveMaze.Default);
         player.RespawnAt(savePointLocation);
-        
-        OnEnable();
-
         var animator = player.animator;
         animator.SetBool("isRunning", false);
         animator.SetBool("isDashing", false);
         animator.SetBool("isJumping", false);
+        InvokeOnSubComponents((component) => component.OnPlayerRespawn());
+        player.rigidbody.velocity = Vector3.zero;
     }
     
     private bool isEnabled = false;
@@ -65,27 +65,33 @@ public class PlayerController : MonoBehaviour {
         player.controller = this;
 
         isEnabled = true;
-        SetupSubControllers(player.GetComponents<IPlayerControllerComponent>());
-        SetupSubControllers(GetComponents<IPlayerControllerComponent>());
+        SetupSubControllers();
     }
     void OnEnable() {
         player.input.Enable();
         if (!isEnabled) {
             isEnabled = true;
             // Setup our sub-controllers on both this object and the player object
-            SetupSubControllers(player.GetComponents<IPlayerControllerComponent>());
-            SetupSubControllers(GetComponents<IPlayerControllerComponent>());
+            SetupSubControllers();
         }
     }
-
     private void OnDisable() {
         isEnabled = false;
         player.input.Disable();
     }
 
-    private void SetupSubControllers(IPlayerControllerComponent[] components) {
-        foreach (var component in components) {
-            component.SetupControllerComponent(this);
+    private delegate void SubcomponentCallback(IPlayerControllerComponent component);
+    void InvokeOnSubComponents(SubcomponentCallback callback) {
+        if (player.gameObject != gameObject) {
+            foreach (var component in player.GetComponents<IPlayerControllerComponent>()) {
+                callback(component);
+            }
         }
+        foreach (var component in GetComponents<IPlayerControllerComponent>()) {
+            callback(component);
+        }
+    }
+    private void SetupSubControllers() {
+        InvokeOnSubComponents((component) => component.SetupControllerComponent(this));
     }
 }

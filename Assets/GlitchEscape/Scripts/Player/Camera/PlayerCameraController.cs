@@ -14,6 +14,11 @@ public class PlayerCameraController : MonoBehaviour, IPlayerControllerComponent 
             Debug.LogError("PlayerCameraController.cs: missing CinemachineFreeLook component under a PlayerController object!");
         }
     }
+
+    public void OnPlayerRespawn() {
+        
+    }
+
     [Tooltip("Camera turn speed, in degrees / sec")]
     [Range(5f, 360)] public float cameraTurnSpeed = 180f;
     
