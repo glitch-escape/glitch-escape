@@ -7,7 +7,7 @@ using UnityEngine;
 public class InteractablePolysphere : MonoBehaviour, IPlayerInteractable
 {
     public Transform floatTextArea;
-    public string interactMessage = "[Pick up]";
+    public string interactMessage = "[Collect Polysphere]";
 
     private FloatingTextController floatingText;
     private ObjectiveController objectiveController;
