@@ -7,6 +7,8 @@ public class BasicEnemyIdle : MonoBehaviour, IEnemyIdleAction {
     private EnemyController enemyController;
     private Player player;
 
+    public bool doesPatrol;
+
     // Initialize component
     public void SetupControllerComponent(EnemyController controller) {
         // Get references
@@ -27,8 +29,8 @@ public class BasicEnemyIdle : MonoBehaviour, IEnemyIdleAction {
      //       enemyController.OnPlayerDetected(player);
     }
     public bool ActionFinished(out EnemyBehaviorState nextAction) {
-        nextAction = EnemyBehaviorState.Idle;
-        return false;
+        nextAction = EnemyBehaviorState.SearchingForPlayer;
+        return doesPatrol;
     }
     public bool CanActivate(Player player) {
         return true;
