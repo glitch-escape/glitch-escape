@@ -193,7 +193,10 @@ public class Player : MonoBehaviour {
             KillPlayer();
         }
     }
-    public void KillPlayer() { controller.RespawnPlayer(); }
+    public void KillPlayer() {
+        controller.RespawnPlayer();
+        PlaySound(4);
+    }
     void Update() {
         if (Time.time > lastTimeTookDamage + healthRegenDelay && m_health < maxHealth) {
             var timeToFullHealthRegen = maxHealth / healthRegenPerSec;
