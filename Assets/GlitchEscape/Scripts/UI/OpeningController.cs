@@ -10,6 +10,8 @@ public class OpeningController : MonoBehaviour
 {
     public Button continueButtom;
 
+    private AudioSource sceneAudioSource;
+
     public List<Image> images;
 
     private int counter = 1;
@@ -29,6 +31,8 @@ public class OpeningController : MonoBehaviour
         Color cc = images[0].color;
         cc.a = 1f;
         images[0].color = cc;
+        sceneAudioSource = GetComponent<AudioSource>();
+        sceneAudioSource.Stop();
     }
 
     IEnumerator FadeOutCoroutine(Image image)
@@ -68,6 +72,11 @@ public class OpeningController : MonoBehaviour
         else
         {
             StartCoroutine(FadeOutCoroutine(images[counter - 1]));
+        }
+
+        if(counter == 4)
+        {
+            sceneAudioSource.Play();
         }
 
     }
