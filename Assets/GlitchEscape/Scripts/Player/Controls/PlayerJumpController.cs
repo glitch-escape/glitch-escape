@@ -78,6 +78,7 @@ public class PlayerJumpController : MonoBehaviour, IPlayerControllerComponent
         if (context.performed && jumpCount + 1 < maxJumpCount && !wallCheck) //not wall jump
         {
             jumpCount++;
+            player.PlaySound(0); // play bloop
             if (rigidbody.velocity.y < 0f) {
                 rigidbody.velocity = Vector3.up * jumpVelocity;
             } else {
@@ -87,6 +88,7 @@ public class PlayerJumpController : MonoBehaviour, IPlayerControllerComponent
         else if (context.performed && wallCheck && !CheckOnGround() && (lastWallNormal != currentWallNormal)) //wall jump
         {
             jumpCount = 0;
+            player.PlaySound(1); //play ping
             if (rigidbody.velocity.y < 0f) { 
                 rigidbody.velocity = Vector3.up * jumpVelocity * wallJumpMultiplier + currentWallNormal * jumpVelocity;
             } else {
@@ -106,6 +108,7 @@ public class PlayerJumpController : MonoBehaviour, IPlayerControllerComponent
                 if (isJumping)
                 {
                     isJumping = false;
+                    player.PlaySound(2); //play dit
                 }
                 if (animator.GetBool("isJumping"))
                 {
@@ -121,6 +124,7 @@ public class PlayerJumpController : MonoBehaviour, IPlayerControllerComponent
             if (Time.time >= jumpStartTime + jumpDuration)
             {
                 isJumping = false;
+                player.PlaySound(2); //play dit
             }
             else
             {
