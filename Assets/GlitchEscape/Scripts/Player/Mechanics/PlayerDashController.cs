@@ -38,6 +38,9 @@ public class PlayerDashController : PlayerAbility {
                 EndDash();
                 break;
             case PlayerAbilityState.None:
+                if (prevState == PlayerAbilityState.Active) {
+                    EndDash();
+                }
                 ClearGlitchShader();
                 break;
         }
