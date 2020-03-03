@@ -40,11 +40,14 @@ public class EnemyShoot : MonoBehaviour, IEnemyAttackAction {
 
         // Make the enemy stand still
         enemy.navMeshAgent.SetDestination(enemy.transform.position);
+        enemy.animator.SetBool("isAttacking", true);
     }
     // Reset variables of the attack
     public void EndAction() {
         curCooldwn = Time.time;
         curAtkTime = 0;
+
+        enemy.animator.SetBool("isAttacking", false);
     }
     // Update variables of the attack
     public void UpdateAction() {
