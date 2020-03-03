@@ -94,6 +94,7 @@ public class PlayerDashController : PlayerAbility {
         if (useKinematic) {
             rigidbody.isKinematic = true;
         }
+        player.PlaySound(3);//play static
     }
     private void EndDash() {
         if (animator.GetBool("isDashing")) {
