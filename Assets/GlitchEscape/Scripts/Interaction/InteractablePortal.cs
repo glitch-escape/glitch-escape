@@ -24,7 +24,7 @@ public class InteractablePortal : MonoBehaviour, IPlayerInteractable {
     }
 
     public Transform floatTextArea;
-    public string interactMessage = "[Go through]";
+    public string interactMessage = "[Step through the portal]";
 
     public PlayableDirector portalCutscene;
     private FloatingTextController floatingText;

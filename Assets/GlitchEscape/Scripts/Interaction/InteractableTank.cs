@@ -13,7 +13,7 @@ public class InteractableTank : MonoBehaviour, IPlayerInteractable
     public enum ObjectiveColor { None, Red, Yellow, Green, Blue, Cyan, Purple }
     [Tooltip("corresponding to Polysphere, color is unique in the same object")]
     public ObjectiveColor objective = ObjectiveColor.None;
-    public string interactMessage = "[Extract]";
+    public string interactMessage = "[Free hostage]";
 
     private FloatingTextController floatingText;
     private InteractablePolysphere interactablePolysphere;
