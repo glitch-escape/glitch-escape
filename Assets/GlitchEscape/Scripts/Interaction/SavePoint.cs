@@ -8,7 +8,7 @@ public class SavePoint : MonoBehaviour, IPlayerInteractable {
     public void OnInteract(Player player) {}
     public void OnPlayerEnterInteractionRadius(Player player) {
         if (spawnPoint != null)
-            player.SetInitialSpawnLocation(spawnPoint.position, spawnPoint.rotation);
+            player.controller.SetSavePoint(spawnPoint);
     }
     public void OnPlayerExitInteractionRadius(Player player) {}
 }

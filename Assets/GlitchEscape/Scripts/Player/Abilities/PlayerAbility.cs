@@ -107,6 +107,9 @@ public abstract class PlayerAbility : MonoBehaviour, IPlayerControllerComponent 
 
     public void SetupControllerComponent(PlayerController controller) {
         player = controller.player;
+        state = PlayerAbilityState.None;
+        
+        
         SetupAbility();
     }
 
