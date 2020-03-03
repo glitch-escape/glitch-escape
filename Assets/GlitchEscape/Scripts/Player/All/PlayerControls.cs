@@ -9,13 +9,34 @@ using UnityEngine.InputSystem.Users;
 
 public class PlayerControls : MonoBehaviour {    
     private static PlayerControls m_instance = null;
-    public static PlayerControls instance => m_instance ?? 
-                                          (m_instance = Enforcements.GetSingleComponentInScene<PlayerControls>());
-
-    private void Awake() {
-        if (instance != null && instance != this) {
-            Debug.LogError("Duplicate PlayerControls in scene! " + instance + ", " + this);
+    public static PlayerControls instance {
+        get {
+            if (m_instance == null) {
+                m_instance = GameObject.FindObjectOfType<PlayerControls>();
+                if (m_instance == null) {
+                    Debug.LogError("no player controls instance in this scene!");
+                }
+            }
+            return m_instance;
         }
+        private set {
+            if (m_instance == value) return;
+            if (m_instance != null) {
+                Debug.LogError("duplicate player controls instance in this scene!");
+            }
+            m_instance = value;
+        }
+    }
+    private void Awake() { instance = this; }
+    private void OnEnable() {
+        instance = this;
+        if (onInputControlTypeChanged != null) {
+            onInputControlTypeChanged(activeControlType);
+        }
+    }
+    void OnDisable() {
+        instance = null;
+        m_lastControlType = InputControlType.None;
     }
 
     //
@@ -191,15 +212,6 @@ public class PlayerControls : MonoBehaviour {
             onInputControlTypeChanged(controlType);
         }
     }
-    void OnDisable() {
-        m_lastControlType = InputControlType.None;
-    }
-    private void OnEnable() {
-        if (onInputControlTypeChanged != null) {
-            onInputControlTypeChanged(activeControlType);
-        }
-    }
-    
     public delegate ButtonControl ButtonControlGetter ();
     /// <summary>
     /// Wraps an InputSystem ButtonControl. Constructor takes either a ButtonControl argument (which it forwards
