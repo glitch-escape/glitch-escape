@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1843,12 +1843,12 @@ PrefabInstance:
     - target: {fileID: 4480004948019582980, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000000017332571
+      value: -0.000000017324599
       objectReference: {fileID: 0}
     - target: {fileID: 4480004948019582980, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -7.453928e-10
+      value: 5.283557e-10
       objectReference: {fileID: 0}
     - target: {fileID: 4480004948019582980, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
@@ -1868,12 +1868,12 @@ PrefabInstance:
     - target: {fileID: 4480004948942281807, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -1.2466342e-11
+      value: -0.000000007409582
       objectReference: {fileID: 0}
     - target: {fileID: 4480004948942281807, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -7.874619e-10
+      value: 9.944892e-10
       objectReference: {fileID: 0}
     - target: {fileID: 4480004949643349518, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
@@ -2210,25 +2210,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 695799347616749347, guid: f562f7760cb91004ead7463040ee012c,
+    - target: {fileID: 2604980105052309931, guid: f562f7760cb91004ead7463040ee012c,
         type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0.116517715
+      propertyPath: interactMessage
+      value: '[Free hostage]'
       objectReference: {fileID: 0}
-    - target: {fileID: 695799347616749347, guid: f562f7760cb91004ead7463040ee012c,
+    - target: {fileID: 2842859017463746603, guid: f562f7760cb91004ead7463040ee012c,
         type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.6851098
+      propertyPath: interactMessage
+      value: '[Collect Polysphere]'
       objectReference: {fileID: 0}
-    - target: {fileID: 695799347616749347, guid: f562f7760cb91004ead7463040ee012c,
+    - target: {fileID: 3900730259034254850, guid: f562f7760cb91004ead7463040ee012c,
         type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0.112398304
+      propertyPath: interactMessage
+      value: '[Collect Polysphere]'
       objectReference: {fileID: 0}
-    - target: {fileID: 695799347616749347, guid: f562f7760cb91004ead7463040ee012c,
+    - target: {fileID: 4711127058427048162, guid: f562f7760cb91004ead7463040ee012c,
         type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7102217
+      propertyPath: interactMessage
+      value: '[Collect Polysphere]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 5586513185774560240, guid: f562f7760cb91004ead7463040ee012c,
+        type: 3}
+      propertyPath: interactMessage
+      value: '[Collect Polysphere]'
       objectReference: {fileID: 0}
     - target: {fileID: 5610238778098116844, guid: f562f7760cb91004ead7463040ee012c,
         type: 3}
@@ -2240,20 +2245,25 @@ PrefabInstance:
       propertyPath: dialogManager
       value:
       objectReference: {fileID: 577428605}
+    - target: {fileID: 7530993608351726475, guid: f562f7760cb91004ead7463040ee012c,
+        type: 3}
+      propertyPath: interactMessage
+      value: '[Collect Polysphere]'
+      objectReference: {fileID: 0}
     - target: {fileID: 8351132308966168255, guid: f562f7760cb91004ead7463040ee012c,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.6851098
+      value: 0.68510973
       objectReference: {fileID: 0}
     - target: {fileID: 8351132308966168255, guid: f562f7760cb91004ead7463040ee012c,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.112398244
+      value: -0.11239812
       objectReference: {fileID: 0}
     - target: {fileID: 8351132308966168255, guid: f562f7760cb91004ead7463040ee012c,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7102217
+      value: 0.71022177
       objectReference: {fileID: 0}
     - target: {fileID: 8351132308966168255, guid: f562f7760cb91004ead7463040ee012c,
         type: 3}
@@ -2265,5 +2275,35 @@ PrefabInstance:
       propertyPath: m_SceneBindings.Array.data[0].value
       value:
       objectReference: {fileID: 1361640878497966590}
+    - target: {fileID: 8683638697165618056, guid: f562f7760cb91004ead7463040ee012c,
+        type: 3}
+      propertyPath: interactMessage
+      value: '[Free hostage]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 8683638697530823056, guid: f562f7760cb91004ead7463040ee012c,
+        type: 3}
+      propertyPath: interactMessage
+      value: '[Free hostage]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 8683638697924723981, guid: f562f7760cb91004ead7463040ee012c,
+        type: 3}
+      propertyPath: interactMessage
+      value: '[Free hostage]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 8683638697991968834, guid: f562f7760cb91004ead7463040ee012c,
+        type: 3}
+      propertyPath: interactMessage
+      value: '[Free hostage]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 8683638698125876493, guid: f562f7760cb91004ead7463040ee012c,
+        type: 3}
+      propertyPath: interactMessage
+      value: '[Free hostage]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 9210968099689024920, guid: f562f7760cb91004ead7463040ee012c,
+        type: 3}
+      propertyPath: interactMessage
+      value: '[Collect Polysphere]'
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f562f7760cb91004ead7463040ee012c, type: 3}

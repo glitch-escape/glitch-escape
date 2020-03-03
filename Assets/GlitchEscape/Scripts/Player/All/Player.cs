@@ -223,7 +223,6 @@ public class Player : MonoBehaviour {
     /// Called by a MazeSwitch script to register itself as an active maze switch.
     /// Expects SetMazeSwitch() called in response
     /// </summary>
-    /// <param name="activeSwitch"></param>
     public void SetActiveMazeSwitch(MazeSwitch activeSwitch) {
         if (activeMazeSwitch != null) {
             activeMazeSwitch.SetMazeSwitchActive(false);

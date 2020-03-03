@@ -109,17 +109,21 @@ public class MazeSwitchController : MonoBehaviour, IPlayerControllerComponent {
     
     void Update() {
         if (inGlitchMaze) {
-            if (timeInThisMaze >= glitchMazeTimeLimit) {
-                player.KillPlayer();
-            } else {
-                var timeRemaining = glitchMazeTimeRemaining + 0.9;
-                var minutes = (int)(timeRemaining / 60);
-                var seconds = (int) (timeRemaining % 60);
-                countdownTimerText.text = "" + minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
-
-                var glitchPercent = glitchPercentRemaining;
-                // TODO: implement postprocessing effects here
-            }
+            // instead of updating maze timer, just apply damage over time
+            // 10 damage / sec, default 100 health = 10 seconds, same as we had previously
+            player.TakeDamage(10f * Time.deltaTime);
+            
+            // if (timeInThisMaze >= glitchMazeTimeLimit) {
+            //     player.KillPlayer();
+            // } else {
+            //     var timeRemaining = glitchMazeTimeRemaining + 0.9;
+            //     var minutes = (int)(timeRemaining / 60);
+            //     var seconds = (int) (timeRemaining % 60);
+            //     countdownTimerText.text = "" + minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+            //
+            //     var glitchPercent = glitchPercentRemaining;
+            //     // TODO: implement postprocessing effects here
+            // }
         }
     }
 }
