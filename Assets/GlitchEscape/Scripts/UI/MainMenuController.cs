@@ -31,16 +31,12 @@ public class MainMenuController : MonoBehaviour
     {
         navTo.SetActive(true);
     }
-
-    public void GameStart()
-    {
-        Loader.Load(Loader.Scene.Opening);
-    }
+    public void PlayTutorial () { Loader.Load(Loader.Scene.Tutorial_01_Movement); }
+    public void PlayPlatformingLevel () { Loader.Load(Loader.Scene.Vertical_Main_Level); }
+    public void PlayMainLevel () { Loader.Load(Loader.Scene.Vertical_Platforming_Level); }
 
     public void GameExit()
     {
         Application.Quit();
     }
-
-
 }
