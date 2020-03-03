@@ -460,6 +460,7 @@ MonoBehaviour:
   moveSpeed: 6.22
   turnSpeed: 12
   movementMode: 0
+  stunTime: 0
   useAnimationDerivedMoveSpeed: 0
 --- !u!114 &434094263
 MonoBehaviour:
@@ -485,6 +486,54 @@ MonoBehaviour:
   startingHealthPercent: 1
   lowStaminaFlashDuration: 0.5
   lowStaminaFlashCount: 1
+  staminaRegenCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.00009536743
+      value: 0.50149536
+      inSlope: 0.074094675
+      outSlope: 0.074094675
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.5901999
+    - serializedVersion: 3
+      time: 0.9988518
+      value: 2.484552
+      inSlope: 5.640128
+      outSlope: 5.640128
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.020396205
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  healthRegenCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.002380371
+      value: 0.50341797
+      inSlope: 0.344294
+      outSlope: 0.344294
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.058450114
+    - serializedVersion: 3
+      time: 0.9980469
+      value: 2.2953873
+      inSlope: 4.578572
+      outSlope: 4.578572
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.019926831
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1301753536124584637
 GameObject:
   m_ObjectHideFlags: 0

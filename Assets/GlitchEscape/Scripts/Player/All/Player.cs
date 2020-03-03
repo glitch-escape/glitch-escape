@@ -126,6 +126,9 @@ public class Player : MonoBehaviour {
 
     public float lowStaminaFlashDuration = 0.5f;
     public float lowStaminaFlashCount = 1.0f;
+
+    public AnimationCurve staminaRegenCurve;
+    public AnimationCurve healthRegenCurve;
     
     private float lowStaminaFlashingDuration { get {
         return lowStaminaFlashDuration * lowStaminaFlashCount;
@@ -174,7 +177,6 @@ public class Player : MonoBehaviour {
             return true;
         } else {
             PlayerStatsView.instance?.FlashLowStamina();
-            FlashLowStamina();
             return false;
         }
     }
@@ -188,18 +190,18 @@ public class Player : MonoBehaviour {
     public void KillPlayer() { controller.RespawnPlayer(); }
     void Update() {
         if (Time.time > lastTimeTookDamage + healthRegenDelay && m_health < maxHealth) {
-            m_health = Mathf.Clamp(m_health + healthRegenPerSec * Time.deltaTime, 0f, maxHealth);
+            var timeToFullHealthRegen = maxHealth / healthRegenPerSec;
+            var t = Mathf.Clamp01(lastTimeTookDamage / timeToFullHealthRegen);
+            var healthRegen = healthRegenCurve.Evaluate(t) * healthRegenPerSec;
+            m_health = Mathf.Clamp(m_health + healthRegen * Time.deltaTime, 0f, maxHealth);
         }
         if (Time.time > lastStaminaUseTime + staminaRegenDelay && m_stamina < maxStamina) {
-            m_stamina = Mathf.Clamp(m_stamina + staminaRegenPerSec * Time.deltaTime, 0f, maxStamina);
+            var timeToFullStaminaRegen = maxStamina / staminaRegenPerSec;
+            var t = Mathf.Clamp01(lastStaminaUseTime / timeToFullStaminaRegen);
+            var staminaRegen = staminaRegenCurve.Evaluate(t) * staminaRegenPerSec;
+            m_stamina = Mathf.Clamp(m_stamina + staminaRegen * Time.deltaTime, 0f, maxStamina);
         }
     }
-    private void FlashLowStamina() {
-        timeUntilStopFlashingStamina = Time.time + lowStaminaFlashingDuration;
-    }
-    // private void FlashLowHealth () {
-    //     timeUntilStopFlashingHealth = Time.time + lowHealthFlashDuration;
-    // }
     #endregion
     #region MazeSwitchImplementation
     /// <summary>
