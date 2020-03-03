@@ -74,7 +74,7 @@ public class OpeningController : MonoBehaviour
             StartCoroutine(FadeOutCoroutine(images[counter - 1]));
         }
 
-        if(counter == 4)
+        if (counter == 1)
         {
             sceneAudioSource.Play();
         }
