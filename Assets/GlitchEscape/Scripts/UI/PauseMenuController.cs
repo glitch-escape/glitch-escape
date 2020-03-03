@@ -71,7 +71,7 @@ public class PauseMenuController : MonoBehaviour
 
     public void GameExit()
     {
-        Application.Quit();
+        Loader.Load(Loader.Scene.MainMenu);
     }
 
     void ResetMenu()

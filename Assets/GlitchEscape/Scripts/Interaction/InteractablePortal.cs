@@ -29,6 +29,7 @@ public class InteractablePortal : MonoBehaviour, IPlayerInteractable {
     public PlayableDirector portalCutscene;
     private FloatingTextController floatingText;
     private InteractableTank interactableTank;
+    public Loader.Scene levelToLoad = Loader.Scene.MainMenu;
 
     void Awake()
     {
@@ -47,7 +48,7 @@ public class InteractablePortal : MonoBehaviour, IPlayerInteractable {
     [Obsolete]
     public void OnInteract(Player player)
     {
-        Application.LoadLevel(Application.loadedLevel);
+        Application.LoadLevel(levelToLoad.ToString());
     }
 
     public void OnPlayerEnterInteractionRadius(Player player)
