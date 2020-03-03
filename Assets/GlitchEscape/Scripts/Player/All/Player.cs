@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(AudioSource))]
 public class Player : MonoBehaviour {
     // Getters / accessors
     
@@ -39,6 +40,10 @@ public class Player : MonoBehaviour {
         }
     }
     private Animator m_animator;
+
+    //audio management variables
+    public AudioClip[] soundfx;
+    public AudioSource soundSource;
     
     // input instance singleton
     public Input input => m_input ?? (m_input = new Input());
@@ -50,6 +55,7 @@ public class Player : MonoBehaviour {
         input.Enable();
         SetInitialSpawnLocation(transform.position, transform.rotation);
         ResetStats();
+        soundSource = GetComponent<AudioSource>();
     }
     #endregion
 
@@ -187,7 +193,10 @@ public class Player : MonoBehaviour {
             KillPlayer();
         }
     }
-    public void KillPlayer() { controller.RespawnPlayer(); }
+    public void KillPlayer() {
+        controller.RespawnPlayer();
+        PlaySound(4);
+    }
     void Update() {
         if (Time.time > lastTimeTookDamage + healthRegenDelay && m_health < maxHealth) {
             var timeToFullHealthRegen = maxHealth / healthRegenPerSec;
@@ -232,6 +241,12 @@ public class Player : MonoBehaviour {
             activeMazeSwitch = null;
         }
         activeSwitch.SetMazeSwitchActive(false);
+    }
+    #endregion
+    #region Audio
+    public void PlaySound(int soundIndex)
+    {
+        soundSource.PlayOneShot(soundfx[soundIndex]);
     }
     #endregion
 }
