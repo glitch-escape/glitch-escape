@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(AudioSource))]
 public class Player : MonoBehaviour {
     // Getters / accessors
     
@@ -54,7 +55,6 @@ public class Player : MonoBehaviour {
         input.Enable();
         SetInitialSpawnLocation(transform.position, transform.rotation);
         ResetStats();
-        soundfx = new AudioClip[5];
         soundSource = GetComponent<AudioSource>();
     }
     #endregion
@@ -239,7 +239,7 @@ public class Player : MonoBehaviour {
     }
     #endregion
     #region Audio
-    void PlaySound(int soundIndex)
+    public void PlaySound(int soundIndex)
     {
         soundSource.PlayOneShot(soundfx[soundIndex]);
     }
