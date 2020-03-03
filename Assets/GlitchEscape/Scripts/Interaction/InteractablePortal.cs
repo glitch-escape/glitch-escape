@@ -5,8 +5,8 @@ using UnityEngine;
 using UnityEngine.Playables;
 
 [RequireComponent(typeof(InteractionTrigger))]
-public class InteractablePortal : MonoBehaviour, IPlayerInteractable
-{
+public class InteractablePortal : MonoBehaviour, IPlayerInteractable {
+    public bool disableOnStart = true;
     // singleton
     private static InteractablePortal _instance = null;
     public static InteractablePortal instance
@@ -39,7 +39,9 @@ public class InteractablePortal : MonoBehaviour, IPlayerInteractable
     }
     void Start()
     {
-        this.transform.parent.gameObject.SetActive(false);
+        if (disableOnStart) {
+            this.transform.parent.gameObject.SetActive(false);
+        }
     }
 
     [Obsolete]

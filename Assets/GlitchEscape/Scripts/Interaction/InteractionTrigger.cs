@@ -18,7 +18,15 @@ public class InteractionTrigger : MonoBehaviour {
     public enum InteractionTriggerType {
         PhysicsTrigger,
         PhysicsCollision,
-    };
+    }
+
+    public enum AffectorMode {
+        AffectSelf,
+        AffectSelfOrChildren,
+        AffectSelfOrParent
+    }
+    public AffectorMode affectorMode;
+
     /// <summary>
     /// Mechanism that we use to detect the player: typically a physics OnTriggerEnter/Exit or OnCollisionEnter/Exit
     /// To add more trigger types, see Interactable.InteractionTriggerType
@@ -30,8 +38,19 @@ public class InteractionTrigger : MonoBehaviour {
     /// IPlayerInteractable
     /// </summary>
     private IPlayerInteractable[] attachedInteractionHandlers;
+
     public void Start() {
-        attachedInteractionHandlers = GetComponentsInChildren<IPlayerInteractable>();
+        switch (affectorMode) {
+            case AffectorMode.AffectSelf:
+                attachedInteractionHandlers = Enforcements.GetComponents<IPlayerInteractable>(this);
+                break;
+            case AffectorMode.AffectSelfOrChildren:
+                attachedInteractionHandlers = Enforcements.GetComponentsInChildren<IPlayerInteractable>(this);
+                break;
+            case AffectorMode.AffectSelfOrParent:
+                attachedInteractionHandlers = Enforcements.GetComponentsInParent<IPlayerInteractable>(this);
+                break;
+        }
         if (attachedInteractionHandlers.Length == 0) {
             Debug.LogError("Warning: InteractTrigger on "+gameObject+" has no interaction triggers!");
         }
