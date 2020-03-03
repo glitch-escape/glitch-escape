@@ -99,6 +99,7 @@ public class Player : MonoBehaviour {
             transform.position = initPosition;
             transform.rotation = initRotation;
         }
+        m_rigidbody.velocity = Vector3.zero;
         ResetStats();
     }
     
