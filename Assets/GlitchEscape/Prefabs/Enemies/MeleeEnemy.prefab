@@ -10,11 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1975849490317526117}
   - component: {fileID: 3256376843566429809}
-  - component: {fileID: 3256376843566429808}
   - component: {fileID: 3256376843566429810}
   - component: {fileID: 3256376843566429811}
   - component: {fileID: 3256376843566429772}
-  - component: {fileID: 3256376843566429815}
   m_Layer: 0
   m_Name: MeleeEnemy
   m_TagString: Untagged
@@ -54,19 +52,6 @@ MonoBehaviour:
   enemy: {fileID: 3953527333893013261}
   player: {fileID: 0}
   isHostileToPlayer: 1
---- !u!114 &3256376843566429808
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3256376843566429814}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 638fe4b5bbcb0468f94f30726e0cdc93, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  detectionRadius: 10
 --- !u!114 &3256376843566429810
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -108,19 +93,6 @@ MonoBehaviour:
   - {fileID: 3271633103160393028}
   - {fileID: 3271633102576873558}
   ptLeniency: 0.1
---- !u!135 &3256376843566429815
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3256376843566429814}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3271633102576873562
 GameObject:
   m_ObjectHideFlags: 0
@@ -321,6 +293,8 @@ GameObject:
   - component: {fileID: 3953527333893013263}
   - component: {fileID: 3953527333893013262}
   - component: {fileID: 3953527333893013261}
+  - component: {fileID: 1476368171622028559}
+  - component: {fileID: 5923085783255087420}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -463,6 +437,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 0}
+--- !u!135 &1476368171622028559
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3953527333893013260}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.0349714
+  m_Center: {x: 0.00003954768, y: 0.87024057, z: -0.016304793}
+--- !u!114 &5923085783255087420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3953527333893013260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 638fe4b5bbcb0468f94f30726e0cdc93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detectionRadius: 10
 --- !u!1001 &7614956503911214762
 PrefabInstance:
   m_ObjectHideFlags: 0
