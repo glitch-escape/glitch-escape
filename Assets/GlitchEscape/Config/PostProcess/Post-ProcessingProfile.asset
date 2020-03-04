@@ -1,5 +1,28 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7048256965067544467
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5485954d14dfb9a4c8ead8edb0ded5b1, type: 3}
+  m_Name: LiftGammaGain
+  m_EditorClassIdentifier: 
+  active: 1
+  m_AdvancedMode: 0
+  lift:
+    m_OverrideState: 1
+    m_Value: {x: 1, y: 1, z: 1, w: -0.016863404}
+  gamma:
+    m_OverrideState: 0
+    m_Value: {x: 1, y: 1, z: 1, w: -0.033726815}
+  gain:
+    m_OverrideState: 0
+    m_Value: {x: 1, y: 1, z: 1, w: 0}
 --- !u!114 &-1114673456687231666
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -56,7 +79,7 @@ MonoBehaviour:
     min: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 0.09
     min: 0
   scatter:
     m_OverrideState: 1
@@ -99,6 +122,7 @@ MonoBehaviour:
   - {fileID: 8472901544331417605}
   - {fileID: -136238071230811922}
   - {fileID: 3302255661107654483}
+  - {fileID: -7048256965067544467}
 --- !u!114 &3302255661107654483
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -147,8 +171,8 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: -0.15
   contrast:
-    m_OverrideState: 1
-    m_Value: 20
+    m_OverrideState: 0
+    m_Value: 21.1
     min: -100
     max: 100
   colorFilter:
@@ -164,6 +188,6 @@ MonoBehaviour:
     max: 180
   saturation:
     m_OverrideState: 1
-    m_Value: 69
+    m_Value: 51.7
     min: -100
     max: 100
