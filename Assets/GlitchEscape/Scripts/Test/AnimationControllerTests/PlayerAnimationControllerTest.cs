@@ -7,8 +7,6 @@ public class PlayerAnimationControllerTest : BaseAnimationControllerTest {
     private bool isRunning = false;
     private bool isJumping = false;
     private bool isDashing = false;
-    private bool isGrounded = false;
-    private bool isNearWall = false;
     private float runSpeed = 1f;
     public float minRunSpeed = 0.5f;
     public float maxRunSpeed = 2f;

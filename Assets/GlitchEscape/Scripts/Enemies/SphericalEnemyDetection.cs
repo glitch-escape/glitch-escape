@@ -7,7 +7,7 @@ using UnityEngine;
 public class SphericalEnemyDetection : MonoBehaviour, IEnemyVisionController {
     private Enemy enemy;
     private EnemyController enemyController;
-    private SphereCollider collider;
+    private new SphereCollider collider;
 
     public float detectionRadius = 10f;
     private float currentDetectionRadiusScaleFactor = 1.0f;
@@ -41,7 +41,7 @@ public class SphericalEnemyDetection : MonoBehaviour, IEnemyVisionController {
     private static Color COLOR_NO_DETECTION => Color.grey;
     private static Color COLOR_DETECTED_PLAYER => Color.black;
     
-    private MeshRenderer renderer;
+    private new MeshRenderer renderer;
     private Material material;
     
     public void DebugShowDetectionRadius(bool enabled) {

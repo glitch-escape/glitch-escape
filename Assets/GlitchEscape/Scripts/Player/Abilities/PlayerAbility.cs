@@ -142,7 +142,6 @@ public abstract class PlayerAbility : MonoBehaviour, IPlayerControllerComponent 
     public AnimationCurve pressTimeFunction;
 
     private float abilityStartTime = 0f;
-    private float abilityPressTimeLimit = Mathf.Infinity;
     public float elapsedTime => m_state != State.None ? Time.time - abilityStartTime : 0f;
 
     private float m_abilityPressDuration;
@@ -247,7 +246,6 @@ public abstract class PlayerAbility : MonoBehaviour, IPlayerControllerComponent 
         
         // Reset variables
         abilityStartTime = Time.time;
-        abilityPressTimeLimit = Mathf.Infinity;
         if (varyStaminaCostDependingOnPressTime && cost < maxStaminaCost) {
             // apply the rest of the cost over time while the button is still pressed
             usedStamina = cost;

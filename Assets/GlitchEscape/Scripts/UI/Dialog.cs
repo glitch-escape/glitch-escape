@@ -26,7 +26,6 @@ public class Dialog : MonoBehaviour
     private int index = 0;
     private int currEvent = 0;
     private bool targetNearBy = false;
-    private bool isPlayer = false;
     private List<DialogContent> currDialogEvent;
     private List<DialogContent>[] dialogEvents = new List<DialogContent>[MAX_DIALOG_EVENT];
     private string speaker;

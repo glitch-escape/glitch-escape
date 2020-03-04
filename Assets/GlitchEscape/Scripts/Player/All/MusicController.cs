@@ -15,7 +15,7 @@ public class MusicController : MonoBehaviour {
     public bool useDpadToControlTracks = true;
     public bool useKeyboardToControlTracks = true;
     private AudioSource source;
-    private bool isPaused = false;
+    private bool isPaused { get; set; } = false;
     
     void Start() {
         source = GetComponent<AudioSource>();
