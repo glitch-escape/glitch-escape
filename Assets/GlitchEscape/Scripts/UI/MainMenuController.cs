@@ -34,6 +34,7 @@ public class MainMenuController : MonoBehaviour
     public void PlayTutorial () { Loader.Load(Loader.Scene.Tutorial_01_Movement); }
     public void PlayPlatformingLevel () { Loader.Load(Loader.Scene.Vertical_Platforming_Level); }
     public void PlayMainLevel () { Loader.Load(Loader.Scene.Opening); }
+    public void PlayEnemyTest() { Loader.Load(Loader.Scene.EnemyTest);  }
 
     public void GameExit()
     {
