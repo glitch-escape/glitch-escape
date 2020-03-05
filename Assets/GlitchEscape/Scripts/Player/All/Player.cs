@@ -9,59 +9,51 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(PlayerHealth))]
 public class Player : BaseAgent<Player, PlayerConfig, PlayerHealth, PlayerHealth> {
+
+    /// <summary>
+    /// Reference to this script's PlayerController (should be parented to this)
+    /// </summary>
+    public PlayerController controller => this.GetEnforcedComponentReferenceInParent(ref m_controller);
+    private PlayerController m_controller;
+    
+    /// <summary>
+    /// Reference to the player's rigidbody
+    /// </summary>
+    public new Rigidbody rigidbody => this.GetEnforcedComponentReference(ref m_rigidbody);
+    private Rigidbody m_rigidbody;
+    
+    /// <summary>
+    /// Reference to the player's animator
+    /// </summary>
+    public new Animator animator => this.GetEnforcedComponentReference(ref m_animator);
+    private Animator m_animator;
+    
+    // input instance singleton
+    public Input input => m_input ?? (m_input = new Input());
+    private Input m_input;
+    
+    //audio management variables
+    public AudioClip[] soundfx;
+    public AudioSource soundSource;
+    
     new void OnEnable() { 
         base.OnEnable();
     }
     new void OnDisable() {
         base.OnDisable();
     }
+    
+    /// <summary>
+    /// Called by BaseAgent when this player should "die"
+    /// Returning false from this function cancels the despawn, and we manually "respawn" the player instead
+    /// </summary>
+    /// <returns></returns>
     protected override bool TryKillAgent() {
         controller.RespawnPlayer();
         PlaySound(4);
         return false;
     }
-
-    /// <summary>
-    /// Reference to this player's PlayerController.
-    /// Use this to call methods on the player controller.
-    /// This is not set by this script, but by PlayerController.Awake().
-    /// Note that a Player object must:
-    /// - have a player script on the player object
-    /// - have a PlayerController script on that object, or, ideally, on a parent empty object.
-    /// </summary>
-    [HideInInspector]
-    public PlayerController controller;
-
-    #region PlayerProperties
-    public new Rigidbody rigidbody {
-        get {
-            if (m_rigidbody) return m_rigidbody;
-            m_rigidbody = GetComponent<Rigidbody>();
-            if (!m_rigidbody) { Debug.LogError("Player missing Rigidbody!"); }
-            return m_rigidbody;
-        }
-    }
-    private Rigidbody m_rigidbody = null;
-
-    public Animator animator {
-        get {
-            if (m_animator) return m_animator;
-            m_animator = GetComponent<Animator>();
-            if (!m_animator) { Debug.LogError(("Player missing Animator!")); }
-            return m_animator;
-        }
-    }
-    private Animator m_animator;
-
-    //audio management variables
-    public AudioClip[] soundfx;
-    public AudioSource soundSource;
     
-    // input instance singleton
-    public Input input => m_input ?? (m_input = new Input());
-    private Input m_input;
-    
-    #endregion PlayerProperties
     #region UnityUpdateAndAwake
     void Awake() {
         input.Enable();
