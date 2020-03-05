@@ -50,8 +50,13 @@ public class PlayerController : MonoBehaviour {
         animator.SetBool("isRunning", false);
         animator.SetBool("isDashing", false);
         animator.SetBool("isJumping", false);
+        
+        // reset any scripts that may need resets
+        foreach (var script in GetComponentsInChildren<IResettable>()) {
+            script.Reset();
+        }
     }
-    
+
     private bool isEnabled = false;
 
     void Awake() {
