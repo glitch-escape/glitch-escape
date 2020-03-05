@@ -4,14 +4,13 @@ using System.Collections.Generic;
 using System.Net.Http.Headers;
 using UnityEngine;
 
-public abstract class Resource<Owner, Config, T> : MonoBehaviour, IResettable
+
+
+public abstract class Resource<Owner, Config, T> : MonoBehaviorUsingConfig<Owner, Config>, IResettable
     where Owner : class, IConfigurable<Config>
     where Config : ScriptableObject
     where T : IComparable
 {
-    /// used by subclasses to access / read out config data for player, enemies, etc
-    protected Config config => owner.config;
-    
     /// <summary>
     /// Default resource value
     /// </summary>
@@ -82,11 +81,4 @@ public abstract class Resource<Owner, Config, T> : MonoBehaviour, IResettable
     private static dynamic Clamp(dynamic value, dynamic min, dynamic max) {
         return value < min ? min : value > max ? max : value;
     }
-
-    /// lazy reference to the script that this resource is located on
-    private Owner owner => this.GetEnforcedComponentReference(ref _owner);
-    private Owner _owner = null;
-    
-    // reset references on script disable; re-get them on re-enable
-    private void OnDisable() { _owner = null; }
 }

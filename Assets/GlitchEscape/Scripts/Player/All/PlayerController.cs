@@ -62,7 +62,7 @@ public class PlayerController : MonoBehaviour {
         mazeSwitcher = GetComponent<MazeSwitchController>();
 
         // setup player's controller reference
-        player.controller = this;
+        // player.controller = this;
 
         isEnabled = true;
         SetupSubControllers(player.GetComponents<IPlayerControllerComponent>());

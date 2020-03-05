@@ -7,6 +7,9 @@ using UnityEngine;
 /// <summary>
 /// Base agent type used as the foundation for Player + Enemy types.
 ///
+/// Implements health + stamina, TakeDamage(), TryUseAbility(), and Kill().
+/// Kill() can be aborted by the inheiriting class by returning false from TryKillAgent().
+///
 /// Implements IConfigurable, ie. ScriptableObject config data associated with this player / enemy, accessible from
 /// any reference to this class, and used to 
 /// 
@@ -35,7 +38,15 @@ public abstract class BaseAgent<Derived, Config, Health, Stamina> : MonoBehaviou
     private Stamina _stamina = null;
     
     public delegate void Listener();
+    
+    /// <summary>
+    /// Called when an ability use fails.
+    /// </summary>
     public event Listener OnFailedToUseAbility;
+ 
+    /// <summary>
+    /// Called when something successfully killed this agent.
+    /// </summary>
     public event Listener OnKilled;
 
     protected void OnEnable() { health.OnDepleted += Kill; }
@@ -58,8 +69,21 @@ public abstract class BaseAgent<Derived, Config, Health, Stamina> : MonoBehaviou
             Destroy(gameObject);
         }
     }
+    
+    /// <summary>
+    /// Called when Kill() attempts to kill the agent.
+    /// Returning true will continue (and will destroy the agent's object); returning false aborts.
+    /// </summary>
+    /// <returns></returns>
     protected abstract bool TryKillAgent();
     
+    /// <summary>
+    /// Attempt to use an ability, with some stamina cost.
+    /// Returns true (and decreases stamina) iff the agent has enough stamina, or false otherwise.
+    /// Scripts can subscribe to OnFailedToUseAbility to be notified when that occurs.
+    /// </summary>
+    /// <param name="cost"></param>
+    /// <returns></returns>
     public bool TryUseAbility(float cost) {
         if (stamina.value < cost) {
             OnFailedToUseAbility?.Invoke();

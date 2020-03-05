@@ -6,6 +6,9 @@ using UnityEngine;
 public class PlayerConfig : ScriptableObject {
 
     [Header("Movement")] [Range(0, 20)] public float runSpeed = 10f;
+    
+    [Tooltip("Camera turn speed, in degrees / sec")]
+    [Range(5f, 360)] public float cameraTurnSpeed = 180f;
 
     [Header("Jump ability")] [Range(0, 20)]
     public float jumpHeight = 10f;
