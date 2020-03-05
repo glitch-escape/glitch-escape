@@ -6,7 +6,7 @@ using UnityEngine;
 
 
 
-public abstract class Resource<Owner, Config, T> : MonoBehaviorUsingConfig<Owner, Config>, IResettable
+public abstract class Resource<Owner, Config, T> : MonoBehaviourBorrowingConfigFrom<Owner, Config>, IResettable
     where Owner : class, IConfigurable<Config>
     where Config : ScriptableObject
     where T : IComparable

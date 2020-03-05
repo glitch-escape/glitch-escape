@@ -12,7 +12,7 @@ using UnityEngine;
 /// </summary>
 /// <typeparam name="TConfig">The config data (must be a ScriptableObject)</typeparam>
 /// <typeparam name="Owner">The class that owns this config instance (and must implement IConfigurable)</typeparam>
-public class MonoBehaviorUsingConfig<TOwner, TConfig> : MonoBehaviour
+public abstract class MonoBehaviourBorrowingConfigFrom<TOwner, TConfig> : MonoBehaviour
     where TOwner : class, IConfigurable<TConfig>
     where TConfig : ScriptableObject
 {

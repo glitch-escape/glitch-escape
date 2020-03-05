@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Player))]
 [RequireComponent(typeof(Animator))]
-public class PlayerMovementController : MonoBehaviorUsingConfig<Player, PlayerConfig>, IPlayerControllerComponent {
+public class PlayerMovementController : MonoBehaviourBorrowingConfigFrom<Player, PlayerConfig>, IPlayerControllerComponent {
 
     // Object references (null-checks implemented elsewhere, so can assume non-null)
     private PlayerController controller;

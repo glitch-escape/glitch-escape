@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Cinemachine;
 
-public class PlayerCameraController : MonoBehaviorUsingConfig<Player, PlayerConfig> {
+public class PlayerCameraController : MonoBehaviourBorrowingConfigFrom<Player, PlayerConfig> {
 
     public CinemachineFreeLook freeLookCam;
 

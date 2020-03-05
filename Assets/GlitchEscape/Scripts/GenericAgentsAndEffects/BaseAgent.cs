@@ -19,19 +19,12 @@ using UnityEngine;
 /// <typeparam name="Config">Config data class</typeparam>
 /// <typeparam name="Health">Health class</typeparam>
 /// <typeparam name="Stamina">Stamina class</typeparam>
-public abstract class BaseAgent<Derived, Config, Health, Stamina> : MonoBehaviour, IConfigurable<Config>
+public abstract class BaseAgent<Derived, Config, Health, Stamina> : MonoBehaviourWithConfig<Config>
     where Health : Resource<Derived, Config, float>
     where Stamina : Resource<Derived, Config, float>
     where Derived : class, IConfigurable<Config>
     where Config : ScriptableObject
 {
-    [SerializeField]
-    public Config _config;
-    public Config config {
-        get { return _config; }
-        set { _config = value; }
-    }
-
     public Health health => this.GetEnforcedComponentReference(ref _health);
     private Health _health = null;
 
