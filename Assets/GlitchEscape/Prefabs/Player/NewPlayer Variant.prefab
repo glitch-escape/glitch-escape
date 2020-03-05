@@ -358,6 +358,8 @@ GameObject:
   - component: {fileID: 434094261}
   - component: {fileID: 434094263}
   - component: {fileID: 799143190212436345}
+  - component: {fileID: 6465115438430612034}
+  - component: {fileID: 6503833640705855753}
   m_Layer: 0
   m_Name: NewPlayer Variant
   m_TagString: Player
@@ -458,8 +460,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd0dadb06d4767849abaa9360fb2e7fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 7
-  turnSpeed: 12
   movementMode: 0
   stunTime: 0
   useAnimationDerivedMoveSpeed: 0
@@ -475,7 +475,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ace673fd4b944325bfbbda3467f4779, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controller: {fileID: 0}
+  _config: {fileID: 0}
   soundfx:
   - {fileID: 8300000, guid: 0b592b907b8a6b344b98718f5bee5a5a, type: 3}
   - {fileID: 8300000, guid: c87aa02de248d8b4ba7599936138f8d8, type: 3}
@@ -638,6 +638,30 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &6465115438430612034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1299641571806894736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1549f51fdfee4c8b9c8c94ef19c04c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6503833640705855753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1299641571806894736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b8dd478004a0429aa5600e63c86fb90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1301753536124584637
 GameObject:
   m_ObjectHideFlags: 0

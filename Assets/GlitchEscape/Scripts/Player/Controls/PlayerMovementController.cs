@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Player))]
 [RequireComponent(typeof(Animator))]
-public class PlayerMovementController : MonoBehaviour, IPlayerControllerComponent {
+public class PlayerMovementController : MonoBehaviorUsingConfig<Player, PlayerConfig>, IPlayerControllerComponent {
 
     // Object references (null-checks implemented elsewhere, so can assume non-null)
     private PlayerController controller;
@@ -29,11 +29,8 @@ public class PlayerMovementController : MonoBehaviour, IPlayerControllerComponen
     
     // Public properties
 
-    [Tooltip("Player movement speed (meters / second)")]
-    public float moveSpeed;
-    
-    [Tooltip("Player movement speed (degrees / second)")]
-    public float turnSpeed;
+    private float moveSpeed => config.runSpeed;
+    private float turnSpeed => config.turnSpeed;
     
     [Tooltip("Player movement mode")] 
     public PlayerMovementMode movementMode = PlayerMovementMode.TurnToFaceMoveDirection;

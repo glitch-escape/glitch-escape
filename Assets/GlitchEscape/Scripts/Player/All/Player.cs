@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(PlayerHealth))]
-public class Player : BaseAgent<Player, PlayerConfig, PlayerHealth, PlayerHealth> {
+public class Player : BaseAgent<Player, PlayerConfig, PlayerHealth, PlayerStamina> {
 
     /// <summary>
     /// Reference to this script's PlayerController (should be parented to this)

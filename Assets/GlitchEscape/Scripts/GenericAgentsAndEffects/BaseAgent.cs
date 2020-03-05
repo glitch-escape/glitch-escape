@@ -11,7 +11,8 @@ using UnityEngine;
 /// Kill() can be aborted by the inheiriting class by returning false from TryKillAgent().
 ///
 /// Implements IConfigurable, ie. ScriptableObject config data associated with this player / enemy, accessible from
-/// any reference to this class, and used to 
+/// any reference to this class, and used to
+/// 
 /// 
 /// </summary>
 /// <typeparam name="Derived">class that is inheiriting from BaseAgent</typeparam>
