@@ -8,6 +8,7 @@ using UnityEngine;
 /// Used by Player, and uses values pulled from PlayerConfig via MonoBehaviorUsingConfig<Player, PlayerConfig>
 /// </summary>
 public class PlayerHealth : RegeneratingResource<Player, PlayerConfig> {
+    public override string name => "health";
     public override float defaultValue => config.health.maximum;
     public override float minimum => config.health.minimum;
     public override float maximum => config.health.maximum;

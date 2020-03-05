@@ -8,6 +8,7 @@ using UnityEngine;
 /// Used by Player, and uses values pulled from PlayerConfig via MonoBehaviorUsingConfig<Player, PlayerConfig>
 /// </summary>
 public class PlayerStamina : RegeneratingResource<Player, PlayerConfig> {
+    public override string name => "stamina";
     public override float defaultValue => config.stamina.maximum;
     public override float minimum => config.stamina.minimum;
     public override float maximum => config.stamina.maximum;

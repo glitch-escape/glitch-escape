@@ -11,6 +11,8 @@ public abstract class Resource<Owner, Config, T> : MonoBehaviorUsingConfig<Owner
     where Config : ScriptableObject
     where T : IComparable
 {
+    public abstract string name { get; }
+
     /// <summary>
     /// Default resource value
     /// </summary>
@@ -80,5 +82,18 @@ public abstract class Resource<Owner, Config, T> : MonoBehaviorUsingConfig<Owner
     /// </summary>
     private static dynamic Clamp(dynamic value, dynamic min, dynamic max) {
         return value < min ? min : value > max ? max : value;
+    }
+
+    public bool showDebugGUI = false;
+    private void OnGUI() {
+        if (!showDebugGUI) return;
+        DrawDebugGUI();
+    }
+    public void DrawDebugGUI() {
+        GUILayout.Label(name+ " resource value: " + value);
+        GUILayout.Label(name+ " resource maximum: " + maximum);
+        GUILayout.Label(name+ " resource minimum: " + minimum);
+        GUILayout.Label(name+ " resource minimum: " + minimum);
+        GUILayout.Label(name+ " resource defaultValue: " + defaultValue);
     }
 }
