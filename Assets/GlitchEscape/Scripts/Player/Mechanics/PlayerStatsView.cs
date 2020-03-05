@@ -92,8 +92,8 @@ public class PlayerStatsView : MonoBehaviour {
     }
     
     void Update() {
-        float health = player.health / player.maxHealth;
-        float stamina = player.stamina / player.maxStamina;
+        float health = player.health.value / player.health.value;
+        float stamina = player.stamina.value / player.stamina.value;
         healthSetter.Update(health);
         staminaSetter.Update(stamina);
         staminaFlash.Update();

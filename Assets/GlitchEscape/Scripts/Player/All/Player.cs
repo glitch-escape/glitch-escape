@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -6,9 +7,20 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(AudioSource))]
-public class Player : MonoBehaviour {
-    // Getters / accessors
-    
+[RequireComponent(typeof(PlayerHealth))]
+public class Player : BaseAgent<Player, PlayerConfig, PlayerHealth, PlayerHealth> {
+    new void OnEnable() { 
+        base.OnEnable();
+    }
+    new void OnDisable() {
+        base.OnDisable();
+    }
+    protected override bool TryKillAgent() {
+        controller.RespawnPlayer();
+        PlaySound(4);
+        return false;
+    }
+
     /// <summary>
     /// Reference to this player's PlayerController.
     /// Use this to call methods on the player controller.
@@ -152,12 +164,12 @@ public class Player : MonoBehaviour {
     private float m_health;
     private float m_stamina;
 
-    public float health {
-        get { return m_health; }
-    }
-    public float stamina {
-        get { return m_stamina;  }
-    }
+    // public float health {
+    //     get { return m_health; }
+    // }
+    // public float stamina {
+    //     get { return m_stamina;  }
+    // }
     private void ResetStats() {
         m_health = maxHealth * startingHealthPercent;
         m_stamina = maxStamina * startingStaminaPercent;
@@ -176,28 +188,7 @@ public class Player : MonoBehaviour {
     private bool shouldFlashHealth {
         get { return timeUntilStopFlashingHealth > Time.time; }
     }
-
-    public bool TryUseAbility(float staminaCost) {
-        if (staminaCost <= m_stamina) {
-            m_stamina -= staminaCost;
-            lastStaminaUseTime = Time.time;
-            return true;
-        } else {
-            PlayerStatsView.instance?.FlashLowStamina();
-            return false;
-        }
-    }
-    public void TakeDamage(float damage) {
-        m_health -= damage;
-        lastTimeTookDamage = Time.time;
-        if (m_health <= 0f) {
-            KillPlayer();
-        }
-    }
-    public void KillPlayer() {
-        controller.RespawnPlayer();
-        PlaySound(4);
-    }
+    
     void Update() {
         if (Time.time > lastTimeTookDamage + healthRegenDelay && m_health < maxHealth) {
             var timeToFullHealthRegen = maxHealth / healthRegenPerSec;
