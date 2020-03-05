@@ -7,15 +7,4 @@ public class PlayerInteractionController : MonoBehaviour, IPlayerControllerCompo
     public void SetupControllerComponent(PlayerController controller) {
         player = controller.player;
     }
-    private void OnEnable() {
-        PlayerControls.instance.interact.onPressed += OnInteract;
-    }
-    private void OnDisable() {
-        PlayerControls.instance.interact.onPressed -= OnInteract;
-    }
-    public void OnInteract(bool pressed, PlayerControls.HybridButtonControl control) {
-        // notify player interact listeners
-        Debug.Log("interaction pressed at " + Time.time);
-        player.interactListeners(player);
-    }
 }
