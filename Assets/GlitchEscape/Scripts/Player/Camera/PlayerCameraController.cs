@@ -1,22 +1,22 @@
 ﻿using UnityEngine;
 using Cinemachine;
 
-public class PlayerCameraController : MonoBehaviour, IPlayerControllerComponent {
+public class PlayerCameraController : MonoBehaviourBorrowingConfigFrom<Player, PlayerConfig> {
 
-    private PlayerController controller;
-    private CinemachineFreeLook freeLookCam;
-    private new Camera camera;
-    public void SetupControllerComponent(PlayerController controller) {
-        this.controller = controller;
-        camera = controller.camera;
-        freeLookCam = controller.GetComponentInChildren<CinemachineFreeLook>();
-        if (!freeLookCam) {
-            Debug.LogError("PlayerCameraController.cs: missing CinemachineFreeLook component under a PlayerController object!");
+    public CinemachineFreeLook freeLookCam;
+
+    void OnEnable() {
+        if (freeLookCam == null) {
+            freeLookCam = (transform.parent ?? transform).GetComponentInChildren<CinemachineFreeLook>();
+            if (freeLookCam == null) {
+                Debug.LogError("PlayerCameraController could not get CinemachineFreeLook component!");
+            }
         }
     }
-    [Tooltip("Camera turn speed, in degrees / sec")]
-    [Range(5f, 360)] public float cameraTurnSpeed = 180f;
-    
+
+    // camera turn speed, defined on PlayerConfig
+    private float cameraTurnSpeed => config.cameraTurnSpeed;
+
     public void Update() {
         var lookInput = PlayerControls.instance.lookInput;
         freeLookCam.m_XAxis.Value = freeLookCam.m_XAxis.Value + lookInput.x * cameraTurnSpeed * Time.deltaTime;

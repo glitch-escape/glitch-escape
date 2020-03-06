@@ -50,8 +50,13 @@ public class PlayerController : MonoBehaviour {
         animator.SetBool("isRunning", false);
         animator.SetBool("isDashing", false);
         animator.SetBool("isJumping", false);
+        
+        // reset any scripts that may need resets
+        foreach (var script in GetComponentsInChildren<IResettable>()) {
+            script.Reset();
+        }
     }
-    
+
     private bool isEnabled = false;
 
     void Awake() {
@@ -62,7 +67,7 @@ public class PlayerController : MonoBehaviour {
         mazeSwitcher = GetComponent<MazeSwitchController>();
 
         // setup player's controller reference
-        player.controller = this;
+        // player.controller = this;
 
         isEnabled = true;
         SetupSubControllers(player.GetComponents<IPlayerControllerComponent>());
