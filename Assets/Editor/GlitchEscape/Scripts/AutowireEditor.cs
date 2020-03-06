@@ -15,10 +15,11 @@ public class AutowireEditor : Editor {
                 if (component is Transform || component is Autowire || component is AutoWireTest) continue;
                 DestroyImmediate(component);
             }
+            t.info = t.log = t.warnings = t.errors = "";
         }
-        GUILayout.Label("info:\n"+t.info);
-        GUILayout.Label("log:\n"+t.log);
-        GUILayout.Label("warnings:\n"+t.warnings);
-        GUILayout.Label("errors:\n"+t.errors);
+        if (t.info != "") GUILayout.Label("info:\n"+t.info);
+        if (t.log != "") GUILayout.Label("log:\n"+t.log);
+        if (t.warnings != "") GUILayout.Label("warnings:\n"+t.warnings);
+        if (t.errors != "") GUILayout.Label("errors:\n"+t.errors);
     }
 }
