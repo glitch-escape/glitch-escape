@@ -10,6 +10,15 @@ public class AutowireEditor : Editor {
         if (GUILayout.Button("Autoconfigure")) {
             t.Run();
         }
-        GUILayout.Label(t.info);
+        if (GUILayout.Button("Clear")) {
+            foreach (var component in t.GetComponents<Component>()) {
+                if (component is Transform || component is Autowire || component is AutoWireTest) continue;
+                DestroyImmediate(component);
+            }
+        }
+        GUILayout.Label("info:\n"+t.info);
+        GUILayout.Label("log:\n"+t.log);
+        GUILayout.Label("warnings:\n"+t.warnings);
+        GUILayout.Label("errors:\n"+t.errors);
     }
 }

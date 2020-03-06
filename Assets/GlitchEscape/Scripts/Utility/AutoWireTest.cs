@@ -10,4 +10,7 @@ public class InjectComponent : System.Attribute {
 
 public class AutoWireTest : MonoBehaviour {
     [InjectComponent] public Camera camera;
+    [InjectComponent] public Player player;
+    [InjectComponent] public Rigidbody rigidbody;
+    [InjectComponent] public Collider collider;
 }
