@@ -1362,8 +1362,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.07793556, y: -0.000000008577024, z: 6.7049444e-10, w: 0.99695843}
-  m_LocalPosition: {x: -15.9, y: 9.8, z: -7}
+  m_LocalRotation: {x: 0.077935494, y: 0.000000008577024, z: -6.7049394e-10, w: 0.99695843}
+  m_LocalPosition: {x: 0, y: 4.5, z: -4.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1102068784}
@@ -3010,6 +3010,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7934903708078051019}
   - component: {fileID: 2108366784}
+  - component: {fileID: 3188380585533007410}
   - component: {fileID: 2108366786}
   - component: {fileID: 5845934389603087960}
   - component: {fileID: 2108366787}
@@ -3058,6 +3059,38 @@ MonoBehaviour:
   player: {fileID: 4903794389532508166}
   camera: {fileID: 963194227}
   savePointLocation: {fileID: 0}
+--- !u!114 &3188380585533007410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 778320031773460715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d83fcd349bd347f48a5941fbe1686de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  abilityCooldown: 0
+  maxStaminaCost: 30
+  minStaminaCost: 30
+  minEffectStrength: 1
+  maxEffectStrength: 1
+  minDuration: 0
+  maxDuration: 0
+  varyStrengthDependingOnPressTime: 0
+  varyStaminaCostDependingOnPressTime: 0
+  varyDurationDependingOnPressTime: 0
+  maxPressTime: 0.25
+  pressTimeFunction:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  drawPlayerAbilityDebugGUI: 0
+  projPrefab: {fileID: 0}
+  projYShift: 0
 --- !u!114 &2108366786
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6719,7 +6752,7 @@ PrefabInstance:
     - target: {fileID: 3505488081016921733, guid: d2ebc241853cd416cb4411bbc3550e8b,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 5.2835636e-10
+      value: 5.283569e-10
       objectReference: {fileID: 0}
     - target: {fileID: 3505488081016921733, guid: d2ebc241853cd416cb4411bbc3550e8b,
         type: 3}
@@ -7116,6 +7149,12 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 3913801244484474713, guid: c565e2b6a6a6b4a729579b6c59da6f29, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: c565e2b6a6a6b4a729579b6c59da6f29, type: 3}
+--- !u!4 &6944515180500609074 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2617181577531598979, guid: c565e2b6a6a6b4a729579b6c59da6f29,
+    type: 3}
+  m_PrefabInstance: {fileID: 4903794389647376561}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &4903794389532508166 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 434094263, guid: c565e2b6a6a6b4a729579b6c59da6f29,
@@ -7128,12 +7167,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ace673fd4b944325bfbbda3467f4779, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &6944515180500609074 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2617181577531598979, guid: c565e2b6a6a6b4a729579b6c59da6f29,
-    type: 3}
-  m_PrefabInstance: {fileID: 4903794389647376561}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6198226440788187681 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1299641571806894736, guid: c565e2b6a6a6b4a729579b6c59da6f29,
