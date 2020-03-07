@@ -475,7 +475,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ace673fd4b944325bfbbda3467f4779, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _config: {fileID: 0}
+  _config: {fileID: 11400000, guid: fe92a49431b14457790109139d13d086, type: 2}
+  rigidbody: {fileID: 434094264}
+  animator: {fileID: 5393090270376166905}
+  health: {fileID: 6465115438430612034}
+  stamina: {fileID: 6503833640705855753}
   soundfx:
   - {fileID: 8300000, guid: 0b592b907b8a6b344b98718f5bee5a5a, type: 3}
   - {fileID: 8300000, guid: c87aa02de248d8b4ba7599936138f8d8, type: 3}
@@ -484,64 +488,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 788d1effc9e72e04bb7f469e20547ca7, type: 3}
   soundSource: {fileID: 799143190212436345}
   playerSpawnHeight: 1
-  maxStamina: 100
-  maxHealth: 100
-  staminaRegenPerSec: 25
-  staminaRegenDelay: 0.5
-  healthRegenPerSec: 10
-  healthRegenDelay: 2
-  startingStaminaPercent: 1
-  startingHealthPercent: 1
-  lowStaminaFlashDuration: 0.5
-  lowStaminaFlashCount: 1
-  staminaRegenCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0.00009536743
-      value: 0.50149536
-      inSlope: 0.074094675
-      outSlope: 0.074094675
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.5901999
-    - serializedVersion: 3
-      time: 0.9988518
-      value: 2.484552
-      inSlope: 5.640128
-      outSlope: 5.640128
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.020396205
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  healthRegenCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0.002380371
-      value: 0.50341797
-      inSlope: 0.344294
-      outSlope: 0.344294
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.058450114
-    - serializedVersion: 3
-      time: 0.9980469
-      value: 2.2953873
-      inSlope: 4.578572
-      outSlope: 4.578572
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.019926831
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!82 &799143190212436345
 AudioSource:
   m_ObjectHideFlags: 0
@@ -650,6 +596,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1549f51fdfee4c8b9c8c94ef19c04c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  showDebugGUI: 0
 --- !u!114 &6503833640705855753
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -662,6 +609,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b8dd478004a0429aa5600e63c86fb90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  showDebugGUI: 0
 --- !u!1 &1301753536124584637
 GameObject:
   m_ObjectHideFlags: 0

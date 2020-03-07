@@ -4,27 +4,31 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(Animator))]
-[RequireComponent(typeof(AudioSource))]
-[RequireComponent(typeof(PlayerHealth))]
-[RequireComponent(typeof(PlayerStamina))]
-[RequireComponent(typeof(PlayerShards))]
+// [RequireComponent(typeof(Rigidbody))]
+// [RequireComponent(typeof(Animator))]
+// [RequireComponent(typeof(AudioSource))]
+// [RequireComponent(typeof(PlayerHealth))]
+// [RequireComponent(typeof(PlayerStamina))]
 public class Player : BaseAgent<Player, PlayerConfig, PlayerHealth, PlayerStamina> {
 
     /// <summary>
     /// Reference to this script's PlayerController (should be parented to this)
     /// </summary>
     public PlayerController controller => this.GetEnforcedComponentReferenceInParent(ref m_controller);
-
     private PlayerController m_controller;
+
+    [InjectComponent] public Rigidbody rigidbody;
+    [InjectComponent] public Animator animator;
+    [InjectComponent] public PlayerHealth health;
+    [InjectComponent] public PlayerStamina stamina;
 
     /// <summary>
     /// Reference to the player's rigidbody
     /// </summary>
-    public new Rigidbody rigidbody => this.GetEnforcedComponentReference(ref m_rigidbody);
-
-    private Rigidbody m_rigidbody;
+    ///
+    // public new Rigidbody rigidbody => this.GetEnforcedComponentReference(ref m_rigidbody);
+    //
+    // private Rigidbody m_rigidbody;
 
     /// <summary>
     /// Reference to the player's shard component
@@ -36,9 +40,9 @@ public class Player : BaseAgent<Player, PlayerConfig, PlayerHealth, PlayerStamin
     /// <summary>
     /// Reference to the player's animator
     /// </summary>
-    public new Animator animator => this.GetEnforcedComponentReference(ref m_animator);
-
-    private Animator m_animator;
+    // public new Animator animator => this.GetEnforcedComponentReference(ref m_animator);
+    //
+    // private Animator m_animator;
 
     // input instance singleton
     public Input input => m_input ?? (m_input = new Input());
@@ -110,7 +114,7 @@ public class Player : BaseAgent<Player, PlayerConfig, PlayerHealth, PlayerStamin
             transform.rotation = initRotation;
         }
 
-        m_rigidbody.velocity = Vector3.zero;
+        rigidbody.velocity = Vector3.zero;
     }
 
     /// <summary>
