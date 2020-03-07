@@ -45,5 +45,5 @@ public class PlayerConfig : ScriptableObject {
         }
     };
 
-    [Header("Shards")] public IntRange shards = new IntRange { minimum = 0, maximum = 7 };
+    [Header("Shards")] public IntRange shards = new IntRange {minimum = 0, maximum = 7};
 }
