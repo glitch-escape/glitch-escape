@@ -15,7 +15,6 @@ public class Projectile : MonoBehaviour {
     //public float tracking; // in degrees for easier adjustments
 
     private Vector3 direction;
-    private Transform playerPos;
     private Vector3 origin;
 
     public new Rigidbody rigidbody {
@@ -42,21 +41,13 @@ public class Projectile : MonoBehaviour {
 
     void Update() {
         // Apply acceleration
-        m_rigidbody.AddForce(direction * acceleration);
-
+        if (acceleration != 0f)
+            m_rigidbody.AddForce(direction * acceleration * Time.deltaTime);
         // Apply projectile size growth
-        Vector3 growth = Vector3.one * growthRate * Time.deltaTime;
-        transform.localScale += growth;
-
-        /*
-        // Apply tracking
-        direction = transform.forward;
-        Vector3 targetDir = playerPos.position - origin;
-        direction = Vector3.RotateTowards(direction, targetDir, tracking, 0);
-        direction.y = 0;
-        m_rigidbody.velocity = Vector3.Normalize(direction) * speed;
-        */
-        
+        if (growthRate != 0f) {
+            Vector3 growth = Vector3.one * growthRate * Time.deltaTime;
+            transform.localScale += growth;
+        }
     }
 
     // Deal damage to player
@@ -71,12 +62,5 @@ public class Projectile : MonoBehaviour {
         }
     }
 
-    
-    // Allows projectile to track player position
-    public void SetPlayerPos(Transform player) {
-        //playerPos = player;
-    }
-    
-
-    
+    public void SetPlayerPos(Transform player) { }
 }

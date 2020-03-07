@@ -118,8 +118,8 @@ public class PlayerControls : MonoBehaviour {
     /// </summary>
     public HybridButtonControl shoot =>
         m_interact ?? (m_interact = new HybridButtonControl(
-            new IndirectButtonControl(Keyboard.current.zKey),
-            new IndirectButtonControl(() => Gamepad.current?.buttonWest)));
+            new IndirectButtonControl(Mouse.current.rightButton),
+            new IndirectButtonControl(() => Gamepad.current?.rightTrigger)));
 
     //
     // getters for 2d move + look inputs
