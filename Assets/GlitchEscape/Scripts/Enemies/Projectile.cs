@@ -5,11 +5,14 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Projectile : MonoBehaviour {
 
+    public enum Target { Enemy, Player };
+    public Target target;
+
     public float acceleration;
     public float speed, damage;
     public float lifetime;
     public float growthRate;
-    public float tracking; // in degrees for easier adjustments
+    //public float tracking; // in degrees for easier adjustments
 
     private Vector3 direction;
     private Transform playerPos;
@@ -27,7 +30,7 @@ public class Projectile : MonoBehaviour {
 
     void Awake() {
         origin = transform.position;
-        tracking *= Mathf.Deg2Rad;
+       // tracking *= Mathf.Deg2Rad;
         m_rigidbody = rigidbody;
         Destroy(gameObject, lifetime);
 
@@ -45,25 +48,35 @@ public class Projectile : MonoBehaviour {
         Vector3 growth = Vector3.one * growthRate * Time.deltaTime;
         transform.localScale += growth;
 
+        /*
         // Apply tracking
         direction = transform.forward;
         Vector3 targetDir = playerPos.position - origin;
         direction = Vector3.RotateTowards(direction, targetDir, tracking, 0);
         direction.y = 0;
         m_rigidbody.velocity = Vector3.Normalize(direction) * speed;
+        */
         
     }
 
     // Deal damage to player
     void OnTriggerEnter(Collider other) {
-        var player = other.GetComponent<Player>();
-        if (player != null) { player.TakeDamage(damage); }
+        if (target == Target.Player) {
+            var player = other.GetComponent<Player>();
+            if (player != null) { player.TakeDamage(damage); }
+        }
+        else if (target == Target.Enemy) {
+            var enemy = other.GetComponent<Enemy>();
+            if (enemy != null) { enemy.TakeDamage(damage); Debug.Log("got em"); }
+        }
     }
 
+    
     // Allows projectile to track player position
     public void SetPlayerPos(Transform player) {
-        playerPos = player;
+        //playerPos = player;
     }
+    
 
     
 }

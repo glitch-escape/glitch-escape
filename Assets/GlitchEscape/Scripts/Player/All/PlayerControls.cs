@@ -112,7 +112,15 @@ public class PlayerControls : MonoBehaviour {
         m_interact ?? (m_interact = new HybridButtonControl(
             new IndirectButtonControl(Keyboard.current.eKey),
             new IndirectButtonControl(() => Gamepad.current?.buttonWest)));
-    
+
+    /// <summary>
+    /// Provides hardcoded button state + callbacks for the Interact action
+    /// </summary>
+    public HybridButtonControl shoot =>
+        m_interact ?? (m_interact = new HybridButtonControl(
+            new IndirectButtonControl(Keyboard.current.zKey),
+            new IndirectButtonControl(() => Gamepad.current?.buttonWest)));
+
     //
     // getters for 2d move + look inputs
     //

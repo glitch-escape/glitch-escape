@@ -172,7 +172,7 @@ public class EnemyController : MonoBehaviour {
     }
 
     void Update() {
-        Debug.Log(_behaviorState);
+      //  Debug.Log(_behaviorState);
         if (isChasingOrAttackingPlayer) {
             EnemyBehaviorState _;
             if (activeState != null && isAttackingPlayer && !activeState.ActionFinished(out _)) {
