@@ -9,6 +9,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(PlayerHealth))]
 [RequireComponent(typeof(PlayerStamina))]
+[RequireComponent(typeof(PlayerShards))]
 public class Player : BaseAgent<Player, PlayerConfig, PlayerHealth, PlayerStamina> {
 
     /// <summary>
@@ -24,6 +25,13 @@ public class Player : BaseAgent<Player, PlayerConfig, PlayerHealth, PlayerStamin
     public new Rigidbody rigidbody => this.GetEnforcedComponentReference(ref m_rigidbody);
 
     private Rigidbody m_rigidbody;
+
+    /// <summary>
+    /// Reference to the player's shard component
+    /// </summary>
+    public new PlayerShards shardcomp => this.GetEnforcedComponentReference(ref m_shardcomp);
+
+    private PlayerShards m_shardcomp;
 
     /// <summary>
     /// Reference to the player's animator
@@ -155,6 +163,20 @@ public class Player : BaseAgent<Player, PlayerConfig, PlayerHealth, PlayerStamin
 
     public void PlaySound(int soundIndex) {
         soundSource.PlayOneShot(soundfx[soundIndex]);
+    }
+
+    #endregion
+
+    #region ShardImplementation
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.CompareTag("Shard"))
+        {
+            //get shard
+            Destroy(collision.gameObject);
+            shardcomp.value += 1;
+        }
     }
 
     #endregion
