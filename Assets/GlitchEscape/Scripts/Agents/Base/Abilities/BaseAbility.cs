@@ -8,7 +8,7 @@ public abstract class BaseAbility<Agent, Config> : MonoBehaviourBorrowingConfigF
     protected abstract bool canUseAbility { get; }
     protected abstract float baseCost { get; }
     protected abstract bool hasVaryingCost { get; }
-    protected abstract float maxVaryingCost { get; }
+    protected abstract float maxVaryingCost { get; }    
 }
 
 public abstract class PlayerAbility<Config> : BaseAbility<Player, Config>
