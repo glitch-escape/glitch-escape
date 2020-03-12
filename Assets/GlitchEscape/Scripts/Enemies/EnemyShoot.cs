@@ -10,7 +10,6 @@ public class EnemyShoot : MonoBehaviour, IEnemyAttackAction {
     // Attack variables
     public float duration;
     public float cooldown, strikeDist;
-    public float projYShift;
     public Projectile bullPrefab;
     public int bulletAmt;
     public float bulletRate;
@@ -99,9 +98,8 @@ public class EnemyShoot : MonoBehaviour, IEnemyAttackAction {
             shotsMade += 1;
 
             // Spawn bullet
-            origin.y += projYShift;
-            Quaternion quat = Quaternion.LookRotation(direction, Vector3.up);
-            Projectile bullet = Instantiate(bullPrefab, origin, quat);
+            Quaternion rotation = Quaternion.LookRotation(transform.forward, Vector3.up);
+            Projectile bullet = Instantiate(bullPrefab, origin, rotation);
             bullet.gameObject.SetActive(true);
             bullet.SetPlayerPos(player.transform);
         }

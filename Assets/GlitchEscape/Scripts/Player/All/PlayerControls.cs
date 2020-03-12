@@ -112,7 +112,15 @@ public class PlayerControls : MonoBehaviour {
         m_interact ?? (m_interact = new HybridButtonControl(
             new IndirectButtonControl(Keyboard.current.eKey),
             new IndirectButtonControl(() => Gamepad.current?.buttonWest)));
-    
+
+    /// <summary>
+    /// Provides hardcoded button state + callbacks for the Interact action
+    /// </summary>
+    public HybridButtonControl shoot =>
+        m_interact ?? (m_interact = new HybridButtonControl(
+            new IndirectButtonControl(Mouse.current.rightButton),
+            new IndirectButtonControl(() => Gamepad.current?.rightTrigger)));
+
     //
     // getters for 2d move + look inputs
     //
@@ -245,7 +253,8 @@ public class PlayerControls : MonoBehaviour {
             controlGetter()?.wasReleasedThisFrame ?? false;
     }
 
-    public delegate void ButtonPressCallback(bool pressed, HybridButtonControl button);
+    public delegate void OnChangeCallback(bool pressed, HybridButtonControl button);
+    public delegate void OnButtonPressCallback();
 
     public struct ButtonPollInfo {
         public float lastGamepadPressTime;
@@ -270,9 +279,9 @@ public class PlayerControls : MonoBehaviour {
         public bool wasPressedThisFrame => keyboardButton.wasPressedThisFrame || gamepadButton.wasPressedThisFrame;
         public bool wasReleasedThisFrame => keyboardButton.wasReleasedThisFrame || gamepadButton.wasReleasedThisFrame;
 
-        public event ButtonPressCallback onPressed;
-        public event ButtonPressCallback onReleased;
-        public event ButtonPressCallback onChanged;
+        public event OnButtonPressCallback onPressed;
+        public event OnButtonPressCallback onReleased;
+        public event OnChangeCallback onChanged;
 
         private float m_startPressTime = 0f;
         private float m_endPressTime = 0f;
@@ -303,13 +312,13 @@ public class PlayerControls : MonoBehaviour {
             if (keyReleased) {
                 m_endPressTime = Time.time;
                 m_isPressed = false;
-                onReleased?.Invoke(false, this);
+                onReleased?.Invoke();
                 onChanged?.Invoke(false, this);
             }
             if (keyPressed) {
                 m_startPressTime = Time.time;
                 m_isPressed = true;
-                onPressed?.Invoke(true, this);
+                onPressed?.Invoke();
                 onChanged?.Invoke(true, this);
             }
         }

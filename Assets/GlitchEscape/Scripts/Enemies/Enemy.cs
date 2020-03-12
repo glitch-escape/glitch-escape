@@ -78,4 +78,7 @@ public class Enemy : MonoBehaviour {
         m_agent.SetDestination(position);
     }
 
+    // REMOVE LATER THIS IS TO AVOID ERROR MSG
+    public void TakeDamage(float temp) { }
+
 }

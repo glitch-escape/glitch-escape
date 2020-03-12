@@ -1,0 +1,84 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73482ea8f22084fa499fef9ce6a5d2ca, type: 3}
+  m_Name: DefaultPlayerConfig
+  m_EditorClassIdentifier: 
+  runSpeed: 10
+  turnSpeed: 12
+  cameraTurnSpeed: 271
+  jumpHeight: 7.72
+  maxJumps: 2
+  canJump: 1
+  canAirJump: 1
+  canWallJump: 1
+  canDash: 1
+  dashDistance:
+    minimum: 0
+    maximum: 0
+  health:
+    minimum: 0
+    maximum: 100
+  healthRegen: 10
+  healthRegenDelay: 2
+  healthRegenCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.49450225
+      inSlope: 0.09473946
+      outSlope: 0.09473946
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.40333587
+    - serializedVersion: 3
+      time: 1
+      value: 2.005249
+      inSlope: 5.2563887
+      outSlope: 5.2563887
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.08234131
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  stamina:
+    minimum: 0
+    maximum: 100
+  staminaRegen: 45
+  staminaRegenDelay: 0.5
+  staminaRegenCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0.07461162
+      outSlope: 0.07461162
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.43981916
+    - serializedVersion: 3
+      time: 1.0001221
+      value: 1.2295418
+      inSlope: 0.513172
+      outSlope: 0.513172
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.04034377
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
