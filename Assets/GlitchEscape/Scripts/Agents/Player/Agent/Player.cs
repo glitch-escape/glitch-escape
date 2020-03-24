@@ -9,8 +9,16 @@ using UnityEngine.InputSystem;
 // [RequireComponent(typeof(AudioSource))]
 // [RequireComponent(typeof(PlayerHealth))]
 // [RequireComponent(typeof(PlayerStamina))]
-public class Player : BaseAgent<Player, PlayerConfig, PlayerHealth, PlayerStamina> {
+public class Player : BaseAgent<Player, PlayerConfig> {
 
+    #region AgentProperties
+    public override AgentType agentType => AgentType.Player;
+    public override bool isTargetableBy(AgentType type) { return type != agentType; }
+    protected override Resource<Player, PlayerConfig, float> healthResource => health;
+    protected override Resource<Player, PlayerConfig, float> staminaResource => stamina;
+    protected override KillType killType => KillType.KillAndResetAgent;
+    #endregion
+    
     /// <summary>
     /// Reference to this script's PlayerController (should be parented to this)
     /// </summary>
@@ -19,57 +27,37 @@ public class Player : BaseAgent<Player, PlayerConfig, PlayerHealth, PlayerStamin
 
     [InjectComponent] public Rigidbody rigidbody;
     [InjectComponent] public Animator animator;
+    [InjectComponent] public AudioSource soundSource;
     [InjectComponent] public PlayerHealth health;
     [InjectComponent] public PlayerStamina stamina;
     
-    /// <summary>
-    /// Reference to the player's rigidbody
-    /// </summary>
-    /// 
-    // public new Rigidbody rigidbody => this.GetEnforcedComponentReference(ref m_rigidbody);
-    //
-    // private Rigidbody m_rigidbody;
+    // additional player components
+    [InjectComponent] public PlayerSpawnController       spawn;
+    [InjectComponent] public PlayerMovementController    movement;
+    [InjectComponent] public PlayerAudioController       audio;
+    [InjectComponent] public PlayerDialogController      dialog;
 
-    /// <summary>
-    /// Reference to the player's animator
-    /// </summary>
-    // public new Animator animator => this.GetEnforcedComponentReference(ref m_animator);
-    //
-    // private Animator m_animator;
-
+    // player abilities
+    [InjectComponent] public PlayerDashController        dash;
+    [InjectComponent] public PlayerJumpController        jump;
+    [InjectComponent] public PlayerMazeSwitchController  mazeSwitch;
+    [InjectComponent] public PlayerInteractionController interact;
+    
     // input instance singleton
     public Input input => m_input ?? (m_input = new Input());
     private Input m_input;
 
     //audio management variables
     public AudioClip[] soundfx;
-    public AudioSource soundSource;
 
-    new void OnEnable() {
-        base.OnEnable();
-    }
-
-    new void OnDisable() {
-        base.OnDisable();
-    }
-
-    /// <summary>
-    /// Called by BaseAgent when this player should "die"
-    /// Returning false from this function cancels the despawn, and we manually "respawn" the player instead
-    /// </summary>
-    /// <returns></returns>
-    protected override bool TryKillAgent() {
-        controller.RespawnPlayer();
-        PlaySound(4);
-        return false;
-    }
+    void OnEnable() {}
+    void OnDisable() {}
 
     #region UnityUpdateAndAwake
 
     void Awake() {
         input.Enable();
         SetInitialSpawnLocation(transform.position, transform.rotation);
-        soundSource = GetComponent<AudioSource>();
     }
 
     #endregion

@@ -9,4 +9,5 @@ public interface IAgent : IResettable {
     bool isTargetableBy(AgentType type);
     void TakeDamage(float damage);
     void Kill();
+    bool TryUseAbility(IAgentAbility ability);
 }

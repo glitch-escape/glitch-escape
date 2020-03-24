@@ -29,6 +29,13 @@ public abstract class Resource<Owner, Config, T> : MonoBehaviourBorrowingConfigF
     public abstract T maximum { get; }
 
     /// <summary>
+    /// Value remaining (above minimum)
+    /// </summary>
+    public T valueRemaining => Subtract(value, minimum);
+
+    private static dynamic Subtract(dynamic a, dynamic b) { return a - b; }
+
+    /// <summary>
     /// Resets value to defaultValue
     /// </summary>
     public void Reset() { value = defaultValue; }
