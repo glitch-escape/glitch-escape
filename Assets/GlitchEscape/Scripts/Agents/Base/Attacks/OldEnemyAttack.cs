@@ -4,7 +4,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider))] 
 [RequireComponent(typeof(MeshRenderer))]
-public class Attack : MonoBehaviour {
+public class OldEnemyAttack : MonoBehaviour {
 
     public enum AttackType { STRIKE, CHARGE, BULLET }
     public AttackType atkType;

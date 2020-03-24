@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Projectile : MonoBehaviour {
+public class OldEnemyProjectile : MonoBehaviour {
 
     public enum Target { Enemy, Player };
     public Target target;

@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.AI;
 
 public class EnemyPatrol : MonoBehaviour, IEnemySearchForPlayerAction {
-    private Enemy enemy;
-    private EnemyController enemyController;
+    private Enemy _oldEnemy;
+    private OldEnemyController _oldEnemyController;
     private NavMeshAgent agent;
     private Player player;
 
@@ -16,12 +16,12 @@ public class EnemyPatrol : MonoBehaviour, IEnemySearchForPlayerAction {
     private bool isReturnTrip, isIdle;
 
     // Initialize component
-    public void SetupControllerComponent(EnemyController controller) {
+    public void SetupControllerComponent(OldEnemyController controller) {
         // Get references
-        enemyController = controller;
-        enemy = controller.enemy;
-        agent = enemy.navMeshAgent;
-        player = enemyController.player;
+        _oldEnemyController = controller;
+        _oldEnemy = controller.oldEnemy;
+        agent = _oldEnemy.navMeshAgent;
+        player = _oldEnemyController.player;
     }
 
     public void StartAction() {
@@ -35,7 +35,7 @@ public class EnemyPatrol : MonoBehaviour, IEnemySearchForPlayerAction {
     public void EndAction() { }
     public void UpdateAction() {
         // Update destination point if needed
-        if (Vector3.Distance(enemy.transform.position, agent.destination) <= ptLeniency) {
+        if (Vector3.Distance(_oldEnemy.transform.position, agent.destination) <= ptLeniency) {
             if (isReturnTrip) {
                 curDest -= 1;
                 if (curDest < 0) {

@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-// [RequireComponent(typeof(EnemyController))]
+// [RequireComponent(typeof(OldEnemyController))]
 [RequireComponent(typeof(NavMeshAgent))] 
 [RequireComponent(typeof(Animator))] 
-public class Enemy : MonoBehaviour {
+public class OldEnemy : MonoBehaviour {
 
     [HideInInspector]
-    public EnemyController controller;
+    public OldEnemyController controller;
     private Player player;
 
     #region EnemyProperties
@@ -60,7 +60,7 @@ public class Enemy : MonoBehaviour {
     void OnEnable() {
         player = Enforcements.GetSingleComponentInScene<Player>(this);
     }
-    // public void SetupControllerComponent(EnemyController controller) {
+    // public void SetupControllerComponent(OldEnemyController controller) {
     //     this.controller = controller;
     //     player = controller.player;
     // }

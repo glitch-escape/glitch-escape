@@ -6,7 +6,7 @@ using UnityEngine.Analytics;
 
 // Interface that all enemy controller subcomponents must implement
 public interface IEnemyControllerComponent {
-    void SetupControllerComponent(EnemyController controller);
+    void SetupControllerComponent(OldEnemyController controller);
 }
 public interface IEnemyObjectiveMarker {}
 
@@ -73,8 +73,8 @@ public interface IEnemyIdleAction : IEnemyBehaviorState { }
 [RequireComponent(typeof(IEnemyIdleAction))]
 [RequireComponent(typeof(IEnemyAttackAction))]
 [RequireComponent(typeof(IEnemySearchForPlayerAction))]
-public class EnemyController : MonoBehaviour {
-    public Enemy enemy;
+public class OldEnemyController : MonoBehaviour {
+    public OldEnemy oldEnemy;
     public Player player;
 
     private IEnemyAttackAction[] attackActions;
@@ -165,7 +165,7 @@ public class EnemyController : MonoBehaviour {
             activeState.StartAction();
         } else if (_behaviorState != EnemyBehaviorState.None) {
             Debug.LogWarning(
-                "no active state for "+action+" on EnemyController for "+gameObject+
+                "no active state for "+action+" on OldEnemyController for "+gameObject+
                        ": switching to null (None) state");
             _behaviorState = EnemyBehaviorState.None;
         }
@@ -228,19 +228,19 @@ public class EnemyController : MonoBehaviour {
     
     private void Awake() {
         // Get all references
-        if (!enemy) { Debug.LogError("EnemyController: Enemy reference missing!"); }
+        if (!oldEnemy) { Debug.LogError("OldEnemyController: Enemy reference missing!"); }
         if (!player) { player = GameObject.FindObjectOfType<Player>(); }
 
         // Setup enemy's controller references
-        enemy.controller = this;
-        SetupSubControllers(enemy.GetComponents<IEnemyControllerComponent>());
+        oldEnemy.controller = this;
+        SetupSubControllers(oldEnemy.GetComponents<IEnemyControllerComponent>());
         SetupSubControllers(GetComponents<IEnemyControllerComponent>());
         
         InitActionLists();
     }
 
     private void OnEnable() {
-        SetupSubControllers(enemy.GetComponents<IEnemyControllerComponent>());
+        SetupSubControllers(oldEnemy.GetComponents<IEnemyControllerComponent>());
         SetupSubControllers(GetComponents<IEnemyControllerComponent>());
         foreach (Transform child in transform) {
             SetupSubControllers(child.gameObject.GetComponents<IEnemyControllerComponent>());

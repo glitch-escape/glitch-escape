@@ -12,7 +12,7 @@ public class PlayerShootController : PlayerAbility {
     protected override PlayerControls.HybridButtonControl inputButton
         => m_inputButton ?? (m_inputButton = PlayerControls.instance.shoot);
     
-    public Projectile projectilePrefab;
+    public OldEnemyProjectile oldEnemyProjectilePrefab;
     public Transform projectileSpawnLocation;
     
     /// <summary>
@@ -26,7 +26,7 @@ public class PlayerShootController : PlayerAbility {
 
     protected override void SetupAbility() {
         //animator.SetBool("isDashing", false);
-        if (projectilePrefab == null) {
+        if (oldEnemyProjectilePrefab == null) {
             Debug.LogError("Missing player projectile prefab.");
         }
     }
@@ -56,8 +56,8 @@ public class PlayerShootController : PlayerAbility {
         Vector3 direction = projectileSpawnLocation.forward;
         Vector3 origin = projectileSpawnLocation.position;
         // Quaternion quat = Quaternion.LookRotation(direction, Vector3.up);
-        Projectile bullet = Instantiate(
-            projectilePrefab,
+        OldEnemyProjectile bullet = Instantiate(
+            oldEnemyProjectilePrefab,
             projectileSpawnLocation.position,
             projectileSpawnLocation.rotation);
         Debug.Log("Spawned projectile: "+bullet.transform.position+ ", " + bullet.transform.rotation + 

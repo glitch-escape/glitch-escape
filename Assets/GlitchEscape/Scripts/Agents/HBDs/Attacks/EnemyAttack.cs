@@ -5,8 +5,8 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider))]
 [RequireComponent(typeof(MeshRenderer))]
 public class EnemyAttack : MonoBehaviour, IEnemyAttackAction {
-    private Enemy enemy;
-    private EnemyController enemyController;
+    private Enemy _oldEnemy;
+    private OldEnemyController _oldEnemyController;
     private BoxCollider hitbox;
     private MeshRenderer mesh;
 
@@ -28,10 +28,10 @@ public class EnemyAttack : MonoBehaviour, IEnemyAttackAction {
         Time.time - atkStart <= firstActive + activeLen;
 
     // Initialize component
-    public void SetupControllerComponent(EnemyController controller) {
+    public void SetupControllerComponent(OldEnemyController controller) {
         // Get references
-        enemyController = controller;
-        enemy = controller.enemy;
+        _oldEnemyController = controller;
+        _oldEnemy = controller.oldEnemy;
         hitbox = GetComponent<BoxCollider>()
                    ?? gameObject.AddComponent<BoxCollider>();
         hitbox.isTrigger = true;
@@ -75,15 +75,15 @@ public class EnemyAttack : MonoBehaviour, IEnemyAttackAction {
         if (Time.time - curCooldwn < cooldown)
             return false;
         // Check if attack is in range
-        Vector3 foePos = enemy.transform.position;
+        Vector3 foePos = _oldEnemy.transform.position;
         Vector3 playPos = player.transform.position;
         if (Vector3.Distance(foePos, playPos) > strikeDist)
             return false;
 
         // Make sure enemy is facing player
         Vector3 playerDir = playPos - foePos;
-        if (Vector3.Angle(playerDir, enemy.transform.forward) > angleRange) {
-            Debug.Log(Vector3.Angle(playerDir, enemy.transform.forward));
+        if (Vector3.Angle(playerDir, _oldEnemy.transform.forward) > angleRange) {
+            Debug.Log(Vector3.Angle(playerDir, _oldEnemy.transform.forward));
             return false;
         }
            

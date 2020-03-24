@@ -5,8 +5,8 @@ using UnityEngine;
 
 [RequireComponent(typeof(SphereCollider))]
 public class SphericalEnemyDetection : MonoBehaviour, IEnemyVisionController {
-    private Enemy enemy;
-    private EnemyController enemyController;
+    private Enemy _oldEnemy;
+    private OldEnemyController _oldEnemyController;
     private SphereCollider collider;
 
     public float detectionRadius = 10f;
@@ -15,10 +15,10 @@ public class SphericalEnemyDetection : MonoBehaviour, IEnemyVisionController {
         detectionRadius * currentDetectionRadiusScaleFactor;
     
     // initialization method
-    public void SetupControllerComponent(EnemyController controller) {
+    public void SetupControllerComponent(OldEnemyController controller) {
         // Get references
-        enemyController = controller;
-        enemy = controller.enemy;
+        _oldEnemyController = controller;
+        _oldEnemy = controller.oldEnemy;
         collider = GetComponent<SphereCollider>()
                    ?? gameObject.AddComponent<SphereCollider>();
         collider.radius = currentDetectionRadius;
@@ -104,14 +104,14 @@ public class SphericalEnemyDetection : MonoBehaviour, IEnemyVisionController {
             activePlayerInTriggerBounds = player;
             hasLastKnownPlayerPosition = false;
             lastKnownPlayerPosition = Vector3.zero;
-            enemyController.OnPlayerDetected(player);
+            _oldEnemyController.OnPlayerDetected(player);
             return;
         }
         // found an objective marker?
         var objective = collider.GetComponentInParent<IEnemyObjectiveMarker>();
         if (objective != null) {
             objectiveMarkers.Add(objective);
-            enemyController.OnObjectiveDetected(objective);
+            _oldEnemyController.OnObjectiveDetected(objective);
         }
     }
     void OnTriggerExit(Collider collider) {
@@ -120,7 +120,7 @@ public class SphericalEnemyDetection : MonoBehaviour, IEnemyVisionController {
         if (player != null) {
             hasLastKnownPlayerPosition = true;
             lastKnownPlayerPosition = player.transform.position;
-            enemyController.OnPlayerLost(player);
+            _oldEnemyController.OnPlayerLost(player);
         }
     }
     #endregion

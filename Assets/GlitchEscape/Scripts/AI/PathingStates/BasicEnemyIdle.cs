@@ -3,30 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BasicEnemyIdle : MonoBehaviour, IEnemyIdleAction {
-    private Enemy enemy;
-    private EnemyController enemyController;
+    private Enemy _oldEnemy;
+    private OldEnemyController _oldEnemyController;
     private Player player;
 
     public bool doesPatrol;
 
     // Initialize component
-    public void SetupControllerComponent(EnemyController controller) {
+    public void SetupControllerComponent(OldEnemyController controller) {
         // Get references
-        enemyController = controller;
-        enemy = controller.enemy;
+        _oldEnemyController = controller;
+        _oldEnemy = controller.oldEnemy;
         player = controller.player;
     }
 
     #region IdleActionImplementation
     public void StartAction() {
-        enemy.SetNavDest(enemy.transform.position);
+        _oldEnemy.SetNavDest(_oldEnemy.transform.position);
     }
 
     public void EndAction() { }
     public void UpdateAction() {
         // Start chasing once player is detected
-     //   if (enemyController.PlayerDetected())
-     //       enemyController.OnPlayerDetected(player);
+     //   if (_oldEnemyController.PlayerDetected())
+     //       _oldEnemyController.OnPlayerDetected(player);
     }
     public bool ActionFinished(out EnemyBehaviorState nextAction) {
         nextAction = EnemyBehaviorState.SearchingForPlayer;

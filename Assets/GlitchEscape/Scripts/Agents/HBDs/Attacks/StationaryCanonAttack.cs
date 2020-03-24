@@ -3,24 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class StationaryCanonAttack : MonoBehaviour, IEnemyAttackAction {
-    private Enemy enemy;
-    private EnemyController enemyController;
+    private Enemy _oldEnemy;
+    private OldEnemyController _oldEnemyController;
     private Player player;
 
     // Attack variables
     public float projYShift;
-    public Projectile bullPrefab;
+    public OldEnemyProjectile bullPrefab;
     public float bulletRate;
 
     // Other variables
     private float curAtkTime;
 
     // Initialize component
-    public void SetupControllerComponent(EnemyController controller) {
+    public void SetupControllerComponent(OldEnemyController controller) {
         // Get references
-        enemyController = controller;
-        enemy = enemyController.enemy;
-        player = enemyController.player;
+        _oldEnemyController = controller;
+        _oldEnemy = _oldEnemyController.oldEnemy;
+        player = _oldEnemyController.player;
 
         if (!bullPrefab) { Debug.LogError("Bullet prefab missing!"); }
     }
@@ -31,14 +31,14 @@ public class StationaryCanonAttack : MonoBehaviour, IEnemyAttackAction {
         curAtkTime = 0;
 
         // Make the enemy stand still
-        enemy.navMeshAgent.SetDestination(enemy.transform.position);
+        _oldEnemy.navMeshAgent.SetDestination(_oldEnemy.transform.position);
     }
     // Reset variables of the attack
     public void EndAction() { }
     // Update variables of the attack
     public void UpdateAction() {
         curAtkTime += Time.deltaTime;
-        ShootBullet(enemy.transform.rotation, enemy.transform.position);
+        ShootBullet(_oldEnemy.transform.rotation, _oldEnemy.transform.position);
     }
 
     // Informs if the attack has completed
@@ -59,7 +59,7 @@ public class StationaryCanonAttack : MonoBehaviour, IEnemyAttackAction {
 
             // Spawn bullet
             origin.y += projYShift;
-            Projectile bullet = Instantiate(bullPrefab, origin, forward);
+            OldEnemyProjectile bullet = Instantiate(bullPrefab, origin, forward);
             bullet.gameObject.SetActive(true);
             bullet.SetPlayerPos(player.transform);
         }

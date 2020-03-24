@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyShoot : MonoBehaviour, IEnemyAttackAction {
-    private Enemy enemy;
-    private EnemyController enemyController;
+    private Enemy _oldEnemy;
+    private OldEnemyController _oldEnemyController;
     private Player player;
 
     // Attack variables
     public float duration;
     public float cooldown, strikeDist;
-    public Projectile bullPrefab;
+    public OldEnemyProjectile bullPrefab;
     public int bulletAmt;
     public float bulletRate;
 
@@ -21,11 +21,11 @@ public class EnemyShoot : MonoBehaviour, IEnemyAttackAction {
         curAtkTime < duration && curAtkTime > 0;
 
     // Initialize component
-    public void SetupControllerComponent(EnemyController controller) {
+    public void SetupControllerComponent(OldEnemyController controller) {
         // Get references
-        enemyController = controller;
-        enemy = enemyController.enemy;
-        player = enemyController.player;
+        _oldEnemyController = controller;
+        _oldEnemy = _oldEnemyController.oldEnemy;
+        player = _oldEnemyController.player;
 
         if (!bullPrefab) { Debug.LogError("Bullet prefab missing!"); }
     }
@@ -38,22 +38,22 @@ public class EnemyShoot : MonoBehaviour, IEnemyAttackAction {
         shotsMade = 0;
 
         // Make the enemy stand still
-        enemy.navMeshAgent.SetDestination(enemy.transform.position);
-        enemy.animator.SetBool("isAttacking", true);
+        _oldEnemy.navMeshAgent.SetDestination(_oldEnemy.transform.position);
+        _oldEnemy.animator.SetBool("isAttacking", true);
     }
     // Reset variables of the attack
     public void EndAction() {
         curCooldwn = Time.time;
         curAtkTime = 0;
 
-        enemy.animator.SetBool("isAttacking", false);
+        _oldEnemy.animator.SetBool("isAttacking", false);
     }
     // Update variables of the attack
     public void UpdateAction() {
-        Vector3 dir = player.transform.position - enemy.transform.position;
+        Vector3 dir = player.transform.position - _oldEnemy.transform.position;
         curAtkTime += Time.deltaTime;
         if (shotsMade < bulletAmt) {
-            ShootBullet(dir, enemy.transform.position);
+            ShootBullet(dir, _oldEnemy.transform.position);
         }
     }
 
@@ -74,7 +74,7 @@ public class EnemyShoot : MonoBehaviour, IEnemyAttackAction {
         if (Time.time - curCooldwn < cooldown)
             return false;
         // Check if attack is in range
-        Vector3 foePos = enemy.transform.position;
+        Vector3 foePos = _oldEnemy.transform.position;
         Vector3 playPos = player.transform.position;
         if (Vector3.Distance(foePos, playPos) > strikeDist)
             return false;
@@ -99,7 +99,7 @@ public class EnemyShoot : MonoBehaviour, IEnemyAttackAction {
 
             // Spawn bullet
             Quaternion rotation = Quaternion.LookRotation(transform.forward, Vector3.up);
-            Projectile bullet = Instantiate(bullPrefab, origin, rotation);
+            OldEnemyProjectile bullet = Instantiate(bullPrefab, origin, rotation);
             bullet.gameObject.SetActive(true);
             bullet.SetPlayerPos(player.transform);
         }

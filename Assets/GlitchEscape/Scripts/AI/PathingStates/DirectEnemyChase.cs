@@ -5,17 +5,17 @@ using UnityEngine.AI;
 
 public class DirectEnemyChase : MonoBehaviour, IEnemyPursuitAction {
 
-    private Enemy enemy;
-    private EnemyController enemyController;
+    private Enemy _oldEnemy;
+    private OldEnemyController _oldEnemyController;
     private NavMeshAgent agent;
     private Player player;
 
     // Initialize component
-    public void SetupControllerComponent(EnemyController controller) {
+    public void SetupControllerComponent(OldEnemyController controller) {
         // Get references
-        enemyController = controller;
-        enemy = controller.enemy;
-        agent = enemy.navMeshAgent;
+        _oldEnemyController = controller;
+        _oldEnemy = controller.oldEnemy;
+        agent = _oldEnemy.navMeshAgent;
         player = controller.player;
     }
 
@@ -37,7 +37,7 @@ public class DirectEnemyChase : MonoBehaviour, IEnemyPursuitAction {
         */
     }
 
-    // Ends when enemyController decides it's ok to attack
+    // Ends when _oldEnemyController decides it's ok to attack
     public bool ActionFinished(out EnemyBehaviorState nextAction) {
         nextAction = EnemyBehaviorState.ChasingPlayer;
         return false;
