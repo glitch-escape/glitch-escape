@@ -8,6 +8,13 @@ public class PlayerJumpController : MonoBehaviour, IPlayerControllerComponent
     private new Rigidbody rigidbody;
     private Animator animator;
     private Player player;
+    
+    public delegate void Listener();
+    public event Listener OnFloorJump;
+    public event Listener OnAirJump;
+    public event Listener OnWallJump;
+    public event Listener OnJumpEnd;
+    
     public void SetupControllerComponent(PlayerController controller)
     {
         this.controller = controller;
@@ -78,7 +85,8 @@ public class PlayerJumpController : MonoBehaviour, IPlayerControllerComponent
         if (context.performed && jumpCount + 1 < maxJumpCount && !wallCheck) //not wall jump
         {
             jumpCount++;
-            player.PlaySound(0); // play bloop
+            if (CheckOnGround()) { OnFloorJump?.Invoke(); }
+            else { OnAirJump?.Invoke(); }
             if (rigidbody.velocity.y < 0f) {
                 rigidbody.velocity = Vector3.up * jumpVelocity;
             } else {
@@ -88,7 +96,7 @@ public class PlayerJumpController : MonoBehaviour, IPlayerControllerComponent
         else if (context.performed && wallCheck && !CheckOnGround() && (lastWallNormal != currentWallNormal)) //wall jump
         {
             jumpCount = 0;
-            player.PlaySound(1); //play ping
+            OnWallJump?.Invoke();
             if (rigidbody.velocity.y < 0f) { 
                 rigidbody.velocity = Vector3.up * jumpVelocity * wallJumpMultiplier + currentWallNormal * jumpVelocity;
             } else {
