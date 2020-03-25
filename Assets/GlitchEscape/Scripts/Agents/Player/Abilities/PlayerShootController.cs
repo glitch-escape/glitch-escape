@@ -7,52 +7,21 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 
 public class PlayerShootController : PlayerAbility {
-
-    private PlayerControls.HybridButtonControl m_inputButton;
-    protected override PlayerControls.HybridButtonControl inputButton
-        => m_inputButton ?? (m_inputButton = PlayerControls.instance.shoot);
+    public override float resourceCost => player.config.shootAbilityStaminaCost;
+    public override float cooldownTime => 1f / player.config.shootAbilityShotsPerSec;
+    protected override PlayerControls.HybridButtonControl inputButton => PlayerControls.instance.shoot;
     
     public OldEnemyProjectile oldEnemyProjectilePrefab;
     public Transform projectileSpawnLocation;
     
-    /// <summary>
-    /// Can trigger iff the player is already moving
-    /// </summary>
-    /// <returns></returns>
-    protected override bool CanStartAbility() {
-        //return PlayerControls.instance.moveInput.magnitude > 0f;
-        return true;
-    }
-
-    protected override void SetupAbility() {
-        //animator.SetBool("isDashing", false);
-        if (oldEnemyProjectilePrefab == null) {
-            Debug.LogError("Missing player projectile prefab.");
-        }
-    }
-
-    protected override void OnAbilityStateChange(PlayerAbilityState prevState, PlayerAbilityState newState) {
-        switch (newState) {
-            case PlayerAbilityState.Active: 
-                SpawnProj();
-                break;
-            case PlayerAbilityState.Ending:
-                break;
-            case PlayerAbilityState.None:
-                break;
-        }
-    }
+    protected override void AbilityStart() { SpawnProjectile(); }
+    protected override void AbilityEnd() {}
+    protected override void AbilityUpdate() {}
+    protected override void ResetAbility() {}
     protected override bool IsAbilityFinished() {
         return elapsedTime > currentAbilityDuration;
     }
-    
-    protected override void UpdateAbility() {
-        // Play a projectile cration animation here?
-
-        // update vfx
-        // TODO: any other vfx stuff goes here
-    }  
-    private void SpawnProj() {
+    private void SpawnProjectile() {
         Vector3 direction = projectileSpawnLocation.forward;
         Vector3 origin = projectileSpawnLocation.position;
         // Quaternion quat = Quaternion.LookRotation(direction, Vector3.up);

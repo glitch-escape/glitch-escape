@@ -7,7 +7,10 @@ using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.DualShock;
 using UnityEngine.InputSystem.Users;
 
-public class PlayerControls : MonoBehaviour {    
+public class PlayerControls : MonoBehaviour {
+
+    [InjectComponent] public Player player;
+    
     private static PlayerControls m_instance = null;
     public static PlayerControls instance {
         get {
@@ -42,8 +45,9 @@ public class PlayerControls : MonoBehaviour {
     //
     // Inspector properties
     //
-    public AnimationCurve gamepadAnalogInputCurve;
-    public float mouseSensitivity = 1f;
+    private AnimationCurve gamepadAnalogInputCurve => player.config.gamepadInputCurve;
+    private AnimationCurve mouseInputCurve => player.config.mouseInputCurve;
+    private float mouseSensitivity => player.config.mouseSensitivity;
     
     static float ApplyInputCurve(float input, AnimationCurve inputCurve) {
         var sign = input >= 0f ? 1f : -1f;
@@ -56,7 +60,7 @@ public class PlayerControls : MonoBehaviour {
         }
     }
     private Vector2 GetNormalizedMouseInput() {
-        var input = Mouse.current.delta.ReadValue() * mouseSensitivity / Screen.width;
+        var input = Mouse.current.delta.ReadValue() * mouseSensitivity;
         // input.x *= mouseSensitivity / Screen.width;
         // input.y *= mouseSensitivity / Screen.height;
         return input;

@@ -19,31 +19,53 @@ public enum PlayerAbilityState {
 /// a minimal, straightforward interface to subclass from + use.
 /// </summary>
 public abstract class PlayerAbility : PlayerComponent, IAgentAbility {
-
-    [InjectComponent] public Animator animator;
-    [InjectComponent] public new Rigidbody rigidbody;
-    
     public IAgent agent => player;
-    public float resourceCost => minStaminaCost;
-
-    // TODO: implement
-    public bool canUseAbility => true;
-
-    // TODO: implement
-    public void Reset() {
-        throw new NotImplementedException();
-    }
+    public bool canUseAbility => !isOnCooldown && CanStartAbility();
+    public bool isAbilityActive => state == State.Active || state == State.ActivePressed;
     
-    // TODO: implement
+    public abstract float resourceCost { get; }
+    public abstract float cooldownTime { get; }
+    protected float abilityStartTime { get; private set; } = -10f;
+    protected bool isOnCooldown => Time.time < abilityStartTime + cooldownTime;
+
+    public enum State { None, ActivePressed, Active, Ending }
+    public State state { get; private set; } = State.None;
+    
+    /// <summary>
+    /// Called whan an ability is started
+    /// </summary>
+    protected abstract void AbilityStart();
+    protected abstract void AbilityUpdate();
+    protected abstract void AbilityEnd();
+    protected abstract void ResetAbility();
+    
     public void StartAbility() {
-        throw new NotImplementedException();
+        if (isAbilityActive) {
+            AbilityEnd();
+        }
+        state = State.Active;
+        abilityStartTime = Time.time;
+        AbilityStart();
+    }
+    public void CancelAbility() {
+        if (isAbilityActive) {
+            AbilityEnd();
+        }
+        state = State.None;
+    }
+    public void Reset() { 
+        CancelAbility();
+        abilityStartTime = Time.time - cooldownTime - 1f;
+        ResetAbility();
+    }
+    void Update() {
+        if (isAbilityActive) {
+            AbilityUpdate();
+        }
     }
 
-    // TODO: implement
-    public void CancelAbility() {
-        throw new NotImplementedException();
-    }
-    
+    // TODO: refactor out
+    #region MaterialHelpers
     private Renderer[] m_renderers = null;
     private List<Material> m_defaultMaterials = null;
     private List<Material> defaultMaterials => m_defaultMaterials ?? (m_defaultMaterials = GetDefaultMaterials());
@@ -74,11 +96,14 @@ public abstract class PlayerAbility : PlayerComponent, IAgentAbility {
             renderer.materials = materials;
         }
     }
-
     /// <summary>
     /// Lazily gets all renderers attached to / in children of the player object
     /// </summary>
     protected Renderer[] childRenderers => m_renderers ?? (m_renderers = player.GetComponentsInChildren<Renderer>());
+    
+    #endregion MaterialHelpers
+    
+    
 
     /// <summary>
     /// specifies the button control that this ability uses
@@ -90,37 +115,12 @@ public abstract class PlayerAbility : PlayerComponent, IAgentAbility {
     /// </summary>
     /// <returns></returns>
     protected virtual bool CanStartAbility() { return true; }
-    
-    /// <summary>
-    /// called after initialization by SetupPlayerComponent()
-    /// </summary>
-    protected abstract void SetupAbility();
-    
-    /// <summary>
-    /// Called on any / all state changes
-    /// </summary>
-    /// <param name="prevState">the old / previous state</param>
-    /// <param name="newState">the new state</param>
-    protected abstract void OnAbilityStateChange(PlayerAbilityState prevState, PlayerAbilityState newState);
-    
-    /// <summary>
-    /// Called every frame that this ability is in a Active or Ending state
-    /// </summary>
-    protected abstract void UpdateAbility();
-    
+
     /// <summary>
     /// 
     /// </summary>
     /// <returns>true iff this ability is finished + should return to a None state</returns>
     protected abstract bool IsAbilityFinished();
-
-    public void SetupControllerComponent(PlayerController controller) {
-        player = controller.player;
-        state = PlayerAbilityState.None;
-        
-        
-        SetupAbility();
-    }
 
     public float abilityCooldown = 0f;
 
@@ -146,14 +146,13 @@ public abstract class PlayerAbility : PlayerComponent, IAgentAbility {
     [SerializeField]
     public AnimationCurve pressTimeFunction;
 
-    private float abilityStartTime = 0f;
     private float abilityPressTimeLimit = Mathf.Infinity;
-    public float elapsedTime => m_state != State.None ? Time.time - abilityStartTime : 0f;
+    public float elapsedTime => state != State.None ? Time.time - abilityStartTime : 0f;
 
     private float m_abilityPressDuration;
     public float pressDuration => Mathf.Min(m_abilityPressDuration, inputButton.pressTime);
     private float abilityPressStrength
-        => m_state == State.None ? 0f :
+        => state == State.None ? 0f :
             pressTimeFunction.Evaluate(Mathf.Clamp01(pressDuration / maxPressTime));
     private float minAbilityPressStrength => pressTimeFunction.Evaluate(0f);
     
@@ -186,7 +185,7 @@ public abstract class PlayerAbility : PlayerComponent, IAgentAbility {
     private float usedStamina;
 
     public void DrawPlayerAbilityDebugGUI() {
-        GUILayout.Label("current state: " + m_state);
+        GUILayout.Label("current state: " + state);
         GUILayout.Label("button pressed?: " + inputButton.isPressed);
         GUILayout.Label("button pressed duration: " + inputButton.pressTime);
         GUILayout.Label("internal min duration: " + m_abilityPressDuration);
@@ -205,112 +204,68 @@ public abstract class PlayerAbility : PlayerComponent, IAgentAbility {
         if (drawPlayerAbilityDebugGUI) DrawPlayerAbilityDebugGUI();
     }
 
-    private enum State { None, ActivePressed, Active, Ending }
-    private State m_state = State.None;
-    public PlayerAbilityState state {
-        get {
-            switch (m_state) {
-                case State.None: return PlayerAbilityState.None;
-                case State.ActivePressed: case State.Active: return PlayerAbilityState.Active;
-                case State.Ending: return PlayerAbilityState.Ending;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
-        private set {
-            var oldState = state;
-            if (value != oldState) {
-                // Assign new state
-                switch (value) {
-                    case PlayerAbilityState.None: 
-                        m_state = State.None;
-                        m_abilityPressDuration = 0;
-                        break;
-                    case PlayerAbilityState.Active: 
-                        m_state = State.ActivePressed;
-                        m_abilityPressDuration = Mathf.Infinity;
-                        break;
-                    case PlayerAbilityState.Ending: 
-                        m_state = State.Ending; 
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(value), value, null);
-                }
-                OnAbilityStateChange(oldState, value);
-            }
-        }
-    }
-
-    public bool TryStartAbility() {
-        if (!CanStartAbility()) return false;
-
-        if (Time.time - abilityStartTime < abilityCooldown) {
-            return false;
-        }
-        var cost = derivedMinimumStaminaCost;
-        if (!player.TryUseAbility(this)) return false;
-        
-        // Reset variables
-        abilityStartTime = Time.time;
-        abilityPressTimeLimit = Mathf.Infinity;
-        if (varyStaminaCostDependingOnPressTime && cost < maxStaminaCost) {
-            // apply the rest of the cost over time while the button is still pressed
-            usedStamina = cost;
-        }
-        // update state (note: if this got called from a state callback, this will short circuit and do nothing)
-        state = PlayerAbilityState.Active;
-        return true;
-    }
-    public void EndAbility() {
-        state = PlayerAbilityState.Ending;
-    }
-    public void TerminateAbility() {
-        state = PlayerAbilityState.None;
-    }
-    private void Update() {
-        if (inputButton.wasPressedThisFrame) {
-            TryStartAbility();
-        }
-        switch (m_state) {
-            case State.None: break;
-            case State.ActivePressed: {
-                // special state for when ability is active + button is still pressed
-                if (!inputButton.isPressed || inputButton.pressTime > maxPressTime) { 
-                    // transition out of press state
-                    m_state = State.Active;
-                    m_abilityPressDuration = inputButton.pressTime;
-                    
-                // if stamina cost varies, we may have an additional unapplied stamina cost
-                // due to pressing this button longer
-                } else if (varyStaminaCostDependingOnPressTime && usedStamina < maxStaminaCost) {
-                    var cost = currentStaminaCost;
-                    // TODO: reimplement
-                    if (cost > usedStamina && !player.TryUseAbility(this)) {
-                    // if (cost > usedStamina && !player.TryUseAbility(cost - usedStamina)) {
-                        // ran out of stamina: freeze ability strength here + terminate
-                        m_state = State.Active;
-                        m_abilityPressDuration = inputButton.pressTime;
-                    } else {
-                        usedStamina = cost;
-                    }
-                }
-            } goto case State.Active;
-            case State.Active: {
-                if (elapsedTime > currentAbilityDuration) {
-                    state = PlayerAbilityState.Ending;
-                    goto case State.Ending;
-                }
-                UpdateAbility();
-            } break;
-            case State.Ending:
-                if (IsAbilityFinished()) {
-                    state = PlayerAbilityState.None;
-                } else {
-                    UpdateAbility();
-                }
-                break;
-        }
-    }
-    public bool isAbilityActive => state == PlayerAbilityState.Active;
-    public bool isAbilityFinishing => state == PlayerAbilityState.Ending;
+    // public bool TryStartAbility() {
+    //     if (!CanStartAbility()) return false;
+    //
+    //     if (Time.time - abilityStartTime < abilityCooldown) {
+    //         return false;
+    //     }
+    //     var cost = derivedMinimumStaminaCost;
+    //     if (!player.TryUseAbility(this)) return false;
+    //     
+    //     // Reset variables
+    //     abilityStartTime = Time.time;
+    //     abilityPressTimeLimit = Mathf.Infinity;
+    //     if (varyStaminaCostDependingOnPressTime && cost < maxStaminaCost) {
+    //         // apply the rest of the cost over time while the button is still pressed
+    //         usedStamina = cost;
+    //     }
+    //     // update state (note: if this got called from a state callback, this will short circuit and do nothing)
+    //     state = PlayerAbilityState.Active;
+    //     return true;
+    // }
+    // private void Update() {
+    //     if (inputButton.wasPressedThisFrame) {
+    //         TryStartAbility();
+    //     }
+    //     switch (m_state) {
+    //         case State.None: break;
+    //         case State.ActivePressed: {
+    //             // special state for when ability is active + button is still pressed
+    //             if (!inputButton.isPressed || inputButton.pressTime > maxPressTime) { 
+    //                 // transition out of press state
+    //                 m_state = State.Active;
+    //                 m_abilityPressDuration = inputButton.pressTime;
+    //                 
+    //             // if stamina cost varies, we may have an additional unapplied stamina cost
+    //             // due to pressing this button longer
+    //             } else if (varyStaminaCostDependingOnPressTime && usedStamina < maxStaminaCost) {
+    //                 var cost = currentStaminaCost;
+    //                 // TODO: reimplement
+    //                 if (cost > usedStamina && !player.TryUseAbility(this)) {
+    //                 // if (cost > usedStamina && !player.TryUseAbility(cost - usedStamina)) {
+    //                     // ran out of stamina: freeze ability strength here + terminate
+    //                     m_state = State.Active;
+    //                     m_abilityPressDuration = inputButton.pressTime;
+    //                 } else {
+    //                     usedStamina = cost;
+    //                 }
+    //             }
+    //         } goto case State.Active;
+    //         case State.Active: {
+    //             if (elapsedTime > currentAbilityDuration) {
+    //                 state = PlayerAbilityState.Ending;
+    //                 goto case State.Ending;
+    //             }
+    //             UpdateAbility();
+    //         } break;
+    //         case State.Ending:
+    //             if (IsAbilityFinished()) {
+    //                 state = PlayerAbilityState.None;
+    //             } else {
+    //                 UpdateAbility();
+    //             }
+    //             break;
+    //     }
+    // }
 }

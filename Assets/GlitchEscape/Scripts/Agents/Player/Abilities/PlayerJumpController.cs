@@ -7,34 +7,45 @@ public class PlayerJumpController : PlayerComponent {
     [InjectComponent] public Animator animator;
     [InjectComponent] public new Camera camera;
 
+    // TODO: move to PlayerConfig
     [Tooltip("jump height (meters). Inaccurate if gravity factors != 1")]
     public float jumpHeight = 2f;
 
+    // TODO: move to PlayerConfig
     [Tooltip("factor to increase wall jump height by")]
     public float wallJumpMultiplier = 1.5f;
 
+    // TODO: move to PlayerConfig
     [Tooltip("maximum jumps (2 = double jump, etc)")]
     public uint maxJumpCount = 2;
     public uint jumpCount = 0;
 
+    // TODO: move to PlayerConfig
     private float jumpStartTime = 0f;
     private bool isJumping = false;
 
+    // TODO: move to PlayerConfig
     public AnimationCurve jumpCurve;
+    
+    // TODO: move to PlayerConfig
     public float jumpDuration = 0.64f;
 
+    // TODO: move to PlayerConfig
     [Tooltip("factor we increase downwards gravity by")]
     public float downGravityFactor = 2.2f;
 
+    // TODO: move to PlayerConfig
     [Tooltip("factor we increase upwards gravity by")]
     public float upGravityFactor = 0.8f;
 
+    // TODO: move to PlayerConfig
     private float jumpVelocity;
 
+    // TODO: move to PlayerConfig
     //used to ensure that the player doest wall jump from the same wall
     private Vector3 lastWallNormal = Vector3.zero;
     private Vector3 currentWallNormal = Vector3.zero;
-
+    
     private LayerMask walls;
 
     private Vector2 moveInput => PlayerControls.instance.moveInput;
