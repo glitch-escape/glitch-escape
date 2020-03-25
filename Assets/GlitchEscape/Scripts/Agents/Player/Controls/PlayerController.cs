@@ -18,7 +18,7 @@ public interface IPlayerControllerComponent {
 // and this is structured this way so that a full scene can be setup (and changes to the full player rig can be made
 // across all scenes) by just placing / editing a single prefab containing the player, camera, UI, etc.
 //
-[RequireComponent(typeof(MazeSwitchController))]
+[RequireComponent(typeof(PlayerMazeSwitchController))]
 [RequireComponent(typeof(PlayerControls))]
 public class PlayerController : MonoBehaviour {
     
@@ -32,16 +32,16 @@ public class PlayerController : MonoBehaviour {
     public Transform savePointLocation;
     
     // Maze switcher
-    public MazeSwitchController mazeSwitcher { get; private set; } = null;
+    public PlayerMazeSwitchController playerMazeSwitcher { get; private set; } = null;
 
     public void SwitchMazes() {
-        mazeSwitcher.SwitchMazes();        
+        playerMazeSwitcher.SwitchMazes();        
     }
     public void SetSavePoint(Transform location) {
         savePointLocation = location;
     }
     public void RespawnPlayer() {
-        mazeSwitcher.SetMazeActive(MazeSwitchController.ActiveMaze.Default);
+        playerMazeSwitcher.SetMazeActive(PlayerMazeSwitchController.ActiveMaze.Default);
         player.RespawnAt(savePointLocation);
         
         OnEnable();
@@ -64,7 +64,7 @@ public class PlayerController : MonoBehaviour {
         if (!player) { Debug.LogError("PlayerController: Player reference missing!"); }
         if (!camera) { Debug.LogError("PlayerController: Camera reference missing!"); }
         if (!camera) { camera = Camera.current; }
-        mazeSwitcher = GetComponent<MazeSwitchController>();
+        playerMazeSwitcher = GetComponent<PlayerMazeSwitchController>();
 
         // setup player's controller reference
         // player.controller = this;

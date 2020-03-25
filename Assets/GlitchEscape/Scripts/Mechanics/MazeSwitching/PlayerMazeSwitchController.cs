@@ -7,15 +7,15 @@ using Debug = UnityEngine.Debug;
 
 // Manages maze switching etc.
 // TODO: add postprocessing effects to glitch maze (see inGlitchMaze and glitchPercentRemaining)
-public class MazeSwitchController : MonoBehaviour, IPlayerControllerComponent {
+public class PlayerMazeSwitchController : MonoBehaviour, IPlayerControllerComponent {
     private PlayerController controller;
     private Player player;
 
-    private static MazeSwitchController _instance;
-    public static MazeSwitchController instance {
+    private static PlayerMazeSwitchController _instance;
+    public static PlayerMazeSwitchController instance {
         get {
             if (_instance == null) {
-                Debug.LogError("No MazeSwitchController in this level!");
+                Debug.LogError("No PlayerMazeSwitchController in this level!");
             }
             return _instance;
         }
@@ -25,9 +25,9 @@ public class MazeSwitchController : MonoBehaviour, IPlayerControllerComponent {
         _instance = this;
         this.controller = controller;
         player = controller.player;
-        if (!defaultMaze) { Debug.LogWarning("MazeSwitchController: default Maze missing!"); }
-        if (!glitchMaze) { Debug.LogWarning("MazeSwitchController: default Maze missing!"); }
-        if (!countdownTimerText) { Debug.LogError("MazeSwitchController: countdown timer text missing!"); }
+        if (!defaultMaze) { Debug.LogWarning("PlayerMazeSwitchController: default Maze missing!"); }
+        if (!glitchMaze) { Debug.LogWarning("PlayerMazeSwitchController: default Maze missing!"); }
+        if (!countdownTimerText) { Debug.LogError("PlayerMazeSwitchController: countdown timer text missing!"); }
         if (activeMaze == ActiveMaze.None) {
             SetMazeActive(ActiveMaze.Default);
         }

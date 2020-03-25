@@ -22,10 +22,12 @@ public class PlayerConfig : ScriptableObject {
     public bool canAirJump = true;
     public bool canWallJump = true;
 
-    [Header("Dash ability")] public bool canDash = true;
+    [Header("Dash ability")] 
+    public bool canDash = true;
     public FloatRange dashDistance;
 
-    [Header("Health")] public FloatRange health = new FloatRange {minimum = 0f, maximum = 100f};
+    [Header("Health")] 
+    public FloatRange health = new FloatRange {minimum = 0f, maximum = 100f};
     public float healthRegen = 10f;
     public float healthRegenDelay = 0.5f;
     public AnimationCurve healthRegenCurve = new AnimationCurve {
@@ -35,7 +37,8 @@ public class PlayerConfig : ScriptableObject {
         }
     };
     
-    [Header("Stamina")] public FloatRange stamina = new FloatRange {minimum = 0f, maximum = 100f};
+    [Header("Stamina")] 
+    public FloatRange stamina = new FloatRange {minimum = 0f, maximum = 100f};
     public float staminaRegen = 10f;
     public float staminaRegenDelay = 0.5f;
     public AnimationCurve staminaRegenCurve = new AnimationCurve {
@@ -44,4 +47,7 @@ public class PlayerConfig : ScriptableObject {
             new Keyframe(1f, 1f)
         }
     };
+
+    [Header("Spawn Height")] 
+    public float spawnHeight = 1f;
 }

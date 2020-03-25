@@ -48,66 +48,14 @@ public class Player : BaseAgent<Player, PlayerConfig> {
     public Input input => m_input ?? (m_input = new Input());
     private Input m_input;
 
-    //audio management variables
-    public AudioClip[] soundfx;
-
-    void OnEnable() {}
-    void OnDisable() {}
-
     #region UnityUpdateAndAwake
 
     void Awake() {
         input.Enable();
-        SetInitialSpawnLocation(transform.position, transform.rotation);
     }
 
     #endregion
-
-    #region PlayerRespawnAtImplementation
-
-    // save initial position + rotation for player respawns
-    private Vector3 initPosition;
-    private Quaternion initRotation;
-    public float playerSpawnHeight = 1f;
-
-    /// <summary>
-    /// Sets initial spawn location that RespawnAt() uses.
-    /// Shouldn't need to call this externally, but it's here if / as needed.
-    /// </summary>
-    /// <param name="pos"></param>
-    /// <param name="rot"></param>
-    public void SetInitialSpawnLocation(Vector3 pos, Quaternion rot) {
-        initPosition = pos;
-        initRotation = rot;
-    }
-
-    /// <summary>
-    /// Respawn player at a specific transform location, or their starting location if the passed in transform is null.
-    /// Used by PlayerController.RespawnPlayer(), which handles tracking spawn locations.
-    /// </summary>
-    /// <param name="savePoint">Respawn location. If null, player respawns at their starting position / rotation</param>
-    public void RespawnAt(Transform savePoint) {
-        if (savePoint) {
-            transform.position = savePoint.position + Vector3.up * playerSpawnHeight;
-            transform.rotation = initRotation;
-        }
-        else {
-            transform.position = initPosition;
-            transform.rotation = initRotation;
-        }
-
-        rigidbody.velocity = Vector3.zero;
-    }
-
-    /// <summary>
-    /// Respawns the player at their last registered location (calls PlayerController.RespawnPlayer())
-    /// </summary>
-    public void Respawn() {
-        controller.RespawnPlayer();
-    }
-
-    #endregion
-
+    
     #region MazeSwitchImplementation
 
     /// <summary>
