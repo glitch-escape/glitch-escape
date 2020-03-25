@@ -170,7 +170,7 @@ public class Stateful {
     }
 
     struct SetVelocityEffect : IStatefulEffect { 
-        public float startTime { get; protected set; }
+        public float startTime { get; }
         public float endTime => startTime;
         public float duration => 0f;
         private Rigidbody rigidbody;

@@ -57,7 +57,7 @@ public class OldEnemyProjectile : MonoBehaviour {
             if (player != null) { player.TakeDamage(damage); }
         }
         else if (target == Target.Enemy) {
-            var enemy = other.GetComponent<Enemy>();
+            var enemy = other.GetComponent<OldEnemy>();
             if (enemy != null) { enemy.TakeDamage(damage); Debug.Log("got em"); }
         }
     }

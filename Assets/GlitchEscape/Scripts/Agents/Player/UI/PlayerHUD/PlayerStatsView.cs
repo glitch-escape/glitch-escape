@@ -84,13 +84,13 @@ public class PlayerStatsView : MonoBehaviour {
         healthSetter.SetMaterial(renderer.materials[HEALTH_BAR_MATEIRAL_INDEX]);
         staminaSetter.SetMaterial(renderer.materials[STAMINA_BAR_MATERIAL_INDEX]);
         staminaFlash.SetMaterial(renderer.materials[STAMINA_BAR_MATERIAL_INDEX]);
-        player.OnFailedToUseAbility += FlashLowStamina;
+        player.OnFailedToUseAbilityDueToLowStamina += FlashLowStamina;
     }
     private void OnDisable() {
         healthSetter.SetMaterial(null);
         staminaSetter.SetMaterial(null);
         staminaFlash.SetMaterial(null);
-        player.OnFailedToUseAbility -= FlashLowStamina;
+        player.OnFailedToUseAbilityDueToLowStamina -= FlashLowStamina;
     }
     
     void Update() {

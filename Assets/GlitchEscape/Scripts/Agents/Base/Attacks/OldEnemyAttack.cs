@@ -18,7 +18,7 @@ public class OldEnemyAttack : MonoBehaviour {
     public float retreatDist;
 
     [Header("Bullet attack variables")]
-    public Projectile bullPrefab;
+    public OldEnemyProjectile bullPrefab;
     public int bulletAmt;
     public float bulletRate;
     private int shotsMade;
@@ -79,7 +79,7 @@ public class OldEnemyAttack : MonoBehaviour {
             shotsMade += 1;
 
             // Spawn bullet
-            Projectile bullet = Instantiate(bullPrefab, origin, Quaternion.identity);
+            OldEnemyProjectile bullet = Instantiate(bullPrefab, origin, Quaternion.identity);
             bullet.gameObject.SetActive(true);
            // bullet.SetDirection(direction);
 

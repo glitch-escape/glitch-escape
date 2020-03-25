@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider))]
 [RequireComponent(typeof(MeshRenderer))]
 public class EnemyAttack : MonoBehaviour, IEnemyAttackAction {
-    private Enemy _oldEnemy;
+    private OldEnemy _oldEnemy;
     private OldEnemyController _oldEnemyController;
     private BoxCollider hitbox;
     private MeshRenderer mesh;

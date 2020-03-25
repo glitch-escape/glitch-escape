@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class StationaryCanonAttack : MonoBehaviour, IEnemyAttackAction {
-    private Enemy _oldEnemy;
+    private OldEnemy _oldEnemy;
     private OldEnemyController _oldEnemyController;
     private Player player;
 

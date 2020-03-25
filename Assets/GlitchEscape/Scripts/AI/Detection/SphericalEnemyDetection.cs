@@ -5,9 +5,9 @@ using UnityEngine;
 
 [RequireComponent(typeof(SphereCollider))]
 public class SphericalEnemyDetection : MonoBehaviour, IEnemyVisionController {
-    private Enemy _oldEnemy;
+    private OldEnemy _oldEnemy;
     private OldEnemyController _oldEnemyController;
-    private SphereCollider collider;
+    private new SphereCollider collider;
 
     public float detectionRadius = 10f;
     private float currentDetectionRadiusScaleFactor = 1.0f;
@@ -24,7 +24,7 @@ public class SphericalEnemyDetection : MonoBehaviour, IEnemyVisionController {
         collider.radius = currentDetectionRadius;
         collider.isTrigger = true;
         
-        // make sure that dection radius, if previously eanbled,
+        // make sure that detection radius, if previously enabled,
         // is enabled and up to date
         DebugShowDetectionRadius(detectionRadiusViewEnabled);
     }
@@ -41,7 +41,7 @@ public class SphericalEnemyDetection : MonoBehaviour, IEnemyVisionController {
     private static Color COLOR_NO_DETECTION => Color.grey;
     private static Color COLOR_DETECTED_PLAYER => Color.black;
     
-    private MeshRenderer renderer;
+    private new MeshRenderer renderer;
     private Material material;
     
     public void DebugShowDetectionRadius(bool enabled) {

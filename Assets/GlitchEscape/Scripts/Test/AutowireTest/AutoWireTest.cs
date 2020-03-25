@@ -9,8 +9,8 @@ public class InjectComponent : System.Attribute {
 
 
 public class AutoWireTest : MonoBehaviour {
-    [InjectComponent] public Camera camera;
+    [InjectComponent] public new Camera camera;
     [InjectComponent] public Player player;
-    [InjectComponent] public Rigidbody rigidbody;
-    [InjectComponent] public Collider collider;
+    [InjectComponent] public new Rigidbody rigidbody;
+    [InjectComponent] public new Collider collider;
 }

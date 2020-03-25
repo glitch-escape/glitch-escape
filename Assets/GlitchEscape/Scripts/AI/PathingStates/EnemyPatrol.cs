@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 public class EnemyPatrol : MonoBehaviour, IEnemySearchForPlayerAction {
-    private Enemy _oldEnemy;
+    private OldEnemy _oldEnemy;
     private OldEnemyController _oldEnemyController;
     private NavMeshAgent agent;
     private Player player;

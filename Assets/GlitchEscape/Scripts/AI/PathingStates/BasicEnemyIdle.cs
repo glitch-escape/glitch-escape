@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BasicEnemyIdle : MonoBehaviour, IEnemyIdleAction {
-    private Enemy _oldEnemy;
+    private OldEnemy _oldEnemy;
     private OldEnemyController _oldEnemyController;
     private Player player;
 

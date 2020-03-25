@@ -11,7 +11,7 @@ public abstract class Resource<Owner, Config, T> : MonoBehaviourBorrowingConfigF
     where Config : ScriptableObject
     where T : IComparable
 {
-    public abstract string name { get; }
+    new public abstract string name { get; }
 
     /// <summary>
     /// Default resource value

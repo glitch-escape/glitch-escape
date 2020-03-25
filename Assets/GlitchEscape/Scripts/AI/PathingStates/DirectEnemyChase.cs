@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class DirectEnemyChase : MonoBehaviour, IEnemyPursuitAction {
 
-    private Enemy _oldEnemy;
+    private OldEnemy _oldEnemy;
     private OldEnemyController _oldEnemyController;
     private NavMeshAgent agent;
     private Player player;

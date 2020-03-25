@@ -25,7 +25,8 @@ public class Player : BaseAgent<Player, PlayerConfig> {
     public PlayerController controller => this.GetEnforcedComponentReferenceInParent(ref m_controller);
     private PlayerController m_controller;
 
-    [InjectComponent] public Rigidbody rigidbody;
+    // references to components on the player object
+    [InjectComponent] public new Rigidbody rigidbody;
     [InjectComponent] public Animator animator;
     [InjectComponent] public AudioSource soundSource;
     [InjectComponent] public PlayerHealth health;
@@ -34,7 +35,7 @@ public class Player : BaseAgent<Player, PlayerConfig> {
     // additional player components
     [InjectComponent] public PlayerSpawnController       spawn;
     [InjectComponent] public PlayerMovementController    movement;
-    [InjectComponent] public PlayerAudioController       audio;
+    [InjectComponent] public PlayerAudioController       audioController;
     [InjectComponent] public PlayerDialogController      dialog;
 
     // player abilities

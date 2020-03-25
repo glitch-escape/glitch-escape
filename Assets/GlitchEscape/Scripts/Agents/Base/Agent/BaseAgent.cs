@@ -99,8 +99,9 @@ public abstract class BaseAgent<Derived, Config> : MonoBehaviourWithConfig<Confi
     /// and calls OnReset()
     /// </summary>
     public void Reset() {
+        var self = (IResettable) this;
         foreach (var component in GetComponentsInChildren<IResettable>()) {
-            if (component != this) {
+            if (component != self) {
                 component.Reset();   
             }
         }
