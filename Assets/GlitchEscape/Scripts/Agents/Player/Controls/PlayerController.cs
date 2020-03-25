@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour {
     }
     public void RespawnPlayer() {
         playerMazeSwitcher.SetMazeActive(PlayerMazeSwitchController.ActiveMaze.Default);
-        player.RespawnAt(savePointLocation);
+        // player.RespawnAt(savePointLocation);
         
         OnEnable();
 
@@ -74,7 +74,6 @@ public class PlayerController : MonoBehaviour {
         SetupSubControllers(GetComponents<IPlayerControllerComponent>());
     }
     void OnEnable() {
-        player.input.Enable();
         if (!isEnabled) {
             isEnabled = true;
             // Setup our sub-controllers on both this object and the player object
@@ -85,7 +84,6 @@ public class PlayerController : MonoBehaviour {
 
     private void OnDisable() {
         isEnabled = false;
-        player.input.Disable();
     }
 
     private void SetupSubControllers(IPlayerControllerComponent[] components) {

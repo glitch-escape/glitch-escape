@@ -36,7 +36,6 @@ public class PlayerManifestController : MonoBehaviour, IPlayerControllerComponen
     const float GRAVITY = 9.81f; // m/s^2
 
     private PlayerController controller;
-    private Input input;
     private Animator animator;
     private new Rigidbody rigidbody;
     private List<Material> defaultMaterials;
@@ -49,11 +48,6 @@ public class PlayerManifestController : MonoBehaviour, IPlayerControllerComponen
         player = controller.player;
         rigidbody = player.rigidbody;
         animator = player.animator;
-        input = player.input;
-        input.Controls.Manifest.performed += context => {
-            bool pressed = context.ReadValue<float>() > 0f;
-            manifestPressed = pressed;
-        };
         renderers = GetComponentsInChildren<Renderer>();
         defaultMaterials = new List<Material>();
         foreach (var renderer in renderers)
@@ -69,7 +63,7 @@ public class PlayerManifestController : MonoBehaviour, IPlayerControllerComponen
     public float manifestStaminaCost = 10f;
 
     // is the manifest button currently pressed?
-    private bool manifestPressed = false;
+    private bool manifestPressed => PlayerControls.instance.manifest.isPressed;
 
     private bool isVfxActive = false;
     public float manifestVfxDuration = 1.2f;

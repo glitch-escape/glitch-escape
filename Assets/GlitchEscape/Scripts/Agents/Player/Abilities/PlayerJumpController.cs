@@ -37,7 +37,7 @@ public class PlayerJumpController : PlayerComponent {
 
     private LayerMask walls;
 
-    private Vector2 moveInput => player.input.Controls.Move.ReadValue<Vector2>();
+    private Vector2 moveInput => PlayerControls.instance.moveInput;
 
     private Vector3 moveInputRelativeToCamera
     {

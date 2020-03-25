@@ -43,19 +43,7 @@ public class Player : BaseAgent<Player, PlayerConfig> {
     [InjectComponent] public PlayerJumpController        jump;
     [InjectComponent] public PlayerMazeSwitchController  mazeSwitch;
     [InjectComponent] public PlayerInteractionController interact;
-    
-    // input instance singleton
-    public Input input => m_input ?? (m_input = new Input());
-    private Input m_input;
 
-    #region UnityUpdateAndAwake
-
-    void Awake() {
-        input.Enable();
-    }
-
-    #endregion
-    
     #region MazeSwitchImplementation
 
     /// <summary>
