@@ -28,6 +28,7 @@ public class Player : BaseAgent<Player, PlayerConfig> {
     // references to components on the player object
     [InjectComponent] public new Rigidbody rigidbody;
     [InjectComponent] public Animator animator;
+    [InjectComponent] public Camera camera;
     [InjectComponent] public AudioSource soundSource;
     [InjectComponent] public PlayerHealth health;
     [InjectComponent] public PlayerStamina stamina;
@@ -36,6 +37,7 @@ public class Player : BaseAgent<Player, PlayerConfig> {
     [InjectComponent] public PlayerControls              input;
     [InjectComponent] public PlayerSpawnController       spawn;
     [InjectComponent] public PlayerMovementController    movement;
+    [InjectComponent] public PlayerCameraController      cameraController;
     [InjectComponent] public PlayerAudioController       audioController;
     [InjectComponent] public PlayerDialogController      dialog;
 

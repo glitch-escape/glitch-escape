@@ -3,7 +3,7 @@ using Cinemachine;
 
 public class PlayerCameraController : MonoBehaviourBorrowingConfigFrom<Player, PlayerConfig> {
 
-    public CinemachineFreeLook freeLookCam;
+    [InjectComponent] public CinemachineFreeLook freeLookCam;
 
     void OnEnable() {
         if (freeLookCam == null) {

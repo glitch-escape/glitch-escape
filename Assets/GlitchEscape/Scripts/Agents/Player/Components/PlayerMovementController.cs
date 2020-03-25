@@ -114,4 +114,11 @@ public class PlayerMovementController : PlayerComponent {
             rigidbody.velocity += -transform.forward * 3;
         }
     }
+
+    public bool showDebugGui = false;
+
+    void OnGUI() {
+        if (!showDebugGui) return;
+        
+    }
 }
