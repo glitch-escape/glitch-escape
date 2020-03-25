@@ -2,6 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Maze : MonoBehaviour {
+public class GlitchMaze : Maze {
     
 }

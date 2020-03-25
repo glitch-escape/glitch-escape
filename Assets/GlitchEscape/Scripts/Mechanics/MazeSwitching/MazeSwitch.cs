@@ -4,7 +4,7 @@ using UnityEngine;
 
 /// <summary>
 /// Implements a maze switch that the player can use to switch between mazes.
-/// See: Player.cs, PlayerMazeSwitchController.cs
+/// See: Player.cs, PlayerMazeController.cs
 /// </summary>
 [RequireComponent(typeof(MeshRenderer))]
 [RequireComponent(typeof(InteractionTrigger))]
@@ -41,7 +41,7 @@ public class MazeSwitch : MonoBehaviour, IPlayerInteractable {
     }
 
     public void OnInteract(Player player) {
-        PlayerMazeSwitchController.instance.TriggerMazeSwitch();
+        PlayerMazeController.instance.TriggerMazeSwitch();
     }
 
     public void OnPlayerEnterInteractionRadius(Player player) {
