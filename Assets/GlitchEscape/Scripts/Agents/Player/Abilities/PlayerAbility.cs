@@ -18,13 +18,38 @@ public enum PlayerAbilityState {
 /// Handles all button press detection internal state management (which can become somewhat complex), and provides
 /// a minimal, straightforward interface to subclass from + use.
 /// </summary>
-public abstract class PlayerAbility : MonoBehaviour, IPlayerControllerComponent {
+public abstract class PlayerAbility : MonoBehaviour, IAgentAbility {
+
     /// <summary>
     /// Direct reference to the player that this PlayerAbility is attached to
     /// </summary>
-    protected Player player { get; private set; }
-    private Animator m_animator = null;
-    private Rigidbody m_rigidbody = null;
+    [InjectComponent] public Player player;
+    [InjectComponent] public Animator animator;
+    [InjectComponent] public new Rigidbody rigidbody;
+    
+    public IAgent agent => player;
+
+
+    public float resourceCost => minStaminaCost;
+
+    // TODO: implement
+    public bool canUseAbility => true;
+
+    // TODO: implement
+    public void Reset() {
+        throw new NotImplementedException();
+    }
+    
+    // TODO: implement
+    public void StartAbility() {
+        throw new NotImplementedException();
+    }
+
+    // TODO: implement
+    public void CancelAbility() {
+        throw new NotImplementedException();
+    }
+    
     private Renderer[] m_renderers = null;
     private List<Material> m_defaultMaterials = null;
     private List<Material> defaultMaterials => m_defaultMaterials ?? (m_defaultMaterials = GetDefaultMaterials());
@@ -56,16 +81,6 @@ public abstract class PlayerAbility : MonoBehaviour, IPlayerControllerComponent 
         }
     }
 
-    /// <summary>
-    /// Lazily gets the animator attached to the player object
-    /// </summary>
-    protected Animator animator => m_animator ?? (m_animator = player.animator);
-    
-    /// <summary>
-    /// Lazily gets the rigidbody attached to the player object
-    /// </summary>
-    protected new Rigidbody rigidbody => m_rigidbody ?? (m_rigidbody = player.rigidbody);
-    
     /// <summary>
     /// Lazily gets all renderers attached to / in children of the player object
     /// </summary>
@@ -239,7 +254,7 @@ public abstract class PlayerAbility : MonoBehaviour, IPlayerControllerComponent 
             return false;
         }
         var cost = derivedMinimumStaminaCost;
-        if (!player.TryUseAbility(cost)) return false;
+        if (!player.TryUseAbility(this)) return false;
         
         // Reset variables
         abilityStartTime = Time.time;
@@ -275,7 +290,9 @@ public abstract class PlayerAbility : MonoBehaviour, IPlayerControllerComponent 
                 // due to pressing this button longer
                 } else if (varyStaminaCostDependingOnPressTime && usedStamina < maxStaminaCost) {
                     var cost = currentStaminaCost;
-                    if (cost > usedStamina && !player.TryUseAbility(cost - usedStamina)) {
+                    // TODO: reimplement
+                    if (cost > usedStamina && !player.TryUseAbility(this)) {
+                    // if (cost > usedStamina && !player.TryUseAbility(cost - usedStamina)) {
                         // ran out of stamina: freeze ability strength here + terminate
                         m_state = State.Active;
                         m_abilityPressDuration = inputButton.pressTime;

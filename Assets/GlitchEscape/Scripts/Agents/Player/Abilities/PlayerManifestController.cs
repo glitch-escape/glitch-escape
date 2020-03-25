@@ -6,12 +6,36 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 
-public class PlayerManifestController : MonoBehaviour, IPlayerControllerComponent
-{
+public class PlayerManifestController : MonoBehaviour, IPlayerControllerComponent, IAgentAbility {
+    /// <summary>
+    /// Player reference
+    /// </summary>
+    [InjectComponent] public Player player;
+    
+    #region IAgentAbilityProperties
+
+    public void Reset() {
+        throw new NotImplementedException();
+    }
+
+    public IAgent agent { get; }
+    public bool isAbilityActive { get; }
+    public float resourceCost { get; }
+    public bool canUseAbility { get; }
+    public void StartAbility() {
+        throw new NotImplementedException();
+    }
+
+    public void CancelAbility() {
+        throw new NotImplementedException();
+    }
+
+    #endregion
+    
+    
     const float GRAVITY = 9.81f; // m/s^2
 
     private PlayerController controller;
-    private Player player;
     private Input input;
     private Animator animator;
     private new Rigidbody rigidbody;
@@ -135,7 +159,7 @@ public class PlayerManifestController : MonoBehaviour, IPlayerControllerComponen
     private void BeginManifest()
     {
         // do we have enough stamina to perform this action? if no, cancel
-        if (!player.TryUseAbility(manifestStaminaCost))
+        if (!player.TryUseAbility(this))
         {
             return;
         }
