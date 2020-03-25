@@ -3,34 +3,16 @@ using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Player))]
 [RequireComponent(typeof(Animator))]
-public class PlayerMovementController : MonoBehaviourBorrowingConfigFrom<Player, PlayerConfig>, IPlayerControllerComponent {
-
-    // Object references (null-checks implemented elsewhere, so can assume non-null)
-    private PlayerController controller;
-    private Player    player;
-    private Transform playerTransform;
-    private Rigidbody playerRigidbody;
-    private Animator  playerAnimator;
-    private PlayerControls playerInput;
-    
-    // Initialize player references
-    public void SetupControllerComponent(PlayerController controller) {
-        this.controller = controller;
-        player = controller.player;
-        playerTransform = player.transform;
-        playerRigidbody = player.rigidbody;
-        playerAnimator = player.animator;
-        playerInput = PlayerControls.instance;
-        
-        // clear velocity
-        movementMode = PlayerMovementMode.TurnToFaceMoveDirection;
-        playerRigidbody.velocity = Vector3.zero;
-    }
+public class PlayerMovementController : PlayerComponent {
+    [InjectComponent] public new Rigidbody rigidbody;
+    [InjectComponent] public Animator animator;
+    [InjectComponent] public PlayerControls playerInput;
+    public Camera camera;
     
     // Public properties
 
-    private float moveSpeed => config.runSpeed;
-    private float turnSpeed => config.turnSpeed;
+    private float moveSpeed => player.config.runSpeed;
+    private float turnSpeed => player.config.turnSpeed;
     
     [Tooltip("Player movement mode")] 
     public PlayerMovementMode movementMode = PlayerMovementMode.TurnToFaceMoveDirection;
@@ -48,7 +30,7 @@ public class PlayerMovementController : MonoBehaviourBorrowingConfigFrom<Player,
     public bool useAnimationDerivedMoveSpeed = true;
     
     // Property getters
-    private float currentAnimationSpeed => playerAnimator.deltaPosition.magnitude;
+    private float currentAnimationSpeed => animator.deltaPosition.magnitude;
     public float actualMoveSpeed => useAnimationDerivedMoveSpeed ? currentAnimationSpeed : moveSpeed;
 
     // Input values
@@ -56,7 +38,7 @@ public class PlayerMovementController : MonoBehaviourBorrowingConfigFrom<Player,
     private bool hasMoveInput => moveInput.magnitude > 1e-6;
     private Vector3 moveInputRelativeToCamera {
         get {
-            var cameraTransform = controller.camera.transform;
+            var cameraTransform = camera.transform;
             var forward = cameraTransform.forward;
             var right   = cameraTransform.right;
             forward.y = 0f;
@@ -70,16 +52,16 @@ public class PlayerMovementController : MonoBehaviourBorrowingConfigFrom<Player,
     // Update + animator callbacks
     void OnAnimatorMove() {
         if (useAnimationDerivedMoveSpeed) {
-            var speed = playerAnimator.deltaPosition.magnitude;
+            var speed = animator.deltaPosition.magnitude;
             Move(speed);
         }
     }
 
     private bool wasRunningLastFrame = false;
     void FixedUpdate() {
-        playerAnimator.SetBool("isRunning", hasMoveInput);
+        animator.SetBool("isRunning", hasMoveInput);
         if (hasMoveInput != wasRunningLastFrame) {
-            playerAnimator.SetTrigger(hasMoveInput ? "startRunning" : "stopRunning");
+            animator.SetTrigger(hasMoveInput ? "startRunning" : "stopRunning");
         }
         wasRunningLastFrame = hasMoveInput;
         
@@ -95,7 +77,7 @@ public class PlayerMovementController : MonoBehaviourBorrowingConfigFrom<Player,
         {
             movementMode = PlayerMovementMode.TurnToFaceMoveDirection;
             currentStunTime = 0;
-            playerRigidbody.velocity = Vector3.zero;
+            rigidbody.velocity = Vector3.zero;
         }
     }
     private void Move (float speed) {
@@ -103,17 +85,17 @@ public class PlayerMovementController : MonoBehaviourBorrowingConfigFrom<Player,
         switch (movementMode) {
             case PlayerMovementMode.TurnToFaceMoveDirection: {
                 var desiredForward = Vector3.RotateTowards(
-                    playerTransform.forward,
+                    player.transform.forward,
                     cameraDir,
                     turnSpeed * Time.deltaTime, 
                     0f);
                 var playerRotation = Quaternion.LookRotation(desiredForward);
 
-                playerRigidbody.MovePosition(playerRigidbody.position + cameraDir * speed * Time.deltaTime);
-                //Vector3 tempVelocity = playerRigidbody.velocity;
+                rigidbody.MovePosition(rigidbody.position + cameraDir * speed * Time.deltaTime);
+                //Vector3 tempVelocity = rigidbody.velocity;
                 //tempVelocity = cameraDir * speed * Time.deltaTime * 30;
-                //playerRigidbody.velocity = new Vector3(tempVelocity.x, playerRigidbody.velocity.y, tempVelocity.z);
-                playerRigidbody.MoveRotation(playerRotation);
+                //rigidbody.velocity = new Vector3(tempVelocity.x, rigidbody.velocity.y, tempVelocity.z);
+                rigidbody.MoveRotation(playerRotation);
             } break;
             case PlayerMovementMode.Strafing: {
                 /* TODO: implement strafing controls */
@@ -129,7 +111,7 @@ public class PlayerMovementController : MonoBehaviourBorrowingConfigFrom<Player,
         if(collision.gameObject.CompareTag("Knockback"))
         {
             movementMode = PlayerMovementMode.Stunned;
-            playerRigidbody.velocity += -transform.forward * 3;
+            rigidbody.velocity += -transform.forward * 3;
         }
     }
 }

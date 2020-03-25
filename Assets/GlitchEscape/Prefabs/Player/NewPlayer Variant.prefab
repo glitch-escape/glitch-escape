@@ -384,12 +384,20 @@ GameObject:
   - component: {fileID: 5393090270376166905}
   - component: {fileID: 434094264}
   - component: {fileID: 434094262}
-  - component: {fileID: 434094260}
-  - component: {fileID: 434094261}
-  - component: {fileID: 434094263}
   - component: {fileID: 799143190212436345}
-  - component: {fileID: 6465115438430612034}
-  - component: {fileID: 6503833640705855753}
+  - component: {fileID: 6237423698167526345}
+  - component: {fileID: 6227929132304472247}
+  - component: {fileID: 2975066140039073471}
+  - component: {fileID: 7709636814833617181}
+  - component: {fileID: 735499312478061813}
+  - component: {fileID: 5703799242185423272}
+  - component: {fileID: 8550197510662241881}
+  - component: {fileID: 3935389407247071058}
+  - component: {fileID: 210750202715720515}
+  - component: {fileID: 398969317218089726}
+  - component: {fileID: 755019625527078918}
+  - component: {fileID: 3411805468521161312}
+  - component: {fileID: 9083574787802606794}
   m_Layer: 0
   m_Name: NewPlayer Variant
   m_TagString: Player
@@ -467,58 +475,6 @@ CapsuleCollider:
   m_Height: 1.4
   m_Direction: 1
   m_Center: {x: 0, y: 0.6, z: 0}
---- !u!114 &434094260
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1299641571806894736}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f18fe16274d1dbc4d9a40710d428237b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &434094261
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1299641571806894736}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd0dadb06d4767849abaa9360fb2e7fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  movementMode: 0
-  stunTime: 0
-  useAnimationDerivedMoveSpeed: 0
---- !u!114 &434094263
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1299641571806894736}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ace673fd4b944325bfbbda3467f4779, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _config: {fileID: 11400000, guid: fe92a49431b14457790109139d13d086, type: 2}
-  rigidbody: {fileID: 434094264}
-  animator: {fileID: 5393090270376166905}
-  health: {fileID: 6465115438430612034}
-  stamina: {fileID: 6503833640705855753}
-  soundfx:
-  - {fileID: 8300000, guid: 0b592b907b8a6b344b98718f5bee5a5a, type: 3}
-  - {fileID: 8300000, guid: c87aa02de248d8b4ba7599936138f8d8, type: 3}
-  - {fileID: 8300000, guid: d5f1757a7c9182c4fafaf58c1c09f596, type: 3}
-  - {fileID: 8300000, guid: 788d1effc9e72e04bb7f469e20547ca7, type: 3}
-  - {fileID: 8300000, guid: 788d1effc9e72e04bb7f469e20547ca7, type: 3}
-  soundSource: {fileID: 799143190212436345}
-  playerSpawnHeight: 1
 --- !u!82 &799143190212436345
 AudioSource:
   m_ObjectHideFlags: 0
@@ -615,7 +571,186 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &6465115438430612034
+--- !u!114 &6237423698167526345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1299641571806894736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7c17dcb2d48444c89a805a1ec0abf7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  info: 'injecting fields on NewPlayer Variant (Autowire)
+
+    injecting fields on
+    NewPlayer Variant (Player)
+
+    found injectable field UnityEngine.Rigidbody
+    rigidbody, value NewPlayer Variant (UnityEngine.Rigidbody), is null? False
+
+    found
+    injectable field UnityEngine.Animator animator, value NewPlayer Variant (UnityEngine.Animator),
+    is null? False
+
+    found injectable field UnityEngine.AudioSource soundSource,
+    value NewPlayer Variant (UnityEngine.AudioSource), is null? False
+
+    found
+    injectable field PlayerHealth health, value NewPlayer Variant (PlayerHealth),
+    is null? False
+
+    found injectable field PlayerStamina stamina, value NewPlayer
+    Variant (PlayerStamina), is null? False
+
+    found injectable field PlayerControls
+    input, value NewPlayer Variant (PlayerControls), is null? False
+
+    found injectable
+    field PlayerSpawnController spawn, value NewPlayer Variant (PlayerSpawnController),
+    is null? False
+
+    found injectable field PlayerMovementController movement,
+    value NewPlayer Variant (PlayerMovementController), is null? False
+
+    found
+    injectable field PlayerAudioController audioController, value NewPlayer Variant
+    (PlayerAudioController), is null? False
+
+    found injectable field PlayerDialogController
+    dialog, value NewPlayer Variant (PlayerDialogController), is null? False
+
+    found
+    injectable field PlayerDashController dash, value NewPlayer Variant (PlayerDashController),
+    is null? False
+
+    found injectable field PlayerJumpController jump, value NewPlayer
+    Variant (PlayerJumpController), is null? False
+
+    found injectable field PlayerMazeController
+    maze, value NewPlayer Variant (PlayerMazeController), is null? False
+
+    found
+    injectable field PlayerInteractionController interact, value NewPlayer Variant
+    (PlayerInteractionController), is null? False
+
+    injecting fields on NewPlayer
+    Variant (PlayerHealth)
+
+    injecting fields on NewPlayer Variant (PlayerStamina)
+
+    injecting
+    fields on NewPlayer Variant (PlayerSpawnController)
+
+    found injectable field
+    Player player, value NewPlayer Variant (Player), is null? False
+
+    injecting
+    fields on NewPlayer Variant (PlayerMovementController)
+
+    found injectable
+    field UnityEngine.Rigidbody rigidbody, value NewPlayer Variant (UnityEngine.Rigidbody),
+    is null? False
+
+    found injectable field UnityEngine.Animator animator, value
+    NewPlayer Variant (UnityEngine.Animator), is null? False
+
+    found injectable
+    field PlayerControls playerInput, value NewPlayer Variant (PlayerControls), is
+    null? False
+
+    found injectable field Player player, value NewPlayer Variant
+    (Player), is null? False
+
+    injecting fields on NewPlayer Variant (PlayerAudioController)
+
+    found
+    injectable field Player player, value NewPlayer Variant (Player), is null? False
+
+    found
+    injectable field PlayerMovementController movement, value NewPlayer Variant (PlayerMovementController),
+    is null? False
+
+    found injectable field UnityEngine.AudioSource soundSource,
+    value NewPlayer Variant (UnityEngine.AudioSource), is null? False
+
+    injecting
+    fields on NewPlayer Variant (PlayerDialogController)
+
+    injecting fields on
+    NewPlayer Variant (PlayerDashController)
+
+    found injectable field UnityEngine.Animator
+    animator, value NewPlayer Variant (UnityEngine.Animator), is null? False
+
+    found
+    injectable field UnityEngine.Rigidbody rigidbody, value NewPlayer Variant (UnityEngine.Rigidbody),
+    is null? False
+
+    found injectable field Player player, value NewPlayer Variant
+    (Player), is null? False
+
+    injecting fields on NewPlayer Variant (PlayerJumpController)
+
+    found
+    injectable field UnityEngine.Rigidbody rigidbody, value NewPlayer Variant (UnityEngine.Rigidbody),
+    is null? False
+
+    found injectable field UnityEngine.Animator animator, value
+    NewPlayer Variant (UnityEngine.Animator), is null? False
+
+    found injectable
+    field UnityEngine.Camera camera, value null, is null? False
+
+    found injectable
+    field Player player, value NewPlayer Variant (Player), is null? False
+
+    injecting
+    fields on NewPlayer Variant (PlayerMazeController)
+
+    found injectable field
+    Player player, value NewPlayer Variant (Player), is null? False
+
+    injecting
+    fields on NewPlayer Variant (PlayerInteractionController)
+
+    injecting fields
+    on NewPlayer Variant (PlayerControls)
+
+'
+  log: 
+  warnings: 
+  errors: 
+--- !u!114 &6227929132304472247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1299641571806894736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd47d9fa87fd440919901c8dcb27bab2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _config: {fileID: 11400000, guid: fe92a49431b14457790109139d13d086, type: 2}
+  rigidbody: {fileID: 434094264}
+  animator: {fileID: 5393090270376166905}
+  soundSource: {fileID: 799143190212436345}
+  health: {fileID: 2975066140039073471}
+  stamina: {fileID: 7709636814833617181}
+  input: {fileID: 9083574787802606794}
+  spawn: {fileID: 735499312478061813}
+  movement: {fileID: 5703799242185423272}
+  audioController: {fileID: 8550197510662241881}
+  dialog: {fileID: 3935389407247071058}
+  dash: {fileID: 210750202715720515}
+  jump: {fileID: 398969317218089726}
+  maze: {fileID: 755019625527078918}
+  interact: {fileID: 3411805468521161312}
+--- !u!114 &2975066140039073471
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -628,7 +763,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   showDebugGUI: 0
---- !u!114 &6503833640705855753
+--- !u!114 &7709636814833617181
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -641,6 +776,197 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   showDebugGUI: 0
+--- !u!114 &735499312478061813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1299641571806894736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d81b59a967970414eba18064dd84131b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 6227929132304472247}
+--- !u!114 &5703799242185423272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1299641571806894736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd0dadb06d4767849abaa9360fb2e7fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 6227929132304472247}
+  rigidbody: {fileID: 434094264}
+  animator: {fileID: 5393090270376166905}
+  playerInput: {fileID: 9083574787802606794}
+  camera: {fileID: 0}
+  movementMode: 0
+  stunTime: 0
+  useAnimationDerivedMoveSpeed: 1
+--- !u!114 &8550197510662241881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1299641571806894736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3132884efc7da4018bc19b2f67aa6a26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _config: {fileID: 11400000, guid: f63470d5e2afd4157b7b5834da315a64, type: 2}
+  player: {fileID: 6227929132304472247}
+  movement: {fileID: 5703799242185423272}
+  soundSource: {fileID: 799143190212436345}
+--- !u!114 &3935389407247071058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1299641571806894736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a59c5092db5004cde868417b1ab8ee06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &210750202715720515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1299641571806894736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a924bb6dfb4946746bd9c2b1d54efb0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 6227929132304472247}
+  animator: {fileID: 5393090270376166905}
+  rigidbody: {fileID: 434094264}
+  abilityCooldown: 0
+  maxStaminaCost: 30
+  minStaminaCost: 30
+  minEffectStrength: 1
+  maxEffectStrength: 1
+  minDuration: 1
+  maxDuration: 1
+  varyStrengthDependingOnPressTime: 1
+  varyStaminaCostDependingOnPressTime: 1
+  varyDurationDependingOnPressTime: 1
+  maxPressTime: 0.25
+  pressTimeFunction:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  drawPlayerAbilityDebugGUI: 0
+  glitchMaterial: {fileID: 0}
+  dashVfxDuration: 1.2
+  useKinematic: 0
+  dashSpeed: 10
+--- !u!114 &398969317218089726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1299641571806894736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b840ec0bd4b0ba24eb933a62cf954904, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 6227929132304472247}
+  rigidbody: {fileID: 434094264}
+  animator: {fileID: 5393090270376166905}
+  camera: {fileID: 0}
+  jumpHeight: 2
+  wallJumpMultiplier: 1.5
+  maxJumpCount: 2
+  jumpCount: 0
+  jumpCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  jumpDuration: 0.64
+  downGravityFactor: 2.2
+  upGravityFactor: 0.8
+--- !u!114 &755019625527078918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1299641571806894736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c42e5bff5f99945f29214d0767500653, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 6227929132304472247}
+  _activeMaze: 0
+  mazeSwitchCooldown: 0.2
+--- !u!114 &3411805468521161312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1299641571806894736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f18fe16274d1dbc4d9a40710d428237b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &9083574787802606794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1299641571806894736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5dcd579211414439b28ab9c20b47864, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gamepadAnalogInputCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  mouseSensitivity: 1
 --- !u!1 &1301753536124584637
 GameObject:
   m_ObjectHideFlags: 0

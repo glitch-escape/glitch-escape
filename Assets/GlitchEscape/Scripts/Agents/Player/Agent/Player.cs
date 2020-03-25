@@ -33,6 +33,7 @@ public class Player : BaseAgent<Player, PlayerConfig> {
     [InjectComponent] public PlayerStamina stamina;
     
     // additional player components
+    [InjectComponent] public PlayerControls              input;
     [InjectComponent] public PlayerSpawnController       spawn;
     [InjectComponent] public PlayerMovementController    movement;
     [InjectComponent] public PlayerAudioController       audioController;
@@ -41,7 +42,7 @@ public class Player : BaseAgent<Player, PlayerConfig> {
     // player abilities
     [InjectComponent] public PlayerDashController        dash;
     [InjectComponent] public PlayerJumpController        jump;
-    [InjectComponent] public PlayerMazeSwitchController  mazeSwitch;
+    [InjectComponent] public PlayerMazeController  maze;
     [InjectComponent] public PlayerInteractionController interact;
 
     #region MazeSwitchImplementation
