@@ -13,10 +13,6 @@ public class PlayerDashController : PlayerAbility {
     protected override PlayerControls.HybridButtonControl inputButton
         => m_inputButton ?? (m_inputButton = PlayerControls.instance.dash);
 
-    public delegate void Listener();
-    public event Listener OnDashBegin;
-    public event Listener OnDashEnd;
-
     /// <summary>
     /// Can trigger iff the player is already moving
     /// </summary>
@@ -91,7 +87,6 @@ public class PlayerDashController : PlayerAbility {
         // TODO: any other vfx stuff goes here
     }                                                
     private void BeginDash() {
-        OnDashBegin?.Invoke();
         if (!animator.GetBool("isDashing")) {
             // Debug.Log("starting dash animation");
             animator.SetBool("isDashing", true);
@@ -101,11 +96,10 @@ public class PlayerDashController : PlayerAbility {
         savedDashVelocity = rigidbody.velocity;
         if (useKinematic) {
             rigidbody.isKinematic = true;
-        }
-        player.PlaySound(3);//play static
+        }        
+        FireEvent(PlayerEvent.Type.BeginDash);
     }
     private void EndDash() {
-        OnDashEnd?.Invoke();
         if (animator.GetBool("isDashing")) {
             // Debug.Log("ending dash animation");
             animator.SetBool("isDashing", false);
@@ -116,6 +110,7 @@ public class PlayerDashController : PlayerAbility {
                              Vector3.down * Mathf.Abs(Physics.gravity.y) * elapsedTime;
         if (useKinematic) {
             rigidbody.isKinematic = false;
-        }
+        }        
+        FireEvent(PlayerEvent.Type.EndDash);
     }
 }

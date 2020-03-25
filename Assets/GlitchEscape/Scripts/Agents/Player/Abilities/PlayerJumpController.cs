@@ -2,27 +2,10 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerJumpController : MonoBehaviour, IPlayerControllerComponent
-{
-    private PlayerController controller;
-    private new Rigidbody rigidbody;
-    private Animator animator;
-    private Player player;
-    
-    public delegate void Listener();
-    public event Listener OnFloorJump;
-    public event Listener OnAirJump;
-    public event Listener OnWallJump;
-    public event Listener OnJumpEnd;
-    
-    public void SetupControllerComponent(PlayerController controller)
-    {
-        this.controller = controller;
-        player = controller.player;
-        rigidbody = player.rigidbody;
-        animator = player.animator;
-        player.input.Controls.Jump.performed += OnJump;
-    }
+public class PlayerJumpController : PlayerComponent {
+    [InjectComponent] public new Rigidbody rigidbody;
+    [InjectComponent] public Animator animator;
+    [InjectComponent] public new Camera camera;
 
     [Tooltip("jump height (meters). Inaccurate if gravity factors != 1")]
     public float jumpHeight = 2f;
@@ -60,7 +43,7 @@ public class PlayerJumpController : MonoBehaviour, IPlayerControllerComponent
     {
         get
         {
-            var cameraTransform = controller.camera.transform;
+            var cameraTransform = camera.transform;
             var forward = cameraTransform.forward;
             var right = cameraTransform.right;
             forward.y = 0f;
@@ -81,33 +64,34 @@ public class PlayerJumpController : MonoBehaviour, IPlayerControllerComponent
 
     public void OnJump(InputAction.CallbackContext context)
     {
+        // TODO: refactor this
         bool wallCheck = CheckOnWall();
         if (context.performed && jumpCount + 1 < maxJumpCount && !wallCheck) //not wall jump
         {
             jumpCount++;
-            if (CheckOnGround()) { OnFloorJump?.Invoke(); }
-            else { OnAirJump?.Invoke(); }
             if (rigidbody.velocity.y < 0f) {
                 rigidbody.velocity = Vector3.up * jumpVelocity;
             } else {
                 rigidbody.velocity += Vector3.up * jumpVelocity;
             }
+            FireEvent(CheckOnGround() ? PlayerEvent.Type.FloorJump : PlayerEvent.Type.AirJump);
         }
         else if (context.performed && wallCheck && !CheckOnGround() && (lastWallNormal != currentWallNormal)) //wall jump
         {
             jumpCount = 0;
-            OnWallJump?.Invoke();
             if (rigidbody.velocity.y < 0f) { 
                 rigidbody.velocity = Vector3.up * jumpVelocity * wallJumpMultiplier + currentWallNormal * jumpVelocity;
             } else {
                 rigidbody.velocity += Vector3.up * jumpVelocity * wallJumpMultiplier + currentWallNormal * jumpVelocity;
             }
+            FireEvent(PlayerEvent.Type.WallJump);
         }
         lastWallNormal = currentWallNormal;
     }
 
     void FixedUpdate()
     {
+        // TODO: refactor this
         if(CheckOnGround())
         {
             if (jumpCount > 0)
@@ -116,7 +100,7 @@ public class PlayerJumpController : MonoBehaviour, IPlayerControllerComponent
                 if (isJumping)
                 {
                     isJumping = false;
-                    player.PlaySound(2); //play dit
+                    FireEvent(PlayerEvent.Type.FloorJump);
                 }
                 if (animator.GetBool("isJumping"))
                 {
@@ -131,8 +115,8 @@ public class PlayerJumpController : MonoBehaviour, IPlayerControllerComponent
         {
             if (Time.time >= jumpStartTime + jumpDuration)
             {
-                isJumping = false;
-                player.PlaySound(2); //play dit
+                isJumping = false;            
+                FireEvent(CheckOnGround() ? PlayerEvent.Type.FloorJump : PlayerEvent.Type.AirJump);
             }
             else
             {

@@ -5,7 +5,7 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 
 /// <summary>
-/// Listens to player events (<see cref="PlayerAbilityEvent"/>)
+/// Listens to player events (<see cref="PlayerEvent"/>)
 /// and plays sounds when events (eg. dash) happen 
 /// </summary>
 public class PlayerAudioController : MonoBehaviourWithConfig<PlayerAudioConfig> {
@@ -14,34 +14,32 @@ public class PlayerAudioController : MonoBehaviourWithConfig<PlayerAudioConfig> 
     [InjectComponent] public AudioSource soundSource;
 
     void OnEnable() {
-        foreach (var ability in GetComponentsInChildren<PlayerAbility>()) {
-            ability.OnAbilityEvent += OnPlayerAbilityEvent;
+        foreach (var component in GetComponentsInChildren<IPlayerEventSource>()) {
+            component.OnEvent += OnPlayerEvent;
         }
-        // TODO: add listeners for other events, eg. player movement?
     }
     void OnDisable() {
-        foreach (var ability in GetComponentsInChildren<PlayerAbility>()) {
-            ability.OnAbilityEvent -= OnPlayerAbilityEvent;
+        foreach (var component in GetComponentsInChildren<IPlayerEventSource>()) {
+            component.OnEvent -= OnPlayerEvent;
         }
-        // TODO: add listeners for other events, eg. player movement?
     }
-    private void OnPlayerAbilityEvent(PlayerAbilityEvent.Type eventType) {
+    private void OnPlayerEvent(PlayerEvent.Type eventType) {
         switch (eventType) {
             // interact
-            case PlayerAbilityEvent.Type.Interact: PlaySound(config.interactSounds); break;
+            case PlayerEvent.Type.Interact: PlaySound(config.interactSounds); break;
             
             // jump
-            case PlayerAbilityEvent.Type.FloorJump: PlaySound(config.floorJumpSound); break;
-            case PlayerAbilityEvent.Type.AirJump: PlaySound(config.airJumpSound); break;
-            case PlayerAbilityEvent.Type.WallJump: PlaySound(config.wallJumpSound); break;
-            case PlayerAbilityEvent.Type.EndJump: break;
+            case PlayerEvent.Type.FloorJump: PlaySound(config.floorJumpSound); break;
+            case PlayerEvent.Type.AirJump: PlaySound(config.airJumpSound); break;
+            case PlayerEvent.Type.WallJump: PlaySound(config.wallJumpSound); break;
+            case PlayerEvent.Type.EndJump: break;
             
             // dash
-            case PlayerAbilityEvent.Type.BeginDash: PlaySound(config.dashBeginSound); break;
-            case PlayerAbilityEvent.Type.EndDash: PlaySound(config.dashEndSound); break;
+            case PlayerEvent.Type.BeginDash: PlaySound(config.dashBeginSound); break;
+            case PlayerEvent.Type.EndDash: PlaySound(config.dashEndSound); break;
             
             // shoot
-            case PlayerAbilityEvent.Type.Shoot: PlaySound(config.shootSounds); break;
+            case PlayerEvent.Type.Shoot: PlaySound(config.shootSounds); break;
             
             // TODO: add audio clips for other player events
             

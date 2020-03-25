@@ -144,12 +144,4 @@ public class Player : BaseAgent<Player, PlayerConfig> {
     }
 
     #endregion
-
-    #region Audio
-
-    public void PlaySound(int soundIndex) {
-        soundSource.PlayOneShot(soundfx[soundIndex]);
-    }
-
-    #endregion
 }

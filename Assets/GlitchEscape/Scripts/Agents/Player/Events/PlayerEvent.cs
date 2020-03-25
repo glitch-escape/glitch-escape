@@ -11,7 +11,7 @@ using UnityEngine;
 /// </summary>
 /// <see cref="PlayerAudioController"/>
 /// <see cref="PlayerAbility"/>
-public static class PlayerAbilityEvent {
+public static class PlayerEvent {
     /// <summary>
     /// Lists all player events that can be emitted by <see cref="PlayerAbility"/> and <see cref="PlayerComponent"/>
     /// </summary>

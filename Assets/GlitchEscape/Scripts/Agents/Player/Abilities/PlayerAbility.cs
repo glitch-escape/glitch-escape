@@ -5,7 +5,7 @@ using UnityEngine;
 
 public enum PlayerAbilityState {
     None, 
-    Active,
+    Active,    
     Ending
 }
 
@@ -18,18 +18,12 @@ public enum PlayerAbilityState {
 /// Handles all button press detection internal state management (which can become somewhat complex), and provides
 /// a minimal, straightforward interface to subclass from + use.
 /// </summary>
-public abstract class PlayerAbility : MonoBehaviour, IAgentAbility {
+public abstract class PlayerAbility : PlayerComponent, IAgentAbility {
 
-    /// <summary>
-    /// Direct reference to the player that this PlayerAbility is attached to
-    /// </summary>
-    [InjectComponent] public Player player;
     [InjectComponent] public Animator animator;
     [InjectComponent] public new Rigidbody rigidbody;
-    public event PlayerAbilityEvent.Event OnAbilityEvent;
+    
     public IAgent agent => player;
-
-
     public float resourceCost => minStaminaCost;
 
     // TODO: implement
