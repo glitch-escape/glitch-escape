@@ -26,7 +26,7 @@ public abstract class PlayerAbility : MonoBehaviour, IAgentAbility {
     [InjectComponent] public Player player;
     [InjectComponent] public Animator animator;
     [InjectComponent] public new Rigidbody rigidbody;
-    
+    public event PlayerAbilityEvent.Event OnAbilityEvent;
     public IAgent agent => player;
 
 
