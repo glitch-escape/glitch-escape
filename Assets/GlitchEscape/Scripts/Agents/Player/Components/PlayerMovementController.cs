@@ -23,11 +23,10 @@ public class PlayerMovementController : PlayerComponent {
     }
 
     [Tooltip("Time (s) for player to be stunned after knockback occurs")]
-    public float stunTime;
+    public float stunTime = 1f;
     private float currentStunTime = 0;
 
-    [Tooltip("Use animator for move speed?")]
-    public bool useAnimationDerivedMoveSpeed = true;
+    private const bool useAnimationDerivedMoveSpeed = false;
     
     // Property getters
     private float currentAnimationSpeed => animator.deltaPosition.magnitude;
@@ -119,6 +118,17 @@ public class PlayerMovementController : PlayerComponent {
 
     void OnGUI() {
         if (!showDebugGui) return;
-        
+        GUILayout.Label("PlayerMovementController.cs:");
+        GUILayout.Label("Movement mode: " + movementMode);
+        GUILayout.Label("Raw player input: " + moveInput);
+        GUILayout.Label("has player input? " + hasMoveInput);
+        GUILayout.Label("camera-relative input: " + moveInputRelativeToCamera);
+        GUILayout.Label("rigidbody velocity: " + rigidbody.velocity);
+        GUILayout.Label("expected delta-v: " + (moveInputRelativeToCamera * actualMoveSpeed * Time.deltaTime));
+        GUILayout.Label("expected position: " + (moveInputRelativeToCamera * actualMoveSpeed * Time.deltaTime + rigidbody.position));
+        GUILayout.Label("player move speed: " + actualMoveSpeed);
+        GUILayout.Label("player turn speed: " + turnSpeed);
+        GUILayout.Label("animator derived player move speed: " + currentAnimationSpeed);
+        GUILayout.Label("config move speed: " + moveSpeed);
     }
 }
