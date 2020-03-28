@@ -69,10 +69,56 @@ MonoBehaviour:
   canJump: 1
   canAirJump: 1
   canWallJump: 1
-  canDash: 1
-  dashDistance:
-    minimum: 0
-    maximum: 0
+  dashAbilityPressTimeRange:
+    minimum: 0.1
+    maximum: 0.3
+  dashAbilityPressCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  dashAbilityStaminaCostRange:
+    minimum: 30
+    maximum: 45
+  dashAbilityMoveRange:
+    minimum: 3
+    maximum: 8
+  dashAbilityDurationRange:
+    minimum: 0.8
+    maximum: 2.5
+  dashAbilityCooldownTime: 0.05
+  dashAbilityEnabled: 1
+  shootAbilityStaminaCost: 10
+  shootAbilityShotsPerSec: 3
+  shootAbilityProjectileSpeed: 30
+  shootAbilityProjectileDamage: 10
+  shootAbilityEnabled: 1
+  shootAbilityProjectile: {fileID: 11400000, guid: 85fb5e201fd3a467185eb3cebde2453a,
+    type: 2}
+  manifestAbilityStaminaCost: 20
+  manifestAbilityCooldownTime: 0.2
+  manifestAbilityShieldDuration: 3
+  manifestAbilityShieldDistanceFromPlayer: 1
+  manifestAbilityShieldPrefab: {fileID: 0}
   health:
     minimum: 0
     maximum: 100
