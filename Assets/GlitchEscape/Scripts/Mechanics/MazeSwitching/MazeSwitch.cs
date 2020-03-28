@@ -17,20 +17,16 @@ public class MazeSwitch : MonoBehaviour, IPlayerInteractable {
     
     private const string SPEED_PARAM = "Speed_EA381B29";
     private const string COLOR_PARAM = "Color_C8A5C6B";
-    
-    
+
+    public bool isInteractive => true;
+
     void Awake() {
         material = GetComponent<Renderer>().material;
         speedWhenActive = material.GetFloat(SPEED_PARAM);
         colorWhenActive = material.GetColor(COLOR_PARAM);
         SetMazeSwitchActive(false);
     }
-    /// <summary>
-    /// Called by Player's maze switch impl as a response to SetActiveMazeSwitch() + ClearActiveMazeSwitch()
-    /// Used to set material to show when the maze switch is active or not
-    /// </summary>
-    /// <param name="enabled"></param>
-    public void SetMazeSwitchActive(bool enabled) {
+    private void SetMazeSwitchActive(bool enabled) {
         if (enabled) {
             material.SetFloat(SPEED_PARAM, speedWhenActive);
             material.SetColor(COLOR_PARAM, colorWhenActive);
@@ -39,17 +35,17 @@ public class MazeSwitch : MonoBehaviour, IPlayerInteractable {
             material.SetColor(COLOR_PARAM, colorWhenDisabled);
         }
     }
-
     public void OnInteract(Player player) {
         PlayerMazeController.instance.TriggerMazeSwitch();
     }
-
-    public void OnPlayerEnterInteractionRadius(Player player) {
+    public void OnSelected(Player player) {
         player.spawn.SetSpawnPosition(this);
         player.SetActiveMazeSwitch(this);
+        SetMazeSwitchActive(true);
     }
-
-    public void OnPlayerExitInteractionRadius(Player player) {
-        player.ClearActiveMazeSwitch(this);
+    public void OnDeselected(Player player) {
+        SetMazeSwitchActive(false);
     }
+    public void OnPlayerEnterInteractionRadius(Player player) {}
+    public void OnPlayerExitInteractionRadius(Player player) {}
 }

@@ -36,6 +36,7 @@ public class SphereTrigger : Trigger {
         var instance = obj.GetComponentInChildren<SphereTrigger>();
         if (instance != null) return instance;
         var emptyChild = new GameObject("Trigger", typeof(SphereCollider), typeof(SphereTrigger));
+        emptyChild.transform.parent = obj.transform;
         var trigger = emptyChild.GetComponent<SphereTrigger>();
         var collider = trigger.collider;
         collider.isTrigger = true;
@@ -46,20 +47,25 @@ public class SphereTrigger : Trigger {
         _collider = null;
     }
 }
-public class PlayerInteractionAblity : PlayerAbility {
+
+public class PlayerInteractionAbility : PlayerAbility {
     public override float resourceCost => 0f;
     public override float cooldownTime => 0.1f;
     protected override float abilityDuration => 0f;
     protected override PlayerControls.HybridButtonControl inputButton => controls.interact;
 
     [InjectComponent] public PlayerControls controls;
-    private HashSet<IPlayerInteractable> interactablesInRange = new HashSet<IPlayerInteractable>();
     
-    public T GetNearestObject<T>() where T : MonoBehaviour, IPlayerInteractable {
-        T nearest = null;
+    protected override void OnAbilityStart() {
+        GetNearestObject<IPlayerInteractable>()?.OnInteract(player);
+    }
+    private HashSet<IPlayerInteractable> interactablesInRange = new HashSet<IPlayerInteractable>();
+    public T GetNearestObject<T>() where T : IPlayerInteractable {
+        T nearest = default(T);
         float distance = Mathf.Infinity;
-        foreach (var interactive in interactablesInRange) {
-            switch (interactive) {
+        foreach (var interactObject in interactablesInRange) {
+            if (!interactObject.isInteractive) continue;
+            switch (interactObject) {
                 case T obj: {
                     var dist = Vector3.Distance(obj.transform.position, transform.position);
                     if (dist < distance) {
@@ -71,6 +77,22 @@ public class PlayerInteractionAblity : PlayerAbility {
             }
         }
         return nearest;
+    }
+    private IPlayerInteractable lastNearestObject = null;
+    protected override void Update() { 
+        base.Update();
+
+        var nearest = GetNearestObject<IPlayerInteractable>();
+        if (nearest != lastNearestObject) {
+            lastNearestObject?.OnDeselected(player);
+            nearest?.OnSelected(player);
+            lastNearestObject = nearest;
+        }
+
+        // update trigger collider radius in real time, if it changes
+        if (player.config.interactionRadius != lastInteractionRadius) {
+            SetTriggerRadius(player.config.interactionRadius);
+        }
     }
     private void OnEnter (GameObject obj) {
         var interactObj = obj.GetComponent<IPlayerInteractable>();
@@ -88,35 +110,31 @@ public class PlayerInteractionAblity : PlayerAbility {
     }
     private void Reset() {
         interactablesInRange.Clear();
+        lastNearestObject?.OnDeselected(player);
+        lastNearestObject = null;
+    }
+    private void OnEnable() {
+        if (trigger == null) {
+            // get sphere trigger (and set its radius)
+            trigger = SphereTrigger.GetOrCreateInChildren(gameObject);
+            SetTriggerRadius(player.config.interactionRadius);
+        }
+        // listen to on enter + on exit trigger events
+        trigger.OnEnter += OnEnter;
+        trigger.OnExit += OnExit;
+    }
+    private void OnDisable() {
+        // unregister events + clear trigger (in case something reloads + refs break)
+        trigger.OnEnter -= OnEnter;
+        trigger.OnExit -= OnExit;
+        trigger = null;
+        lastNearestObject?.OnDeselected(player);
+        lastNearestObject = null;
     }
 
     private SphereTrigger trigger = null;
     private float lastInteractionRadius = Mathf.Infinity;
     private void SetTriggerRadius(float radius) {
         trigger.radius = lastInteractionRadius = radius; 
-    }
-    // update trigger collider radius in real time
-    protected override void Update() {
-        if (player.config.interactionRadius != lastInteractionRadius) {
-            SetTriggerRadius(player.config.interactionRadius);
-        }
-        base.Update();
-    }
-    private void OnEnable() {
-        if (trigger == null) {
-            trigger = SphereTrigger.GetOrCreateInChildren(gameObject);
-            SetTriggerRadius(player.config.interactionRadius);
-        }
-        trigger.OnEnter += OnEnter;
-        trigger.OnExit += OnExit;
-    }
-    private void OnDisable() {
-        trigger.OnEnter -= OnEnter;
-        trigger.OnExit -= OnExit;
-        trigger = null;
-    }
-    protected override void OnAbilityStart() {
-        // TODO: consider whether we should move interaction impl here...?
-        // (see IPlayerInteractable, InteractionTrigger)
     }
 }
