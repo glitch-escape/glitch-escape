@@ -18,59 +18,36 @@ public enum PlayerAbilityState {
 /// Handles all button press detection internal state management (which can become somewhat complex), and provides
 /// a minimal, straightforward interface to subclass from + use.
 /// </summary>
-public abstract class PlayerAbility : PlayerComponent, IAgentAbility {
-    public IAgent agent => player;
-    public bool canUseAbility => !isOnCooldown && CanStartAbility();
-    public bool isAbilityActive => state == State.Active || state == State.ActivePressed;
-    
-    public abstract float resourceCost { get; }
-    public abstract float cooldownTime { get; }
-    protected float abilityStartTime { get; private set; } = -10f;
-    protected bool isOnCooldown => Time.time < abilityStartTime + cooldownTime;
-    protected abstract float abilityDuration { get; }
+public abstract class PlayerAbility : BaseAbility, IPlayerEventSource {
+    /// <summary>
+    /// Player reference (<see cref="Player"/>)
+    /// </summary>
+    [InjectComponent] public Player player;
+    public override IAgent agent => player;
 
-    public enum State { None, ActivePressed, Active, Ending }
-    public State state { get; private set; } = State.None;
+    /// <summary>
+    /// Generic event listener (<see cref="PlayerEvent"/>)
+    /// dispatches events like eg. movement started / stopped, abilities used, etc.
+    /// </summary>
+    public event PlayerEvent.Event OnEvent;
+
+    /// <summary>
+    /// Fire an event
+    /// </summary>
+    /// <see cref="OnEvent"/>
+    protected void FireEvent(PlayerEvent.Type eventType) {
+        OnEvent?.Invoke(eventType);
+    }
     
     /// <summary>
-    /// Called whan an ability is started
+    /// specifies the button control that this ability uses
     /// </summary>
-    protected abstract void AbilityStart();
-
-    protected virtual void AbilityUpdate() { }
-    protected virtual void AbilityEnd() { }
-    protected virtual void ResetAbility() { }
-
-    public void StartAbility() {
-        if (isAbilityActive) {
-            AbilityEnd();
-        }
-        state = State.Active;
-        abilityStartTime = Time.time;
-        AbilityStart();
-    }
-    public void CancelAbility() {
-        if (isAbilityActive) {
-            AbilityEnd();
-        }
-        state = State.None;
-    }
-    public void Reset() {
-        CancelAbility();
-        abilityStartTime = Time.time - cooldownTime - 1f;
-        ResetAbility();
-    }
-    void Update() {
+    protected abstract PlayerControls.HybridButtonControl inputButton { get; }
+    
+    protected override void Update() {
+        base.Update();
         if (inputButton?.wasPressedThisFrame ?? false) {
             StartAbility();
-        }
-        if (isAbilityActive) {
-            if (Time.time >= abilityStartTime + abilityDuration) {
-                AbilityEnd();
-                state = State.None;
-            } else {
-                AbilityUpdate();    
-            }
         }
     }
 
@@ -113,99 +90,86 @@ public abstract class PlayerAbility : PlayerComponent, IAgentAbility {
     
     #endregion MaterialHelpers
     
-    
-
-    /// <summary>
-    /// specifies the button control that this ability uses
-    /// </summary>
-    protected abstract PlayerControls.HybridButtonControl inputButton { get; }
-
-    /// <summary>
-    /// predicate that can be used to conditionally stop this ability from triggering
-    /// </summary>
-    /// <returns></returns>
-    protected virtual bool CanStartAbility() { return true; }
-    
-    public float abilityCooldown = 0f;
-
-    [Tooltip("Max stamina cost")]
-    public float maxStaminaCost = 30f;
-    
-    [Tooltip("Min stamina cost")]
-    public float minStaminaCost = 30f;
-
-    public float minEffectStrength = 1f;
-    public float maxEffectStrength = 1f;
-
-    public float minDuration = 1f;
-    public float maxDuration = 1f;
-    
-    public bool varyStrengthDependingOnPressTime = true;
-    public bool varyStaminaCostDependingOnPressTime = true;
-    public bool varyDurationDependingOnPressTime = true;
-    
-    [SerializeField]
-    public float maxPressTime = 0.25f;
-    
-    [SerializeField]
-    public AnimationCurve pressTimeFunction;
-
-    private float abilityPressTimeLimit = Mathf.Infinity;
-    public float elapsedTime => state != State.None ? Time.time - abilityStartTime : 0f;
-
-    private float m_abilityPressDuration;
-    public float pressDuration => Mathf.Min(m_abilityPressDuration, inputButton.pressTime);
-    private float abilityPressStrength
-        => state == State.None ? 0f :
-            pressTimeFunction.Evaluate(Mathf.Clamp01(pressDuration / maxPressTime));
-    private float minAbilityPressStrength => pressTimeFunction.Evaluate(0f);
-    
-    /// <summary>
-    /// Current strength of this ability (on a scale of [minEffectStrength, maxEffectStrength]) 
-    /// </summary>
-    public float currentAbilityStrength
-        => varyStrengthDependingOnPressTime
-            ? Mathf.Lerp( minEffectStrength, maxEffectStrength, abilityPressStrength)
-            : maxEffectStrength;
-    
-    /// <summary>
-    /// Current duration of this ability (on a scale of [minDuration, maxDuration]) 
-    /// </summary>
-    public float currentAbilityDuration
-        => varyDurationDependingOnPressTime
-            ? Mathf.Lerp(minDuration, maxDuration, abilityPressStrength)
-            : maxDuration;
-    
-    private float derivedMinimumStaminaCost
-        => varyStaminaCostDependingOnPressTime
-            ? Mathf.Lerp(minStaminaCost, maxStaminaCost, minAbilityPressStrength)
-            : maxStaminaCost;
-    
-    private float currentStaminaCost
-        => varyStaminaCostDependingOnPressTime
-            ? Mathf.Lerp(minStaminaCost, maxStaminaCost, abilityPressStrength)
-            : maxStaminaCost;
-    
-    private float usedStamina;
+    // public float abilityCooldown = 0f;
+    //
+    // [Tooltip("Max stamina cost")]
+    // public float maxStaminaCost = 30f;
+    //
+    // [Tooltip("Min stamina cost")]
+    // public float minStaminaCost = 30f;
+    //
+    // public float minEffectStrength = 1f;
+    // public float maxEffectStrength = 1f;
+    //
+    // public float minDuration = 1f;
+    // public float maxDuration = 1f;
+    //
+    // public bool varyStrengthDependingOnPressTime = true;
+    // public bool varyStaminaCostDependingOnPressTime = true;
+    // public bool varyDurationDependingOnPressTime = true;
+    //
+    // [SerializeField]
+    // public float maxPressTime = 0.25f;
+    //
+    // [SerializeField]
+    // public AnimationCurve pressTimeFunction;
+    //
+    // private float abilityPressTimeLimit = Mathf.Infinity;
+    // public float timeElapsedSinceAbilityStart => state != State.None ? Time.time - abilityStartTime : 0f;
+    //
+    // private float m_abilityPressDuration;
+    // public float pressDuration => Mathf.Min(m_abilityPressDuration, inputButton.pressTime);
+    // private float abilityPressStrength
+    //     => state == State.None ? 0f :
+    //         pressTimeFunction.Evaluate(Mathf.Clamp01(pressDuration / maxPressTime));
+    // private float minAbilityPressStrength => pressTimeFunction.Evaluate(0f);
+    //
+    // /// <summary>
+    // /// Current strength of this ability (on a scale of [minEffectStrength, maxEffectStrength]) 
+    // /// </summary>
+    // public float currentAbilityStrength
+    //     => varyStrengthDependingOnPressTime
+    //         ? Mathf.Lerp( minEffectStrength, maxEffectStrength, abilityPressStrength)
+    //         : maxEffectStrength;
+    //
+    // /// <summary>
+    // /// Current duration of this ability (on a scale of [minDuration, maxDuration]) 
+    // /// </summary>
+    // public float currentAbilityDuration
+    //     => varyDurationDependingOnPressTime
+    //         ? Mathf.Lerp(minDuration, maxDuration, abilityPressStrength)
+    //         : maxDuration;
+    //
+    // private float derivedMinimumStaminaCost
+    //     => varyStaminaCostDependingOnPressTime
+    //         ? Mathf.Lerp(minStaminaCost, maxStaminaCost, minAbilityPressStrength)
+    //         : maxStaminaCost;
+    //
+    // private float currentStaminaCost
+    //     => varyStaminaCostDependingOnPressTime
+    //         ? Mathf.Lerp(minStaminaCost, maxStaminaCost, abilityPressStrength)
+    //         : maxStaminaCost;
+    //
+    // private float usedStamina;
 
     public void DrawPlayerAbilityDebugGUI() {
         GUILayout.Label("current state: " + state);
         GUILayout.Label("button pressed?: " + inputButton.isPressed);
         GUILayout.Label("button pressed duration: " + inputButton.pressTime);
-        GUILayout.Label("internal min duration: " + m_abilityPressDuration);
-        GUILayout.Label("press duration: " + pressDuration);
-        GUILayout.Label("press strength: " + abilityPressStrength);
-        GUILayout.Label("min stamina cost: " + derivedMinimumStaminaCost);
-        GUILayout.Label("current stamina cost: " + currentStaminaCost);
-        GUILayout.Label("used stamina: " + usedStamina);
-        GUILayout.Label("ability duration: " + currentAbilityDuration);
-        GUILayout.Label("ability strength: " + currentAbilityStrength);
-        GUILayout.Label("elapsed time: " + elapsedTime);
+        // GUILayout.Label("internal min duration: " + m_abilityPressDuration);
+        // GUILayout.Label("press duration: " + pressDuration);
+        // GUILayout.Label("press strength: " + abilityPressStrength);
+        // GUILayout.Label("min stamina cost: " + derivedMinimumStaminaCost);
+        // GUILayout.Label("current stamina cost: " + currentStaminaCost);
+        // GUILayout.Label("used stamina: " + usedStamina);
+        // GUILayout.Label("ability duration: " + currentAbilityDuration);
+        // GUILayout.Label("ability strength: " + currentAbilityStrength);
+        // GUILayout.Label("elapsed time: " + timeElapsedSinceAbilityStart);
     }
 
-    public bool drawPlayerAbilityDebugGUI = false;
+    public bool drawDebugGUI = false;
     private void OnGUI() {
-        if (drawPlayerAbilityDebugGUI) DrawPlayerAbilityDebugGUI();
+        if (drawDebugGUI) DrawPlayerAbilityDebugGUI();
     }
 
     // public bool TryStartAbility() {
@@ -257,7 +221,7 @@ public abstract class PlayerAbility : PlayerComponent, IAgentAbility {
     //             }
     //         } goto case State.Active;
     //         case State.Active: {
-    //             if (elapsedTime > currentAbilityDuration) {
+    //             if (timeElapsedSinceAbilityStart > currentAbilityDuration) {
     //                 state = PlayerAbilityState.Ending;
     //                 goto case State.Ending;
     //             }

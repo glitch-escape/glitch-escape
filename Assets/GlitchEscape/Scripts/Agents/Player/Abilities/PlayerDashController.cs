@@ -30,18 +30,18 @@ public class PlayerDashController : PlayerAbility {
     protected override bool CanStartAbility() {
         return PlayerControls.instance.moveInput.magnitude > 0f;
     }
-    protected override void ResetAbility() {
+    protected override void OnAbilityReset() {
         animator.SetBool("isDashing", false);
         ClearGlitchShader();
     }
-    protected override void AbilityStart() {
+    protected override void OnAbilityStart() {
         SetGlitchShader();
         BeginDash();
         FireEvent(PlayerEvent.Type.BeginDash);
     }
 
-    protected override void AbilityEnd() {
-        glitchMaterial.SetFloat(GLITCH_MATERIAL_DURATION, currentAbilityDuration + dashVfxDuration);
+    protected override void OnAbilityEnd() {
+        glitchMaterial.SetFloat(GLITCH_MATERIAL_DURATION, abilityDuration + dashVfxDuration);
         ApplyMaterials((ref Material material) => material = glitchMaterial);
         EndDash();
         FireEvent(PlayerEvent.Type.EndDash);
@@ -53,7 +53,7 @@ public class PlayerDashController : PlayerAbility {
     //             
     //             break;
     //         case PlayerAbilityState.Ending:
-    //             glitchMaterial.SetFloat(GLITCH_MATERIAL_DURATION, currentAbilityDuration + dashVfxDuration);
+    //             glitchMaterial.SetFloat(GLITCH_MATERIAL_DURATION, abilityDuration + dashVfxDuration);
     //             ApplyMaterials((ref Material material) => material = glitchMaterial);
     //             EndDash();
     //             break;
@@ -73,7 +73,7 @@ public class PlayerDashController : PlayerAbility {
     
     void SetGlitchShader() {
         glitchMaterial.SetFloat(GLITCH_MATERIAL_START_TIME, Time.time);
-        glitchMaterial.SetFloat(GLITCH_MATERIAL_DURATION, currentAbilityDuration + dashVfxDuration);
+        glitchMaterial.SetFloat(GLITCH_MATERIAL_DURATION, abilityDuration + dashVfxDuration);
         ApplyMaterials((ref Material material) => material = glitchMaterial);
     }
     void ClearGlitchShader() {
@@ -86,7 +86,7 @@ public class PlayerDashController : PlayerAbility {
 
     private Vector3 savedDashVelocity = Vector3.zero;
 
-    protected override void AbilityUpdate() {
+    protected override void OnAbilityUpdate() {
         // move the player if they're currently dashing, and update vfx
         if (isAbilityActive) {
             var moveDir = Vector3.forward;
@@ -118,7 +118,7 @@ public class PlayerDashController : PlayerAbility {
         }
         // reapply velocity, plus gravity over time spent dashing
         GetComponent<Rigidbody>().velocity = savedDashVelocity +
-                             Vector3.down * Mathf.Abs(Physics.gravity.y) * elapsedTime;
+                             Vector3.down * Mathf.Abs(Physics.gravity.y) * timeElapsedSinceAbilityStart;
         if (useKinematic) {
             GetComponent<Rigidbody>().isKinematic = false;
         }        

@@ -15,21 +15,21 @@ public class PlayerManifestController : PlayerAbility {
     public override float cooldownTime => player.config.manifestAbilityCooldownTime;
     protected override float abilityDuration => player.config.manifestAbilityShieldDuration;
     
-    protected override void AbilityStart() {
+    protected override void OnAbilityStart() {
         BeginManifest();
         FireEvent(PlayerEvent.Type.BeginManifest);
     }
-    protected override void AbilityUpdate() {
-        if (elapsedTime > manifestVfxDuration)
+    protected override void OnAbilityUpdate() {
+        if (timeElapsedSinceAbilityStart > manifestVfxDuration)
         {
             isVfxActive = false;
         }
     }
-    protected override void AbilityEnd() {
+    protected override void OnAbilityEnd() {
         EndManifest();
         FireEvent(PlayerEvent.Type.EndManifest);
     }
-    protected override void ResetAbility() {
+    protected override void OnAbilityReset() {
         if (isManifesting) EndManifest();
         isVfxActive = false;
     }

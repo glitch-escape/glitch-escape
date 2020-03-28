@@ -41,7 +41,7 @@ public class PlayerShootController : PlayerAbility {
     /// <summary>
     /// Fires a projectile when the fire button is pressed (and ability is off cooldown)
     /// </summary>
-    protected override void AbilityStart() {
+    protected override void OnAbilityStart() {
         PlayerProjectile.Spawn(projectileConfig, projectileSpawnLocation);
     }
 }
