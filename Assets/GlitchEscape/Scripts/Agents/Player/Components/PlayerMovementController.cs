@@ -7,7 +7,7 @@ public class PlayerMovementController : PlayerComponent {
     [InjectComponent] public new Rigidbody rigidbody;
     [InjectComponent] public Animator animator;
     [InjectComponent] public PlayerControls playerInput;
-    public Camera camera;
+    [InjectComponent] public new Camera camera;
     
     // Public properties
 

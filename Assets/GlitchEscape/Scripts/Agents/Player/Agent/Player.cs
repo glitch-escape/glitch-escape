@@ -28,7 +28,7 @@ public class Player : BaseAgent<Player, PlayerConfig> {
     // references to components on the player object
     [InjectComponent] public new Rigidbody rigidbody;
     [InjectComponent] public Animator animator;
-    [InjectComponent] public Camera camera;
+    [InjectComponent] public new Camera camera;
     [InjectComponent] public AudioSource soundSource;
     [InjectComponent] public PlayerHealth health;
     [InjectComponent] public PlayerStamina stamina;
@@ -44,9 +44,12 @@ public class Player : BaseAgent<Player, PlayerConfig> {
     // player abilities
     [InjectComponent] public PlayerDashController        dash;
     [InjectComponent] public PlayerJumpController        jump;
-    [InjectComponent] public PlayerMazeController  maze;
+    [InjectComponent] public PlayerMazeController        maze;
     [InjectComponent] public PlayerInteractionController interact;
+    [InjectComponent] public PlayerShootController       shoot;
+    [InjectComponent] public PlayerManifestController    manifest;
 
+    
     #region MazeSwitchImplementation
 
     /// <summary>

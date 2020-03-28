@@ -65,9 +65,6 @@ public class PlayerDashController : PlayerAbility {
     //             break;
     //     }
     // }
-    protected override bool IsAbilityFinished() {
-        return elapsedTime > currentAbilityDuration + dashVfxDuration;
-    }
 
     // TeleportEffectGraph variables
     public const string GLITCH_MATERIAL_EMISSION_COLOR = "EmissionColor_9A7229B8";

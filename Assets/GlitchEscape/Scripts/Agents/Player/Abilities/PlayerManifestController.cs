@@ -10,7 +10,6 @@ public class PlayerManifestController : PlayerAbility {
     /// <summary>
     /// Player reference
     /// </summary>
-    [InjectComponent] public Player player;
 
     public override float resourceCost => player.config.manifestAbilityStaminaCost;
     public override float cooldownTime => player.config.manifestAbilityCooldownTime;
@@ -30,8 +29,6 @@ public class PlayerManifestController : PlayerAbility {
         EndManifest();
         FireEvent(PlayerEvent.Type.EndManifest);
     }
-    protected override bool IsAbilityFinished() { return elapsedTime > manifestDuration; }
-    
     protected override void ResetAbility() {
         if (isManifesting) EndManifest();
         isVfxActive = false;

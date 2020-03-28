@@ -31,7 +31,7 @@ public class PlayerShootController : PlayerAbility {
     /// location (on player) to spawn the projectile at
     /// Should be a child transform on the player object w/ a FirePoint (empty marker script) on it
     /// </summary>
-    [InjectFromChild] public FirePoint projectileSpawnLocation;
+    [InjectComponent] public FirePoint projectileSpawnLocation;
     
     /// <summary>
     /// projectile config to use (pulls from <see cref="PlayerConfig"/> on the player object)
