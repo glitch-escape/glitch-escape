@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerJumpController : PlayerComponent {
+public class PlayerJumpAbility : PlayerComponent {
     [InjectComponent] public new Rigidbody rigidbody;
     [InjectComponent] public Animator animator;
     [InjectComponent] public new Camera camera;

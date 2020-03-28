@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 
-public class PlayerDashController : PlayerAbility {
+public class PlayerDashAbility : PlayerAbility {
     [InjectComponent] public Animator animator;
     public Material glitchMaterial;
 

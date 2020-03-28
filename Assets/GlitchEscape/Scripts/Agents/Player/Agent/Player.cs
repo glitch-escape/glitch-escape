@@ -40,15 +40,14 @@ public class Player : BaseAgent<Player, PlayerConfig> {
     [InjectComponent] public PlayerCameraController      cameraController;
     [InjectComponent] public PlayerAudioController       audioController;
     [InjectComponent] public PlayerDialogController      dialog;
-
-    // player abilities
-    [InjectComponent] public PlayerDashController        dash;
-    [InjectComponent] public PlayerJumpController        jump;
     [InjectComponent] public PlayerMazeController        maze;
-    [InjectComponent] public PlayerInteractionController interact;
-    [InjectComponent] public PlayerShootController       shoot;
-    [InjectComponent] public PlayerManifestController    manifest;
-
+    
+    // player abilities
+    [InjectComponent] public PlayerDashAbility           dash;
+    [InjectComponent] public PlayerJumpAbility           jump;
+    [InjectComponent] public PlayerInteractionAblity     interact;
+    [InjectComponent] public PlayerShootAbility          shoot;
+    [InjectComponent] public PlayerManifestAbility       manifest;
     
     #region MazeSwitchImplementation
 

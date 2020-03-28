@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 
-public class PlayerManifestController : PlayerAbility {
+public class PlayerManifestAbility : PlayerAbility {
     /// <summary>
     /// Player reference
     /// </summary>

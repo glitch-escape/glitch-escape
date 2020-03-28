@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 
-public class PlayerShootController : PlayerAbility {
+public class PlayerShootAbility : PlayerAbility {
     /// <summary>
     /// Stamina cost per projectile
     /// </summary>

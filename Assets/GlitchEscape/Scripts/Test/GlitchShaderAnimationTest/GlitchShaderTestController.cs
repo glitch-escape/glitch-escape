@@ -20,7 +20,7 @@ public class GlitchShaderTestController : MonoBehaviour {
         }
         if (GUILayout.Button("Restart shader effect")) {
             material.SetFloat(
-                PlayerDashController.GLITCH_MATERIAL_START_TIME,
+                PlayerDashAbility.GLITCH_MATERIAL_START_TIME,
                 Time.time);
         }
         GUILayout.Label("animation duration: " +
@@ -32,7 +32,7 @@ public class GlitchShaderTestController : MonoBehaviour {
 
         if (period != durationPeriod) {
             material.SetFloat(
-            PlayerDashController.GLITCH_MATERIAL_DURATION,
+            PlayerDashAbility.GLITCH_MATERIAL_DURATION,
                 durationPeriod = period);
         }
     }
