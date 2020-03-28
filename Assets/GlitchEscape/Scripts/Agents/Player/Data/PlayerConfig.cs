@@ -19,6 +19,9 @@ public class PlayerConfig : ScriptableObject {
     [Tooltip("Camera turn speed, in degrees / sec")]
     [Range(5f, 360)] public float cameraTurnSpeed = 180f;
 
+    [Header("Interaction")] 
+    public float interactionRadius = 10f;
+
     [Header("Jump ability")] [Range(0, 20)]
     public float jumpHeight = 10f;
     [Range(0, 10)] public int maxJumps = 2;
