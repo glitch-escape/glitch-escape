@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Collider))]
+// TODO: split out into separate class
 public class Trigger : MonoBehaviour {
     public delegate void TriggerEvent(GameObject gameObject);
     public event TriggerEvent OnEnter;
@@ -19,6 +19,31 @@ public class Trigger : MonoBehaviour {
     }
     private void OnTriggerStay(Collider other) {
         OnStay?.Invoke(other.gameObject);
+    }
+}
+
+// TODO: split out into separate class
+public class SphereTrigger : Trigger {
+    private SphereCollider _collider = null;
+    public SphereCollider collider => _collider ??
+                                      (_collider = GetComponent<SphereCollider>() ??
+                                                   gameObject.AddComponent<SphereCollider>());
+    public float radius {
+        get => collider.radius;
+        set => collider.radius = value;
+    }
+    public static SphereTrigger GetOrCreateInChildren (GameObject obj) {
+        var instance = obj.GetComponentInChildren<SphereTrigger>();
+        if (instance != null) return instance;
+        var emptyChild = new GameObject("Trigger", typeof(SphereCollider), typeof(SphereTrigger));
+        var trigger = emptyChild.GetComponent<SphereTrigger>();
+        var collider = trigger.collider;
+        collider.isTrigger = true;
+        collider.center = Vector3.zero;
+        return trigger;
+    }
+    private void OnDisable() {
+        _collider = null;
     }
 }
 public class PlayerInteractionAblity : PlayerAbility {
@@ -65,39 +90,30 @@ public class PlayerInteractionAblity : PlayerAbility {
         interactablesInRange.Clear();
     }
 
-    private GameObject triggerObject;
-    private SphereCollider triggerCollider;
-    private Trigger trigger;
-    
+    private SphereTrigger trigger = null;
+    private float lastInteractionRadius = Mathf.Infinity;
+    private void SetTriggerRadius(float radius) {
+        trigger.radius = lastInteractionRadius = radius; 
+    }
     // update trigger collider radius in real time
     protected override void Update() {
-        if (player.config.interactionRadius != lastInteractionRadius) { 
-            triggerCollider.radius = lastInteractionRadius = player.config.interactionRadius;
+        if (player.config.interactionRadius != lastInteractionRadius) {
+            SetTriggerRadius(player.config.interactionRadius);
         }
         base.Update();
     }
-    private float lastInteractionRadius = Mathf.Infinity;
-
     private void OnEnable() {
-        if (triggerObject == null) {
-            triggerObject = new GameObject("PlayerInteractionTrigger", 
-                    typeof(SphereCollider), typeof(Trigger));
-            triggerObject.transform.parent = player.transform;
-            var collider = triggerObject.GetComponent<SphereCollider>();
-            
-            trigger = triggerObject.GetComponent<Trigger>();
+        if (trigger == null) {
+            trigger = SphereTrigger.GetOrCreateInChildren(gameObject);
+            SetTriggerRadius(player.config.interactionRadius);
         }
-        triggerCollider = triggerObject.GetComponent<SphereCollider>() ?? triggerObject.AddComponent<SphereCollider>();
-        triggerCollider.center = Vector3.zero;
-        triggerCollider.radius = lastInteractionRadius = player.config.interactionRadius;
-        
-        trigger = triggerObject.GetComponent<Trigger>() ?? triggerObject.AddComponent<Trigger>();
         trigger.OnEnter += OnEnter;
         trigger.OnExit += OnExit;
     }
     private void OnDisable() {
         trigger.OnEnter -= OnEnter;
         trigger.OnExit -= OnExit;
+        trigger = null;
     }
     protected override void OnAbilityStart() {
         // TODO: consider whether we should move interaction impl here...?
