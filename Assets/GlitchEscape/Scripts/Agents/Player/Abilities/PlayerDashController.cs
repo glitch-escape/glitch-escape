@@ -13,7 +13,12 @@ public class PlayerDashController : PlayerAbility {
     public override float resourceCost => player.config.dashAbilityStaminaCostRange.minimum;
     public override float cooldownTime => player.config.dashAbilityCooldownTime;
     
+    // TODO: reimplement variable-length button presses
+    protected override float abilityDuration => player.config.dashAbilityDurationRange.minimum;
     
+    // TODO: reimplement variable-length button presses
+    private float dashSpeed => player.config.dashAbilityMoveRange.minimum / abilityDuration;
+
     private PlayerControls.HybridButtonControl m_inputButton;
     protected override PlayerControls.HybridButtonControl inputButton
         => m_inputButton ?? (m_inputButton = PlayerControls.instance.dash);
@@ -32,12 +37,14 @@ public class PlayerDashController : PlayerAbility {
     protected override void AbilityStart() {
         SetGlitchShader();
         BeginDash();
+        FireEvent(PlayerEvent.Type.BeginDash);
     }
 
     protected override void AbilityEnd() {
         glitchMaterial.SetFloat(GLITCH_MATERIAL_DURATION, currentAbilityDuration + dashVfxDuration);
         ApplyMaterials((ref Material material) => material = glitchMaterial);
         EndDash();
+        FireEvent(PlayerEvent.Type.EndDash);
     }
     // protected override void OnAbilityStateChange(PlayerAbilityState prevState, PlayerAbilityState newState) {
     //     // Debug.Log("Setting state " + prevState + " => " + newState);
@@ -79,10 +86,6 @@ public class PlayerDashController : PlayerAbility {
 
     [Tooltip("use kinematic vs velocity updates")]
     public bool useKinematic = false;
-
-    [Range(0f, 200f)]
-    [Tooltip("dash speed (m/s)")] 
-    public float dashSpeed = 10f;
 
     private Vector3 savedDashVelocity = Vector3.zero;
 

@@ -7,29 +7,41 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 
 public class PlayerShootController : PlayerAbility {
+    /// <summary>
+    /// Stamina cost per projectile
+    /// </summary>
     public override float resourceCost => player.config.shootAbilityStaminaCost;
+    
+    /// <summary>
+    /// Shoot up to n projectiles per second when fire button is pressed repeatedly
+    /// </summary>
     public override float cooldownTime => 1f / player.config.shootAbilityShotsPerSec;
+    
+    /// <summary>
+    /// Button we use to fire a projectile
+    /// </summary>
     protected override PlayerControls.HybridButtonControl inputButton => PlayerControls.instance.shoot;
     
-    public OldEnemyProjectile oldEnemyProjectilePrefab;
-    public Transform projectileSpawnLocation;
+    /// <summary>
+    /// this is a one-shot ability (doesn't have a duration)
+    /// </summary>
+    protected override float abilityDuration => 0f;
     
-    protected override void AbilityStart() { SpawnProjectile(); }
-    protected override void AbilityEnd() {}
-    protected override void AbilityUpdate() {}
-    protected override void ResetAbility() {}
-    protected override bool IsAbilityFinished() {
-        return elapsedTime > currentAbilityDuration;
-    }
-    private void SpawnProjectile() {
-        Vector3 direction = projectileSpawnLocation.forward;
-        Vector3 origin = projectileSpawnLocation.position;
-        // Quaternion quat = Quaternion.LookRotation(direction, Vector3.up);
-        OldEnemyProjectile bullet = Instantiate(
-            oldEnemyProjectilePrefab,
-            projectileSpawnLocation.position,
-            projectileSpawnLocation.rotation);
-        Debug.Log("Spawned projectile: "+bullet.transform.position+ ", " + bullet.transform.rotation + 
-                  " from spawn point " + projectileSpawnLocation.transform.position);
+    /// <summary>
+    /// location (on player) to spawn the projectile at
+    /// Should be a child transform on the player object w/ a FirePoint (empty marker script) on it
+    /// </summary>
+    [InjectFromChild] public FirePoint projectileSpawnLocation;
+    
+    /// <summary>
+    /// projectile config to use (pulls from <see cref="PlayerConfig"/> on the player object)
+    /// </summary>
+    private PlayerProjectileConfig projectileConfig => player.config.shootAbilityProjectile;
+
+    /// <summary>
+    /// Fires a projectile when the fire button is pressed (and ability is off cooldown)
+    /// </summary>
+    protected override void AbilityStart() {
+        PlayerProjectile.Spawn(projectileConfig, projectileSpawnLocation);
     }
 }

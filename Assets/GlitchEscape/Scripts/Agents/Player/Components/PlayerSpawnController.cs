@@ -22,6 +22,11 @@ public class PlayerSpawnController : PlayerComponent {
             mazeSwitch.transform.position + Vector3.up * player.config.spawnHeight, 
             mazeSwitch.transform.rotation);   
     }
+    public void SetSpawnPosition(SavePoint savePoint) {
+        SetSpawnPosition(
+            savePoint.transform.position + Vector3.up * player.config.spawnHeight, 
+            savePoint.transform.rotation);   
+    }
     private void Respawn() {
         player.transform.position = respawnPosition;
         player.transform.rotation = respawnRotation;

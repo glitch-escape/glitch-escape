@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "PlayerConfig", menuName = "GameConfigs/PlayerConfig", order = 1)]
+[CreateAssetMenu(fileName = "PlayerConfig", menuName = "Config/Player/PlayerConfig", order = 1)]
 public class PlayerConfig : ScriptableObject {
 
     [Header("Controls")] 
@@ -41,7 +41,16 @@ public class PlayerConfig : ScriptableObject {
     public float shootAbilityProjectileSpeed = 30f;
     public float shootAbilityProjectileDamage = 10f;
     public bool shootAbilityEnabled = true;
-    
+    public PlayerProjectileConfig shootAbilityProjectile;
+
+    [Header("Manifest ability")] 
+    public float manifestAbilityStaminaCost = 20f;
+    public float manifestAbilityCooldownTime = 0.2f;
+    public float manifestAbilityShieldDuration = 3f;
+    public float manifestAbilityShieldDistanceFromPlayer = 1f;
+    // public ManifestShield manifestAbilityShieldPrefab;
+    public GameObject manifestAbilityShieldPrefab;
+
     [Header("Health")] 
     public FloatRange health = new FloatRange {minimum = 0f, maximum = 100f};
     public float healthRegen = 10f;

@@ -27,6 +27,7 @@ public abstract class PlayerAbility : PlayerComponent, IAgentAbility {
     public abstract float cooldownTime { get; }
     protected float abilityStartTime { get; private set; } = -10f;
     protected bool isOnCooldown => Time.time < abilityStartTime + cooldownTime;
+    protected abstract float abilityDuration { get; }
 
     public enum State { None, ActivePressed, Active, Ending }
     public State state { get; private set; } = State.None;
@@ -35,10 +36,11 @@ public abstract class PlayerAbility : PlayerComponent, IAgentAbility {
     /// Called whan an ability is started
     /// </summary>
     protected abstract void AbilityStart();
-    protected abstract void AbilityUpdate();
-    protected abstract void AbilityEnd();
-    protected abstract void ResetAbility();
-    
+
+    protected virtual void AbilityUpdate() { }
+    protected virtual void AbilityEnd() { }
+    protected virtual void ResetAbility() { }
+
     public void StartAbility() {
         if (isAbilityActive) {
             AbilityEnd();
@@ -53,14 +55,22 @@ public abstract class PlayerAbility : PlayerComponent, IAgentAbility {
         }
         state = State.None;
     }
-    public void Reset() { 
+    public void Reset() {
         CancelAbility();
         abilityStartTime = Time.time - cooldownTime - 1f;
         ResetAbility();
     }
     void Update() {
+        if (inputButton?.wasPressedThisFrame ?? false) {
+            StartAbility();
+        }
         if (isAbilityActive) {
-            AbilityUpdate();
+            if (Time.time >= abilityStartTime + abilityDuration) {
+                AbilityEnd();
+                state = State.None;
+            } else {
+                AbilityUpdate();    
+            }
         }
     }
 
@@ -115,13 +125,7 @@ public abstract class PlayerAbility : PlayerComponent, IAgentAbility {
     /// </summary>
     /// <returns></returns>
     protected virtual bool CanStartAbility() { return true; }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <returns>true iff this ability is finished + should return to a None state</returns>
-    protected abstract bool IsAbilityFinished();
-
+    
     public float abilityCooldown = 0f;
 
     [Tooltip("Max stamina cost")]

@@ -45,7 +45,7 @@ public class MazeSwitch : MonoBehaviour, IPlayerInteractable {
     }
 
     public void OnPlayerEnterInteractionRadius(Player player) {
-        player.controller.SetSavePoint(transform);
+        player.spawn.SetSpawnPosition(this);
         player.SetActiveMazeSwitch(this);
     }
 
