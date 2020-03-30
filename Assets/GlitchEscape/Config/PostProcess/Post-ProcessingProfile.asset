@@ -23,6 +23,61 @@ MonoBehaviour:
   gain:
     m_OverrideState: 0
     m_Value: {x: 1, y: 1, z: 1, w: 0}
+--- !u!114 &-5136807779390821830
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81180773991d8724ab7f2d216912b564, type: 3}
+  m_Name: ChromaticAberration
+  m_EditorClassIdentifier: 
+  active: 1
+  m_AdvancedMode: 0
+  intensity:
+    m_OverrideState: 1
+    m_Value: 0.099
+    min: 0
+    max: 1
+--- !u!114 &-4963471797106042194
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 899c54efeace73346a0a16faa3afe726, type: 3}
+  m_Name: Vignette
+  m_EditorClassIdentifier: 
+  active: 1
+  m_AdvancedMode: 0
+  color:
+    m_OverrideState: 1
+    m_Value: {r: 0, g: 0, b: 0, a: 1}
+    hdr: 0
+    showAlpha: 0
+    showEyeDropper: 1
+  center:
+    m_OverrideState: 0
+    m_Value: {x: 0.5, y: 0.5}
+  intensity:
+    m_OverrideState: 1
+    m_Value: 0.257
+    min: 0
+    max: 1
+  smoothness:
+    m_OverrideState: 1
+    m_Value: 0.144
+    min: 0.01
+    max: 1
+  rounded:
+    m_OverrideState: 1
+    m_Value: 1
 --- !u!114 &-1114673456687231666
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -75,15 +130,15 @@ MonoBehaviour:
   m_AdvancedMode: 0
   threshold:
     m_OverrideState: 1
-    m_Value: 0.18
+    m_Value: 2.61
     min: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 0.09
+    m_Value: 0.21
     min: 0
   scatter:
     m_OverrideState: 1
-    m_Value: 0.29
+    m_Value: 0.256
     min: 0
     max: 1
   clamp:
@@ -123,6 +178,8 @@ MonoBehaviour:
   - {fileID: -136238071230811922}
   - {fileID: 3302255661107654483}
   - {fileID: -7048256965067544467}
+  - {fileID: -5136807779390821830}
+  - {fileID: -4963471797106042194}
 --- !u!114 &3302255661107654483
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -142,7 +199,7 @@ MonoBehaviour:
     m_Value: 0
   quality:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 1
   intensity:
     m_OverrideState: 1
     m_Value: 0.2
@@ -169,7 +226,7 @@ MonoBehaviour:
   m_AdvancedMode: 0
   postExposure:
     m_OverrideState: 0
-    m_Value: -0.32
+    m_Value: 0.31
   contrast:
     m_OverrideState: 0
     m_Value: 21.1
@@ -188,6 +245,6 @@ MonoBehaviour:
     max: 180
   saturation:
     m_OverrideState: 1
-    m_Value: 51.7
+    m_Value: 33
     min: -100
     max: 100
