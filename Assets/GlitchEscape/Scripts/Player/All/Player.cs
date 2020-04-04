@@ -168,18 +168,4 @@ public class Player : BaseAgent<Player, PlayerConfig, PlayerHealth, PlayerStamin
     }
 
     #endregion
-
-    #region ShardImplementation
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if(collision.gameObject.CompareTag("Shard"))
-        {
-            //get shard
-            Destroy(collision.gameObject);
-            shardcomp.value += 1;
-        }
-    }
-
-    #endregion
 }
