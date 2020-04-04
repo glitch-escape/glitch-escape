@@ -44,4 +44,6 @@ public class PlayerConfig : ScriptableObject {
             new Keyframe(1f, 1f)
         }
     };
+
+    [Header("Shards")] public IntRange shards = new IntRange {minimum = 0, maximum = 7};
 }
