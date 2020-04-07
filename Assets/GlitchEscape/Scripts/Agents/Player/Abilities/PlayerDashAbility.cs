@@ -72,6 +72,8 @@ public class PlayerDashAbility : PlayerAbility {
     public const string GLITCH_MATERIAL_DURATION = "Duration_2B114277";
     
     void SetGlitchShader() {
+        var renderer = GetComponent<Renderer>();
+        
         glitchMaterial.SetFloat(GLITCH_MATERIAL_START_TIME, Time.time);
         glitchMaterial.SetFloat(GLITCH_MATERIAL_DURATION, abilityDuration + dashVfxDuration);
         ApplyMaterials((ref Material material) => material = glitchMaterial);
@@ -125,3 +127,44 @@ public class PlayerDashAbility : PlayerAbility {
         FireEvent(PlayerEvent.Type.EndDash);
     }
 }
+
+public class NoiseLowPolyDeform {
+    public Material material { get; set; }
+    
+    public float Depth {
+        get => material.GetFloat("Vector1_FC657AF4");
+        set => material.SetFloat("Vector1_FC657AF4", value);
+    }
+    public Color BaseColor {
+        get => material.GetColor("Color_A73DBC10");
+        set => material.SetColor("Color_A73DBC10", value);
+    }
+    public Color EmissionColor {
+        get => material.GetColor("Color_C3F57BAC");
+        set => material.SetColor("Color_C3F57BAC", value);
+    }
+    public Color Color {
+        get => material.GetColor("Color_BF62A8F6");
+        set => material.SetColor("Color_BF62A8F6", value);
+    }
+
+    public NoiseLowPolyDeform (Material material) {
+        this.material = material;
+    }
+    public void UseMaterial(Material material) {
+        this.material = material;
+    }
+    public void UseMaterial(Renderer renderer, int index = 0) {
+        this.material = renderer.materials[index];
+    }
+    public void UseSharedMaterial(Renderer renderer, int index = 0) {
+        this.material = renderer.sharedMaterials[index];
+    }
+    public void UseMaterial(GameObject obj, int index = 0) {
+        UseMaterial(obj.GetComponent<Renderer>(), index);
+    }
+    public void UseSharedMaterial(GameObject obj, int index = 0) {
+        UseSharedMaterial(obj.GetComponent<Renderer>(), index);
+    }
+}
+

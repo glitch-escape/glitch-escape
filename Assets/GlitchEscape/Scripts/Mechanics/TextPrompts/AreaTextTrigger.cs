@@ -23,4 +23,11 @@ public class AreaTextTrigger : MonoBehaviour, IPlayerInteractable {
      public void OnPlayerExitInteractionRadius(Player player) {
           text.gameObject.SetActive(false);
      }
+
+     public bool isInteractive => false;
+     public void OnSelected(Player player) {
+     }
+
+     public void OnDeselected(Player player) {
+     }
 }

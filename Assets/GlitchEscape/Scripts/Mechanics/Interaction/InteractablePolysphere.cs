@@ -46,4 +46,11 @@ public class InteractablePolysphere : MonoBehaviour, IPlayerInteractable
     {
         floatingText.DisableText(floatTextArea);
     }
+
+    public bool isInteractive => true;
+    public void OnSelected(Player player) {
+    }
+
+    public void OnDeselected(Player player) {
+    }
 }

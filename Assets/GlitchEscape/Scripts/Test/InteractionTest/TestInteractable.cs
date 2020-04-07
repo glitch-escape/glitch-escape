@@ -108,4 +108,11 @@ public class TestInteractable : MonoBehaviour, IPlayerInteractable {
         }
         playerInInteractionRadius = false;
     }
+
+    public bool isInteractive => true;
+    public void OnSelected(Player player) {
+    }
+
+    public void OnDeselected(Player player) {
+    }
 }

@@ -9,4 +9,10 @@ public class SavePoint : MonoBehaviour, IPlayerInteractable {
         player.spawn.SetSpawnPosition(this);
     }
     public void OnPlayerExitInteractionRadius(Player player) {}
+    public bool isInteractive => true;
+    public void OnSelected(Player player) {
+    }
+
+    public void OnDeselected(Player player) {
+    }
 }
