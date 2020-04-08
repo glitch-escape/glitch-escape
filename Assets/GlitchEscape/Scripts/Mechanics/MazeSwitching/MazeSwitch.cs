@@ -40,7 +40,6 @@ public class MazeSwitch : MonoBehaviour, IPlayerInteractable {
     }
     public void OnSelected(Player player) {
         player.spawn.SetSpawnPosition(this);
-        player.SetActiveMazeSwitch(this);
         SetMazeSwitchActive(true);
     }
     public void OnDeselected(Player player) {
