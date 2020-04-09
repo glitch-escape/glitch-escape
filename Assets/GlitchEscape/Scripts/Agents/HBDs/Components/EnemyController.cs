@@ -140,7 +140,7 @@ public class EnemyController : EnemyComponent {
     #endregion
 
     void FixedUpdate() {
-        Debug.Log(behaviorState);
+        //Debug.Log(behaviorState);
         if (isChasingOrAttackingPlayer) {
             if (activeState != null && isAttackingPlayer && activeState.isAbilityActive) { }
             else {
