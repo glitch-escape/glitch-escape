@@ -1360,8 +1360,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.0779355, y: -0.000000008577024, z: 6.70494e-10, w: 0.99695843}
-  m_LocalPosition: {x: 0, y: 4.5, z: -4.5}
+  m_LocalRotation: {x: 0.07793556, y: -0.000000008577024, z: 6.7049444e-10, w: 0.99695843}
+  m_LocalPosition: {x: -15.9, y: 9.8, z: -7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1102068784}
@@ -6356,17 +6356,17 @@ PrefabInstance:
     - target: {fileID: 3505488081016921733, guid: d2ebc241853cd416cb4411bbc3550e8b,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000000015869915
+      value: -0.000000017328581
       objectReference: {fileID: 0}
     - target: {fileID: 3505488081016921733, guid: d2ebc241853cd416cb4411bbc3550e8b,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -5.8326344e-10
+      value: 6.3687294e-10
       objectReference: {fileID: 0}
     - target: {fileID: 3505488081016921733, guid: d2ebc241853cd416cb4411bbc3550e8b,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.03672799
+      value: 0.036727984
       objectReference: {fileID: 0}
     - target: {fileID: 3505488081016921733, guid: d2ebc241853cd416cb4411bbc3550e8b,
         type: 3}
@@ -6441,17 +6441,17 @@ PrefabInstance:
     - target: {fileID: 3505488081973172942, guid: d2ebc241853cd416cb4411bbc3550e8b,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.11958468
+      value: 0.11958469
       objectReference: {fileID: 0}
     - target: {fileID: 3505488081973172942, guid: d2ebc241853cd416cb4411bbc3550e8b,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.0000000073971163
+      value: -6.3735524e-18
       objectReference: {fileID: 0}
     - target: {fileID: 3505488081973172942, guid: d2ebc241853cd416cb4411bbc3550e8b,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -8.909754e-10
+      value: 4.8097707e-18
       objectReference: {fileID: 0}
     - target: {fileID: 3505488081973172942, guid: d2ebc241853cd416cb4411bbc3550e8b,
         type: 3}
@@ -6779,6 +6779,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2668833942971851888, guid: c565e2b6a6a6b4a729579b6c59da6f29,
+        type: 3}
+      propertyPath: m_BindingMode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2668833942971851888, guid: c565e2b6a6a6b4a729579b6c59da6f29,
+        type: 3}
+      propertyPath: m_FollowOffset.y
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2668833942971851888, guid: c565e2b6a6a6b4a729579b6c59da6f29,
+        type: 3}
+      propertyPath: m_FollowOffset.z
+      value: -3
+      objectReference: {fileID: 0}
     - target: {fileID: 4568064139774049717, guid: c565e2b6a6a6b4a729579b6c59da6f29,
         type: 3}
       propertyPath: m_BindingMode
@@ -6790,6 +6805,21 @@ PrefabInstance:
       value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 4568064139774049717, guid: c565e2b6a6a6b4a729579b6c59da6f29,
+        type: 3}
+      propertyPath: m_FollowOffset.z
+      value: -3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4916835192337597954, guid: c565e2b6a6a6b4a729579b6c59da6f29,
+        type: 3}
+      propertyPath: m_BindingMode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4916835192337597954, guid: c565e2b6a6a6b4a729579b6c59da6f29,
+        type: 3}
+      propertyPath: m_FollowOffset.y
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4916835192337597954, guid: c565e2b6a6a6b4a729579b6c59da6f29,
         type: 3}
       propertyPath: m_FollowOffset.z
       value: -3
@@ -6829,6 +6859,198 @@ PrefabInstance:
       propertyPath: camera
       value: 
       objectReference: {fileID: 963194227}
+    - target: {fileID: 6237423698167526345, guid: c565e2b6a6a6b4a729579b6c59da6f29,
+        type: 3}
+      propertyPath: info
+      value: 'injecting fields on Player (Autowire)
+
+        injecting fields on
+        Player (Player)
+
+        found injectable field UnityEngine.Rigidbody rigidbody,
+        value Player (UnityEngine.Rigidbody), is null? False
+
+        found injectable
+        field UnityEngine.Animator animator, value Player (UnityEngine.Animator),
+        is null? False
+
+        found injectable field UnityEngine.Camera camera,
+        value Main Camera (UnityEngine.Camera), is null? False
+
+        found injectable
+        field UnityEngine.AudioSource soundSource, value Player (UnityEngine.AudioSource),
+        is null? False
+
+        found injectable field PlayerHealth health, value
+        Player (PlayerHealth), is null? False
+
+        found injectable field PlayerStamina
+        stamina, value Player (PlayerStamina), is null? False
+
+        found injectable
+        field PlayerControls input, value Player (PlayerControls), is null? False
+
+        found
+        injectable field PlayerSpawnController spawn, value Player (PlayerSpawnController),
+        is null? False
+
+        found injectable field PlayerMovementController movement,
+        value Player (PlayerMovementController), is null? False
+
+        found injectable
+        field PlayerCameraController cameraController, value Player (PlayerCameraController),
+        is null? False
+
+        found injectable field PlayerAudioController audioController,
+        value Player (PlayerAudioController), is null? False
+
+        found injectable
+        field PlayerDialogController dialog, value Player (PlayerDialogController),
+        is null? False
+
+        found injectable field PlayerMazeController maze,
+        value Player (PlayerMazeController), is null? False
+
+        found injectable
+        field PlayerDashAbility dash, value Player (PlayerDashAbility), is null?
+        False
+
+        found injectable field PlayerJumpAbility jump, value Player
+        (PlayerJumpAbility), is null? False
+
+        found injectable field PlayerInteractionAbility
+        interact, value Player (PlayerInteractionAbility), is null? False
+
+        found
+        injectable field PlayerShootAbility shoot, value Player (PlayerShootAbility),
+        is null? False
+
+        found injectable field PlayerManifestAbility manifest,
+        value Player (PlayerManifestAbility), is null? False
+
+        injecting fields
+        on Player (PlayerHealth)
+
+        injecting fields on Player (PlayerStamina)
+
+        injecting
+        fields on Player (PlayerSpawnController)
+
+        found injectable field
+        Player player, value Player (Player), is null? False
+
+        injecting fields
+        on Player (PlayerMovementController)
+
+        found injectable field UnityEngine.Rigidbody
+        rigidbody, value Player (UnityEngine.Rigidbody), is null? False
+
+        found
+        injectable field UnityEngine.Animator animator, value Player (UnityEngine.Animator),
+        is null? False
+
+        found injectable field PlayerControls playerInput,
+        value Player (PlayerControls), is null? False
+
+        found injectable field
+        UnityEngine.Camera camera, value Main Camera (UnityEngine.Camera), is null?
+        False
+
+        found injectable field Player player, value Player (Player),
+        is null? False
+
+        injecting fields on Player (PlayerAudioController)
+
+        found
+        injectable field Player player, value Player (Player), is null? False
+
+        found
+        injectable field PlayerMovementController movement, value Player (PlayerMovementController),
+        is null? False
+
+        found injectable field UnityEngine.AudioSource soundSource,
+        value Player (UnityEngine.AudioSource), is null? False
+
+        injecting
+        fields on Player (PlayerDialogController)
+
+        injecting fields on Player
+        (PlayerDashAbility)
+
+        found injectable field UnityEngine.Animator
+        animator, value Player (UnityEngine.Animator), is null? False
+
+        found
+        injectable field Player player, value Player (Player), is null? False
+
+        injecting
+        fields on Player (PlayerJumpAbility)
+
+        found injectable field UnityEngine.Rigidbody
+        rigidbody, value Player (UnityEngine.Rigidbody), is null? False
+
+        found
+        injectable field UnityEngine.Animator animator, value Player (UnityEngine.Animator),
+        is null? False
+
+        found injectable field UnityEngine.Camera camera,
+        value Main Camera (UnityEngine.Camera), is null? False
+
+        found injectable
+        field Player player, value Player (Player), is null? False
+
+        injecting
+        fields on Player (PlayerMazeController)
+
+        found injectable field Player
+        player, value Player (Player), is null? False
+
+        injecting fields on
+        Player (PlayerInteractionAbility)
+
+        found injectable field PlayerControls
+        controls, value Player (PlayerControls), is null? False
+
+        found injectable
+        field Player player, value Player (Player), is null? False
+
+        injecting
+        fields on Player (PlayerControls)
+
+        found injectable field Player
+        player, value Player (Player), is null? False
+
+        injecting fields on
+        Player (PlayerCameraController)
+
+        found injectable field Cinemachine.CinemachineFreeLook
+        freeLookCam, value FreeLook Camera (Cinemachine.CinemachineFreeLook), is
+        null? False
+
+        injecting fields on Player (PlayerShootAbility)
+
+        found
+        injectable field FirePoint projectileSpawnLocation, value ProjectileFireLocation
+        (FirePoint), is null? False
+
+        found injectable field Player player,
+        value Player (Player), is null? False
+
+        injecting fields on Player
+        (PlayerManifestAbility)
+
+        found injectable field Player player, value
+        Player (Player), is null? False
+
+        injecting fields on Player (Cinemachine.CinemachineFreeLook)
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 6237423698167526345, guid: c565e2b6a6a6b4a729579b6c59da6f29,
+        type: 3}
+      propertyPath: log
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 6571079695852024355, guid: c565e2b6a6a6b4a729579b6c59da6f29,
         type: 3}
       propertyPath: m_BindingMode
@@ -6844,7 +7066,23 @@ PrefabInstance:
       propertyPath: m_FollowOffset.z
       value: -3
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 6796598095423801693, guid: c565e2b6a6a6b4a729579b6c59da6f29,
+        type: 3}
+      propertyPath: m_BindingMode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6796598095423801693, guid: c565e2b6a6a6b4a729579b6c59da6f29,
+        type: 3}
+      propertyPath: m_FollowOffset.y
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6796598095423801693, guid: c565e2b6a6a6b4a729579b6c59da6f29,
+        type: 3}
+      propertyPath: m_FollowOffset.z
+      value: -3
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 8734701811103677163, guid: c565e2b6a6a6b4a729579b6c59da6f29, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: c565e2b6a6a6b4a729579b6c59da6f29, type: 3}
 --- !u!4 &6944515180500609074 stripped
 Transform:
