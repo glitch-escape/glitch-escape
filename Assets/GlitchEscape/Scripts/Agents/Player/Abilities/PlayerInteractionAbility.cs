@@ -59,13 +59,17 @@ public class PlayerInteractionAbility : PlayerAbility {
     private HashSet<IInteract> interactablesInRange = new HashSet<IInteract>();
     private HashSet<IActiveInteract> activeInRange = new HashSet<IActiveInteract>();
 
+    private IActiveInteract lastNearestObject = null;
+
     protected override void OnAbilityStart()
     {
+        Debug.Log("Ability Started");
         var obj = GetNearestObject<IActiveInteract>(activeInRange);
-        if (obj != null && activeInRange.Contains(obj))
+        if (obj != null && activeInRange.Contains(obj) && obj == lastNearestObject)
         {
             obj.OnInteract(player);
         }
+
     }
 
     public T GetNearestObject<T>(HashSet<T> interactInRange) where T : IInteract {
@@ -73,32 +77,28 @@ public class PlayerInteractionAbility : PlayerAbility {
         float distance = Mathf.Infinity;
         foreach (var interactObject in interactInRange) {
 
-            if (interactObject.isInteractive)
+            switch (interactObject)
             {
-                switch (interactObject)
-                {
-                    case T obj:
+                case T obj:
+                    {
+                        var dist = Vector3.Distance(obj.transform.position, transform.position);
+                        if (dist < distance)
                         {
-                            var dist = Vector3.Distance(obj.transform.position, transform.position);
-                            if (dist < distance)
-                            {
-                                distance = dist;
-                                nearest = obj;
-                            }
+                            distance = dist;
+                            nearest = obj;
                         }
-                        break;
-                    default: break;
-                }
+                    }
+                    break;
+                default: break;
             }
         }
         return nearest;
     }
 
-    private IInteract lastNearestObject = null;
     protected override void Update() { 
         base.Update();
 
-        var nearest = GetNearestObject<IInteract>(interactablesInRange);
+        var nearest = GetNearestObject<IActiveInteract>(activeInRange);
         if (nearest != lastNearestObject) {
             lastNearestObject?.OnDeselected(player);
             nearest?.OnSelected(player);
@@ -106,7 +106,7 @@ public class PlayerInteractionAbility : PlayerAbility {
         }
 
         // update trigger collider radius in real time, if it changes
-        if (player.config.interactionRadius != lastInteractionRadius) {
+        if (Math.Round(player.config.interactionRadius, 2) != Math.Round(lastInteractionRadius, 2)) {
             SetTriggerRadius(player.config.interactionRadius);
         }
     }
