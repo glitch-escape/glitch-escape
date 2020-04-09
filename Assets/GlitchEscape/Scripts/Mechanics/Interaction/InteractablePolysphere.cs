@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(InteractionTrigger))]
-public class InteractablePolysphere : MonoBehaviour, IPlayerInteractable
+public class InteractablePolysphere : MonoBehaviour, IActiveInteract
 {
     public Transform floatTextArea;
     public string interactMessage = "[Collect Polysphere]";

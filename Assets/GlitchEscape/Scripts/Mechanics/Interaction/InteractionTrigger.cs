@@ -37,18 +37,18 @@ public class InteractionTrigger : MonoBehaviour {
     /// Interaction handlers on this object (or its children), implemented via classes implementing
     /// IPlayerInteractable
     /// </summary>
-    private IPlayerInteractable[] attachedInteractionHandlers;
+    private IActiveInteract[] attachedInteractionHandlers;
 
     public void Start() {
         switch (affectorMode) {
             case AffectorMode.AffectSelf:
-                attachedInteractionHandlers = Enforcements.GetComponents<IPlayerInteractable>(this);
+                attachedInteractionHandlers = Enforcements.GetComponents<IActiveInteract>(this);
                 break;
             case AffectorMode.AffectSelfOrChildren:
-                attachedInteractionHandlers = Enforcements.GetComponentsInChildren<IPlayerInteractable>(this);
+                attachedInteractionHandlers = Enforcements.GetComponentsInChildren<IActiveInteract>(this);
                 break;
             case AffectorMode.AffectSelfOrParent:
-                attachedInteractionHandlers = Enforcements.GetComponentsInParent<IPlayerInteractable>(this);
+                attachedInteractionHandlers = Enforcements.GetComponentsInParent<IActiveInteract>(this);
                 break;
         }
         if (attachedInteractionHandlers.Length == 0) {

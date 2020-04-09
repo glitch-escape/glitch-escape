@@ -5,7 +5,8 @@ using UnityEngine;
 using UnityEngine.Playables;
 
 [RequireComponent(typeof(InteractionTrigger))]
-public class InteractablePortal : MonoBehaviour, IPlayerInteractable {
+public class InteractablePortal : MonoBehaviour, IActiveInteract
+{
     public bool disableOnStart = true;
     // singleton
     private static InteractablePortal _instance = null;

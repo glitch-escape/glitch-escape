@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class AreaTextTrigger : MonoBehaviour, IPlayerInteractable {
+public class AreaTextTrigger : MonoBehaviour, IActiveInteract
+{
      private TMP_Text text;
      public string message;
      private void Awake() {

@@ -8,7 +8,8 @@ using UnityEngine;
 /// </summary>
 [RequireComponent(typeof(MeshRenderer))]
 [RequireComponent(typeof(InteractionTrigger))]
-public class MazeSwitch : MonoBehaviour, IPlayerInteractable {
+public class MazeSwitch : MonoBehaviour, IActiveInteract
+{
     private Material material;
     private float speedWhenActive;
     private Color colorWhenActive;

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(InteractionTrigger))]
-public class InteractableTank : MonoBehaviour, IPlayerInteractable
+public class InteractableTank : MonoBehaviour, IActiveInteract
 {
     public GameObject assignedKey;
     public GameObject playerInTank;

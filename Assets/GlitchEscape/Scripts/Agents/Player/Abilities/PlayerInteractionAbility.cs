@@ -55,34 +55,50 @@ public class PlayerInteractionAbility : PlayerAbility {
     protected override PlayerControls.HybridButtonControl inputButton => controls.interact;
 
     [InjectComponent] public PlayerControls controls;
-    
-    protected override void OnAbilityStart() {
-        GetNearestObject<IPlayerInteractable>()?.OnInteract(player);
+
+    private HashSet<IInteract> interactablesInRange = new HashSet<IInteract>();
+    private HashSet<IActiveInteract> activeInRange = new HashSet<IActiveInteract>();
+
+    protected override void OnAbilityStart()
+    {
+        var obj = GetNearestObject<IActiveInteract>(activeInRange);
+        if (obj != null && activeInRange.Contains(obj))
+        {
+            obj.OnInteract(player);
+        }
     }
-    private HashSet<IPlayerInteractable> interactablesInRange = new HashSet<IPlayerInteractable>();
-    public T GetNearestObject<T>() where T : IPlayerInteractable {
+
+    public T GetNearestObject<T>(HashSet<T> interactInRange) where T : IInteract {
         T nearest = default(T);
         float distance = Mathf.Infinity;
-        foreach (var interactObject in interactablesInRange) {
-            if (!interactObject.isInteractive) continue;
-            switch (interactObject) {
-                case T obj: {
-                    var dist = Vector3.Distance(obj.transform.position, transform.position);
-                    if (dist < distance) {
-                        distance = dist;
-                        nearest = obj;
-                    }
-                } break;
-                default: break;
+        foreach (var interactObject in interactInRange) {
+
+            if (interactObject.isInteractive)
+            {
+                switch (interactObject)
+                {
+                    case T obj:
+                        {
+                            var dist = Vector3.Distance(obj.transform.position, transform.position);
+                            if (dist < distance)
+                            {
+                                distance = dist;
+                                nearest = obj;
+                            }
+                        }
+                        break;
+                    default: break;
+                }
             }
         }
         return nearest;
     }
-    private IPlayerInteractable lastNearestObject = null;
+
+    private IInteract lastNearestObject = null;
     protected override void Update() { 
         base.Update();
 
-        var nearest = GetNearestObject<IPlayerInteractable>();
+        var nearest = GetNearestObject<IInteract>(interactablesInRange);
         if (nearest != lastNearestObject) {
             lastNearestObject?.OnDeselected(player);
             nearest?.OnSelected(player);
@@ -95,14 +111,14 @@ public class PlayerInteractionAbility : PlayerAbility {
         }
     }
     private void OnEnter (GameObject obj) {
-        var interactObj = obj.GetComponent<IPlayerInteractable>();
+        var interactObj = obj.GetComponent<IInteract>();
         if (interactObj != null) {
             interactablesInRange.Add(interactObj);
             interactObj.OnPlayerEnterInteractionRadius(player);
         }
     }
     private void OnExit(GameObject obj) {
-        var interactObj = obj.GetComponent<IPlayerInteractable>();
+        var interactObj = obj.GetComponent<IInteract>();
         if (interactObj != null) {
             interactablesInRange.Remove(interactObj);
             interactObj.OnPlayerExitInteractionRadius(player);
@@ -110,6 +126,7 @@ public class PlayerInteractionAbility : PlayerAbility {
     }
     private void Reset() {
         interactablesInRange.Clear();
+        activeInRange.Clear();
         lastNearestObject?.OnDeselected(player);
         lastNearestObject = null;
     }

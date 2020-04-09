@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(InteractionTrigger))]
-public class SavePoint : MonoBehaviour, IPlayerInteractable {
+public class SavePoint : MonoBehaviour, IActiveInteract
+{
     public void OnInteract(Player player) {}
     public void OnPlayerEnterInteractionRadius(Player player) {
         player.spawn.SetSpawnPosition(this);
