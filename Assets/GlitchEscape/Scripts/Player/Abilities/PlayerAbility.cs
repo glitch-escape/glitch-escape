@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public enum PlayerAbilityState {
     None, 
@@ -18,7 +19,7 @@ public enum PlayerAbilityState {
 /// Handles all button press detection internal state management (which can become somewhat complex), and provides
 /// a minimal, straightforward interface to subclass from + use.
 /// </summary>
-public abstract class PlayerAbility : MonoBehaviour, IPlayerControllerComponent {
+public abstract class PlayerAbility : MonoBehaviour, IPlayerControllerComponent, IResettable {
     /// <summary>
     /// Direct reference to the player that this PlayerAbility is attached to
     /// </summary>
@@ -54,6 +55,12 @@ public abstract class PlayerAbility : MonoBehaviour, IPlayerControllerComponent 
             }
             renderer.materials = materials;
         }
+    }
+
+    protected virtual void OnAbilityReset() { }
+    public void Reset() {
+        state = PlayerAbilityState.None;
+        OnAbilityReset();
     }
 
     /// <summary>
