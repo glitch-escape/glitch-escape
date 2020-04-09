@@ -28,8 +28,8 @@ public class BasicEnemyIdle : MonoBehaviour, IEnemyIdleAction {
      //   if (_oldEnemyController.PlayerDetected())
      //       _oldEnemyController.OnPlayerDetected(player);
     }
-    public bool ActionFinished(out EnemyBehaviorState nextAction) {
-        nextAction = EnemyBehaviorState.SearchingForPlayer;
+    public bool ActionFinished(out OldEnemyBehaviorState nextAction) {
+        nextAction = OldEnemyBehaviorState.SearchingForPlayer;
         return doesPatrol;
     }
     public bool CanActivate(Player player) {

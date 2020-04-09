@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyPatrol : MonoBehaviour, IEnemySearchForPlayerAction {
+public class OldEnemyPatrol : MonoBehaviour, IEnemySearchForPlayerAction {
     private OldEnemy _oldEnemy;
     private OldEnemyController _oldEnemyController;
     private NavMeshAgent agent;
@@ -55,12 +55,12 @@ public class EnemyPatrol : MonoBehaviour, IEnemySearchForPlayerAction {
         }
     }
 
-    public bool ActionFinished(out EnemyBehaviorState nextAction) {
+    public bool ActionFinished(out OldEnemyBehaviorState nextAction) {
         if (isIdle) {
-            nextAction = EnemyBehaviorState.Idle;
+            nextAction = OldEnemyBehaviorState.Idle;
         }
         else {
-            nextAction = EnemyBehaviorState.SearchingForPlayer;
+            nextAction = OldEnemyBehaviorState.SearchingForPlayer;
         }
         return isIdle;
     }
