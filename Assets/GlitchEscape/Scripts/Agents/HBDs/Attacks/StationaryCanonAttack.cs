@@ -42,8 +42,8 @@ public class StationaryCanonAttack : MonoBehaviour, IEnemyAttackAction {
     }
 
     // Informs if the attack has completed
-    public bool ActionFinished(out EnemyBehaviorState nextAction) {
-        nextAction = EnemyBehaviorState.AttackingPlayer;
+    public bool ActionFinished(out OldEnemyBehaviorState nextAction) {
+        nextAction = OldEnemyBehaviorState.AttackingPlayer;
         return false;
     }
 

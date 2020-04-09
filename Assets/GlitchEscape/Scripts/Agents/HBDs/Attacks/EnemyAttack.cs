@@ -59,13 +59,13 @@ public class EnemyAttack : MonoBehaviour, IEnemyAttackAction {
     }
 
     // Informs if the attack has completed
-    public bool ActionFinished(out EnemyBehaviorState nextAction) {
+    public bool ActionFinished(out OldEnemyBehaviorState nextAction) {
         if (!isAttack) {
-            nextAction = EnemyBehaviorState.ChasingPlayer;
+            nextAction = OldEnemyBehaviorState.ChasingPlayer;
             EndAction();
             return true;
         }
-        nextAction = EnemyBehaviorState.AttackingPlayer;
+        nextAction = OldEnemyBehaviorState.AttackingPlayer;
         return false;
     }
 

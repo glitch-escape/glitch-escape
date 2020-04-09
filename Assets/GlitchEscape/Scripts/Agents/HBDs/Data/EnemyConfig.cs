@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "EnemyConfig", menuName = "GameConfigs/EnemyConfig", order = 1)]
-public class EnemyConfig : ScriptableObject
-{
+[CreateAssetMenu(fileName = "EnemyConfig", menuName = "Config/HDB/EnemyConfig", order = 1)]
+public class EnemyConfig : ScriptableObject {
+
     [Header("Movement")]
     [Range(0, 20)] public float moveSpeed = 10f;
 

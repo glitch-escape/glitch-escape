@@ -22,7 +22,7 @@ public interface IEnemyVisionController : IEnemyControllerComponent {
 /// <summary>
 /// All AI behavior states
 /// </summary>
-public enum EnemyBehaviorState {
+public enum OldEnemyBehaviorState {
     /// <summary>
     /// no current active state - will transition to an Idle state
     /// </summary>
@@ -53,7 +53,7 @@ public interface IEnemyBehaviorState : IEnemyControllerComponent {
     void StartAction();
     void EndAction();
     void UpdateAction();
-    bool ActionFinished(out EnemyBehaviorState nextAction);
+    bool ActionFinished(out OldEnemyBehaviorState nextAction);
     bool CanActivate(Player player);
 }
 public interface IEnemyAttackAction : IEnemyBehaviorState { }
@@ -94,56 +94,56 @@ public class OldEnemyController : MonoBehaviour {
     
     public bool isHostileToPlayer = true;
     private IEnemyBehaviorState activeState = null;
-    public EnemyBehaviorState behaviorState => _behaviorState;
+    public OldEnemyBehaviorState behaviorState => _behaviorState;
     
     #region BehaviorStateProperties
-    private EnemyBehaviorState _behaviorState = EnemyBehaviorState.None;
+    private OldEnemyBehaviorState _behaviorState = OldEnemyBehaviorState.None;
     public bool isIdle =>
-        _behaviorState == EnemyBehaviorState.None ||
-        _behaviorState == EnemyBehaviorState.Idle;
+        _behaviorState == OldEnemyBehaviorState.None ||
+        _behaviorState == OldEnemyBehaviorState.Idle;
     public bool isAttackingPlayer =>
-        _behaviorState == EnemyBehaviorState.AttackingPlayer;
+        _behaviorState == OldEnemyBehaviorState.AttackingPlayer;
     public bool isActivelyChasingPlayer =>
-        _behaviorState == EnemyBehaviorState.ChasingPlayer;
+        _behaviorState == OldEnemyBehaviorState.ChasingPlayer;
     public bool isPassivelyChasingPlayer =>
-        _behaviorState == EnemyBehaviorState.SearchingForPlayer;
+        _behaviorState == OldEnemyBehaviorState.SearchingForPlayer;
     public bool isChasingOrAttackingPlayer =>
         isActivelyChasingPlayer ||
         isAttackingPlayer ||
         isPassivelyChasingPlayer;
     #endregion
-    public void SetState(EnemyBehaviorState state) {
+    public void SetState(OldEnemyBehaviorState state) {
         var prevState = _behaviorState;
         _behaviorState = state;
         if (state != prevState) {
             SetActiveAction(GetActionBehaviorForActionState(state));
         }
     }
-    private IEnemyBehaviorState GetActionBehaviorForActionState(EnemyBehaviorState state) {
+    private IEnemyBehaviorState GetActionBehaviorForActionState(OldEnemyBehaviorState state) {
         switch (state) {
-            case EnemyBehaviorState.None: break;
-            case EnemyBehaviorState.Idle: {
+            case OldEnemyBehaviorState.None: break;
+            case OldEnemyBehaviorState.Idle: {
                 foreach (var action in idleActions) {
                     if (action.CanActivate(player)) {
                         return action;
                     }
                 }
             } break;
-            case EnemyBehaviorState.AttackingPlayer: {
+            case OldEnemyBehaviorState.AttackingPlayer: {
                 foreach (var action in attackActions) {
                     if (action.CanActivate(player)) {
                         return action;
                     }
                 }
             } break;
-            case EnemyBehaviorState.ChasingPlayer: {
+            case OldEnemyBehaviorState.ChasingPlayer: {
                 foreach (var action in pursueActions) {
                     if (action.CanActivate(player)) {
                         return action;
                     }
                 }
             } break;
-            case EnemyBehaviorState.SearchingForPlayer: {
+            case OldEnemyBehaviorState.SearchingForPlayer: {
                 foreach (var action in searchForPlayerActions) {
                     if (action.CanActivate(player)) {
                         return action;
@@ -163,23 +163,23 @@ public class OldEnemyController : MonoBehaviour {
         activeState = action;
         if (activeState != null) {
             activeState.StartAction();
-        } else if (_behaviorState != EnemyBehaviorState.None) {
+        } else if (_behaviorState != OldEnemyBehaviorState.None) {
             Debug.LogWarning(
                 "no active state for "+action+" on OldEnemyController for "+gameObject+
                        ": switching to null (None) state");
-            _behaviorState = EnemyBehaviorState.None;
+            _behaviorState = OldEnemyBehaviorState.None;
         }
     }
 
     void Update() {
       //  Debug.Log(_behaviorState);
         if (isChasingOrAttackingPlayer) {
-            EnemyBehaviorState _;
+            OldEnemyBehaviorState _;
             if (activeState != null && isAttackingPlayer && !activeState.ActionFinished(out _)) {
             } else {
                 foreach (var attack in attackActions) {
                     if (attack.CanActivate(player)) {
-                        _behaviorState = EnemyBehaviorState.AttackingPlayer;
+                        _behaviorState = OldEnemyBehaviorState.AttackingPlayer;
                         SetActiveAction(attack);
                     }
                 }
@@ -187,7 +187,7 @@ public class OldEnemyController : MonoBehaviour {
         }
         // Check: is this action finished? if so, automatically pick + start next action
         if (activeState != null) {
-            EnemyBehaviorState nextActionType;
+            OldEnemyBehaviorState nextActionType;
             if (activeState.ActionFinished(out nextActionType)) {
                 // action finished - contextually activate next action
                 Debug.Log(nextActionType);
@@ -199,14 +199,14 @@ public class OldEnemyController : MonoBehaviour {
         } else {
             ///Debug.Log(_behaviorState);
             switch (_behaviorState) {
-                case EnemyBehaviorState.None:
+                case OldEnemyBehaviorState.None:
                     if (idleActions.Length > 0) {
-                        SetState(EnemyBehaviorState.Idle);
+                        SetState(OldEnemyBehaviorState.Idle);
                     }
                     break;
-                case EnemyBehaviorState.AttackingPlayer:
+                case OldEnemyBehaviorState.AttackingPlayer:
                     if (attackActions.Length > 0) {
-                        SetState(EnemyBehaviorState.AttackingPlayer);
+                        SetState(OldEnemyBehaviorState.AttackingPlayer);
                     }
                     break;
                 default: break;
@@ -216,12 +216,12 @@ public class OldEnemyController : MonoBehaviour {
 
     public void OnPlayerDetected(Player player) {
         if (isHostileToPlayer && (isIdle || isPassivelyChasingPlayer)) {
-            SetState(EnemyBehaviorState.ChasingPlayer);
+            SetState(OldEnemyBehaviorState.ChasingPlayer);
         }
     }
     public void OnPlayerLost(Player player) {
         if (isHostileToPlayer && !isIdle) {
-            SetState(EnemyBehaviorState.SearchingForPlayer);
+            SetState(OldEnemyBehaviorState.SearchingForPlayer);
         }   
     }
     public void OnObjectiveDetected(IEnemyObjectiveMarker objective) { }

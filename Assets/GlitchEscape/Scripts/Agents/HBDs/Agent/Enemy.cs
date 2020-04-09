@@ -13,17 +13,23 @@ public class Enemy : BaseAgent<Enemy, EnemyConfig> {
     protected override KillType killType => KillType.KillAndDestroyGameObject; // Not certain if this is what we want
     #endregion
 
-    /// <summary>
-    /// Reference to this script's EnemyController (should be parented to this)
-    /// </summary>
-    public OldEnemyController controller => this.GetEnforcedComponentReferenceInParent(ref m_controller);
-    private OldEnemyController m_controller;
-
     // references to components on the enemy object
     [InjectComponent] public NavMeshAgent navMeshAgent;
     [InjectComponent] public Animator animator;
     [InjectComponent] public EnemyHealth health;
     [InjectComponent] public EnemyStamina stamina;
 
+    // reference to the enemy controller
+    [InjectComponent] public EnemyController controller;
+    // Add vision controller here?
+    // add pursuit and patrol components here
+
+    // enemy actions
+    [InjectComponent] public EnemyPatrolAction[] patrol = new EnemyPatrolAction[1];
+    /*
+     * AttackAction
+     * PursuitAction
+     * PatrolAction
+     */
 
 }

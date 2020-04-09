@@ -38,8 +38,8 @@ public class DirectEnemyChase : MonoBehaviour, IEnemyPursuitAction {
     }
 
     // Ends when _oldEnemyController decides it's ok to attack
-    public bool ActionFinished(out EnemyBehaviorState nextAction) {
-        nextAction = EnemyBehaviorState.ChasingPlayer;
+    public bool ActionFinished(out OldEnemyBehaviorState nextAction) {
+        nextAction = OldEnemyBehaviorState.ChasingPlayer;
         return false;
     }
     public bool CanActivate(Player player) {
