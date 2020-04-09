@@ -9,7 +9,7 @@ public static class Loader
 
     public enum Scene
     {
-        MainMenu, Opening, Tutorial_01_Movement, Vertical_Main_Level, Vertical_Platforming_Level
+        MainMenu, Opening, Tutorial_01_Movement, Vertical_Main_Level, Vertical_Platforming_Level, Hub_Level
     }
 
     private static Action onLoadCallback;
