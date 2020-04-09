@@ -6,7 +6,7 @@ using UnityEngine;
 public class EnemyConfig : ScriptableObject {
 
     [Header("Movement")]
-    [Range(0, 20)] public float moveSpeed = 10f;
+    [Range(0, 20)] public float moveSpeed = 2f;
 
     [Header("Health")]
     public FloatRange health = new FloatRange { minimum = 0f, maximum = 100f };

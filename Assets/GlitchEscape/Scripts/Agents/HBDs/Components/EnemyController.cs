@@ -38,9 +38,9 @@ public class EnemyController : EnemyComponent {
     #region Stuff I prob want
     // reference to all enemy actions
     private EnemyAbility[] attackActions => enemy.patrol;
-    private EnemyAbility[] pursueActions => enemy.patrol;
+    private EnemyAbility[] pursueActions => enemy.chase;
     private EnemyAbility[] searchForPlayerActions => enemy.patrol;
-    private EnemyAbility[] idleActions => enemy.patrol;
+    private EnemyAbility[] idleActions => enemy.idle;
 
     public bool isHostileToPlayer = true;
     // private IEnemyBehaviorState activeState = null;
@@ -123,7 +123,8 @@ public class EnemyController : EnemyComponent {
     #endregion
 
     #region Player Detection
-    public void OnPlayerDetected() {
+    public void OnPlayerDetected(Player player) {
+        enemy.player = player;
         if (isHostileToPlayer && (isIdle || isPassivelyChasingPlayer)) {
             SetState(EnemyBehaviorState.ChasingPlayer);
         }
@@ -133,11 +134,13 @@ public class EnemyController : EnemyComponent {
             SetState(EnemyBehaviorState.SearchingForPlayer);
         }
     }
+    public void OnObjectiveDetected(IEnemyObjectiveMarker objective) { }
     #endregion
 
     #endregion
 
     void FixedUpdate() {
+        Debug.Log(behaviorState);
         if (isChasingOrAttackingPlayer) {
             if (activeState != null && isAttackingPlayer && activeState.isAbilityActive) { }
             else {

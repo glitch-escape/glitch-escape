@@ -37,7 +37,7 @@ public abstract class EnemyAbility : BaseAbility, IEnemyEventSource {
         if (hasSetDuration) {
             base.Update();
         }
-        else {
+        else if(isAbilityActive) {
             OnAbilityUpdate();
         }
     }
