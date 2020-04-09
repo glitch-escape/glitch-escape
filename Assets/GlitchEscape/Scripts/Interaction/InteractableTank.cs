@@ -6,7 +6,6 @@ using UnityEngine;
 [RequireComponent(typeof(InteractionTrigger))]
 public class InteractableTank : MonoBehaviour, IPlayerInteractable
 {
-    public GameObject assignedKey;
     public GameObject playerInTank;
     public Transform floatTextArea;
     public string interactMessage = "[Free hostage]";
@@ -22,14 +21,13 @@ public class InteractableTank : MonoBehaviour, IPlayerInteractable
 
         // initialize and error check
         floatingText = FloatingTextController.instance;
-        interactablePolysphere = assignedKey.GetComponentInChildren<InteractablePolysphere>();
         InteractableTank[] interactableTanks = FindObjectsOfType(typeof(InteractableTank)) as InteractableTank[];
     }
 
     public void OnInteract(Player player)
     {
         // only apply interact when not yet picked up and is the last approached object.
-        if (playerInTank.activeInHierarchy && interactablePolysphere.pickedUp && floatingText.IsCurrentTarget(floatTextArea))
+        if (playerInTank.activeInHierarchy && floatingText.IsCurrentTarget(floatTextArea))
         {
             if(player.shardcomp.value == player.shardcomp.maximum)
             {
@@ -44,7 +42,7 @@ public class InteractableTank : MonoBehaviour, IPlayerInteractable
     public void OnPlayerEnterInteractionRadius(Player player)
     {
         // only apply enter interact when not yet picked up.
-        if (playerInTank.activeInHierarchy && interactablePolysphere.pickedUp)
+        if (playerInTank.activeInHierarchy)
         {
             floatingText.EnableText(floatTextArea, interactMessage);
         }
