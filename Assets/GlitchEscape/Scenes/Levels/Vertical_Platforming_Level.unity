@@ -1419,12 +1419,12 @@ PrefabInstance:
     - target: {fileID: 4480004948019582980, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.00000001772795
+      value: -0.000000017719982
       objectReference: {fileID: 0}
     - target: {fileID: 4480004948019582980, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -7.5992357e-10
+      value: 5.428878e-10
       objectReference: {fileID: 0}
     - target: {fileID: 4480004948019582980, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
@@ -1454,17 +1454,17 @@ PrefabInstance:
     - target: {fileID: 4480004948942281807, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.119584724
+      value: 0.11958472
       objectReference: {fileID: 0}
     - target: {fileID: 4480004948942281807, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000007409582
+      value: 0.000000009130869
       objectReference: {fileID: 0}
     - target: {fileID: 4480004948942281807, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 9.944899e-10
+      value: -9.977918e-10
       objectReference: {fileID: 0}
     - target: {fileID: 4480004948942281807, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
@@ -3991,9 +3991,9 @@ Transform:
   m_LocalPosition: {x: 3.7479057, y: 1.901946, z: 4.89}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 1740266632}
   - {fileID: 1719783310}
   - {fileID: 1392523490}
-  - {fileID: 1740266632}
   - {fileID: 877118850345801049}
   - {fileID: 7918407190403128437}
   m_Father: {fileID: 0}
@@ -4031,7 +4031,7 @@ Transform:
   - {fileID: 1691908961}
   - {fileID: 2098011517}
   m_Father: {fileID: 1374519569}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1392523491
 MonoBehaviour:
@@ -5096,7 +5096,7 @@ Transform:
   - {fileID: 836834530}
   - {fileID: 1464048080}
   m_Father: {fileID: 1374519569}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1740266631
 PrefabInstance:
@@ -5204,6 +5204,11 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7769495591429687737, guid: 36155bf80aeabc543baa34d6141d19ad,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2137029903, guid: 36155bf80aeabc543baa34d6141d19ad, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 36155bf80aeabc543baa34d6141d19ad, type: 3}
@@ -5237,7 +5242,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a849abc455240f45b15ebbd3cbe95e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  disableOnStart: 1
+  disableOnStart: 0
   floatTextArea: {fileID: 1740266634}
   interactMessage: '[Return to Hub]'
   portalCutscene: {fileID: 51247409}
