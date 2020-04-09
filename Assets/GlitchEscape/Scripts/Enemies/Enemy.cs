@@ -70,7 +70,7 @@ public class Enemy : MonoBehaviour {
         // Set properties
         m_agent = navMeshAgent;
         m_animator = animator;
-        m_animator.SetFloat("walkSpeed", m_agent.speed);
+        m_animator.SetFloat("WalkSpeed", m_agent.speed);
     }
     #endregion
 
