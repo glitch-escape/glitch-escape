@@ -145,7 +145,7 @@ public class EnemyController : EnemyComponent {
             if (activeState != null && isAttackingPlayer && activeState.isAbilityActive) { }
             else {
                 foreach (var attack in attackActions) {
-                    // if (attack.CanActivate(player)) {
+                    Debug.Log("sadkajsdhk");
                     if (attack.canUseAbility) { 
                         _behaviorState = EnemyBehaviorState.AttackingPlayer;
                         SetActiveAction(attack);

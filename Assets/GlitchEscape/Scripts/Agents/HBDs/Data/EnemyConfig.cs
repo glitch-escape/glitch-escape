@@ -41,6 +41,6 @@ public class EnemyConfig : ScriptableObject {
     public float projectileStartup = 0f;
     public float projectileCooldown = 3f;
     public float attackDuration = 5f;
-    public float shootDistance = 5f;
+    public float shootDistance = 1f;
     public EnemyProjectileConfig attackProjectile;
 }

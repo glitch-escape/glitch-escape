@@ -15,7 +15,7 @@ public class EnemyProjectileSpawnAbility : EnemyAbility {
     #region Projectile Implementation
     // Attack variables
     private float strikeDist => enemy.config.shootDistance;
-    private float projectileRate => enemy.config.projectileShotsPerSecond;
+    private float projectileRate => 1/enemy.config.projectileShotsPerSecond;
     private float startup => enemy.config.projectileStartup;
 
     /// <summary>
@@ -48,7 +48,7 @@ public class EnemyProjectileSpawnAbility : EnemyAbility {
 
     public override bool AbilityFinished(out EnemyBehaviorState nextAction) {
         nextAction = EnemyBehaviorState.ChasingPlayer;
-        return isAbilityActive;
+        return !isAbilityActive;
     }
 
     protected override void OnAbilityStart() {
@@ -82,7 +82,13 @@ public class EnemyProjectileSpawnAbility : EnemyAbility {
     }
 
     protected override bool CanStartAbility() {
-        return base.CanStartAbility();
+        // Check if attack is in range
+        Vector3 foePos = enemy.transform.position;
+        Vector3 playPos = enemy.player.transform.position;
+        if (Vector3.Distance(foePos, playPos) > strikeDist)
+            return false;
+
+        return true;
     }
 
 }
