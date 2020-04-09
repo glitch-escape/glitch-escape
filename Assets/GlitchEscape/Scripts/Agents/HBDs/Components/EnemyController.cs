@@ -145,7 +145,6 @@ public class EnemyController : EnemyComponent {
             if (activeState != null && isAttackingPlayer && activeState.isAbilityActive) { }
             else {
                 foreach (var attack in attackActions) {
-                    Debug.Log("sadkajsdhk");
                     if (attack.canUseAbility) { 
                         _behaviorState = EnemyBehaviorState.AttackingPlayer;
                         SetActiveAction(attack);
@@ -158,14 +157,8 @@ public class EnemyController : EnemyComponent {
             EnemyBehaviorState nextActionType;
             if (activeState.AbilityFinished(out nextActionType)) {
                 // action finished - contextually activate next action
-                Debug.Log(nextActionType);
                 SetState(nextActionType);
             }
-            /*
-            else {
-                activeState.UpdateAction();
-            }
-            */
         }
         else {
             switch (_behaviorState) {

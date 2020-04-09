@@ -99,8 +99,6 @@ public class SphericalDetectionComponent : EnemyVisionController {
         // found a player?
         var player = collider.GetComponentInParent<Player>();
         if (player != null) {
-                    Debug.Log("found");
-
             activePlayerInTriggerBounds = player;
             hasLastKnownPlayerPosition = false;
             lastKnownPlayerPosition = Vector3.zero;

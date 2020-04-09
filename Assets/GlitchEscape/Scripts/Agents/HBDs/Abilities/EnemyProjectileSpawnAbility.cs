@@ -7,10 +7,8 @@ public class EnemyProjectileSpawnAbility : EnemyAbility {
 
     private NavMeshAgent agent => enemy.navMeshAgent;
 
-    private float curAtkTime, curCooldwn;
+    private float curAtkTime;
     private int shotsMade;
-    private bool isAttack =>
-        curAtkTime < abilityDuration && curAtkTime > 0;
 
     #region Projectile Implementation
     // Attack variables
@@ -53,7 +51,6 @@ public class EnemyProjectileSpawnAbility : EnemyAbility {
 
     protected override void OnAbilityStart() {
         curAtkTime = 0;
-        curCooldwn = 0;
         shotsMade = 0;
 
         // Make the enemy stand still
@@ -72,7 +69,6 @@ public class EnemyProjectileSpawnAbility : EnemyAbility {
 
     protected override void OnAbilityEnd() {
         base.OnAbilityEnd();
-        curCooldwn = Time.time;
         curAtkTime = 0;
     }
 

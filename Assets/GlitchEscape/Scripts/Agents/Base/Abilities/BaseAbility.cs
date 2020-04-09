@@ -37,7 +37,6 @@ public abstract class BaseAbility : MonoBehaviour, IAgentAbility {
         OnAbilityStart();
     }
     public void CancelAbility() {
-        Debug.Log("sus");
         if (isAbilityActive) {
             OnAbilityEnd();
         }
