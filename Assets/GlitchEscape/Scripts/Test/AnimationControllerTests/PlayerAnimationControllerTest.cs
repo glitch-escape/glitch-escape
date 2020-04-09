@@ -24,20 +24,17 @@ public class PlayerAnimationControllerTest : BaseAnimationControllerTest {
         GUILayout.EndHorizontal();
         
         var wasRunning = isRunning;
-        ShowAnimatorBoolean("isRunning", ref isRunning);
-        if (isRunning && !wasRunning) animator.SetTrigger("startRunning");
-        if (wasRunning && !isRunning) animator.SetTrigger("stopRunning");
+        ShowAnimatorBoolean("isRunning (legacy)", ref isRunning);
+        animator.SetBool("isRunning", isRunning);
         
         var wasJumping = isJumping;
         ShowAnimatorBoolean("isJumping", ref isJumping);
-        if (isJumping && !wasJumping) animator.SetTrigger("startJumping");
-        if (wasJumping && !isJumping) animator.SetTrigger("stopJumping");
-        
+        animator.SetBool("isJumping", isJumping);
+
         var wasDashing = isDashing;
         ShowAnimatorBoolean("isDashing", ref isDashing);
-        if (isDashing && !wasDashing) animator.SetTrigger("startDashing");
-        if (wasDashing && !isDashing) animator.SetTrigger("stopDashing");
-        
+        animator.SetBool("isDashing", isDashing);
+
         ShowAnimatorFloat("runSpeed", ref runSpeed, 1f, minRunSpeed, maxRunSpeed);
         ShowAnimatorTrigger("do some transition");
     }
