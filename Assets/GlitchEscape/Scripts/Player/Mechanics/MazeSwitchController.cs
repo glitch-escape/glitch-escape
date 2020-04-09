@@ -99,6 +99,7 @@ public class MazeSwitchController : MonoBehaviour, IPlayerControllerComponent {
     /// </summary>
     /// <returns></returns>
     public bool TriggerMazeSwitch() {
+        Debug.Log("Triggered maze switch");
         if (Time.time > lastMazeSwitchTime + mazeSwitchCooldown) {
             lastMazeSwitchTime = Time.time;
             SwitchMazes();

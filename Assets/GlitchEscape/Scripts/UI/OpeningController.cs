@@ -83,6 +83,6 @@ public class OpeningController : MonoBehaviour
 
     public void GameStart()
     {
-        Loader.Load(Loader.Scene.Vertical_Main_Level);
+        Loader.Load(Loader.Scene.Hub_Level);
     }
 }

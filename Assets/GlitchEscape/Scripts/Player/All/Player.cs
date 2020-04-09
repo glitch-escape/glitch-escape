@@ -21,14 +21,19 @@ public class Player : BaseAgent<Player, PlayerConfig, PlayerHealth, PlayerStamin
     [InjectComponent] public Animator animator;
     [InjectComponent] public PlayerHealth health;
     [InjectComponent] public PlayerStamina stamina;
-    
+    [InjectComponent] public PlayerShards shardcomp;
+
     /// <summary>
     /// Reference to the player's rigidbody
     /// </summary>
-    /// 
+    ///
     // public new Rigidbody rigidbody => this.GetEnforcedComponentReference(ref m_rigidbody);
     //
     // private Rigidbody m_rigidbody;
+
+    /// <summary>
+    /// Reference to the player's shard component
+    /// </summary>
 
     /// <summary>
     /// Reference to the player's animator

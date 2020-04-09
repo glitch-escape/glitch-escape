@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 
-public class PlayerDashController : PlayerAbility {
+public class PlayerDashController : PlayerAbility, IResettable {
     public Material glitchMaterial;
 
     private PlayerControls.HybridButtonControl m_inputButton;
@@ -24,7 +24,10 @@ public class PlayerDashController : PlayerAbility {
     protected override void SetupAbility() {
         animator.SetBool("isDashing", false);
     }
-
+    protected override void OnAbilityReset() {
+        Debug.Log("resetting dash!");
+        savedDashVelocity = Vector3.zero;
+    }
     protected override void OnAbilityStateChange(PlayerAbilityState prevState, PlayerAbilityState newState) {
         // Debug.Log("Setting state " + prevState + " => " + newState);
         switch (newState) {

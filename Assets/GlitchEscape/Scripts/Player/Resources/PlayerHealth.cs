@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
 /// <summary>
 /// Implements player health and provides mappings from values in PlayerConfig to the generic RegeneratingResource impl.
 /// Used by Player, and uses values pulled from PlayerConfig via MonoBehaviorUsingConfig<Player, PlayerConfig>
