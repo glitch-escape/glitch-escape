@@ -305,6 +305,8 @@ GameObject:
   - component: {fileID: 742986623}
   - component: {fileID: 742986622}
   - component: {fileID: 742986624}
+  - component: {fileID: 742986626}
+  - component: {fileID: 742986625}
   m_Layer: 0
   m_Name: testy Boi
   m_TagString: Untagged
@@ -364,6 +366,8 @@ MonoBehaviour:
   - {fileID: 742986620}
   chase:
   - {fileID: 742986624}
+  attack:
+  - {fileID: 742986626}
 --- !u!114 &742986616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -428,13 +432,41 @@ MonoBehaviour:
     found injectable field Enemy enemy,
     value testy Boi (Enemy), is null? False
 
-'
-  log: 
-  warnings: '[Injectable] field EnemyAbility[] patrol on testy Boi (Enemy) is not
-    a unity component!
+    injecting fields on testy Boi (EnemyProjectileSpawnAbility)
 
-    [Injectable] field EnemyChaseAction[] chase on testy
+    found
+    injectable field FirePoint projectileSpawnLocation, value , is null? True
+
+    field
+    is currently null
+
+    found injectable field Enemy enemy, value , is null? True
+
+    field
+    is currently null
+
+'
+  log: 'Adding FirePoint component to testy Boi (UnityEngine.GameObject)
+
+    Setting
+    missing FirePoint component reference for FirePoint projectileSpawnLocation in
+    testy Boi (EnemyProjectileSpawnAbility)
+
+    Setting missing Enemy component
+    reference for Enemy enemy in testy Boi (EnemyProjectileSpawnAbility)
+
+'
+  warnings: '[Injectable] field EnemyAbility[] idle on testy Boi (Enemy) is not a
+    unity component!
+
+    [Injectable] field EnemyAbility[] patrol on testy Boi (Enemy)
+    is not a unity component!
+
+    [Injectable] field EnemyAbility[] chase on testy
     Boi (Enemy) is not a unity component!
+
+    [Injectable] field EnemyAbility[]
+    attack on testy Boi (Enemy) is not a unity component!
 
 '
   errors: 
@@ -565,6 +597,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemy: {fileID: 742986615}
+--- !u!114 &742986625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 742986612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5791f8a48805e4a7d8768a011d7fdc7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &742986626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 742986612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f087d9efe0274055b12609e390c8e19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemy: {fileID: 742986615}
+  projectileSpawnLocation: {fileID: 742986625}
 --- !u!1 &892229913
 GameObject:
   m_ObjectHideFlags: 0
@@ -850,12 +908,12 @@ PrefabInstance:
     - target: {fileID: 4480004948019582980, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000017324593
+      value: 0.00000001733257
       objectReference: {fileID: 0}
     - target: {fileID: 4480004948019582980, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 5.283212e-10
+      value: -7.4542555e-10
       objectReference: {fileID: 0}
     - target: {fileID: 4480004948019582980, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}

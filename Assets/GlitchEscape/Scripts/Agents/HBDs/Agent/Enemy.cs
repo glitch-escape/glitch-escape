@@ -30,11 +30,7 @@ public class Enemy : BaseAgent<Enemy, EnemyConfig> {
     [InjectComponent] public EnemyAbility[] idle;
     [InjectComponent] public EnemyAbility[] patrol;
     [InjectComponent] public EnemyAbility[] chase;
-    /*
-     * AttackAction
-     * PursuitAction
-     * PatrolAction
-     */
+    [InjectComponent] public EnemyAbility[] attack;
 
     private void Awake() {
         navMeshAgent.speed = config.moveSpeed;

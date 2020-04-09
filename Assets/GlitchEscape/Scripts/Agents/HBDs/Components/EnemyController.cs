@@ -37,7 +37,7 @@ public class EnemyController : EnemyComponent {
 
     #region Stuff I prob want
     // reference to all enemy actions
-    private EnemyAbility[] attackActions => enemy.patrol;
+    private EnemyAbility[] attackActions => enemy.attack;
     private EnemyAbility[] pursueActions => enemy.chase;
     private EnemyAbility[] searchForPlayerActions => enemy.patrol;
     private EnemyAbility[] idleActions => enemy.idle;
@@ -146,7 +146,7 @@ public class EnemyController : EnemyComponent {
             else {
                 foreach (var attack in attackActions) {
                     // if (attack.CanActivate(player)) {
-                    if (false) { 
+                    if (attack.canUseAbility) { 
                         _behaviorState = EnemyBehaviorState.AttackingPlayer;
                         SetActiveAction(attack);
                     }

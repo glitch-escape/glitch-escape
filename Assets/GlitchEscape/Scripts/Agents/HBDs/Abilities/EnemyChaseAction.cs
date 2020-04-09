@@ -8,7 +8,6 @@ public class EnemyChaseAction : EnemyAbility {
 
     private NavMeshAgent agent => enemy.navMeshAgent;
     private Player player => enemy.player;
-    
 
     public override bool AbilityFinished(out EnemyBehaviorState nextAction) {
         nextAction = EnemyBehaviorState.ChasingPlayer;
@@ -29,7 +28,6 @@ public class EnemyChaseAction : EnemyAbility {
         base.OnAbilityUpdate();
         // Update destination to current player position
         agent.SetDestination(player.transform.position);
-        Debug.Log("called");
     }
     #endregion
 }
