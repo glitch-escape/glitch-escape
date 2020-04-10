@@ -12,7 +12,17 @@ GameObject:
   - component: {fileID: 8700431787278475713}
   - component: {fileID: 6002897609525372831}
   - component: {fileID: 6002897609525372828}
-  - component: {fileID: 6002897609525372829}
+  - component: {fileID: 7081169661799362876}
+  - component: {fileID: 7800163697663750648}
+  - component: {fileID: 7635327064355285432}
+  - component: {fileID: 6253007358461704316}
+  - component: {fileID: 7639993611038279875}
+  - component: {fileID: 7068438456783669869}
+  - component: {fileID: 4893775287975035574}
+  - component: {fileID: 5908955517474943983}
+  - component: {fileID: 3778841508547135381}
+  - component: {fileID: 7439312666538429111}
+  - component: {fileID: 3949874716846385653}
   m_Layer: 0
   m_Name: GeoQuadEnemy
   m_TagString: Untagged
@@ -90,7 +100,7 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &6002897609525372829
+--- !u!114 &7081169661799362876
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -99,22 +109,251 @@ MonoBehaviour:
   m_GameObject: {fileID: 2337225838518501032}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 382198668d306444ea9068f4494c7d9b, type: 3}
+  m_Script: {fileID: 11500000, guid: e7c17dcb2d48444c89a805a1ec0abf7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  info: 'injecting fields on GeoQuadEnemy (Autowire)
+
+    injecting fields on GeoQuadEnemy
+    (Enemy)
+
+    found injectable field UnityEngine.AI.NavMeshAgent navMeshAgent,
+    value GeoQuadEnemy (UnityEngine.NavMeshAgent), is null? False
+
+    found injectable
+    field UnityEngine.Animator animator, value GeoQuadEnemy (UnityEngine.Animator),
+    is null? False
+
+    found injectable field EnemyHealth health, value GeoQuadEnemy
+    (EnemyHealth), is null? False
+
+    found injectable field EnemyStamina stamina,
+    value GeoQuadEnemy (EnemyStamina), is null? False
+
+    found injectable field
+    EnemyController controller, value GeoQuadEnemy (EnemyController), is null? False
+
+    found
+    injectable field EnemyVisionController detection, value GeoQuadEnemy (SphericalDetectionComponent),
+    is null? False
+
+    injecting fields on GeoQuadEnemy (EnemyChaseAction)
+
+    found
+    injectable field Enemy enemy, value , is null? True
+
+    field is currently null
+
+    injecting
+    fields on GeoQuadEnemy (EnemyProjectileSpawnAbility)
+
+    found injectable field
+    FirePoint projectileSpawnLocation, value , is null? True
+
+    field is currently
+    null
+
+    found injectable field Enemy enemy, value , is null? True
+
+    field
+    is currently null
+
+    injecting fields on GeoQuadEnemy (SphericalDetectionComponent)
+
+    found
+    injectable field Enemy enemy, value GeoQuadEnemy (Enemy), is null? False
+
+    injecting
+    fields on GeoQuadEnemy (EnemyHealth)
+
+    injecting fields on GeoQuadEnemy (EnemyStamina)
+
+    injecting
+    fields on GeoQuadEnemy (EnemyController)
+
+    found injectable field Enemy enemy,
+    value GeoQuadEnemy (Enemy), is null? False
+
+'
+  log: 'Setting missing Enemy component reference for Enemy enemy in GeoQuadEnemy
+    (EnemyChaseAction)
+
+    Adding FirePoint component to GeoQuadEnemy (UnityEngine.GameObject)
+
+    Setting
+    missing FirePoint component reference for FirePoint projectileSpawnLocation in
+    GeoQuadEnemy (EnemyProjectileSpawnAbility)
+
+    Setting missing Enemy component
+    reference for Enemy enemy in GeoQuadEnemy (EnemyProjectileSpawnAbility)
+
+'
+  warnings: '[Injectable] field EnemyAbility[] idle on GeoQuadEnemy (Enemy) is not
+    a unity component!
+
+    [Injectable] field EnemyAbility[] patrol on GeoQuadEnemy
+    (Enemy) is not a unity component!
+
+    [Injectable] field EnemyAbility[] chase
+    on GeoQuadEnemy (Enemy) is not a unity component!
+
+    [Injectable] field EnemyAbility[]
+    attack on GeoQuadEnemy (Enemy) is not a unity component!
+
+'
+  errors: 
+--- !u!114 &7800163697663750648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2337225838518501032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2967af5375f944bfa87e90c5b066942d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _config: {fileID: 11400000, guid: 96d6278b15fb6441a9801555993cb2cc, type: 2}
   player: {fileID: 0}
+  navMeshAgent: {fileID: 6002897609525372828}
+  animator: {fileID: 8700431787278475713}
+  health: {fileID: 5908955517474943983}
+  stamina: {fileID: 3778841508547135381}
+  controller: {fileID: 7439312666538429111}
+  detection: {fileID: 7068438456783669869}
+  idle:
+  - {fileID: 7635327064355285432}
+  patrol:
+  - {fileID: 7635327064355285432}
+  chase:
+  - {fileID: 6253007358461704316}
+  attack:
+  - {fileID: 7639993611038279875}
+--- !u!114 &7635327064355285432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2337225838518501032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5fd51dd4a7b341728d95974ba81fc11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemy: {fileID: 7800163697663750648}
   patrolPoints:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  detectRad: 5
-  wanderRange: 5
-  ptLeniency: 1.13
-  material: {fileID: 0}
-  colors:
-  - {fileID: 0}
-  attacks:
-  - {fileID: 0}
+  ptLeniency: 1
+--- !u!114 &6253007358461704316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2337225838518501032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dea8b54d463df47b9a0c9a018f0a05ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemy: {fileID: 7800163697663750648}
+--- !u!114 &7639993611038279875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2337225838518501032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f087d9efe0274055b12609e390c8e19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemy: {fileID: 7800163697663750648}
+  projectileSpawnLocation: {fileID: 3949874716846385653}
+--- !u!114 &7068438456783669869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2337225838518501032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70f39573478e8447798312eea144057b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemy: {fileID: 7800163697663750648}
+  detectionRadius: 10
+--- !u!135 &4893775287975035574
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2337225838518501032}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5908955517474943983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2337225838518501032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c8d845255218402e9e036f161be7e96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showDebugGUI: 0
+--- !u!114 &3778841508547135381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2337225838518501032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 775313d12c08b4b33aeffcf3677c5a3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showDebugGUI: 0
+--- !u!114 &7439312666538429111
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2337225838518501032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a06f87e38b234a05b1dcd31de01a024, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemy: {fileID: 7800163697663750648}
+  isHostileToPlayer: 1
+--- !u!114 &3949874716846385653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2337225838518501032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5791f8a48805e4a7d8768a011d7fdc7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4288068762297087954
 GameObject:
   m_ObjectHideFlags: 0
