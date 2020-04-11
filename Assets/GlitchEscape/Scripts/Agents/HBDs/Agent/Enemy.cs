@@ -17,13 +17,13 @@ public class Enemy : BaseAgent<Enemy, EnemyConfig> {
     [HideInInspector] public Player player;
 
     // references to components on the enemy object
-    [InjectComponent] public NavMeshAgent navMeshAgent;
-    [InjectComponent] public Animator animator;
-    [InjectComponent] public EnemyHealth health;
-    [InjectComponent] public EnemyStamina stamina;
+    [HideInInspector] [InjectComponent] public NavMeshAgent navMeshAgent;
+    [HideInInspector] [InjectComponent] public Animator animator;
+    [HideInInspector] [InjectComponent] public EnemyHealth health;
+    [HideInInspector] [InjectComponent] public EnemyStamina stamina;
 
     // reference to the enemy controller
-    [InjectComponent] public EnemyController controller;
+    [HideInInspector] [InjectComponent] public EnemyController controller;
     [InjectComponent] public EnemyVisionController detection;
 
     // enemy actions

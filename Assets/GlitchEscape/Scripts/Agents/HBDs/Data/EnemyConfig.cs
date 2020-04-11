@@ -35,7 +35,21 @@ public class EnemyConfig : ScriptableObject {
     [Header("Spawn Height")]
     public float spawnHeight = 1f;
 
-    [Header("Projectile Spwan(If Any)")]
+    /*
+    [System.Serializable]
+    public class ProjectileData {
+        public float projectileStaminaCost = 0f;
+        public float projectileShotsPerSecond = 1f;
+        public float projectileStartup = 0f;
+        public float projectileCooldown = 3f;
+        public float attackDuration = 5f;
+        public float shootDistance = 1f;
+        public EnemyProjectileConfig attackProjectile;
+    }
+    */
+    [Header("Projectile Data(If Any)")]
+    //public ProjectileData[] projectiles;
+
     public float projectileStaminaCost = 0f;
     public float projectileShotsPerSecond = 1f;
     public float projectileStartup = 0f;
