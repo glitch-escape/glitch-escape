@@ -22,6 +22,13 @@ public class PlayerConfig : ScriptableObject {
     [Header("Interaction")] 
     public float interactionRadius = 10f;
 
+    #region PlayerRaycasts
+
+    [Header("Raycasts")] 
+    public float playerRayDistanceToGround = 0.7f;
+    public float wallRaycastDistance = 1f;
+    #endregion
+    
     #region PlayerJumpAbility
     [Header("Jump ability")] 
     
@@ -39,14 +46,17 @@ public class PlayerConfig : ScriptableObject {
     
     [Tooltip("Max number of times that player can jump consecutively before needing to touch ground")]
     [Range(0, 10)] public int maxJumps = 2;
-    
+
+    [Tooltip("if false, disables the effects of downGravityMultiplier + upGravityModifier")]
+    public bool useGravityModifications = true;
+
     [Tooltip("changes the player's fall speed (multiplies gravity while falling by this factor)")]
     public float downGravityMultiplier = 2.2f;
     
     [Tooltip("changes the player's fall speed (multiplies gravity while jumping upwards by this factor)")]
     public float upGravityMultiplier = 0.8f;
     
-    [Tooltip("changes the player's fall speed (multiplies gravity while jumping upwards by this factor)")]
+    [Tooltip("determines the force (multiply this by normal jump force) that the player uses to push off of walls")]
     public float wallJumpMultiplier = 1.5f;
     #endregion PlayerJumpAbility
     
