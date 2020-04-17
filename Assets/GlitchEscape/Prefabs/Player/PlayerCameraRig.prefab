@@ -1360,7 +1360,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.07793556, y: -0.000000008577024, z: 6.7049444e-10, w: 0.99695843}
+  m_LocalRotation: {x: 0.07793555, y: 0.000000008577024, z: -6.704944e-10, w: 0.99695843}
   m_LocalPosition: {x: -15.9, y: 9.8, z: -7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -2895,7 +2895,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7c17dcb2d48444c89a805a1ec0abf7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  info: 
+  info: 'injecting fields on PlayerCameraRig (Autowire)
+
+'
   log: 
   warnings: 
   errors: 
@@ -5249,6 +5251,23 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &2322072621921030020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6198226440788187681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ce90e8ff52c44745afb5f0d8c62a72f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1325126502889347078}
+  movement: {fileID: 804508486605404441}
+  jump: {fileID: 4721086871263525455}
+  dash: {fileID: 5107498921308589042}
+  animator: {fileID: 1069002391897982280}
 --- !u!1 &6811632111092905727
 GameObject:
   m_ObjectHideFlags: 0
@@ -6356,12 +6375,12 @@ PrefabInstance:
     - target: {fileID: 3505488081016921733, guid: d2ebc241853cd416cb4411bbc3550e8b,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000017328581
+      value: -0.000000018081426
       objectReference: {fileID: 0}
     - target: {fileID: 3505488081016921733, guid: d2ebc241853cd416cb4411bbc3550e8b,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 6.3687294e-10
+      value: 6.645428e-10
       objectReference: {fileID: 0}
     - target: {fileID: 3505488081016921733, guid: d2ebc241853cd416cb4411bbc3550e8b,
         type: 3}
@@ -6391,7 +6410,7 @@ PrefabInstance:
     - target: {fileID: 3505488081541777551, guid: d2ebc241853cd416cb4411bbc3550e8b,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.0000000074279196
+      value: -0.0000000074279196
       objectReference: {fileID: 0}
     - target: {fileID: 3505488081541777551, guid: d2ebc241853cd416cb4411bbc3550e8b,
         type: 3}
@@ -6401,7 +6420,7 @@ PrefabInstance:
     - target: {fileID: 3505488081541777551, guid: d2ebc241853cd416cb4411bbc3550e8b,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -5.806647e-10
+      value: 5.806647e-10
       objectReference: {fileID: 0}
     - target: {fileID: 3505488081541777551, guid: d2ebc241853cd416cb4411bbc3550e8b,
         type: 3}
@@ -6441,17 +6460,17 @@ PrefabInstance:
     - target: {fileID: 3505488081973172942, guid: d2ebc241853cd416cb4411bbc3550e8b,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.11958469
+      value: 0.11958468
       objectReference: {fileID: 0}
     - target: {fileID: 3505488081973172942, guid: d2ebc241853cd416cb4411bbc3550e8b,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -6.3735524e-18
+      value: -0.0000000073971163
       objectReference: {fileID: 0}
     - target: {fileID: 3505488081973172942, guid: d2ebc241853cd416cb4411bbc3550e8b,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 4.8097707e-18
+      value: 8.909754e-10
       objectReference: {fileID: 0}
     - target: {fileID: 3505488081973172942, guid: d2ebc241853cd416cb4411bbc3550e8b,
         type: 3}
@@ -6719,6 +6738,11 @@ PrefabInstance:
       propertyPath: jumpCurve.m_Curve.Array.data[1].tangentMode
       value: 34
       objectReference: {fileID: 0}
+    - target: {fileID: 398969317218089726, guid: c565e2b6a6a6b4a729579b6c59da6f29,
+        type: 3}
+      propertyPath: drawDebugGUI
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1299641571806894736, guid: c565e2b6a6a6b4a729579b6c59da6f29,
         type: 3}
       propertyPath: m_Name
@@ -6854,6 +6878,11 @@ PrefabInstance:
       propertyPath: useAnimationDerivedMoveSpeed
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5703799242185423272, guid: c565e2b6a6a6b4a729579b6c59da6f29,
+        type: 3}
+      propertyPath: playerAnimation
+      value: 
+      objectReference: {fileID: 2322072621921030020}
     - target: {fileID: 6227929132304472247, guid: c565e2b6a6a6b4a729579b6c59da6f29,
         type: 3}
       propertyPath: camera
@@ -6946,18 +6975,18 @@ PrefabInstance:
         rigidbody, value Player (UnityEngine.Rigidbody), is null? False
 
         found
-        injectable field UnityEngine.Animator animator, value Player (UnityEngine.Animator),
+        injectable field PlayerControls playerInput, value Player (PlayerControls),
         is null? False
 
-        found injectable field PlayerControls playerInput,
-        value Player (PlayerControls), is null? False
+        found injectable field UnityEngine.Camera camera,
+        value Main Camera (UnityEngine.Camera), is null? False
 
-        found injectable field
-        UnityEngine.Camera camera, value Main Camera (UnityEngine.Camera), is null?
-        False
-
-        found injectable field Player player, value Player (Player),
+        found injectable
+        field PlayerAnimationController playerAnimation, value Player (PlayerAnimationController),
         is null? False
+
+        found injectable field Player player, value Player
+        (Player), is null? False
 
         injecting fields on Player (PlayerAudioController)
 
@@ -7042,7 +7071,24 @@ PrefabInstance:
         found injectable field Player player, value
         Player (Player), is null? False
 
-        injecting fields on Player (Cinemachine.CinemachineFreeLook)
+        injecting fields on Player (PlayerAnimationController)
+
+        found
+        injectable field PlayerMovementController movement, value Player (PlayerMovementController),
+        is null? False
+
+        found injectable field PlayerJumpAbility jump, value
+        Player (PlayerJumpAbility), is null? False
+
+        found injectable field
+        PlayerDashAbility dash, value Player (PlayerDashAbility), is null? False
+
+        found
+        injectable field UnityEngine.Animator animator, value Player (UnityEngine.Animator),
+        is null? False
+
+        found injectable field Player player, value Player
+        (Player), is null? False
 
 '
       objectReference: {fileID: 0}
@@ -7084,12 +7130,72 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 8734701811103677163, guid: c565e2b6a6a6b4a729579b6c59da6f29, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: c565e2b6a6a6b4a729579b6c59da6f29, type: 3}
+--- !u!114 &5107498921308589042 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 210750202715720515, guid: c565e2b6a6a6b4a729579b6c59da6f29,
+    type: 3}
+  m_PrefabInstance: {fileID: 4903794389647376561}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6198226440788187681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a924bb6dfb4946746bd9c2b1d54efb0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4721086871263525455 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 398969317218089726, guid: c565e2b6a6a6b4a729579b6c59da6f29,
+    type: 3}
+  m_PrefabInstance: {fileID: 4903794389647376561}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6198226440788187681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b840ec0bd4b0ba24eb933a62cf954904, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1325126502889347078 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6227929132304472247, guid: c565e2b6a6a6b4a729579b6c59da6f29,
+    type: 3}
+  m_PrefabInstance: {fileID: 4903794389647376561}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6198226440788187681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd47d9fa87fd440919901c8dcb27bab2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!95 &1069002391897982280 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5393090270376166905, guid: c565e2b6a6a6b4a729579b6c59da6f29,
+    type: 3}
+  m_PrefabInstance: {fileID: 4903794389647376561}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6944515180500609074 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2617181577531598979, guid: c565e2b6a6a6b4a729579b6c59da6f29,
     type: 3}
   m_PrefabInstance: {fileID: 4903794389647376561}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &6198226440788187681 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1299641571806894736, guid: c565e2b6a6a6b4a729579b6c59da6f29,
+    type: 3}
+  m_PrefabInstance: {fileID: 4903794389647376561}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &804508486605404441 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5703799242185423272, guid: c565e2b6a6a6b4a729579b6c59da6f29,
+    type: 3}
+  m_PrefabInstance: {fileID: 4903794389647376561}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6198226440788187681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd0dadb06d4767849abaa9360fb2e7fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8418532036989826461
 PrefabInstance:
   m_ObjectHideFlags: 0

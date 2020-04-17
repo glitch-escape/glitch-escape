@@ -5,9 +5,9 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Animator))]
 public class PlayerMovementController : PlayerComponent {
     [InjectComponent] public new Rigidbody rigidbody;
-    [InjectComponent] public Animator animator;
     [InjectComponent] public PlayerControls playerInput;
     [InjectComponent] public new Camera camera;
+    [InjectComponent] public PlayerAnimationController playerAnimation;
     
     // Public properties
 
@@ -22,6 +22,10 @@ public class PlayerMovementController : PlayerComponent {
         Stunned
     }
 
+    public float actualMoveSpeed => useAnimationDerivedMoveSpeed ? 
+        playerAnimation.currentAnimationSpeed : moveSpeed;
+
+    
     [Tooltip("Time (s) for player to be stunned after knockback occurs")]
     public float stunTime = 1f;
     private float currentStunTime = 0;
@@ -29,9 +33,8 @@ public class PlayerMovementController : PlayerComponent {
     private const bool useAnimationDerivedMoveSpeed = false;
     
     // Property getters
-    private float currentAnimationSpeed => animator.deltaPosition.magnitude;
-    public float actualMoveSpeed => useAnimationDerivedMoveSpeed ? currentAnimationSpeed : moveSpeed;
-
+    public bool isMoving => hasMoveInput;
+    
     // Input values
     private Vector2 moveInput => playerInput.moveInput;
     private bool hasMoveInput => moveInput.magnitude > 1e-6;
@@ -48,36 +51,29 @@ public class PlayerMovementController : PlayerComponent {
             return forward * input.y + right * input.x;
         }
     }
-    // Update + animator callbacks
-    void OnAnimatorMove() {
-        if (useAnimationDerivedMoveSpeed) {
-            var speed = animator.deltaPosition.magnitude;
-            Move(speed);
-        }
-    }
-
     private bool wasRunningLastFrame = false;
     void FixedUpdate() {
-        animator.SetBool("isRunning", hasMoveInput);
-        if (hasMoveInput != wasRunningLastFrame) {
-            animator.SetTrigger(hasMoveInput ? "startRunning" : "stopRunning");
+        if (isMoving != wasRunningLastFrame) {
+            FireEvent(isMoving ?
+                PlayerEvent.Type.BeginMovement :
+                PlayerEvent.Type.EndMovement);
         }
-        wasRunningLastFrame = hasMoveInput;
+        wasRunningLastFrame = isMoving;
         
         if (!useAnimationDerivedMoveSpeed) {
             Move(moveSpeed);
         }
 
-        if(movementMode == PlayerMovementMode.Stunned)
-        {
-            currentStunTime += Time.fixedDeltaTime;
-        }
-        if(currentStunTime >= stunTime)
-        {
-            movementMode = PlayerMovementMode.TurnToFaceMoveDirection;
-            currentStunTime = 0;
-            rigidbody.velocity = Vector3.zero;
-        }
+        // if(movementMode == PlayerMovementMode.Stunned)
+        // {
+        //     currentStunTime += Time.fixedDeltaTime;
+        // }
+        // if(currentStunTime >= stunTime)
+        // {
+        //     movementMode = PlayerMovementMode.TurnToFaceMoveDirection;
+        //     currentStunTime = 0;
+        //     rigidbody.velocity = Vector3.zero;
+        // }
     }
     private void Move (float speed) {
         var cameraDir = moveInputRelativeToCamera;
@@ -128,7 +124,6 @@ public class PlayerMovementController : PlayerComponent {
         GUILayout.Label("expected position: " + (moveInputRelativeToCamera * actualMoveSpeed * Time.deltaTime + rigidbody.position));
         GUILayout.Label("player move speed: " + actualMoveSpeed);
         GUILayout.Label("player turn speed: " + turnSpeed);
-        GUILayout.Label("animator derived player move speed: " + currentAnimationSpeed);
         GUILayout.Label("config move speed: " + moveSpeed);
     }
 }
