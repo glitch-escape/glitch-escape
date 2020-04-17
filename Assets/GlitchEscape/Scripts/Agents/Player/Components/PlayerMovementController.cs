@@ -1,129 +1,135 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEditor.UI;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Player))]
 [RequireComponent(typeof(Animator))]
-public class PlayerMovementController : PlayerComponent {
+public class PlayerMovementController : PlayerComponent, IResettable {
     [InjectComponent] public new Rigidbody rigidbody;
     [InjectComponent] public PlayerControls playerInput;
     [InjectComponent] public new Camera camera;
-    [InjectComponent] public PlayerAnimationController playerAnimation;
-    
-    // Public properties
-
-    private float moveSpeed => player.config.runSpeed;
-    private float turnSpeed => player.config.turnSpeed;
     
     [Tooltip("Player movement mode")] 
     public PlayerMovementMode movementMode = PlayerMovementMode.TurnToFaceMoveDirection;
     public enum PlayerMovementMode {
         TurnToFaceMoveDirection,
-        Strafing,
-        Stunned
     }
 
-    public float actualMoveSpeed => useAnimationDerivedMoveSpeed ? 
-        playerAnimation.currentAnimationSpeed : moveSpeed;
-
+    public float moveSpeed => player.config.runSpeed;
     
-    [Tooltip("Time (s) for player to be stunned after knockback occurs")]
-    public float stunTime = 1f;
-    private float currentStunTime = 0;
-
-    private const bool useAnimationDerivedMoveSpeed = false;
     
-    // Property getters
-    public bool isMoving => hasMoveInput;
-    
-    // Input values
-    private Vector2 moveInput => playerInput.moveInput;
-    private bool hasMoveInput => moveInput.magnitude > 1e-6;
-    private Vector3 moveInputRelativeToCamera {
-        get {
-            var cameraTransform = camera.transform;
-            var forward = cameraTransform.forward;
-            var right   = cameraTransform.right;
-            forward.y = 0f;
-            right.y = 0f;
-            forward.Normalize();
-            right.Normalize();
-            var input = moveInput;
-            return forward * input.y + right * input.x;
+    /// <summary>
+    /// Determines if the player is currently moving or not.
+    /// Set by calls to <see cref="Move(Vector2)"/>, called by <see cref="PlayerMovementController.FixedUpdate()"/>
+    /// </summary>
+    public bool isMoving {
+        get => _isMoving;
+        private set {
+            var wasMoving = _isMoving;
+            _isMoving = value;
+            if (value != wasMoving) {
+                FireEvent(value ? 
+                    PlayerEvent.Type.BeginMovement :
+                    PlayerEvent.Type.EndMovement);   
+            }
         }
     }
-    private bool wasRunningLastFrame = false;
-    void FixedUpdate() {
-        if (isMoving != wasRunningLastFrame) {
-            FireEvent(isMoving ?
-                PlayerEvent.Type.BeginMovement :
-                PlayerEvent.Type.EndMovement);
-        }
-        wasRunningLastFrame = isMoving;
-        
-        if (!useAnimationDerivedMoveSpeed) {
-            Move(moveSpeed);
-        }
+    private bool _isMoving = false;
 
-        // if(movementMode == PlayerMovementMode.Stunned)
-        // {
-        //     currentStunTime += Time.fixedDeltaTime;
-        // }
-        // if(currentStunTime >= stunTime)
-        // {
-        //     movementMode = PlayerMovementMode.TurnToFaceMoveDirection;
-        //     currentStunTime = 0;
-        //     rigidbody.velocity = Vector3.zero;
-        // }
-    }
-    private void Move (float speed) {
-        var cameraDir = moveInputRelativeToCamera;
+    /// <summary>
+    /// Moves the player given some input.
+    /// Called by <see cref="PlayerMovementController.FixedUpdate()"/>
+    /// Input is assumed to be normalized / mapped to [-1, 1] and then multiplied by Time.time or Time.fixedDeltaTime
+    /// </summary>
+    private void Move (Vector2 input) {
+        // check if player is moving or not, and fire events if state changes
+        isMoving = HasInput(input);
+        if (!isMoving) return;
+
+        // convert input axes to be relative to camera
+        var moveDir = isMoving ? MoveInputToWorldSpaceVector(input) : Vector3.zero;
         switch (movementMode) {
             case PlayerMovementMode.TurnToFaceMoveDirection: {
                 var desiredForward = Vector3.RotateTowards(
                     player.transform.forward,
-                    cameraDir,
-                    turnSpeed * Time.deltaTime, 
+                    moveDir,
+                    player.config.turnSpeed * Time.deltaTime, 
                     0f);
                 var playerRotation = Quaternion.LookRotation(desiredForward);
-
-                rigidbody.MovePosition(rigidbody.position + cameraDir * speed * Time.deltaTime);
-                //Vector3 tempVelocity = rigidbody.velocity;
-                //tempVelocity = cameraDir * speed * Time.deltaTime * 30;
-                //rigidbody.velocity = new Vector3(tempVelocity.x, rigidbody.velocity.y, tempVelocity.z);
+                
+                rigidbody.MovePosition(rigidbody.position + moveDir * moveSpeed);
                 rigidbody.MoveRotation(playerRotation);
             } break;
-            case PlayerMovementMode.Strafing: {
-                /* TODO: implement strafing controls */
-            } break;
-            case PlayerMovementMode.Stunned:{
-                    //do nothing (for now)
-            } break;
+            default:
+                throw new ArgumentOutOfRangeException();
         }
     }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if(collision.gameObject.CompareTag("Knockback"))
-        {
-            movementMode = PlayerMovementMode.Stunned;
-            rigidbody.velocity += -transform.forward * 3;
-        }
+    
+    /// <summary>
+    /// Resets player movement state
+    /// </summary>
+    public void Reset() { 
+        isMoving = false;
+        rigidbody.velocity = Vector3.zero;
+        rigidbody.angularVelocity = Vector3.zero;
+    }
+    
+    /// <summary>
+    /// Updates player's movement vector + applies gravity each physics update
+    /// </summary>
+    void FixedUpdate() {
+        Move(playerInput.moveInput * Time.fixedDeltaTime);
     }
 
+    /// <summary>
+    /// Tests if player input is considered to be zero (ie. below some threshold) or not.
+    /// Returns true if this input is considered to indicate that the player is "moving", false otherwise.
+    /// </summary>
+    private bool HasInput(Vector2 input) {
+        return input.magnitude > 1e-6;
+    }
+
+    /// <summary>
+    /// Transforms player input (assume normalized to [-1, 1]) into a world-space movement vector relative
+    /// to the current camera position
+    /// </summary>
+    private Vector3 MoveInputToWorldSpaceVector(Vector2 input) {
+        
+        // get direction (forward + right vectors) of camera, then clamp to X, Z plane (set Y component to zero),
+        // and normalize the result
+        var cameraTransform = camera.transform;
+        var forward = cameraTransform.forward;
+        var right   = cameraTransform.right;
+        forward.y = 0f;
+        right.y = 0f;
+        forward.Normalize();
+        right.Normalize();
+        
+        // resulting movement vector is input relative to the camera facing (on X, Z plane)
+        return forward * input.y + right * input.x;
+    }
+    
     public bool showDebugGui = false;
 
     void OnGUI() {
         if (!showDebugGui) return;
         GUILayout.Label("PlayerMovementController.cs:");
         GUILayout.Label("Movement mode: " + movementMode);
-        GUILayout.Label("Raw player input: " + moveInput);
-        GUILayout.Label("has player input? " + hasMoveInput);
-        GUILayout.Label("camera-relative input: " + moveInputRelativeToCamera);
+
+        var input = playerInput.moveInput;
+        GUILayout.Label("Raw player input: " + input);
+        GUILayout.Label("has player input? " + HasInput(input));
+
+        var moveDir = MoveInputToWorldSpaceVector(input);
+        GUILayout.Label("camera-relative input: " + moveDir);
         GUILayout.Label("rigidbody velocity: " + rigidbody.velocity);
-        GUILayout.Label("expected delta-v: " + (moveInputRelativeToCamera * actualMoveSpeed * Time.deltaTime));
-        GUILayout.Label("expected position: " + (moveInputRelativeToCamera * actualMoveSpeed * Time.deltaTime + rigidbody.position));
-        GUILayout.Label("player move speed: " + actualMoveSpeed);
+
+        var turnSpeed = player.config.turnSpeed;
+        moveDir *= moveSpeed * Time.deltaTime;
+        GUILayout.Label("expected delta-v: " + moveDir);
+        GUILayout.Label("expected position: " + moveDir + rigidbody.position));
+        GUILayout.Label("player move speed: " + moveSpeed);
         GUILayout.Label("player turn speed: " + turnSpeed);
-        GUILayout.Label("config move speed: " + moveSpeed);
     }
 }
