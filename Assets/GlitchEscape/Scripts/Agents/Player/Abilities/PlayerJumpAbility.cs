@@ -197,4 +197,30 @@ public class PlayerJumpAbility : PlayerAbility {
             }
         }
     }
+
+    public override void DrawPlayerAbilityDebugGUI() {
+        base.DrawPlayerAbilityDebugGUI();
+        GUILayout.Label("is jumping? " + isJumping);
+        GUILayout.Label("jump count: " + jumpCount + " / " + player.config.maxJumps);
+        GUILayout.Label("can jump? " + jumpAbilityStatus);
+        GUILayout.Label("jump height: " + player.config.jumpHeight);
+        GUILayout.Label("derived jump v0: " + jumpVelocity);
+        GUILayout.Label("current velocity: " + rigidbody.velocity);
+        GUILayout.Label("time since jump started: " + elapsedJumpTime);
+        GUILayout.Label("is on ground? " + isPlayerGrounded);
+        GUILayout.Label("is near wall? " + isPlayerNearWall);
+        GUILayout.Label("wall normal: " + currentWallNormal);
+        var targetGravity = player.config.useGravityModifications
+            ? rigidbody.velocity.y <= 0f ? Physics.gravity * player.config.downGravityMultiplier 
+            : Physics.gravity * player.config.upGravityMultiplier
+            : Physics.gravity;
+        var deltaGravity = player.config.useGravityModifications
+            ? rigidbody.velocity.y <= 0f ? Physics.gravity * (player.config.downGravityMultiplier - 1f)
+            : Physics.gravity * (player.config.upGravityMultiplier - 1f) * -1f
+            : Vector3.zero;
+        GUILayout.Label("target gravity " + targetGravity);
+        GUILayout.Label("delta gravity " + deltaGravity);
+        GUILayout.Label("fixed dt " + Time.fixedDeltaTime);
+        
+    }
 }
