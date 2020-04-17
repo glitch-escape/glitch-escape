@@ -22,13 +22,45 @@ public class PlayerConfig : ScriptableObject {
     [Header("Interaction")] 
     public float interactionRadius = 10f;
 
-    [Header("Jump ability")] [Range(0, 20)]
-    public float jumpHeight = 10f;
-    [Range(0, 10)] public int maxJumps = 2;
-    public bool canJump = true;
-    public bool canAirJump = true;
-    public bool canWallJump = true;
+    #region PlayerRaycasts
 
+    [Header("Raycasts")] 
+    public float playerRayDistanceToGround = 0.7f;
+    public float wallRaycastDistance = 1f;
+    #endregion
+    
+    #region PlayerJumpAbility
+    [Header("Jump ability")] 
+    
+    [Tooltip("enables / disables the player's jumping ability")]
+    public bool canJump = true;
+    
+    [Tooltip("if false, player cannot jump while in the air (effectively disables maxJumps)")]
+    public bool canAirJump = true;
+    
+    [Tooltip("if false, player cannot wall jump and wall jumping will not reset the player's jump count")]
+    public bool canWallJump = true;
+    
+    [Tooltip("Peak height (meters) that player will jump to when jump is pressed")]
+    [Range(0, 20)] public float jumpHeight = 10f;
+    
+    [Tooltip("Max number of times that player can jump consecutively before needing to touch ground")]
+    [Range(0, 10)] public int maxJumps = 2;
+
+    [Tooltip("if false, disables the effects of downGravityMultiplier + upGravityModifier")]
+    public bool useGravityModifications = true;
+
+    [Tooltip("changes the player's fall speed (multiplies gravity while falling by this factor)")]
+    public float downGravityMultiplier = 2.2f;
+    
+    [Tooltip("changes the player's fall speed (multiplies gravity while jumping upwards by this factor)")]
+    public float upGravityMultiplier = 0.8f;
+    
+    [Tooltip("determines the force (multiply this by normal jump force) that the player uses to push off of walls")]
+    public float wallJumpMultiplier = 1.5f;
+    #endregion PlayerJumpAbility
+    
+    
     [Header("Dash ability")]
     public FloatRange dashAbilityPressTimeRange = new FloatRange {minimum = 0.1f, maximum = 0.3f};
     public AnimationCurve dashAbilityPressCurve = AnimationCurve.Linear(0f, 0f, 1f, 1f);

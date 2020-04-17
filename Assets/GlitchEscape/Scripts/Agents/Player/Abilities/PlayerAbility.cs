@@ -152,7 +152,7 @@ public abstract class PlayerAbility : BaseAbility, IPlayerEventSource {
     //
     // private float usedStamina;
 
-    public void DrawPlayerAbilityDebugGUI() {
+    public virtual void DrawPlayerAbilityDebugGUI() {
         GUILayout.Label("current state: " + state);
         GUILayout.Label("button pressed?: " + inputButton.isPressed);
         GUILayout.Label("button pressed duration: " + inputButton.pressTime);
