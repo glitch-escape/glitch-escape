@@ -6,48 +6,29 @@ public class PlayerJumpAbility : PlayerComponent {
     [InjectComponent] public new Rigidbody rigidbody;
     [InjectComponent] public Animator animator;
     [InjectComponent] public new Camera camera;
+    private bool jumpEnabled => player.config.canJump;
+    private bool airJumpEnabled => player.config.canAirJump;
+    private bool wallJumpEnabled => player.config.canWallJump;
 
-    // TODO: move to PlayerConfig
-    [Tooltip("jump height (meters). Inaccurate if gravity factors != 1")]
-    public float jumpHeight = 2f;
+    private float jumpHeight => player.config.jumpHeight;
+    private int maxJumpCount => player.config.maxJumps;
+    private float wallJumpMultiplier => player.config.wallJumpMultiplier;
 
-    // TODO: move to PlayerConfig
-    [Tooltip("factor to increase wall jump height by")]
-    public float wallJumpMultiplier = 1.5f;
-
-    // TODO: move to PlayerConfig
-    [Tooltip("maximum jumps (2 = double jump, etc)")]
-    public uint maxJumpCount = 2;
+    private float upGravityFactor => player.config.upGravityMultiplier;
+    private float downGravityFactor => player.config.downGravityMultiplier;
+    
     public uint jumpCount = 0;
-
-    // TODO: move to PlayerConfig
     private float jumpStartTime = 0f;
     private bool isJumping = false;
-
-    // TODO: move to PlayerConfig
-    public AnimationCurve jumpCurve;
     
-    // TODO: move to PlayerConfig
+    // TODO: should calculate this from above variables
     public float jumpDuration = 0.64f;
+    private float jumpVelocity => (float)Math.Sqrt(2 * upGravityFactor * -Physics.gravity.y * jumpHeight);
 
-    // TODO: move to PlayerConfig
-    [Tooltip("factor we increase downwards gravity by")]
-    public float downGravityFactor = 2.2f;
-
-    // TODO: move to PlayerConfig
-    [Tooltip("factor we increase upwards gravity by")]
-    public float upGravityFactor = 0.8f;
-
-    // TODO: move to PlayerConfig
-    private float jumpVelocity;
-
-    // TODO: move to PlayerConfig
     //used to ensure that the player doest wall jump from the same wall
     private Vector3 lastWallNormal = Vector3.zero;
     private Vector3 currentWallNormal = Vector3.zero;
-    
-    private LayerMask walls;
-
+    private LayerMask walls => LayerMask.GetMask("Wall");
     private Vector2 moveInput => PlayerControls.instance.moveInput;
 
     private Vector3 moveInputRelativeToCamera
@@ -65,14 +46,6 @@ public class PlayerJumpAbility : PlayerComponent {
             return forward * input.y + right * input.x;
         }
     }
-
-    void Awake()
-    {
-        jumpVelocity = (float)Math.Sqrt(2 * upGravityFactor * -Physics.gravity.y * jumpHeight);
-        walls = LayerMask.GetMask("Wall");
-    }
-
-
     public void OnJump(InputAction.CallbackContext context)
     {
         // TODO: refactor this
