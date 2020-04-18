@@ -5,25 +5,151 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
 
-public interface IOneShotEffect {
-    bool active { get; }
-    void Start();
-    void Cancel();
-}
-public interface IDurationEffect {
-    float duration { get; set; }
-    float endTime { get; set; }
-    float startTime { get; }
-    void Start();
-    void Cancel();
-}
-public interface IEffectState {
+public interface IEffect : IResettable {
     bool started { get; }
+    bool active { get; }
     bool finished { get; }
     void Start();
     void Cancel();
+    void Update();
+    IEffectManager effectOwner { get; set; }
+}
+public interface IEffectManager {
+    void RegisterEffect(IEffect effect);
+    void UnregisterEffect(IEffect effect);
+}
+public interface IEffectActions {
+    void ApplyEffect();
+    void UnapplyEffect();
     void UpdateEffect();
 }
+public struct EffectActions {
+    public delegate void Action();
+    public Action applyEffect;
+    public Action unapplyEffect;
+    public Action updateEffect;
+}
+public interface IEffectState {
+    bool finished { get; }
+    void OnStarted();
+    void OnEnded();
+}
+public struct EffectState : IEffectState {
+    public delegate bool StateCheckCallback();
+    public delegate void Callback();
+    public StateCheckCallback checkFinished;
+    public Callback onStarted;
+    public Callback onEnded;
+    public bool finished => checkFinished?.Invoke() ?? false;
+    public void OnStarted() { onStarted?.Invoke(); }
+    public void OnEnded() { onEnded?.Invoke(); }
+}
+
+
+/// <summary>
+/// Combines an effect action (ie. what happens when an effect is triggered, updates, and ends) with an effect state
+/// (ie. is this effect active?)
+///
+/// Implements internal state management that implements the interface of IEffect and makes sure that the right action
+/// effect callbacks are always called, and always called exactly once, in response to the following events:
+/// - <see cref="Effect.Start()"/> (starts an effect; takes effect iff effect was not yet started)
+/// - <see cref="Effect.Cancel()"/> (immediately cancels / ends an effect)
+/// - <see cref="Effect.Reset()"/> (cancels the effect + resets it so that it can be started again)
+/// - the <see cref="IEffectState"/>'s effect ending (ie. <see cref="IEffectState.finished"/> returns true)
+/// 
+/// Also provides additional callbacks to listen ot effect state changing:
+/// <see cref="Effect.onEffectStarted"/>
+/// <see cref="Effect.onEffectEnded"/>
+/// <see cref="Effect.onEffectCancelled"/>
+///
+/// Can be managed by an <see cref="EffectManager{TInterface}"/>
+/// </summary>
+public class Effect : IEffect {
+    public IEffectActions actions   { get; set; }
+    public IEffectState effectState { get; set; }
+    public delegate void Delegate();
+    public Delegate onEffectStarted;
+    public Delegate onEffectEnded;
+    public Delegate onEffectCancelled;
+
+    public static Effect MakeEffect<T>(T actions) where T : IEffectActions {
+        return new Effect(actions);
+    }
+    public static Effect MakeEffect<T>(IEffectActions actions, EffectState.StateCheckCallback checkFinished) {
+        return new Effect(actions, new EffectState{checkFinished = checkFinished});
+    }
+    public static Effect MakeEffect<T>(IEffectActions actions, IEffectState state) {
+        return new Effect(actions, state);
+    }
+    public Effect(IEffectActions actions, IEffectState state) {
+        this.actions = actions;
+        this.effectState = state;
+    }
+    public Effect(IEffectActions actions) {
+        this.actions = actions;
+    }
+    public Effect(IEffectState state) {
+        this.effectState = state;
+    }
+    private IEffectManager _owner;
+    public IEffectManager effectOwner {
+        get => _owner;
+        set {
+            if (_owner == value) return;
+            _owner?.UnregisterEffect(this);
+            value?.RegisterEffect(this);
+            _owner = value;
+        }
+    }
+    private enum State { None, Started, Finished }
+    private State state = State.None;
+    private bool effectFinished => effectState?.finished ?? false;
+    public bool started  => state != State.None;
+    public bool finished => state == State.Finished || effectFinished;
+    public bool active => started && !finished;
+    public void Start() {
+        if (state == State.None) {
+            state = State.Started;
+            actions?.ApplyEffect();
+            effectState?.OnStarted();
+            onEffectStarted?.Invoke();
+            CheckFinished();
+        }
+    }
+    private void SetFinished() {
+        state = State.Finished;
+        actions?.UnapplyEffect();
+        effectState?.OnEnded();
+        onEffectEnded?.Invoke();
+    }
+    private bool CheckFinished() {
+        if (effectFinished) {
+            SetFinished();
+            return true;
+        }
+        return false;
+    }
+    public void Cancel() {
+        if (state == State.Started) {
+            bool wasFinished = effectFinished;
+            SetFinished();
+            if (!wasFinished) {
+                onEffectCancelled?.Invoke();
+            }
+        }
+    }
+    public void Update() {
+        if (!CheckFinished()) {
+            actions?.UpdateEffect();
+        }
+    }
+    public void Reset() {
+        Cancel();
+        state = State.None;
+    }
+}
+
+
 public class EffectManager<TInterface> where TInterface : IEffectState {
     private HashSet<IEffectState> activeEffects;
     public T ApplyEffect<T>(T effect) where T : TInterface {
@@ -57,88 +183,6 @@ public class EffectManager<TInterface> where TInterface : IEffectState {
             }
         }
     }
-}
-
-public abstract class ABaseEffect : IEffectState, IResettable {
-    public bool active => started && !finished;
-    protected abstract bool isFinished { get; }
-    protected abstract void ApplyEffect();
-    protected abstract void UnapplyEffect();
-    public abstract void UpdateEffect();
-    
-    private enum State { None, Started, Finished }
-    private State state = State.None;
-    public bool started  => state != State.None;
-    public bool finished => state == State.Finished || isFinished;
-    public virtual void Start() {
-        if (state == State.None) {
-            state = State.Started;
-            ApplyEffect();
-            if (finished) {
-                state = State.Finished;
-                UnapplyEffect();
-            }
-        }
-    }
-    public void Cancel() {
-        if (state == State.Started) {
-            state = State.Finished;
-            UnapplyEffect();
-        }
-    }
-    public void Reset() {
-        Cancel();
-        state = State.None;
-    }
-}
-
-public abstract class AOneShotEffect : ABaseEffect, IOneShotEffect {
-    public override void UpdateEffect() {}
-}
-public abstract class ADurationEffect : ABaseEffect, IDurationEffect {
-    public abstract float duration { get; set; }
-    public float startTime { get; private set; }
-    public float elapsedTime => Time.time - startTime;
-    protected override bool isFinished => elapsedTime >= duration;
-    public override void Start() {
-        startTime = Time.time;
-        base.Start();
-    }
-    public float endTime {
-        get => startTime + duration;
-        set => duration = value - startTime;
-    }
-}
-
-public abstract class OneShotEffect<T> : AOneShotEffect {
-    public delegate void EffectApplicator(T target);
-    private T _target;
-    private EffectApplicator _applyEffect;
-    private EffectApplicator _unapplyEffect;
-    public OneShotEffect(T target, EffectApplicator apply, EffectApplicator unapply) {
-        _target = target;
-        _applyEffect = apply;
-        _unapplyEffect = unapply;
-    }
-    protected override void ApplyEffect()   { _applyEffect?.Invoke(_target); }
-    protected override void UnapplyEffect() { _unapplyEffect?.Invoke(_target); }
-}
-
-public abstract class ABasicDurationEffect : ADurationEffect {
-    public override float duration { get; set; } = 0f;
-    public override void UpdateEffect() {}
-}
-public class DurationEffect : ABasicDurationEffect {
-    public delegate void EffectApplicator();
-    private EffectApplicator _applyEffect;
-    private EffectApplicator _unapplyEffect;
-    public DurationEffect(float duration, EffectApplicator apply, EffectApplicator unapply) {
-        this.duration = duration;
-        _applyEffect = apply;
-        _unapplyEffect = unapply;
-    }
-    protected override void ApplyEffect() { _applyEffect?.Invoke(); }
-    protected override void UnapplyEffect() { _unapplyEffect?.Invoke(); }
 }
 
 
