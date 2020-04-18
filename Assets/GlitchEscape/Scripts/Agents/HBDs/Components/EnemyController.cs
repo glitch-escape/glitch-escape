@@ -111,7 +111,7 @@ public class EnemyController : EnemyComponent {
         }
         activeState = action;
         if (activeState != null) {
-            activeState.StartAbility();
+            activeState.Internal_StartAbility();
         }
         else if (_behaviorState != EnemyBehaviorState.None) {
             Debug.LogWarning(
