@@ -23,13 +23,6 @@ public class PlayerDashAbility : PlayerAbility {
     protected override PlayerControls.HybridButtonControl inputButton
         => m_inputButton ?? (m_inputButton = PlayerControls.instance.dash);
 
-    private DurationEffect dashShaderEffect;
-    private PlayerMovement.Effect dashMovementEffect;
-    
-    
-    
-    
-
     /// <summary>
     /// Can trigger iff the player is already moving
     /// </summary>
@@ -51,60 +44,70 @@ public class PlayerDashAbility : PlayerAbility {
     public const string GLITCH_MATERIAL_START_TIME = "StartTime_B9ED4C73";
     public const string GLITCH_MATERIAL_DURATION = "Duration_2B114277";
 
-    private class DashShaderEffect : ADurationEffect {
-        public override float duration {
-            get => dash.duration + dash.dashVfxDuration;
-            set { }
-        }
+    private class DashShaderEffect : IEffectActions {
         private PlayerDashAbility dash;
         public DashShaderEffect(PlayerDashAbility dash) {
             this.dash = dash;
         }
-        protected override void ApplyEffect() {
+        public void ApplyEffect() {
             var renderer = dash.gameObject.GetComponent<Renderer>();
             dash.glitchMaterial.SetFloat(GLITCH_MATERIAL_START_TIME, Time.time);
-            dash.glitchMaterial.SetFloat(GLITCH_MATERIAL_DURATION, duration);
+            dash.glitchMaterial.SetFloat(GLITCH_MATERIAL_DURATION, dash.duration);
             dash.ApplyMaterials((ref Material material) => material = dash.glitchMaterial);
         }
-        protected override void UnapplyEffect() {
+        public void UnapplyEffect() {
             dash.SetDefaultMaterials();
         }
-        public override void UpdateEffect() {}
+        public void UpdateEffect() {}
     }
 
     [InjectComponent] public PlayerMovement playerMovement;
     [InjectComponent] public PlayerAnimationController playerAnimation;
     [InjectComponent] public PlayerGravity playerGravity;
-    private DashShaderEffect dashVisualEffect;
-    private EffectManager<ABaseEffect> effects = new EffectManager<ABaseEffect>();
+    private Effect reusedDashVisualEffect;
+    private Effect GetNewResetDashVisualEffect() {
+        if (reusedDashVisualEffect == null) {
+            reusedDashVisualEffect = DurationEffect.MakeEffect(
+                new DashShaderEffect(this),
+                () => this.dashVfxDuration);
+        } else {
+            reusedDashVisualEffect.Reset();
+        }
+        return reusedDashVisualEffect;
+    }
+    private EffectManager effects = new EffectManager();
 
     protected override void OnAbilityReset() {
         effects.Clear();
     }
+
+    private float GetCurrentDashDuration() {
+        return duration;
+    }
+
     protected override void OnAbilityStart() {
-        // reuse cached visual effect
-        if (dashVisualEffect == null) dashVisualEffect = new DashShaderEffect(this);
-        else dashVisualEffect.Reset();
-        
-        // apply effects:
         
         // apply dash visual effect
-        effects.ApplyEffect(dashVisualEffect, () => this.duration + this.dashVfxDuration);
+        effects.AddEffect(GetNewResetDashVisualEffect()).Start();
         
         // increase player's move speed
-        effects.ApplyEffect(playerMovement.SetMoveSpeedEffect(dashSpeed), () => this.duration);
+        effects.AddEffect(playerMovement.IncreaseMoveSpeed(dashSpeed), GetCurrentDashDuration).Start();
         
         // play animation
-        effects.ApplyEffect(playerAnimation.SetBoolEffect("isDashing", true), () => this.duration);
+        effects.AddEffect(
+            playerAnimation.SetBool("isDashing", true),
+            () => this.duration).Start();
 
         // cancel gravity
         var gravity = playerGravity.gravity;
-        var gravityEffect = playerGravity.SetGravityEffect(0f);
+        var gravityEffect = effects.AddEffect(
+            playerGravity.SetGravityStrength(0f), 
+            () => this.duration);
         
         // but apply built up velocity when gravity ends
-        gravityEffect.OnEffectEnd += () =>
+        gravityEffect.onEffectEnded += () =>
             playerMovement.ApplyJump(-gravity * gravityEffect.elapsedTime);
-        effects.ApplyEffect(gravityEffect, () => this.duration);
+        gravityEffect.Start();
     }
     public float dashVfxDuration = 1.2f;
 
@@ -114,8 +117,6 @@ public class PlayerDashAbility : PlayerAbility {
     private Vector3 savedDashVelocity = Vector3.zero;
 
     protected override void OnAbilityUpdate() {
-        if (dashVisualEffect?.active ?? false) {
-            dashVisualEffect.UpdateEffect();
-        }
+        effects.Update();
     }
 }

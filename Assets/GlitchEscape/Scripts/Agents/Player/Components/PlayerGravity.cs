@@ -67,4 +67,12 @@ public class PlayerGravity : PlayerComponent {
         GUILayout.Label("gravity strength: " + gravityStrength);
         GUILayout.Label("gravity direction: " + gravityDirection);
     }
+
+    public EffectActions SetGravityStrength(float strength) {
+        var prevStrength = gravityStrength;
+        return new EffectActions {
+            applyEffect = () => this.gravityStrength = strength,
+            unapplyEffect = () => this.gravityStrength = prevStrength,
+        };
+    }
 }

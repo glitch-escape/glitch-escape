@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEditor.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -15,19 +16,23 @@ public interface IEffect : IResettable {
     IEffectManager effectOwner { get; set; }
 }
 public interface IEffectManager {
-    void RegisterEffect(IEffect effect);
-    void UnregisterEffect(IEffect effect);
+    void Internal_RegisterEffect(IEffect effect);
+    void Internal_UnregisterEffect(IEffect effect);
 }
 public interface IEffectActions {
     void ApplyEffect();
     void UnapplyEffect();
     void UpdateEffect();
 }
-public struct EffectActions {
+public struct EffectActions : IEffectActions {
     public delegate void Action();
     public Action applyEffect;
     public Action unapplyEffect;
     public Action updateEffect;
+
+    public void ApplyEffect() { applyEffect?.Invoke(); }
+    public void UnapplyEffect() { unapplyEffect?.Invoke(); }
+    public void UpdateEffect() { updateEffect?.Invoke(); }
 }
 public interface IEffectState {
     bool finished { get; }
@@ -72,32 +77,29 @@ public class Effect : IEffect {
     public Delegate onEffectEnded;
     public Delegate onEffectCancelled;
 
-    public static Effect MakeEffect<T>(T actions) where T : IEffectActions {
+    public static Effect MakeEffect(IEffectActions actions) {
         return new Effect(actions);
     }
-    public static Effect MakeEffect<T>(IEffectActions actions, EffectState.StateCheckCallback checkFinished) {
+    public static Effect MakeEffect(IEffectActions actions, EffectState.StateCheckCallback checkFinished) {
         return new Effect(actions, new EffectState{checkFinished = checkFinished});
     }
-    public static Effect MakeEffect<T>(IEffectActions actions, IEffectState state) {
+    public static Effect MakeEffect(IEffectActions actions, IEffectState state) {
         return new Effect(actions, state);
     }
-    public Effect(IEffectActions actions, IEffectState state) {
+    protected Effect(IEffectActions actions, IEffectState state) {
         this.actions = actions;
         this.effectState = state;
     }
-    public Effect(IEffectActions actions) {
+    protected Effect(IEffectActions actions) {
         this.actions = actions;
-    }
-    public Effect(IEffectState state) {
-        this.effectState = state;
     }
     private IEffectManager _owner;
     public IEffectManager effectOwner {
         get => _owner;
         set {
             if (_owner == value) return;
-            _owner?.UnregisterEffect(this);
-            value?.RegisterEffect(this);
+            _owner?.Internal_UnregisterEffect(this);
+            value?.Internal_RegisterEffect(this);
             _owner = value;
         }
     }
@@ -149,39 +151,127 @@ public class Effect : IEffect {
     }
 }
 
+public interface IDurationEffectState : IEffectState {
+    float duration { get; set; }
+    float startTime { get; }
+    float endTime { get; set; }
+    float elapsedTime { get; }
+    float remainingTime { get; }
+}
 
-public class EffectManager<TInterface> where TInterface : IEffectState {
-    private HashSet<IEffectState> activeEffects;
-    public T ApplyEffect<T>(T effect) where T : TInterface {
-        if (!effect.started) {
-            effect.Start();
-        }
-        AddEffect(effect);
+public abstract class ADurationEffectState : IDurationEffectState {
+    public abstract float duration { get; set; }
+    private float timeStarted;
+    private bool  started = false;
+
+    public bool finished => started && elapsedTime >= duration;
+    public float startTime => started ? timeStarted : 0f;
+    public float elapsedTime => started ? Time.time - timeStarted : 0f;
+    public float remainingTime => started ? duration - elapsedTime : duration;
+    public float endTime {
+        get => (started ? timeStarted : Time.time) + duration;
+        set => duration = value - (started ? timeStarted : Time.time);
+    }
+    public void OnStarted() { started = true; timeStarted = Time.time; }
+    public void OnEnded() { }
+}
+
+public class ManagedDurationEffectState : ADurationEffectState {
+    public override float duration { get; set; }
+    public ManagedDurationEffectState(float duration) {
+        this.duration = duration;
+    }
+}
+public class DerivedDurationEffectState : ADurationEffectState {
+    private Duration getDuration;
+    public override float duration {
+        get => getDuration();
+        set { }
+    }
+    public DerivedDurationEffectState(Duration getDuration) {
+        this.getDuration = getDuration;
+    }
+}
+
+public delegate float Duration();
+public class DurationEffect : Effect {
+    [NotNull] private new IDurationEffectState effectState { get; }
+    public float elapsedTime => effectState.elapsedTime;
+    public float remainingTime => effectState.remainingTime;
+    public float startTime => effectState.startTime;
+    public float duration {
+        get => effectState.duration;
+        set => effectState.duration = value;
+    }
+    public float endTime {
+        get => effectState.endTime;
+        set => effectState.endTime = value;
+    }
+    private DurationEffect(IEffectActions actions, IDurationEffectState state) : base(actions, state) {
+        effectState = state;
+    }
+    public static DurationEffect MakeEffect (IEffectActions actions, float duration) {
+        return new DurationEffect(actions, new ManagedDurationEffectState(duration));
+    }
+    public static DurationEffect MakeEffect(IEffectActions actions, Duration duration) {
+        return new DurationEffect(actions, new DerivedDurationEffectState(duration));
+    }
+}
+
+
+public class EffectManager : IEffectManager {
+    private HashSet<IEffect> effects = new HashSet<IEffect>();
+    public void Internal_RegisterEffect(IEffect effect) {
+        effects.Add(effect);
+    }
+    public void Internal_UnregisterEffect(IEffect effect) {
+        effects.Remove(effect);
+    }
+    public T AddEffect<T>(T effect) where T : IEffect {
+        effect.effectOwner = this;
         return effect;
     }
-    public T AddEffect<T>(T effect) where T : TInterface {
-        if (effect.finished) {
-            effect.Cancel();
-        } else {
-            activeEffects.Add(effect);
+    public T ApplyEffect<T>(T effect) where T : IEffect {
+        effect.effectOwner = this;
+        if (!effect.started) {
+            effect.Start();
         }
         return effect;
     }
     public void Clear() {
-        foreach (var effect in activeEffects) {
+        foreach (var effect in effects) {
             effect.Cancel();
+            effect.effectOwner = null;
         }
-        activeEffects.Clear();
+        effects.Clear();
     }
     public void Update() {
-        foreach (var effect in activeEffects) {
-            if (effect.finished) {
-                effect.Cancel();
-                activeEffects.Remove(effect);
-            } else {
-                effect.UpdateEffect();
+        foreach (var effect in effects) {
+            if (effect.started) {
+                if (effect.finished) {
+                    effect.Cancel();
+                    effect.effectOwner = null;
+                } else {
+                    effect.Update();
+                }
             }
         }
+    }
+
+    public Effect AddEffect(IEffectActions actions) {
+        return AddEffect(Effect.MakeEffect(actions));
+    }
+    public Effect AddEffect(IEffectActions actions, IEffectState state) {
+        return AddEffect(Effect.MakeEffect(actions, state));
+    }
+    public Effect AddEffect(IEffectActions actions, EffectState.StateCheckCallback finished) {
+        return AddEffect(Effect.MakeEffect(actions, finished));
+    }
+    public DurationEffect AddEffect(IEffectActions actions, float duration) {
+        return AddEffect(DurationEffect.MakeEffect(actions, duration));
+    }
+    public DurationEffect AddEffect(IEffectActions actions, Duration duration) {
+        return AddEffect(DurationEffect.MakeEffect(actions, duration));
     }
 }
 
@@ -192,33 +282,14 @@ public class PlayerMovement : PlayerComponent, IResettable {
     [InjectComponent] public new Rigidbody rigidbody;
     [InjectComponent] public PlayerControls playerInput;
     [InjectComponent] public new Camera camera;
-
-    #region Effects
-    private float moveSpeedMultiplier = 1f;
-    public Effect IncreaseMoveSpeed(float moveSpeedMultiplier) {
-        return CreateEffect(
-            () => this.moveSpeedMultiplier += moveSpeedMultiplier,
-            () => this.moveSpeedMultiplier -= moveSpeedMultiplier);
-    }
-    #region EffectImpl (Copy + Paste)
-    public class Effect : ABasicDurationEffect {
-        public delegate void EffectApplicator();
-        private EffectApplicator _applyEffect;
-        private EffectApplicator _unapplyEffect;
     
-        public Effect(EffectApplicator apply, EffectApplicator unapply) {
-            _applyEffect = apply;
-            _unapplyEffect = unapply;
-        }
-        protected override void ApplyEffect() { _applyEffect?.Invoke(); }
-        protected override void UnapplyEffect() { _unapplyEffect?.Invoke(); }
+    private float moveSpeedMultiplier = 1f;
+    public EffectActions IncreaseMoveSpeed(float moveSpeedMultiplier) {
+        return new EffectActions {
+            applyEffect = () => this.moveSpeedMultiplier += moveSpeedMultiplier,
+            unapplyEffect = () => this.moveSpeedMultiplier -= moveSpeedMultiplier
+        };
     }
-    private Effect CreateEffect(Effect.EffectApplicator apply, Effect.EffectApplicator unapply) {
-        return effects.AddEffect(new Effect(apply, unapply));
-    }
-    public EffectManager<Effect> effects { get; private set; } = new EffectManager<Effect>();
-    #endregion EffectImpl
-    #endregion Effects
 
     [Tooltip("Player movement mode")] 
     public PlayerMovementMode movementMode = PlayerMovementMode.TurnToFaceMoveDirection;
