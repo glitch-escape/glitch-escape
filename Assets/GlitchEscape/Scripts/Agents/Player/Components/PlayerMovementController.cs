@@ -36,6 +36,51 @@ public class PlayerMovementController : PlayerComponent, IResettable {
         }
     }
     private bool _isMoving = false;
+    
+    /// <summary>
+    /// Makes the player jump to a target jump height.
+    /// Used by <see cref="PlayerJumpAbility"/>
+    /// </summary>
+    /// <param name="jumpHeight">Peak jump height (in meters), used to calcualte jump force</param>
+    /// <param name="direction">Jump direction (should default to player.transform.up)</param>
+    public void ApplyJump(float jumpHeight) {
+        SetVelocity(CalculateJumpVelocity(jumpHeight));
+    }
+
+    /// <summary>
+    /// Makes the player jump to a target jump height.
+    /// Used by <see cref="PlayerJumpAbility"/>
+    /// </summary>
+    /// <param name="jumpHeight">Peak jump height (in meters), used to calcualte jump force</param>
+    /// <param name="direction">Jump direction (should default to player.transform.up)</param>
+    public void ApplyJump(float jumpHeight, Vector3 direction) {
+        SetVelocity(CalculateJumpVelocity(jumpHeight, direction));
+    }
+    
+    /// <summary>
+    /// Calculates initial jump velocity given jump height
+    /// Used by <see cref="ApplyJump(float)"/>
+    /// </summary>
+    public Vector3 CalculateJumpVelocity(float jumpHeight) {
+        return CalculateJumpVelocity(jumpHeight, player.transform.up);
+    }
+
+    /// <summary>
+    /// Calculates initial jump velocity given jump height + direction
+    /// Used by <see cref="ApplyJump(float, Vector3)"/>
+    /// </summary>
+    public Vector3 CalculateJumpVelocity(float jumpHeight, Vector3 direction) {
+        var gravity = Mathf.Abs(Physics.gravity.y);
+        var v0 = Mathf.Sqrt(2f * gravity * jumpHeight);
+        return v0 * direction;
+    }
+
+    /// <summary>
+    /// Applies an immediate velocity change to the player
+    /// </summary>
+    public void SetVelocity(Vector3 velocity) {
+        rigidbody.velocity = velocity;
+    }
 
     /// <summary>
     /// Moves the player given some input.
@@ -128,7 +173,7 @@ public class PlayerMovementController : PlayerComponent, IResettable {
         var turnSpeed = player.config.turnSpeed;
         moveDir *= moveSpeed * Time.deltaTime;
         GUILayout.Label("expected delta-v: " + moveDir);
-        GUILayout.Label("expected position: " + moveDir + rigidbody.position));
+        GUILayout.Label("expected position: " + moveDir + rigidbody.position);
         GUILayout.Label("player move speed: " + moveSpeed);
         GUILayout.Label("player turn speed: " + turnSpeed);
     }
