@@ -64,11 +64,18 @@ MonoBehaviour:
   runSpeed: 10
   turnSpeed: 12
   cameraTurnSpeed: 271
-  jumpHeight: 7.72
-  maxJumps: 2
+  interactionRadius: 10.8
+  playerRayDistanceToGround: 0.7
+  wallRaycastDistance: 1
   canJump: 1
   canAirJump: 1
   canWallJump: 1
+  jumpHeight: 2.04
+  maxJumps: 2
+  useGravityModifications: 1
+  downGravityMultiplier: 2.2
+  upGravityMultiplier: 0.8
+  wallJumpMultiplier: 1.5
   dashAbilityPressTimeRange:
     minimum: 0.1
     maximum: 0.3

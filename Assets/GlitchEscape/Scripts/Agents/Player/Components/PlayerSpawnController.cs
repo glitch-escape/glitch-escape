@@ -30,7 +30,6 @@ public class PlayerSpawnController : PlayerComponent {
     private void Respawn() {
         player.transform.position = respawnPosition;
         player.transform.rotation = respawnRotation;
-        player.rigidbody.velocity = Vector3.zero;
     }
     private void Awake() {
         SetSpawnPosition(player.transform.position, player.transform.rotation);

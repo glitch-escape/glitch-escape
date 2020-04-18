@@ -14,7 +14,7 @@ public class PlayerJumpAbility : PlayerAbility {
     #region Variable State
     public uint jumpCount = 0;
     private float jumpStartTime = 0f;
-    private bool isJumping = false;
+    public bool isJumping { get; private set; } = false;
     #endregion
     
     public float elapsedJumpTime => isJumping ? Time.time - jumpStartTime : 0f;
@@ -166,7 +166,6 @@ public class PlayerJumpAbility : PlayerAbility {
     /// Physics update:
     /// - invalidates raycast info (effectively fires new raycasts to determine if player is near wall / floor)
     /// - fires <see cref="PlayerEvent.Type.EndJump"/> when player first touches the floor
-    /// - applies gravity modifications, if enabled
     /// </summary>
     void FixedUpdate() {
         dirtyRaycastInfo = true;
@@ -179,15 +178,6 @@ public class PlayerJumpAbility : PlayerAbility {
             jumpCount = 0;
             FireEvent(PlayerEvent.Type.EndJump);
         }
-        
-        // apply gravity modifications (TODO: move to a PlayerGravityController class)
-        // if (player.config.useGravityModifications && rigidbody.velocity.y != 0f && !isPlayerGrounded) {
-        //     if (rigidbody.velocity.y <= 0f) {
-        //         rigidbody.velocity += Physics.gravity * (player.config.downGravityMultiplier - 1f) * Time.fixedDeltaTime;
-        //     } else {
-        //         rigidbody.velocity -= Physics.gravity * (player.config.upGravityMultiplier - 1f) * Time.fixedDeltaTime;
-        //     }
-        // }
     }
 
     public override void DrawPlayerAbilityDebugGUI() {
@@ -207,17 +197,6 @@ public class PlayerJumpAbility : PlayerAbility {
         GUILayout.Label("is on ground? " + isPlayerGrounded);
         GUILayout.Label("is near wall? " + isPlayerNearWall);
         GUILayout.Label("wall normal: " + currentWallNormal);
-        var targetGravity = player.config.useGravityModifications
-            ? currentVelocity.y <= 0f ? Physics.gravity * player.config.downGravityMultiplier 
-            : Physics.gravity * player.config.upGravityMultiplier
-            : Physics.gravity;
-        var deltaGravity = player.config.useGravityModifications
-            ? currentVelocity.y <= 0f ? Physics.gravity * (player.config.downGravityMultiplier - 1f)
-            : Physics.gravity * (player.config.upGravityMultiplier - 1f) * -1f
-            : Vector3.zero;
-        GUILayout.Label("target gravity " + targetGravity);
-        GUILayout.Label("delta gravity " + deltaGravity);
-        GUILayout.Label("fixed dt " + Time.fixedDeltaTime);
-        
+        GUILayout.Label("current gravity: " + (GetComponent<PlayerGravity>()?.gravity ?? 0f));
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Player))]
-[RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(Rigidbody))]
 public class PlayerMovementController : PlayerComponent, IResettable {
     [InjectComponent] public new Rigidbody rigidbody;
     [InjectComponent] public PlayerControls playerInput;
@@ -17,8 +17,8 @@ public class PlayerMovementController : PlayerComponent, IResettable {
     }
 
     public float moveSpeed => player.config.runSpeed;
-    
-    
+    public bool isFalling => rigidbody.velocity.y < 0f;
+
     /// <summary>
     /// Determines if the player is currently moving or not.
     /// Set by calls to <see cref="Move(Vector2)"/>, called by <see cref="PlayerMovementController.FixedUpdate()"/>
@@ -77,9 +77,20 @@ public class PlayerMovementController : PlayerComponent, IResettable {
 
     /// <summary>
     /// Applies an immediate velocity change to the player
+    /// Used to implement <see cref="ApplyJump(float)"/>, etc.
     /// </summary>
     public void SetVelocity(Vector3 velocity) {
+        Debug.Log("Set player velocity at "+Time.time+" to "+velocity);
         rigidbody.velocity = velocity;
+    }
+
+    /// <summary>
+    /// Applies an acceleration to the player
+    /// equivalent to calling rigidbody.AddForce(acceleration, ForceMode.VelocityChange)
+    /// acceleration should have deltaTime or fixedDeltaTime pre-applied to it
+    /// </summary>
+    public void ApplyAcceleration(Vector3 acceleration) {
+        rigidbody.AddForce(acceleration, ForceMode.VelocityChange);
     }
 
     /// <summary>
