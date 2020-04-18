@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerJumpAbility : PlayerAbility {
-    [InjectComponent] public PlayerMovementController playerMovement;
+    [InjectComponent] public PlayerMovement playerMovement;
 
     #region PlayerAbilityProperties
     public override float resourceCost => 0f; // jumping does not use stamina

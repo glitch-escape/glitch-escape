@@ -10,7 +10,7 @@ using Random = UnityEngine.Random;
 /// </summary>
 public class PlayerAudioController : MonoBehaviourWithConfig<PlayerAudioConfig> {
     [InjectComponent] public Player player;
-    [InjectComponent] public PlayerMovementController movement;
+    [InjectComponent] public PlayerMovement movement;
     [InjectComponent] public AudioSource soundSource;
 
     void OnEnable() {

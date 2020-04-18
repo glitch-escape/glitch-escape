@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Player))]
 [RequireComponent(typeof(Rigidbody))]
-public class PlayerMovementController : PlayerComponent, IResettable {
+public class PlayerMovement : PlayerComponent, IResettable {
     [InjectComponent] public new Rigidbody rigidbody;
     [InjectComponent] public PlayerControls playerInput;
     [InjectComponent] public new Camera camera;
@@ -21,7 +21,7 @@ public class PlayerMovementController : PlayerComponent, IResettable {
 
     /// <summary>
     /// Determines if the player is currently moving or not.
-    /// Set by calls to <see cref="Move(Vector2)"/>, called by <see cref="PlayerMovementController.FixedUpdate()"/>
+    /// Set by calls to <see cref="Move(Vector2)"/>, called by <see cref="PlayerMovement.FixedUpdate()"/>
     /// </summary>
     public bool isMoving {
         get => _isMoving;
@@ -95,7 +95,7 @@ public class PlayerMovementController : PlayerComponent, IResettable {
 
     /// <summary>
     /// Moves the player given some input.
-    /// Called by <see cref="PlayerMovementController.FixedUpdate()"/>
+    /// Called by <see cref="PlayerMovement.FixedUpdate()"/>
     /// Input is assumed to be normalized / mapped to [-1, 1] and then multiplied by Time.time or Time.fixedDeltaTime
     /// </summary>
     private void Move (Vector2 input) {
@@ -170,7 +170,7 @@ public class PlayerMovementController : PlayerComponent, IResettable {
 
     void OnGUI() {
         if (!showDebugGui) return;
-        GUILayout.Label("PlayerMovementController.cs:");
+        GUILayout.Label("PlayerMovement.cs:");
         GUILayout.Label("Movement mode: " + movementMode);
 
         var input = playerInput.moveInput;

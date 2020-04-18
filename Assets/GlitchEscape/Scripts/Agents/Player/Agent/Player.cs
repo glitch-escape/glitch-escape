@@ -25,7 +25,7 @@ public class Player : BaseAgent<Player, PlayerConfig> {
     [InjectComponent] public PlayerStamina stamina;
     [InjectComponent] public PlayerControls              input;
     [InjectComponent] public PlayerSpawnController       spawn;
-    [InjectComponent] public PlayerMovementController    movement;
+    [InjectComponent] public PlayerMovement    movement;
     [InjectComponent] public PlayerCameraController      cameraController;
     [InjectComponent] public PlayerAudioController       audioController;
     [InjectComponent] public PlayerDialogController      dialog;

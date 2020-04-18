@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerAnimationController : PlayerComponent {
-    [InjectComponent] public PlayerMovementController movement;
+    [InjectComponent] public PlayerMovement movement;
     [InjectComponent] public PlayerJumpAbility jump;
     [InjectComponent] public PlayerDashAbility dash;
     [InjectComponent] public Animator animator;

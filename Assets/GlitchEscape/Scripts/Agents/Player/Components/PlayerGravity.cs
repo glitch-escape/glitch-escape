@@ -13,7 +13,7 @@ using UnityEngine;
 /// TODO: and both restore prev state AND support multiple effects simultaneously
 /// </summary>
 public class PlayerGravity : PlayerComponent {
-    [InjectComponent] public PlayerMovementController playerMovement;
+    [InjectComponent] public PlayerMovement playerMovement;
 
     /// <summary>
     /// Enables / disables gravity
