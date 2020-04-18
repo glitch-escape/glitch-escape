@@ -23,12 +23,12 @@ public class PlayerGravity : PlayerComponent {
     /// <summary>
     /// Gravity multiplier - can be used to increase or decrease gravity
     /// </summary>
-    public float gravityStrength = 1f;
+    public float gravityStrength { get; set; } = 1f;
 
     /// <summary>
     /// Gravity direction, relative to player
     /// </summary>
-    public Vector3 gravityDirection = Vector3.down;
+    public Vector3 gravityDirection { get; set; } = Vector3.down;
     
     /// <summary>
     /// Current gravity value, in meters / sec^2
@@ -57,5 +57,14 @@ public class PlayerGravity : PlayerComponent {
             Debug.LogWarning("Gravity direction is non-normalized and may be zero! on "
                              +this+": "+gravityDirection);
         }
+    }
+
+    public bool drawDebugUI = false;
+    private void OnGUI() {
+        if (!drawDebugUI) return;
+        GUILayout.Label("current gravity: " + gravity);
+        GUILayout.Label("gravity enabled: " + gravityEnabled);
+        GUILayout.Label("gravity strength: " + gravityStrength);
+        GUILayout.Label("gravity direction: " + gravityDirection);
     }
 }
