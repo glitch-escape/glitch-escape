@@ -5,14 +5,14 @@ using UnityEngine;
 public interface IAgentAbility : IResettable {
     /// <summary>
     /// Agent that this ability belongs to
-    /// (assumes that <see cref="StartAbility"/> and <see cref="CancelAbility"/> and <see cref="canUseAbility"/>
+    /// (assumes that <see cref="Internal_StartAbility"/> and <see cref="CancelAbility"/> and <see cref="canUseAbility"/>
     /// calls happen through this agent)
     /// </summary>
     IAgent agent { get; }
     
     /// <summary>
     /// Returns true iff this ability is currently active.
-    /// <see cref="StartAbility"/>
+    /// <see cref="Internal_StartAbility"/>
     /// <seealso cref="CancelAbility"/>
     /// </summary>
     bool isAbilityActive { get; }
@@ -25,21 +25,22 @@ public interface IAgentAbility : IResettable {
     
     /// <summary>
     /// Should return true iff this ability can be currently used.
-    /// Precondition for <see cref="StartAbility"/>
+    /// Precondition for <see cref="Internal_StartAbility"/>
     /// Used by <see cref="BaseAgent{Derived,Config}.TryUseAbility"/>
     /// </summary>
     bool canUseAbility { get; }
+
+    /// <summary>
+    /// Tries to use (start) this ability.
+    /// Returns false if ability use failed for any reason.
+    /// </summary>
+    bool UseAbility();
     
     /// <summary>
-    /// Starts this ability.
-    /// Assumes <see cref="canUseAbility"/> returned true; can check this via an enforcement / raise
-    /// an exception if this is not true when this is called.
-    /// Called by <see cref="BaseAgent{Derived,Config}.TryUseAbility"/> 
-    ///
-    /// Ability may have already been started, in which case it will be re-started / reset
+    /// Called by <see cref="BaseAgent{Derived,Config}.TryUseAbility"/> to start this ability
     /// </summary>
-    void StartAbility();
-
+    void Internal_StartAbility();
+    
     /// <summary>
     /// Called to cancel (stop) this ability.
     /// Use <see cref="Reset"/> if you want to terminate + fully reset this ability immediately.

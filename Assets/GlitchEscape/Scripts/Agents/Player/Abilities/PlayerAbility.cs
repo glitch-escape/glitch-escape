@@ -47,7 +47,7 @@ public abstract class PlayerAbility : BaseAbility, IPlayerEventSource {
     protected override void Update() {
         base.Update();
         if (inputButton?.wasPressedThisFrame ?? false) {
-            StartAbility();
+            UseAbility();
         }
     }
 

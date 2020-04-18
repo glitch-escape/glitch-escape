@@ -145,14 +145,14 @@ public abstract class BaseAgent<Derived, Config> : MonoBehaviourWithConfig<Confi
                 throw new ArgumentOutOfRangeException();
         }
     }
-    
+
     /// <summary>
     /// Attempt to use (and if so, starts) an ability.
     /// Assumes that the ability belongs to this agent (ie. script is attached to this gameObject,
     /// and the ability is in the <see cref="abilities"/> array)
     /// </summary>
     /// <param name="ability">
-    ///    Ability to use. Calls ability.StartAbility()
+    ///    Ability to use. Calls ability.Internal_StartAbility()
     ///     iff agent.canUseAbility and the agent can afford ability.resourceCost
     /// </param>
     /// <returns>true iff ability was successful</returns>
@@ -166,7 +166,7 @@ public abstract class BaseAgent<Derived, Config> : MonoBehaviourWithConfig<Confi
                 return false;
             }
         }
-        ability.StartAbility();
+        ability.Internal_StartAbility();
         return true;
     }
     #endregion Methods

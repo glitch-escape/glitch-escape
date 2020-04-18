@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public abstract class BaseAbility : MonoBehaviour, IAgentAbility { 
@@ -27,8 +28,13 @@ public abstract class BaseAbility : MonoBehaviour, IAgentAbility {
     protected virtual void OnAbilityEnd() { }
     protected virtual void OnAbilityReset() { }
     protected virtual bool CanStartAbility() { return true; }
-    
-    public void StartAbility() {
+
+    public bool UseAbility() {
+        return agent.TryUseAbility(this);
+    }
+    public void Internal_StartAbility() {
+        if (!canUseAbility)
+            throw new Exception(""+this+" ability precondition violated");
         if (isAbilityActive) {
             OnAbilityEnd();
         }
