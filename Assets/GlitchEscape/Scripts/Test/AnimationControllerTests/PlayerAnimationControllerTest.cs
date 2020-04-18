@@ -4,7 +4,7 @@ using UnityEngine;
 
 [ExecuteInEditMode]
 public class PlayerAnimationControllerTest : BaseAnimationControllerTest {
-    private bool isRunning = false;
+    private bool isDoubleJump = false;
     private bool isJumping = false;
     private bool isDashing = false;
     private bool isGrounded = false;
@@ -23,13 +23,16 @@ public class PlayerAnimationControllerTest : BaseAnimationControllerTest {
         GUILayout.Label("                                ");
         GUILayout.EndHorizontal();
         
-        var wasRunning = isRunning;
-        ShowAnimatorBoolean("isRunning (legacy)", ref isRunning);
-        animator.SetBool("isRunning", isRunning);
+        var wasRunning = isNearWall;
+        ShowAnimatorBoolean("isNearWall", ref isNearWall);
+        animator.SetBool("isNearWall", isNearWall);
         
         var wasJumping = isJumping;
         ShowAnimatorBoolean("isJumping", ref isJumping);
         animator.SetBool("isJumping", isJumping);
+
+        ShowAnimatorBoolean("isDoubleJump", ref isDoubleJump);
+        animator.SetBool("isDoubleJump", isDoubleJump);
 
         var wasDashing = isDashing;
         ShowAnimatorBoolean("isDashing", ref isDashing);
