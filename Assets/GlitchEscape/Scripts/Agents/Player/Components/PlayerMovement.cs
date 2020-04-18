@@ -1,7 +1,146 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEditor.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Random = UnityEngine.Random;
+
+public interface IOneShotEffect {
+    bool active { get; }
+    void Start();
+    void Cancel();
+}
+public interface IDurationEffect {
+    float duration { get; set; }
+    float endTime { get; set; }
+    float startTime { get; }
+    void Start();
+    void Cancel();
+}
+public interface IEffectState {
+    bool started { get; }
+    bool finished { get; }
+    void Start();
+    void Cancel();
+    void UpdateEffect();
+}
+public class EffectManager<TInterface> where TInterface : IEffectState {
+    private HashSet<IEffectState> activeEffects;
+    public T ApplyEffect<T>(T effect) where T : TInterface {
+        if (!effect.started) {
+            effect.Start();
+        }
+        AddEffect(effect);
+        return effect;
+    }
+    public T AddEffect<T>(T effect) where T : TInterface {
+        if (effect.finished) {
+            effect.Cancel();
+        } else {
+            activeEffects.Add(effect);
+        }
+        return effect;
+    }
+    public void Clear() {
+        foreach (var effect in activeEffects) {
+            effect.Cancel();
+        }
+        activeEffects.Clear();
+    }
+    public void Update() {
+        foreach (var effect in activeEffects) {
+            if (effect.finished) {
+                effect.Cancel();
+                activeEffects.Remove(effect);
+            } else {
+                effect.UpdateEffect();
+            }
+        }
+    }
+}
+
+public abstract class ABaseEffect : IEffectState, IResettable {
+    public bool active => started && !finished;
+    protected abstract bool isFinished { get; }
+    protected abstract void ApplyEffect();
+    protected abstract void UnapplyEffect();
+    public abstract void UpdateEffect();
+    
+    private enum State { None, Started, Finished }
+    private State state = State.None;
+    public bool started  => state != State.None;
+    public bool finished => state == State.Finished || isFinished;
+    public virtual void Start() {
+        if (state == State.None) {
+            state = State.Started;
+            ApplyEffect();
+            if (finished) {
+                state = State.Finished;
+                UnapplyEffect();
+            }
+        }
+    }
+    public void Cancel() {
+        if (state == State.Started) {
+            state = State.Finished;
+            UnapplyEffect();
+        }
+    }
+    public void Reset() {
+        Cancel();
+        state = State.None;
+    }
+}
+
+public abstract class AOneShotEffect : ABaseEffect, IOneShotEffect {
+    public override void UpdateEffect() {}
+}
+public abstract class ADurationEffect : ABaseEffect, IDurationEffect {
+    public abstract float duration { get; set; }
+    public float startTime { get; private set; }
+    public float elapsedTime => Time.time - startTime;
+    protected override bool isFinished => elapsedTime >= duration;
+    public override void Start() {
+        startTime = Time.time;
+        base.Start();
+    }
+    public float endTime {
+        get => startTime + duration;
+        set => duration = value - startTime;
+    }
+}
+
+public abstract class OneShotEffect<T> : AOneShotEffect {
+    public delegate void EffectApplicator(T target);
+    private T _target;
+    private EffectApplicator _applyEffect;
+    private EffectApplicator _unapplyEffect;
+    public OneShotEffect(T target, EffectApplicator apply, EffectApplicator unapply) {
+        _target = target;
+        _applyEffect = apply;
+        _unapplyEffect = unapply;
+    }
+    protected override void ApplyEffect()   { _applyEffect?.Invoke(_target); }
+    protected override void UnapplyEffect() { _unapplyEffect?.Invoke(_target); }
+}
+
+public abstract class ABasicDurationEffect : ADurationEffect {
+    public override float duration { get; set; } = 0f;
+    public override void UpdateEffect() {}
+}
+public class DurationEffect : ABasicDurationEffect {
+    public delegate void EffectApplicator();
+    private EffectApplicator _applyEffect;
+    private EffectApplicator _unapplyEffect;
+    public DurationEffect(float duration, EffectApplicator apply, EffectApplicator unapply) {
+        this.duration = duration;
+        _applyEffect = apply;
+        _unapplyEffect = unapply;
+    }
+    protected override void ApplyEffect() { _applyEffect?.Invoke(); }
+    protected override void UnapplyEffect() { _unapplyEffect?.Invoke(); }
+}
+
 
 [RequireComponent(typeof(Player))]
 [RequireComponent(typeof(Rigidbody))]
@@ -9,14 +148,41 @@ public class PlayerMovement : PlayerComponent, IResettable {
     [InjectComponent] public new Rigidbody rigidbody;
     [InjectComponent] public PlayerControls playerInput;
     [InjectComponent] public new Camera camera;
+
+    #region Effects
+    private float moveSpeedMultiplier = 1f;
+    public Effect IncreaseMoveSpeed(float moveSpeedMultiplier) {
+        return CreateEffect(
+            () => this.moveSpeedMultiplier += moveSpeedMultiplier,
+            () => this.moveSpeedMultiplier -= moveSpeedMultiplier);
+    }
+    #region EffectImpl (Copy + Paste)
+    public class Effect : ABasicDurationEffect {
+        public delegate void EffectApplicator();
+        private EffectApplicator _applyEffect;
+        private EffectApplicator _unapplyEffect;
     
+        public Effect(EffectApplicator apply, EffectApplicator unapply) {
+            _applyEffect = apply;
+            _unapplyEffect = unapply;
+        }
+        protected override void ApplyEffect() { _applyEffect?.Invoke(); }
+        protected override void UnapplyEffect() { _unapplyEffect?.Invoke(); }
+    }
+    private Effect CreateEffect(Effect.EffectApplicator apply, Effect.EffectApplicator unapply) {
+        return effects.AddEffect(new Effect(apply, unapply));
+    }
+    public EffectManager<Effect> effects { get; private set; } = new EffectManager<Effect>();
+    #endregion EffectImpl
+    #endregion Effects
+
     [Tooltip("Player movement mode")] 
     public PlayerMovementMode movementMode = PlayerMovementMode.TurnToFaceMoveDirection;
     public enum PlayerMovementMode {
         TurnToFaceMoveDirection,
     }
-
-    public float moveSpeed => player.config.runSpeed;
+    
+    public float moveSpeed => player.config.runSpeed * moveSpeedMultiplier;
     public bool isFalling => rigidbody.velocity.y < 0f;
 
     /// <summary>
