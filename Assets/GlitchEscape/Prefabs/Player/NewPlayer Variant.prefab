@@ -884,11 +884,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 6227929132304472247}
   rigidbody: {fileID: 434094264}
-  animator: {fileID: 5393090270376166905}
   playerInput: {fileID: 9083574787802606794}
   camera: {fileID: 0}
   movementMode: 0
-  stunTime: 1
   showDebugGui: 0
 --- !u!114 &8550197510662241881
 MonoBehaviour:
@@ -949,40 +947,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 6227929132304472247}
-  rigidbody: {fileID: 434094264}
-  animator: {fileID: 5393090270376166905}
-  camera: {fileID: 0}
-  jumpHeight: 2
-  wallJumpMultiplier: 1.5
-  maxJumpCount: 2
+  drawDebugGUI: 0
+  playerMovement: {fileID: 0}
   jumpCount: 0
-  jumpCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  jumpDuration: 0.64
-  downGravityFactor: 2.2
-  upGravityFactor: 0.8
 --- !u!114 &755019625527078918
 MonoBehaviour:
   m_ObjectHideFlags: 0
