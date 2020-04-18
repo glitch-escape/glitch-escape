@@ -24,7 +24,7 @@ public class PlayerControls : MonoBehaviour {
         }
         private set {
             if (m_instance == value) return;
-            if (m_instance != null) {
+            if (m_instance != null && value != null) {
                 Debug.LogError("duplicate player controls instance in this scene!");
             }
             m_instance = value;

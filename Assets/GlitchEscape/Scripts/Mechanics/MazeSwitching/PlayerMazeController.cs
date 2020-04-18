@@ -77,6 +77,8 @@ public class PlayerMazeController : PlayerComponent {
         // get maze references
         normalMaze = Enforcements.GetSingleComponentInScene<NormalMaze>();
         glitchMaze = Enforcements.GetSingleComponentInScene<GlitchMaze>();
+        normalMaze.gameObject.SetActive(true);
+        glitchMaze.gameObject.SetActive(false);
         
         // set the default maze to active (and deactivate the glitch maze)
         inNormalMaze = true;

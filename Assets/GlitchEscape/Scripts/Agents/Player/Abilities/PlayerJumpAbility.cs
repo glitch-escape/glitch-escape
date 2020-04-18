@@ -3,9 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerJumpAbility : PlayerAbility {
-    [InjectComponent] public new Rigidbody rigidbody;
-    [InjectComponent] public Animator animator;
-    [InjectComponent] public new Camera camera;
+    [InjectComponent] public PlayerMovement playerMovement;
 
     #region PlayerAbilityProperties
     public override float resourceCost => 0f; // jumping does not use stamina
@@ -16,15 +14,11 @@ public class PlayerJumpAbility : PlayerAbility {
     #region Variable State
     public uint jumpCount = 0;
     private float jumpStartTime = 0f;
-    private bool isJumping = false;
+    public bool isJumping { get; private set; } = false;
     #endregion
     
     public float elapsedJumpTime => isJumping ? Time.time - jumpStartTime : 0f;
 
-    /// <summary>
-    /// initial jump velocity, calculated using jump height + effective gravity
-    /// </summary>
-    private float jumpVelocity => (float) Math.Sqrt(2 * Mathf.Abs(currentUpGravity.y) * player.config.jumpHeight);
     private Vector3 currentUpGravity =>
         player.config.useGravityModifications 
             ? Physics.gravity * player.config.upGravityMultiplier 
@@ -80,26 +74,24 @@ public class PlayerJumpAbility : PlayerAbility {
             case JumpAbilityUseStatus.CanGroundJump:
                 jumpCount = 1;
                 isJumping = true;
-                rigidbody.velocity = Vector3.up * jumpVelocity;
                 jumpStartTime = Time.time;
+                playerMovement.ApplyJump(player.config.jumpHeight);
                 FireEvent(PlayerEvent.Type.FloorJump);
                 break;
             case JumpAbilityUseStatus.CanAirJump:
                 jumpCount += 1;
                 isJumping = true;
-                rigidbody.velocity = Vector3.up * jumpVelocity;
                 jumpStartTime = Time.time;
+                playerMovement.ApplyJump(player.config.jumpHeight);
                 FireEvent(PlayerEvent.Type.AirJump);
                 break;
             case JumpAbilityUseStatus.CanWallJump:
                 jumpCount = 1;
                 isJumping = true;
-                var wallPushVelocity = currentWallNormal * jumpVelocity * player.config.wallJumpMultiplier;
-                var normalJumpVelocity = Vector3.up * jumpVelocity;
-                wallPushVelocity += normalJumpVelocity;
-                if (wallPushVelocity.y > normalJumpVelocity.y)
-                    wallPushVelocity.y = normalJumpVelocity.y;
-                rigidbody.velocity = wallPushVelocity;
+                // TODO: check if this results in correct wall jump behavior
+                playerMovement.ApplyJump(
+                    player.config.jumpHeight * player.config.wallJumpMultiplier,
+                    currentWallNormal);
                 jumpStartTime = Time.time;
                 FireEvent(PlayerEvent.Type.WallJump);
                 break;
@@ -158,12 +150,12 @@ public class PlayerJumpAbility : PlayerAbility {
         dirtyRaycastInfo = false;
         var wallLayer = LayerMask.GetMask("Wall");
         hitGround = Physics.Raycast(
-            rigidbody.position, 
+            player.transform.position, 
             Vector3.down, 
             out groundHitInfo,
             player.config.playerRayDistanceToGround);
         hitWall = Physics.Raycast(
-            rigidbody.position, 
+            player.transform.position, 
             transform.forward, 
             out wallHitInfo, 
             player.config.wallRaycastDistance,
@@ -174,11 +166,10 @@ public class PlayerJumpAbility : PlayerAbility {
     /// Physics update:
     /// - invalidates raycast info (effectively fires new raycasts to determine if player is near wall / floor)
     /// - fires <see cref="PlayerEvent.Type.EndJump"/> when player first touches the floor
-    /// - applies gravity modifications, if enabled
     /// </summary>
     void FixedUpdate() {
-        // invalidate prev raycast info (force a call to UpdateRaycastInfo() on the next property access)
         dirtyRaycastInfo = true;
+        UpdateRaycastInfo();
         
         // check if we're currently grounded
         // if we're not grounded and were previously jumping, update isJumping + fire an end jumping event
@@ -187,15 +178,6 @@ public class PlayerJumpAbility : PlayerAbility {
             jumpCount = 0;
             FireEvent(PlayerEvent.Type.EndJump);
         }
-        
-        // apply gravity modifications (TODO: move to a PlayerGravityController class)
-        if (player.config.useGravityModifications && rigidbody.velocity.y != 0f && !isPlayerGrounded) {
-            if (rigidbody.velocity.y <= 0f) {
-                rigidbody.velocity += Physics.gravity * (player.config.downGravityMultiplier - 1f) * Time.fixedDeltaTime;
-            } else {
-                rigidbody.velocity -= Physics.gravity * (player.config.upGravityMultiplier - 1f) * Time.fixedDeltaTime;
-            }
-        }
     }
 
     public override void DrawPlayerAbilityDebugGUI() {
@@ -203,24 +185,18 @@ public class PlayerJumpAbility : PlayerAbility {
         GUILayout.Label("is jumping? " + isJumping);
         GUILayout.Label("jump count: " + jumpCount + " / " + player.config.maxJumps);
         GUILayout.Label("can jump? " + jumpAbilityStatus);
-        GUILayout.Label("jump height: " + player.config.jumpHeight);
-        GUILayout.Label("derived jump v0: " + jumpVelocity);
-        GUILayout.Label("current velocity: " + rigidbody.velocity);
+
+        var jumpHeight = player.config.jumpHeight;
+        GUILayout.Label("jump height: " + jumpHeight);
+        GUILayout.Label("calculated jump velocity " + playerMovement.CalculateJumpVelocity(jumpHeight));
+        GUILayout.Label("calculated wall jump velocity " + playerMovement.CalculateJumpVelocity(jumpHeight, currentWallNormal));
+
+        var currentVelocity = playerMovement.rigidbody.velocity;
+        GUILayout.Label("current velocity: " + currentVelocity);
         GUILayout.Label("time since jump started: " + elapsedJumpTime);
         GUILayout.Label("is on ground? " + isPlayerGrounded);
         GUILayout.Label("is near wall? " + isPlayerNearWall);
         GUILayout.Label("wall normal: " + currentWallNormal);
-        var targetGravity = player.config.useGravityModifications
-            ? rigidbody.velocity.y <= 0f ? Physics.gravity * player.config.downGravityMultiplier 
-            : Physics.gravity * player.config.upGravityMultiplier
-            : Physics.gravity;
-        var deltaGravity = player.config.useGravityModifications
-            ? rigidbody.velocity.y <= 0f ? Physics.gravity * (player.config.downGravityMultiplier - 1f)
-            : Physics.gravity * (player.config.upGravityMultiplier - 1f) * -1f
-            : Vector3.zero;
-        GUILayout.Label("target gravity " + targetGravity);
-        GUILayout.Label("delta gravity " + deltaGravity);
-        GUILayout.Label("fixed dt " + Time.fixedDeltaTime);
-        
+        GUILayout.Label("current gravity: " + (GetComponent<PlayerGravity>()?.gravity ?? 0f));
     }
 }
