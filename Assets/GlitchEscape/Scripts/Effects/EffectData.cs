@@ -22,6 +22,7 @@ namespace GlitchEscape.Effects {
     class EffectData<TOwner, TState> : IEffectHandle, IComparable<EffectData<TOwner, TState>> 
             where TState : EffectState<TOwner, TState> {
         public int id { get; private set; }
+        private EffectState<TOwner, TState> owner { get; }
         private IEffector<TOwner, TState> effector;
         private Type effectorType;
         public IEffectController effectController { get; set; }
@@ -34,8 +35,9 @@ namespace GlitchEscape.Effects {
             effectorType = typeof(TEffector);
         }
 
-        public EffectData(int id, IEffectController controller = null) {
+        public EffectData(int id, EffectState<TOwner, TState> owner, IEffectController controller = null) {
             this.id = id;
+            this.owner = owner;
             this.effectController = controller;
             this._flags = 0;
         }
@@ -85,6 +87,7 @@ namespace GlitchEscape.Effects {
                 _flags |= SETTING_ACTIVE_FLAG;
                 effectController.active = value;
                 _flags &= ~SETTING_ACTIVE_FLAG;
+                owner.RebuildState();
             }
         }
         public bool finished {
@@ -96,12 +99,13 @@ namespace GlitchEscape.Effects {
                 _flags |= SETTING_FINISHED_FLAG;
                 effectController.active = value;
                 _flags &= ~SETTING_FINISHED_FLAG;
+                owner.RebuildState();
             }
         }
         public void Cancel() {
             if (!cancelled) {
                 _flags |= SET_CANCELLED_FLAG;
-                effectController.OnCancelled();
+                effectController?.OnCancelled();
             }
         }
         public int CompareTo(EffectData<TOwner, TState> other) {

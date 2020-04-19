@@ -5,12 +5,17 @@ using UnityEngine;
 
 namespace GlitchEscape.Effects {
     class EffectList<TOwner, TState> : IEnumerable<EffectData<TOwner, TState>> where TState : EffectState<TOwner, TState> {
+        private EffectState<TOwner, TState> owner { get; }
         private SortedSet<EffectData<TOwner, TState>> effects { get; } = new SortedSet<EffectData<TOwner, TState>>();
         private int nextId = 0;
+
+        public EffectList(EffectState<TOwner, TState> owner) {
+            this.owner = owner;
+        }
         public IEffectHandle AddEffect<TEffector>(TEffector effector, IEffectController effectController = null) 
             where TEffector : struct, IEffector<TOwner, TState>
         {
-            var effect = new EffectData<TOwner, TState>(++nextId, effectController);
+            var effect = new EffectData<TOwner, TState>(++nextId, owner, effectController);
             effect.SetEffector(effector);
             effects.Add(effect);
             Debug.Log("Added effect: "+effect);
