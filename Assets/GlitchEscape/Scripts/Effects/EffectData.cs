@@ -3,23 +3,6 @@ using System.Text;
 using UnityEngine;
 
 namespace GlitchEscape.Effects {
-    public interface IEffector<TOwner, TState> where TState : EffectState<TOwner, TState> {
-        void Apply(TState state);
-    }
-    public interface IEffect {
-        IEffectBehavior effectBehavior { get; set; }
-        bool active { get; set; }
-        bool finished { get; }
-        void Cancel();
-    }
-    
-
-    public interface IEffectBehavior {
-        bool active { get; set; }
-        bool finished { get; }
-        void OnCancelled();
-        void Update();
-    }
     class EffectData<TOwner, TState> : IEffect, IComparable<EffectData<TOwner, TState>> 
             where TState : EffectState<TOwner, TState> {
         public int id { get; private set; }

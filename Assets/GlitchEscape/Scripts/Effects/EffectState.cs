@@ -2,16 +2,6 @@ using System.Text;
 using UnityEngine;
 
 namespace GlitchEscape.Effects {
-    struct BasicEffectBehavior : IEffectBehavior {
-        public bool active { get; set; }
-        public bool finished { get; set; }
-        public void OnCancelled() {}
-        public void Update() {}
-        public static BasicEffectBehavior Create() {
-            return new BasicEffectBehavior { active = true, finished = false };
-        }
-    }
-    
     public abstract class EffectState<TOwner, TState> where TState : EffectState<TOwner, TState> {
         private TOwner owner { get; }
         private EffectList<TOwner, TState> effects { get; }
