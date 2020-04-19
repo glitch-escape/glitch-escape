@@ -20,7 +20,7 @@ public class PlayerDashAbility : PlayerAbility {
 
     private float dashStrength =>
         player.config.dashAbilityPressTimeRange.SampleCurve(
-            dashPressTime,
+            inputButton.pressTime,
             player.config.dashAbilityPressCurve);
 
     private float dashDistance => player.config.dashAbilityMoveRange.Lerp(dashStrength);
@@ -39,8 +39,6 @@ public class PlayerDashAbility : PlayerAbility {
     protected override bool CanStartAbility() {
         return PlayerControls.instance.moveInput.magnitude > 0f;
     }
-
-    private float dashPressTime = 0f;
 
     // TeleportEffectGraph variables
     public const string GLITCH_MATERIAL_EMISSION_COLOR = "EmissionColor_9A7229B8";
@@ -99,16 +97,23 @@ public class PlayerDashAbility : PlayerAbility {
     private IEffectHandle increaseMoveSpeedEffect;
     private IEffectHandle disableGravityEffect;
 
+    private float startTime = 0f;
+
     protected override void OnAbilityStart() {
         increaseMoveSpeedEffect = playerMovement.ApplyDashSpeed(30f);
         increaseMoveSpeedEffect.active = true;
         disableGravityEffect = playerGravity.ModifyGravity(0f);
         disableGravityEffect.active = true;
+        GetNewResetDashVisualEffect().Start();
+        startTime = Time.time;
     }
 
     protected override void OnAbilityEnd() {
         increaseMoveSpeedEffect.Cancel();
         disableGravityEffect.Cancel();
+        reusedDashVisualEffect?.Cancel();
+        var gravity = playerGravity.gravity;
+        playerMovement.ApplyJump(-gravity * (Time.time - startTime));
     }
 
     void Unused() {
