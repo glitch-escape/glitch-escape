@@ -45,9 +45,12 @@ namespace GlitchEscape.Scripts.DebugUI {
                 }
             }
         }
+
+        private Vector2 scrollPos = Vector2.zero;
         private void OnGUI() {
             if (!visible) return;
             GUILayout.Label("debug info: (use dpad to navigate)");
+            scrollPos = GUILayout.BeginScrollView(scrollPos);
             for (var i = 0; i < debugUIComponents.Length; ++i) {
                 var selected = i == selectionIndex;
                 var expanded = activeComponents.Contains(debugUIComponents[i].debugName);
@@ -55,6 +58,7 @@ namespace GlitchEscape.Scripts.DebugUI {
                 else GUILayout.Box(debugUIComponents[i].debugName);
                 if (expanded) debugUIComponents[i].DrawDebugUI();
             }
+            GUILayout.EndScrollView();
         }
     }
 }
