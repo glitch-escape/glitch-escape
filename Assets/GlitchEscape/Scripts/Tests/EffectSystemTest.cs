@@ -32,7 +32,10 @@ namespace Tests
             }
 
             struct IncreaseTestCountEffect : IEffector<EffectTest, State> {
-                public void Apply(State state) { ++state.testEffectCount; }
+                public void Apply(State state) {
+                    ++state.testEffectCount;
+                    Debug.Log("Increased test count to "+state.testEffectCount);
+                }
             }
             public IEffectHandle IncreaseTestCount () {
                 return state.CreateEffect(new IncreaseTestCountEffect());

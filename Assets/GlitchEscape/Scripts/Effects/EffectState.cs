@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace GlitchEscape.Effects {
     struct EmptyEffectController : IEffectController {
         public bool active { get; set; }
@@ -25,21 +27,32 @@ namespace GlitchEscape.Effects {
         }
 
         public void Reset() {
+            _rebuildingState = true;
+            Debug.Log("State: Reset()");
             effects.Clear();
+            _rebuildingState = false;
+            RebuildState();
         }
 
         protected abstract void SetDefaults(TOwner user);
 
         public void SetDefaults() {
+            // Debug.Log("State: SetDefaults()");
             SetDefaults(owner);
         }
         public void Update() {
+            // Debug.Log("State: Update()");
             effects.UpdateControllers();
         }
 
+        private bool _rebuildingState = false;
         public void RebuildState() {
+            if (_rebuildingState) return;
+            _rebuildingState = true;
+            Debug.Log("State: RebuildState()");
             SetDefaults();
             effects.ApplyStateEffects((TState)this);
+            _rebuildingState = false;
         }
     }
 }

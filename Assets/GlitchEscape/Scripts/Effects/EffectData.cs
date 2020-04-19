@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using UnityEngine;
 
 namespace GlitchEscape.Effects {
     public interface IEffector<TOwner, TState> where TState : EffectState<TOwner, TState> {
@@ -53,9 +54,9 @@ namespace GlitchEscape.Effects {
             var type = effectorType;
             var fields = type.GetFields();
             var sb = new StringBuilder();
-            sb.AppendFormat("{0} {1} effect {2} {{",
+            sb.AppendFormat("{0} {1} effect (id {2}) {3} {{",
                 active ? "active" : "inactive",
-                typeof(TOwner).Name, type.Name);
+                typeof(TOwner).Name, id, type.Name);
             var first = true;
             foreach (var field in fields) {
                 var fmt = first ? "{0} {1} = {2}" : ", {0} {1} = {2}";
@@ -81,9 +82,11 @@ namespace GlitchEscape.Effects {
         public bool active {
             get => !cancelled && (effectController?.active ?? true);
             set {
+                Debug.Log("Set active = "+value+": "+this);
                 if (cancelled || effectController == null || (_flags & SETTING_ACTIVE_FLAG) != 0
                     || effectController.active == value)
                     return;
+                Debug.Log(" => effect changed");
                 _flags |= SETTING_ACTIVE_FLAG;
                 effectController.active = value;
                 _flags &= ~SETTING_ACTIVE_FLAG;
@@ -93,9 +96,11 @@ namespace GlitchEscape.Effects {
         public bool finished {
             get => cancelled || (effectController?.finished ?? false);
             set {
+                Debug.Log("Set finished = "+value+": "+this);
                 if (effectController == null || (_flags & SETTING_FINISHED_FLAG) == 0
                     || effectController.finished == value)
                     return;
+                Debug.Log(" => effect changed");
                 _flags |= SETTING_FINISHED_FLAG;
                 effectController.active = value;
                 _flags &= ~SETTING_FINISHED_FLAG;
@@ -106,6 +111,7 @@ namespace GlitchEscape.Effects {
             if (!cancelled) {
                 _flags |= SET_CANCELLED_FLAG;
                 effectController?.OnCancelled();
+                owner.RebuildState();
             }
         }
         public int CompareTo(EffectData<TOwner, TState> other) {
