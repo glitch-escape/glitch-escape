@@ -382,27 +382,27 @@ namespace Tests
             Assert.AreEqual("bar", component.state.foo);
 
             var setBaz = component.SetFoo("baz");
-            Assert.AreEqual(4, (double)component.state.testEffectCount);
+            Assert.AreEqual(5, (double)component.state.testEffectCount);
             Assert.AreEqual(10, (double)component.state.bar);
             Assert.AreEqual("baz", component.state.foo);
             
             set10.Cancel();
-            Assert.AreEqual(3, (double)component.state.testEffectCount);
+            Assert.AreEqual(4, (double)component.state.testEffectCount);
             Assert.AreEqual((double)component.config.bar, (double)component.state.bar);
             Assert.AreEqual("baz", component.state.foo);
             
             setBaz.Cancel();
-            Assert.AreEqual(2, (double)component.state.testEffectCount);
+            Assert.AreEqual(3, (double)component.state.testEffectCount);
             Assert.AreEqual((double)component.config.bar, (double)component.state.bar);
             Assert.AreEqual("bar", component.state.foo);
             
             setFubar.Cancel();
-            Assert.AreEqual(1, (double)component.state.testEffectCount);
+            Assert.AreEqual(2, (double)component.state.testEffectCount);
             Assert.AreEqual((double)component.config.bar, (double)component.state.bar);
             Assert.AreEqual("bar", component.state.foo);
             
             setBar.Cancel();
-            Assert.AreEqual(0, (double)component.state.testEffectCount);
+            Assert.AreEqual(1, (double)component.state.testEffectCount);
             Assert.AreEqual((double)component.config.bar, (double)component.state.bar);
             Assert.AreEqual("", component.state.foo);
 
@@ -455,7 +455,7 @@ namespace Tests
             setBaz.active = false;
             Assert.AreEqual(3, (double)component.state.testEffectCount);
             Assert.AreEqual(10, (double)component.state.bar);
-            Assert.AreEqual("bar", component.state.foo);
+            Assert.AreEqual("", component.state.foo);
             
             component.state.Reset();
             Assert.AreEqual(0, (double)component.state.testEffectCount);

@@ -8,6 +8,7 @@ namespace GlitchEscape.Effects {
         private TState state { get; }
         private List<Effect<TOwner, TState>> activeEffects { get; } = new List<Effect<TOwner, TState>>();
         private bool dirty { get; set; } = true;
+        private bool reapplyingEffects = false;
         
         public EffectList(TState state) {
             this.state = state;
@@ -23,37 +24,37 @@ namespace GlitchEscape.Effects {
             activeEffects.Add(effect);
             if (effect.active) {
                 dirty = true;
-                ReapplyEffects();
+                if (!reapplyingEffects) ReapplyEffects();
             }
         }
 
         public void RemoveEffect(Effect<TOwner, TState> effect) {
-            activeEffects.Remove(effect);
             Debug.Log(""+Time.time+" Removing effect: "+effect);
             dirty = true;
-            ReapplyEffects();
+            if (!reapplyingEffects) ReapplyEffects();
         }
 
-        private void ReapplyEffects() {
-            if (dirty) {
-                Debug.Log(""+Time.time+" dirty, reapplying "+activeEffects.Count+" effect(s)");
-                dirty = false;
-                state.SetDefaults();
-                activeEffects.RemoveAll(effect => effect.cancelled);
-                Debug.Log("" + Time.time + " applying " + activeEffects.Count + " remaining effect(s)");
-                activeEffects.ForEach(effect => {
-                    if (effect.active) {
-                        effect.Apply(state);
-                    }
-                });
-            }
+        public void ReapplyEffects() {
+            reapplyingEffects = true;
+            dirty = false;
+            state.SetDefaults();
+            activeEffects.RemoveAll(effect => effect.cancelled);
+            Debug.Log("" + Time.time + " applying " + activeEffects.Count + " remaining effect(s)");
+            activeEffects.ForEach(effect => {
+                if (effect.active) {
+                    effect.Apply(state);
+                }
+            });
+            reapplyingEffects = false;
         }
 
         public void ClearEffects() {
+            reapplyingEffects = true;
             Debug.Log(""+Time.time+" Clearing all effects");
             activeEffects.ForEach(effect => effect.Cancel());
             activeEffects.Clear();
             dirty = true;
+            reapplyingEffects = false;
             ReapplyEffects();
         }
     }

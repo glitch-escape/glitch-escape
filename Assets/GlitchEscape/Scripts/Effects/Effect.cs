@@ -21,7 +21,18 @@ namespace GlitchEscape.Effects {
             applyEffects(state);
         }
 
-        public bool active = true;
+        private bool _active = true;
+
+        public bool active {
+            get => _active && !cancelled;
+            set {
+                var prevActive = _active;
+                _active = value;
+                if (value != prevActive) {
+                    target?.ReapplyEffects();
+                }
+            }
+        }
 
         public void Cancel() {
             Debug.Log(""+Time.time+" Cancelling effect effect "+this);
