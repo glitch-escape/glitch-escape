@@ -96,13 +96,13 @@ public class PlayerDashAbility : PlayerAbility {
         return abilityDuration;
     }
 
-    private Effect<PlayerMovement, PlayerMovement.State> increaseMoveSpeedEffect;
-    private Effect<PlayerGravity, PlayerGravity.State> disableGravityEffect;
+    private IEffectHandle increaseMoveSpeedEffect;
+    private IEffectHandle disableGravityEffect;
 
     protected override void OnAbilityStart() {
         increaseMoveSpeedEffect = playerMovement.ApplyDashSpeed(30f);
         increaseMoveSpeedEffect.active = true;
-        disableGravityEffect = playerGravity.ApplyGravityStrengthMultiplier(0f);
+        disableGravityEffect = playerGravity.ModifyGravity(0f);
         disableGravityEffect.active = true;
     }
 
@@ -122,7 +122,7 @@ public class PlayerDashAbility : PlayerAbility {
 
         // cancel gravity
         var gravity = playerGravity.gravity;
-        var disableGravityEffect = playerGravity.ApplyGravityStrengthMultiplier(0f);
+        var disableGravityEffect = playerGravity.ModifyGravity(0f);
         var gravityEffect = effects.AddEffect(new EffectActions {
             applyEffect = () => disableGravityEffect.active = true,
             unapplyEffect = () => disableGravityEffect.Cancel()

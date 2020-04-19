@@ -5,22 +5,26 @@ namespace GlitchEscape.Effects {
 
         public EffectState(TOwner owner) {
             this.owner = owner;
-            effects = new EffectList<TOwner, TState>((TState) this);
+            effects = new EffectList<TOwner, TState>();
             SetDefaults(owner);
         }
 
-        public Effect<TOwner, TState> CreateEffect(StateEffector<TOwner, TState> effect) {
-            return new Effect<TOwner, TState>(effect, effects);
+        public IEffectHandle CreateEffect<TEffector>(TEffector effector)
+            where TEffector : struct, IEffector<TOwner, TState> {
+            return effects.AddEffect(effector);
         }
 
         public void Reset() {
-            effects.ClearEffects();
+            effects.Clear();
         }
 
         protected abstract void SetDefaults(TOwner user);
 
         public void SetDefaults() {
             SetDefaults(owner);
+        }
+        public void Update() {
+            effects.UpdateControllers();
         }
     }
 }

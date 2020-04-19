@@ -5,8 +5,6 @@ using UnityEngine;
 using GlitchEscape;
 using GlitchEscape.Effects;
 using GlitchEscape.Scripts.DebugUI;
-using Effect = GlitchEscape.Effects.Effect<PlayerGravity, PlayerGravity.State>;
-using Effector = GlitchEscape.Effects.StateEffector<PlayerGravity, PlayerGravity.State>;
     
 /// <summary>
 /// Implements player gravity.
@@ -95,37 +93,33 @@ public class PlayerGravity : PlayerComponent, IResettable, IPlayerDebug {
     void OnEnable() { state = new State(this); }
     public void Reset() { state.Reset(); }
     
-    /// <summary>
-    /// new impl
-    /// </summary>
-    private EffectBag<PlayerGravity, State> effects = new EffectBag<PlayerGravity, State>();
-    IEffectHandle CreateEffect<TEffector>(TEffector effector) where TEffector : struct, IEffector<PlayerGravity, State> {
-        return effects.AddEffect(effector);
-    }
-    
     public struct ModifyGravityEffect : IEffector<PlayerGravity, State> {
         public float strength;
         public void Apply(State state) {
             state.gravityMultipliers *= strength;
         }
     }
-    public IEffectHandle ModifyGravity(float strength) {
-        return CreateEffect(new ModifyGravityEffect { strength = strength});
-    }
     
     /// <summary>
     /// Applies a cumulative gravity multiplier (note: can use strength = 0f to disable gravity entirely)
     /// </summary>
-    public Effect<PlayerGravity, State> ApplyGravityStrengthMultiplier(float strength) {
-        return state.CreateEffect(newState => newState.gravityMultipliers *= strength);
+    public IEffectHandle ModifyGravity(float strength) {
+        return state.CreateEffect(new ModifyGravityEffect { strength = strength});
+    }
+
+    public struct SetGravityDirectionEffect : IEffector<PlayerGravity, State> {
+        public Vector3 direction;
+        public void Apply(State state) {
+            state.direction = direction;
+        }
     }
     
     /// <summary>
     /// Changes the direction gravity is applied in.
     /// Assumes this direction is a normalized vector; may have unexpected results otherwise.
     /// </summary>
-    public Effect<PlayerGravity, State> SetGravityDirection(Vector3 direction) {
-        return state.CreateEffect(newState => newState.direction = direction);
+    public IEffectHandle SetGravityDirection(Vector3 direction) {
+        return state.CreateEffect(new SetGravityDirectionEffect { direction = direction });
     }
 
 

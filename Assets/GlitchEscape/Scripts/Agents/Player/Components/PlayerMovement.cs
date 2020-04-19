@@ -301,14 +301,23 @@ public class PlayerMovement : PlayerComponent, IResettable, IPlayerDebug {
     private State state;
     private void OnEnable() { state = new State(this); }
 
-    public Effect<PlayerMovement, State> ApplyDashSpeed(float speed) {
-        return state.CreateEffect(newState => newState.dashSpeed += speed);
+    struct ApplyDashSpeedEffect : IEffector<PlayerMovement, State> {
+        public float dashSpeed;
+        public void Apply(State state) { state.dashSpeed += dashSpeed; }
     }
-    public Effect<PlayerMovement, State> AddMoveSpeedMultiplier(float multiplier) {
-        return state.CreateEffect(newState => newState.moveSpeedMultiplier *= multiplier);
+    public IEffectHandle ApplyDashSpeed(float speed) {
+        return state.CreateEffect(new ApplyDashSpeedEffect { dashSpeed = speed });
     }
-    public Effect<PlayerMovement, State> SetMovementEnabled(bool enabled) {
-        return state.CreateEffect(newState => newState.enabled = enabled);
+    struct AddMoveSpeedEffect : IEffector<PlayerMovement, State> {
+        public float multiplier;
+        public void Apply(State state) { state.moveSpeedMultiplier *= multiplier; }
+    }
+    public IEffectHandle AddMoveSpeed(float multiplier) {
+        return state.CreateEffect(new AddMoveSpeedEffect { multiplier = multiplier });
+    }
+    struct SetMovementEnabledEffect : IEffector<PlayerMovement, State> {
+        public bool enabled;
+        public void Apply(State state) { state.enabled = enabled; }
     }
     
     [Tooltip("Player movement mode")] 
