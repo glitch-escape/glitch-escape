@@ -103,7 +103,7 @@ namespace Tests
         }
 
         [Test]
-        public void TestEffectReset() {
+        public void TestEffectResetMultiple() {
             var component = new EffectTest();
             component.Init();
             Assert.AreEqual(0, (double)component.state.testEffectCount);
@@ -151,6 +151,101 @@ namespace Tests
             Assert.AreEqual(true, set10.active);
             Assert.AreEqual(true, setBar.active);
         }
+        
+        [Test]
+        public void TestEffectCancelSetsEffectFlags() {
+            var component = new EffectTest();
+            component.Init();
+            Assert.AreEqual(0, (double)component.state.testEffectCount);
+            Assert.AreEqual("", component.state.foo);
+            
+            var effect = component.SetFoo("foo");
+            Assert.AreEqual(false, effect.cancelled);
+            Assert.AreEqual(true, effect.active);
+
+            effect.Cancel();
+            Assert.AreEqual(effect.cancelled, true);
+        }
+
+        [Test]
+        public void TestEffectCancelUpdatesState() {
+            var component = new EffectTest();
+            component.Init();
+            Assert.AreEqual(0, (double)component.state.testEffectCount);
+            Assert.AreEqual("", component.state.foo);
+            
+            var effect = component.SetFoo("foo");
+            Assert.AreEqual(false, effect.cancelled);
+            Assert.AreEqual(true, effect.active);
+            Assert.AreEqual(1, (double)component.state.testEffectCount);
+            Assert.AreEqual("foo", component.state.foo);
+
+            effect.Cancel();
+            Assert.AreEqual(effect.cancelled, true);
+            Assert.AreEqual(0, (double)component.state.testEffectCount);
+            Assert.AreEqual("", component.state.foo);
+        }
+
+        [Test]
+        public void TestInactivateEffectSetsEffectFlags() {
+            var component = new EffectTest();
+            component.Init();
+            Assert.AreEqual(0, (double)component.state.testEffectCount);
+            Assert.AreEqual("", component.state.foo);
+            
+            var effect = component.SetFoo("foo");
+            Assert.AreEqual(false, effect.cancelled);
+            Assert.AreEqual(true, effect.active);
+
+            effect.active = false;
+            Assert.AreEqual(false, effect.cancelled);
+            Assert.AreEqual(false, effect.active);
+        }
+        
+        [Test]
+        public void TestReactivateEffectSetsEffectFlags() {
+            var component = new EffectTest();
+            component.Init();
+            var effect = component.SetFoo("foo");
+            effect.active = false;
+            Assert.AreEqual(false, effect.cancelled);
+            Assert.AreEqual(false, effect.active);
+
+            effect.active = true;
+            Assert.AreEqual(false, effect.cancelled);
+            Assert.AreEqual(true, effect.active);
+        }
+        
+        [Test]
+        public void TestReactivateEffectUpdatesState() {
+            var component = new EffectTest();
+            component.Init();
+            var effect = component.SetFoo("foo");
+            effect.active = false;
+            Assert.AreEqual(0, (double)component.state.testEffectCount);
+            Assert.AreEqual("", component.state.foo);
+            
+            effect.active = true;
+            Assert.AreEqual(1, (double)component.state.testEffectCount);
+            Assert.AreEqual("foo", component.state.foo);
+        }
+        
+        [Test]
+        public void TestInactivateEffectUpdatesState() {
+            var component = new EffectTest();
+            component.Init();
+            Assert.AreEqual(0, (double)component.state.testEffectCount);
+            Assert.AreEqual("", component.state.foo);
+            
+            var effect = component.SetFoo("foo");
+            Assert.AreEqual(1, (double)component.state.testEffectCount);
+            Assert.AreEqual("foo", component.state.foo);
+
+            effect.active = false;
+            Assert.AreEqual(0, (double)component.state.testEffectCount);
+            Assert.AreEqual("", component.state.foo);
+        }
+        
 
         [Test]
         public void TestEffectsAreSetInactiveWhenCancelled() {
@@ -222,25 +317,47 @@ namespace Tests
         }
 
         [Test]
-        public void TestEffectsAreCancelledByReset() {
+        public void TestMultipleEffectsAreCancelledByReset() {
             var component = new EffectTest();
             component.Init();
             Assert.AreEqual(0, (double)component.state.testEffectCount);
+            Assert.AreEqual("", component.state.foo);
             
             var test1 = component.IncreaseTestCount();
             var test2 = component.IncreaseTestCount();
             var setFubar = component.SetFoo("fubar");
             var set10 = component.SetBar(10);
             var setBar = component.SetFoo("bar");
+            
             Assert.AreEqual(true, test1.active);
             Assert.AreEqual(true, test2.active);
             Assert.AreEqual(true, setFubar.active);
             Assert.AreEqual(true, set10.active);
             Assert.AreEqual(true, setBar.active);
+            
+            Assert.AreEqual(false, test1.cancelled);
+            Assert.AreEqual(false, test2.cancelled);
+            Assert.AreEqual(false, setFubar.cancelled);
+            Assert.AreEqual(false, set10.cancelled);
+            Assert.AreEqual(false, setBar.cancelled);
+            
+            Assert.AreEqual(5, (double)component.state.testEffectCount);
+            Assert.AreEqual(10, (double)component.state.bar);
+            Assert.AreEqual("bar", component.state.foo);
+            
+            component.state.Reset();
+            Assert.AreEqual(true, test1.cancelled);
+            Assert.AreEqual(true, test2.cancelled);
+            Assert.AreEqual(true, setFubar.cancelled);
+            Assert.AreEqual(true, set10.cancelled);
+            Assert.AreEqual(true, setBar.cancelled);
+            
+            Assert.AreEqual(0, (double)component.state.testEffectCount);
+            Assert.AreEqual("", component.state.foo);
         }
         
         [Test]
-        public void TestEffectCancel() {
+        public void TestInterleavedEffectCancel() {
             var component = new EffectTest();
             component.Init();
             Assert.AreEqual(0, (double)component.state.testEffectCount);
@@ -296,7 +413,7 @@ namespace Tests
         }
 
         [Test]
-        public void TestEffectSetActive() {
+        public void TestinterleavedEffectSetActive() {
             var component = new EffectTest();
             component.Init();
             Assert.AreEqual(0, (double)component.state.testEffectCount);
@@ -331,8 +448,12 @@ namespace Tests
             Assert.AreEqual("baz", component.state.foo);
 
             setFubar.active = false;
-            setBaz.active = false;
             Assert.AreEqual(4, (double)component.state.testEffectCount);
+            Assert.AreEqual(10, (double)component.state.bar);
+            Assert.AreEqual("baz", component.state.foo);
+            
+            setBaz.active = false;
+            Assert.AreEqual(3, (double)component.state.testEffectCount);
             Assert.AreEqual(10, (double)component.state.bar);
             Assert.AreEqual("bar", component.state.foo);
             
