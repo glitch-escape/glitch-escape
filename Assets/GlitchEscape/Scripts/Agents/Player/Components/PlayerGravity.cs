@@ -94,7 +94,25 @@ public class PlayerGravity : PlayerComponent, IResettable, IPlayerDebug {
     private State state;
     void OnEnable() { state = new State(this); }
     public void Reset() { state.Reset(); }
-
+    
+    /// <summary>
+    /// new impl
+    /// </summary>
+    private EffectBag<PlayerGravity, State> effects = new EffectBag<PlayerGravity, State>();
+    IEffectHandle CreateEffect<TEffector>(TEffector effector) where TEffector : struct, IEffector<PlayerGravity, State> {
+        return effects.AddEffect(effector);
+    }
+    
+    public struct ModifyGravityEffect : IEffector<PlayerGravity, State> {
+        public float strength;
+        public void Apply(State state) {
+            state.gravityMultipliers *= strength;
+        }
+    }
+    public IEffectHandle ModifyGravity(float strength) {
+        return CreateEffect(new ModifyGravityEffect { strength = strength});
+    }
+    
     /// <summary>
     /// Applies a cumulative gravity multiplier (note: can use strength = 0f to disable gravity entirely)
     /// </summary>
