@@ -10,6 +10,9 @@ public class PlayerConfig : ScriptableObject {
     public AnimationCurve mouseInputCurve = AnimationCurve.Linear(0f, 0f, 1f, 1f);
     public float mouseSensitivity = 1f;
 
+    [Header("Gravity")] 
+    public float gravity = 9.81f;
+
     [Header("Movement")]
     [Tooltip("Player movement speed (meters / second)")]
     [Range(0, 20)] public float runSpeed = 10f;
