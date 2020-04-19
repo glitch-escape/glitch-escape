@@ -100,9 +100,11 @@ public class PlayerDashAbility : PlayerAbility {
 
         // cancel gravity
         var gravity = playerGravity.gravity;
-        var gravityEffect = effects.AddEffect(
-            playerGravity.SetGravityStrength(0f), 
-            () => this.duration);
+        var disableGravityEffect = playerGravity.ApplyGravityStrengthMultiplier(0f);
+        var gravityEffect = effects.AddEffect(new EffectActions {
+            applyEffect = () => disableGravityEffect.active = true,
+            unapplyEffect = () => disableGravityEffect.Cancel()
+        }, () => this.duration);
         
         // but apply built up velocity when gravity ends
         gravityEffect.onEffectEnded += () =>

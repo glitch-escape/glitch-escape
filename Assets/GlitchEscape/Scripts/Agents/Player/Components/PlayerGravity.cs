@@ -80,12 +80,12 @@ public class PlayerGravity : PlayerComponent {
     public class State : EffectState<PlayerGravity, State> {
         public float gravity = 9.81f;
         public float gravityMultipliers = 1f;
-        public Vector3 direction = Vector3.up;
+        public Vector3 direction = Vector3.down;
 
         protected override void SetDefaults(PlayerGravity user) {
             gravity = user.player.config.gravity;
             gravityMultipliers = 1f;
-            direction = Vector3.up;
+            direction = Vector3.down;
         }
 
         public State(PlayerGravity owner) : base(owner) { }
