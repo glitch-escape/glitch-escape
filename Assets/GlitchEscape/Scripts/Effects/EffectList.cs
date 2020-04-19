@@ -12,10 +12,10 @@ namespace GlitchEscape.Effects {
         public EffectList(EffectState<TOwner, TState> owner) {
             this.owner = owner;
         }
-        public IEffectHandle AddEffect<TEffector>(TEffector effector, IEffectController effectController = null) 
+        public IEffect AddEffect<TEffector>(TEffector effector, IEffectBehavior effectBehavior = null) 
             where TEffector : struct, IEffector<TOwner, TState>
         {
-            var effect = new EffectData<TOwner, TState>(++nextId, owner, effectController);
+            var effect = new EffectData<TOwner, TState>(++nextId, owner, effectBehavior);
             effect.SetEffector(effector);
             effects.Add(effect);
             Debug.Log("Added effect: "+effect);

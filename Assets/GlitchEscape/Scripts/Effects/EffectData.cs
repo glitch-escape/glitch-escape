@@ -6,27 +6,27 @@ namespace GlitchEscape.Effects {
     public interface IEffector<TOwner, TState> where TState : EffectState<TOwner, TState> {
         void Apply(TState state);
     }
-    public interface IEffectHandle {
-        IEffectController effectController { get; set; }
+    public interface IEffect {
+        IEffectBehavior effectBehavior { get; set; }
         bool active { get; set; }
         bool finished { get; }
         void Cancel();
     }
     
 
-    public interface IEffectController {
+    public interface IEffectBehavior {
         bool active { get; set; }
         bool finished { get; }
         void OnCancelled();
         void Update();
     }
-    class EffectData<TOwner, TState> : IEffectHandle, IComparable<EffectData<TOwner, TState>> 
+    class EffectData<TOwner, TState> : IEffect, IComparable<EffectData<TOwner, TState>> 
             where TState : EffectState<TOwner, TState> {
         public int id { get; private set; }
         private EffectState<TOwner, TState> owner { get; }
         private IEffector<TOwner, TState> effector;
         private Type effectorType;
-        public IEffectController effectController { get; set; }
+        public IEffectBehavior effectBehavior { get; set; }
 
         private bool cancelled => (_flags & EFFECT_CANCELLED_FLAG) != 0;
         private int _flags;
@@ -36,17 +36,17 @@ namespace GlitchEscape.Effects {
             effectorType = typeof(TEffector);
         }
 
-        public EffectData(int id, EffectState<TOwner, TState> owner, IEffectController controller = null) {
+        public EffectData(int id, EffectState<TOwner, TState> owner, IEffectBehavior behavior = null) {
             this.id = id;
             this.owner = owner;
-            this.effectController = controller;
+            this.effectBehavior = behavior;
             this._flags = 0;
         }
         public void Apply(TState state) {
             effector.Apply(state);   
         }
         public void UpdateController() {
-            effectController?.Update();
+            effectBehavior?.Update();
         }
         
         // do full blown stringification using reflection
@@ -80,29 +80,29 @@ namespace GlitchEscape.Effects {
         // value assignments that will have no effects is meaningless
         private const int SET_CANCELLED_FLAG = 0xf;
         public bool active {
-            get => !cancelled && (effectController?.active ?? true);
+            get => !cancelled && (effectBehavior?.active ?? true);
             set {
                 Debug.Log("Set active = "+value+": "+this);
-                if (cancelled || effectController == null || (_flags & SETTING_ACTIVE_FLAG) != 0
-                    || effectController.active == value)
+                if (cancelled || effectBehavior == null || (_flags & SETTING_ACTIVE_FLAG) != 0
+                    || effectBehavior.active == value)
                     return;
                 Debug.Log(" => effect changed");
                 _flags |= SETTING_ACTIVE_FLAG;
-                effectController.active = value;
+                effectBehavior.active = value;
                 _flags &= ~SETTING_ACTIVE_FLAG;
                 owner.RebuildState();
             }
         }
         public bool finished {
-            get => cancelled || (effectController?.finished ?? false);
+            get => cancelled || (effectBehavior?.finished ?? false);
             set {
                 Debug.Log("Set finished = "+value+": "+this);
-                if (effectController == null || (_flags & SETTING_FINISHED_FLAG) == 0
-                    || effectController.finished == value)
+                if (effectBehavior == null || (_flags & SETTING_FINISHED_FLAG) == 0
+                    || effectBehavior.finished == value)
                     return;
                 Debug.Log(" => effect changed");
                 _flags |= SETTING_FINISHED_FLAG;
-                effectController.active = value;
+                effectBehavior.active = value;
                 _flags &= ~SETTING_FINISHED_FLAG;
                 owner.RebuildState();
             }
@@ -110,7 +110,7 @@ namespace GlitchEscape.Effects {
         public void Cancel() {
             if (!cancelled) {
                 _flags |= SET_CANCELLED_FLAG;
-                effectController?.OnCancelled();
+                effectBehavior?.OnCancelled();
                 owner.RebuildState();
             }
         }

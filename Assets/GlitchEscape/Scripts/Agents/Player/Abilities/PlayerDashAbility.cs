@@ -94,8 +94,8 @@ public class PlayerDashAbility : PlayerAbility {
         return abilityDuration;
     }
 
-    private IEffectHandle increaseMoveSpeedEffect;
-    private IEffectHandle disableGravityEffect;
+    private IEffect increaseMoveSpeedEffect;
+    private IEffect disableGravityEffect;
 
     private float startTime = 0f;
 

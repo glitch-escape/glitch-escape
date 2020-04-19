@@ -37,28 +37,28 @@ namespace Tests
                     Debug.Log("Increased test count to "+state.testEffectCount);
                 }
             }
-            public IEffectHandle IncreaseTestCount () {
+            public IEffect IncreaseTestCount () {
                 return state.CreateEffect(new IncreaseTestCountEffect());
             }
             struct SetFooEffect : IEffector<EffectTest, State> {
                 public string value;
                 public void Apply(State state) { ++state.testEffectCount; state.foo = value; }
             }
-            public IEffectHandle SetFoo(string value) {
+            public IEffect SetFoo(string value) {
                 return state.CreateEffect(new SetFooEffect { value = value });
             }
             struct SetBarEffect : IEffector<EffectTest, State> {
                 public int value;
                 public void Apply(State state) { ++state.testEffectCount; state.bar = value; }
             }
-            public IEffectHandle SetBar(int value) {
+            public IEffect SetBar(int value) {
                 return state.CreateEffect(new SetBarEffect { value = value });
             }
             struct AddBarEffect : IEffector<EffectTest, State> {
                 public int value;
                 public void Apply(State state) { ++state.testEffectCount; state.bar += value; }
             }
-            public IEffectHandle AddBar(int value) {
+            public IEffect AddBar(int value) {
                 return state.CreateEffect(new AddBarEffect { value = value });
             }
             struct MulBarEffect : IEffector<EffectTest, State> {

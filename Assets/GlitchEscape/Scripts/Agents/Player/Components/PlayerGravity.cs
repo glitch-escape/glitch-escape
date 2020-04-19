@@ -103,7 +103,7 @@ public class PlayerGravity : PlayerComponent, IResettable, IPlayerDebug {
     /// <summary>
     /// Applies a cumulative gravity multiplier (note: can use strength = 0f to disable gravity entirely)
     /// </summary>
-    public IEffectHandle ModifyGravity(float strength) {
+    public IEffect ModifyGravity(float strength) {
         return state.CreateEffect(new ModifyGravityEffect { strength = strength});
     }
 
@@ -118,7 +118,7 @@ public class PlayerGravity : PlayerComponent, IResettable, IPlayerDebug {
     /// Changes the direction gravity is applied in.
     /// Assumes this direction is a normalized vector; may have unexpected results otherwise.
     /// </summary>
-    public IEffectHandle SetGravityDirection(Vector3 direction) {
+    public IEffect SetGravityDirection(Vector3 direction) {
         return state.CreateEffect(new SetGravityDirectionEffect { direction = direction });
     }
 

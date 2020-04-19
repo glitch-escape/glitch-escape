@@ -2,13 +2,13 @@ using System.Text;
 using UnityEngine;
 
 namespace GlitchEscape.Effects {
-    struct EmptyEffectController : IEffectController {
+    struct BasicEffectBehavior : IEffectBehavior {
         public bool active { get; set; }
         public bool finished { get; set; }
         public void OnCancelled() {}
         public void Update() {}
-        public static EmptyEffectController Create() {
-            return new EmptyEffectController { active = true, finished = false };
+        public static BasicEffectBehavior Create() {
+            return new BasicEffectBehavior { active = true, finished = false };
         }
     }
     
@@ -22,9 +22,9 @@ namespace GlitchEscape.Effects {
             SetDefaults(owner);
         }
 
-        public IEffectHandle CreateEffect<TEffector>(TEffector effector)
+        public IEffect CreateEffect<TEffector>(TEffector effector)
             where TEffector : struct, IEffector<TOwner, TState> {
-            return effects.AddEffect(effector, EmptyEffectController.Create());
+            return effects.AddEffect(effector, BasicEffectBehavior.Create());
         }
 
         public void Reset() {
