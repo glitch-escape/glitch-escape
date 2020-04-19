@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using GlitchEscape.Effects;
 using JetBrains.Annotations;
 using UnityEditor.UI;
 using UnityEngine;
@@ -282,22 +283,39 @@ public class PlayerMovement : PlayerComponent, IResettable {
     [InjectComponent] public new Rigidbody rigidbody;
     [InjectComponent] public PlayerControls playerInput;
     [InjectComponent] public new Camera camera;
-    
-    private float moveSpeedMultiplier = 1f;
-    public EffectActions IncreaseMoveSpeed(float moveSpeedMultiplier) {
-        return new EffectActions {
-            applyEffect = () => this.moveSpeedMultiplier += moveSpeedMultiplier,
-            unapplyEffect = () => this.moveSpeedMultiplier -= moveSpeedMultiplier
-        };
-    }
 
+    public class State : EffectState<PlayerMovement, State> {
+        public bool enabled;
+        public float moveSpeed;
+        public float dashSpeed;
+        public float moveSpeedMultiplier;
+        public State(PlayerMovement owner) : base(owner) { }
+        protected override void SetDefaults(PlayerMovement owner) {
+            enabled = true;
+            moveSpeed = owner.player.config.runSpeed;
+            dashSpeed = 0f;
+            moveSpeedMultiplier = 1f;
+        }
+    }
+    private State state;
+    private void Awake() { state = new State(this); }
+
+    public Effect<PlayerMovement, State> ApplyDashSpeed(float speed) {
+        return state.CreateEffect(newState => newState.dashSpeed += speed);
+    }
+    public Effect<PlayerMovement, State> AddMoveSpeedMultiplier(float multiplier) {
+        return state.CreateEffect(newState => newState.moveSpeedMultiplier *= multiplier);
+    }
+    public Effect<PlayerMovement, State> SetMovementEnabled(bool enabled) {
+        return state.CreateEffect(newState => newState.enabled = enabled);
+    }
+    
     [Tooltip("Player movement mode")] 
     public PlayerMovementMode movementMode = PlayerMovementMode.TurnToFaceMoveDirection;
     public enum PlayerMovementMode {
         TurnToFaceMoveDirection,
     }
-    
-    public float moveSpeed => player.config.runSpeed * moveSpeedMultiplier;
+    public float moveSpeed => state.enabled ? state.moveSpeed * state.moveSpeedMultiplier : 0f;
     public bool isFalling => rigidbody.velocity.y < 0f;
 
     /// <summary>
@@ -406,7 +424,8 @@ public class PlayerMovement : PlayerComponent, IResettable {
     /// <summary>
     /// Resets player movement state
     /// </summary>
-    public void Reset() { 
+    public void Reset() {
+        state.Reset();
         isMoving = false;
         rigidbody.velocity = Vector3.zero;
         rigidbody.angularVelocity = Vector3.zero;
@@ -417,6 +436,12 @@ public class PlayerMovement : PlayerComponent, IResettable {
     /// </summary>
     void FixedUpdate() {
         Move(playerInput.moveInput * Time.fixedDeltaTime);
+        
+        // apply dash, if active
+        if (state.dashSpeed > 0f) {
+            var dashDir = player.transform.forward;
+            rigidbody.MovePosition(rigidbody.position + dashDir * state.dashSpeed * Time.fixedDeltaTime);
+        }
     }
 
     /// <summary>

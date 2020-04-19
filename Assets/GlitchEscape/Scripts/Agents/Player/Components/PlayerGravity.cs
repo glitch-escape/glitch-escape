@@ -16,7 +16,7 @@ using Effector = GlitchEscape.Effects.StateEffector<PlayerGravity, PlayerGravity
 /// TODO: 2) add an effects system to implement gravity effects that temporarily change gravity properties
 /// TODO: and both restore prev state AND support multiple effects simultaneously
 /// </summary>
-public class PlayerGravity : PlayerComponent {
+public class PlayerGravity : PlayerComponent, IResettable {
     [InjectComponent] public PlayerMovement playerMovement;
 
     /// <summary>
@@ -92,6 +92,7 @@ public class PlayerGravity : PlayerComponent {
     }
     private State state;
     void Awake() { state = new State(this); }
+    public void Reset() { state.Reset(); }
 
     /// <summary>
     /// Applies a cumulative gravity multiplier (note: can use strength = 0f to disable gravity entirely)

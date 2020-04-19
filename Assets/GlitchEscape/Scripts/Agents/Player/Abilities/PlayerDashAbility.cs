@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using GlitchEscape.Effects;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
@@ -14,11 +15,17 @@ public class PlayerDashAbility : PlayerAbility {
     public override float cooldownTime => player.config.dashAbilityCooldownTime;
     
     // TODO: reimplement variable-length button presses
-    protected override float abilityDuration => player.config.dashAbilityDurationRange.minimum;
     
-    // TODO: reimplement variable-length button presses
-    private float dashSpeed => player.config.dashAbilityMoveRange.minimum / abilityDuration;
-
+    
+    
+    private float dashStrength => 
+        player.config.dashAbilityPressTimeRange.SampleCurve(
+            dashPressTime,
+            player.config.dashAbilityPressCurve);
+    private float dashDistance => player.config.dashAbilityMoveRange.Lerp(dashStrength);
+    private float dashSpeed => player.config.dashAbilitySpeed;
+    protected override float abilityDuration => dashDistance / dashSpeed;
+    
     private PlayerControls.HybridButtonControl m_inputButton;
     protected override PlayerControls.HybridButtonControl inputButton
         => m_inputButton ?? (m_inputButton = PlayerControls.instance.dash);
@@ -30,13 +37,6 @@ public class PlayerDashAbility : PlayerAbility {
     protected override bool CanStartAbility() {
         return PlayerControls.instance.moveInput.magnitude > 0f;
     }
-
-    private float duration => player.config.dashAbilityDurationRange.Lerp(dashStrength);
-    private float dashStrength => 
-        player.config.dashAbilityPressTimeRange.SampleCurve(
-            dashPressTime,
-            player.config.dashAbilityPressCurve);
-    
     private float dashPressTime = 0f;
     
     // TeleportEffectGraph variables
@@ -52,7 +52,7 @@ public class PlayerDashAbility : PlayerAbility {
         public void ApplyEffect() {
             var renderer = dash.gameObject.GetComponent<Renderer>();
             dash.glitchMaterial.SetFloat(GLITCH_MATERIAL_START_TIME, Time.time);
-            dash.glitchMaterial.SetFloat(GLITCH_MATERIAL_DURATION, dash.duration);
+            dash.glitchMaterial.SetFloat(GLITCH_MATERIAL_DURATION, dash.abilityDuration);
             dash.ApplyMaterials((ref Material material) => material = dash.glitchMaterial);
         }
         public void UnapplyEffect() {
@@ -82,21 +82,30 @@ public class PlayerDashAbility : PlayerAbility {
     }
 
     private float GetCurrentDashDuration() {
-        return duration;
+        return abilityDuration;
     }
 
+    private Effect<PlayerMovement, PlayerMovement.State> increaseMoveSpeedEffect;
+    private Effect<PlayerGravity, PlayerGravity.State>   disableGravityEffect;
+
     protected override void OnAbilityStart() {
-        
+        increaseMoveSpeedEffect = playerMovement.ApplyDashSpeed(30f);
+        increaseMoveSpeedEffect.active = true;
+        disableGravityEffect = playerGravity.ApplyGravityStrengthMultiplier(0f);
+        disableGravityEffect.active = true;
+    }
+    protected override void OnAbilityEnd() {
+        increaseMoveSpeedEffect.Cancel();
+        disableGravityEffect.Cancel();
+    }
+    void Unused(){
         // apply dash visual effect
         effects.AddEffect(GetNewResetDashVisualEffect()).Start();
-        
-        // increase player's move speed
-        effects.AddEffect(playerMovement.IncreaseMoveSpeed(dashSpeed), GetCurrentDashDuration).Start();
-        
+
         // play animation
         effects.AddEffect(
             playerAnimation.SetBool("isDashing", true),
-            () => this.duration).Start();
+            () => this.abilityDuration).Start();
 
         // cancel gravity
         var gravity = playerGravity.gravity;
@@ -104,7 +113,7 @@ public class PlayerDashAbility : PlayerAbility {
         var gravityEffect = effects.AddEffect(new EffectActions {
             applyEffect = () => disableGravityEffect.active = true,
             unapplyEffect = () => disableGravityEffect.Cancel()
-        }, () => this.duration);
+        }, () => this.abilityDuration);
         
         // but apply built up velocity when gravity ends
         gravityEffect.onEffectEnded += () =>

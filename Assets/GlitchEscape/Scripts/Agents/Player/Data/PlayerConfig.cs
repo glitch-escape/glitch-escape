@@ -69,7 +69,7 @@ public class PlayerConfig : ScriptableObject {
     public AnimationCurve dashAbilityPressCurve = AnimationCurve.Linear(0f, 0f, 1f, 1f);
     public FloatRange dashAbilityStaminaCostRange = new FloatRange{minimum = 30f, maximum = 45f};
     public FloatRange dashAbilityMoveRange = new FloatRange {minimum = 3f, maximum = 8f};
-    public FloatRange dashAbilityDurationRange = new FloatRange {minimum = .8f, maximum = 2.5f};
+    public float dashAbilitySpeed = 40f;
     public float dashAbilityCooldownTime = 0.05f;
     public bool dashAbilityEnabled = true;
 
