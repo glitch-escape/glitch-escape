@@ -6,6 +6,7 @@ namespace GlitchEscape.Effects {
         public EffectState(TOwner owner) {
             this.owner = owner;
             effects = new EffectList<TOwner, TState>((TState) this);
+            SetDefaults(owner);
         }
 
         public Effect<TOwner, TState> CreateEffect(StateEffector<TOwner, TState> effect) {
