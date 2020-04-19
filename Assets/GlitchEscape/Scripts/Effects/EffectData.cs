@@ -84,10 +84,7 @@ namespace GlitchEscape.Effects {
                     || effectBehavior.finished == value)
                     return;
                 Debug.Log(" => effect changed");
-                _flags |= SETTING_FINISHED_FLAG;
-                effectBehavior.active = value;
-                _flags &= ~SETTING_FINISHED_FLAG;
-                owner.RebuildState();
+                if (value) Cancel();
             }
         }
         public void Cancel() {
