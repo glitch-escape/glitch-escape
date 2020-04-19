@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using GlitchEscape.Scripts.DebugUI;
 using UnityEngine;
 
 public enum PlayerAbilityState {
@@ -18,7 +19,7 @@ public enum PlayerAbilityState {
 /// Handles all button press detection internal state management (which can become somewhat complex), and provides
 /// a minimal, straightforward interface to subclass from + use.
 /// </summary>
-public abstract class PlayerAbility : BaseAbility, IPlayerEventSource {
+public abstract class PlayerAbility : BaseAbility, IPlayerEventSource, IPlayerDebug {
     /// <summary>
     /// Player reference (<see cref="Player"/>)
     /// </summary>
@@ -152,7 +153,8 @@ public abstract class PlayerAbility : BaseAbility, IPlayerEventSource {
     //
     // private float usedStamina;
 
-    public virtual void DrawPlayerAbilityDebugGUI() {
+    public abstract string debugName { get; }
+    public virtual void DrawDebugUI() {
         GUILayout.Label("current state: " + state);
         GUILayout.Label("button pressed?: " + inputButton.isPressed);
         GUILayout.Label("button pressed duration: " + inputButton.pressTime);
@@ -165,11 +167,6 @@ public abstract class PlayerAbility : BaseAbility, IPlayerEventSource {
         // GUILayout.Label("ability duration: " + currentAbilityDuration);
         // GUILayout.Label("ability strength: " + currentAbilityStrength);
         // GUILayout.Label("elapsed time: " + timeElapsedSinceAbilityStart);
-    }
-
-    public bool drawDebugGUI = false;
-    private void OnGUI() {
-        if (drawDebugGUI) DrawPlayerAbilityDebugGUI();
     }
 
     // public bool TryStartAbility() {

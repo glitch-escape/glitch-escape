@@ -179,9 +179,9 @@ public class PlayerJumpAbility : PlayerAbility {
             FireEvent(PlayerEvent.Type.EndJump);
         }
     }
-
-    public override void DrawPlayerAbilityDebugGUI() {
-        base.DrawPlayerAbilityDebugGUI();
+    public override string debugName => this.GetType().Name;
+    public override void DrawDebugUI() {
+        base.DrawDebugUI();
         GUILayout.Label("is jumping? " + isJumping);
         GUILayout.Label("jump count: " + jumpCount + " / " + player.config.maxJumps);
         GUILayout.Label("can jump? " + jumpAbilityStatus);

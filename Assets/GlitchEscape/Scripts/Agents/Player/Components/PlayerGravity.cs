@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using GlitchEscape;
 using GlitchEscape.Effects;
+using GlitchEscape.Scripts.DebugUI;
 using Effect = GlitchEscape.Effects.Effect<PlayerGravity, PlayerGravity.State>;
 using Effector = GlitchEscape.Effects.StateEffector<PlayerGravity, PlayerGravity.State>;
     
@@ -16,7 +17,7 @@ using Effector = GlitchEscape.Effects.StateEffector<PlayerGravity, PlayerGravity
 /// TODO: 2) add an effects system to implement gravity effects that temporarily change gravity properties
 /// TODO: and both restore prev state AND support multiple effects simultaneously
 /// </summary>
-public class PlayerGravity : PlayerComponent, IResettable {
+public class PlayerGravity : PlayerComponent, IResettable, IPlayerDebug {
     [InjectComponent] public PlayerMovement playerMovement;
 
     /// <summary>
@@ -91,7 +92,7 @@ public class PlayerGravity : PlayerComponent, IResettable {
         public State(PlayerGravity owner) : base(owner) { }
     }
     private State state;
-    void Awake() { state = new State(this); }
+    void OnEnable() { state = new State(this); }
     public void Reset() { state.Reset(); }
 
     /// <summary>
@@ -141,11 +142,9 @@ public class PlayerGravity : PlayerComponent, IResettable {
                              + this + ": " + gravityDirection);
         }
     }
-
-    public bool drawDebugUI = false;
-
-    private void OnGUI() {
-        if (!drawDebugUI) return;
+    
+    public string debugName => this.GetType().Name;
+    public void DrawDebugUI() {
         GUILayout.Label("current gravity: " + gravity);
         GUILayout.Label("gravity enabled: " + gravityEnabled);
         GUILayout.Label("gravity strength: " + state.gravityMultipliers);

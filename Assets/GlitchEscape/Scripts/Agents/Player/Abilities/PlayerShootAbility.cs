@@ -44,4 +44,9 @@ public class PlayerShootAbility : PlayerAbility {
     protected override void OnAbilityStart() {
         PlayerProjectile.Spawn(projectileConfig, projectileSpawnLocation);
     }
+    public override string debugName => this.GetType().Name;
+
+    public override void DrawDebugUI() {
+        base.DrawDebugUI();
+    }
 }

@@ -97,4 +97,9 @@ public class PlayerManifestAbility : PlayerAbility {
     }
     #endregion
     #endregion
+    
+    public override string debugName => this.GetType().Name;
+    public override void DrawDebugUI() {
+        base.DrawDebugUI();
+    }
 }

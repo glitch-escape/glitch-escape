@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using GlitchEscape.Effects;
+using GlitchEscape.Scripts.DebugUI;
 using JetBrains.Annotations;
 using UnityEditor.UI;
 using UnityEngine;
@@ -279,7 +280,7 @@ public class EffectManager : IEffectManager {
 
 [RequireComponent(typeof(Player))]
 [RequireComponent(typeof(Rigidbody))]
-public class PlayerMovement : PlayerComponent, IResettable {
+public class PlayerMovement : PlayerComponent, IResettable, IPlayerDebug {
     [InjectComponent] public new Rigidbody rigidbody;
     [InjectComponent] public PlayerControls playerInput;
     [InjectComponent] public new Camera camera;
@@ -298,7 +299,7 @@ public class PlayerMovement : PlayerComponent, IResettable {
         }
     }
     private State state;
-    private void Awake() { state = new State(this); }
+    private void OnEnable() { state = new State(this); }
 
     public Effect<PlayerMovement, State> ApplyDashSpeed(float speed) {
         return state.CreateEffect(newState => newState.dashSpeed += speed);
@@ -472,10 +473,8 @@ public class PlayerMovement : PlayerComponent, IResettable {
         return forward * input.y + right * input.x;
     }
     
-    public bool showDebugGui = false;
-
-    void OnGUI() {
-        if (!showDebugGui) return;
+    public string debugName => this.GetType().Name;
+    public void DrawDebugUI() {
         GUILayout.Label("PlayerMovement.cs:");
         GUILayout.Label("Movement mode: " + movementMode);
 
