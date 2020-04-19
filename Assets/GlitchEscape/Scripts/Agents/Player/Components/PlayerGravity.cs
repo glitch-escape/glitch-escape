@@ -161,5 +161,6 @@ public class PlayerGravity : PlayerComponent, IResettable, IPlayerDebug {
         GUILayout.Label("gravity enabled: " + gravityEnabled);
         GUILayout.Label("gravity strength: " + state.gravityMultipliers);
         GUILayout.Label("gravity direction: " + gravityDirection);
+        GUILayout.Label(state.ToString());
     }
 }

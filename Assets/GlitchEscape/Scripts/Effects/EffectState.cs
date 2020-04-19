@@ -1,3 +1,4 @@
+using System.Text;
 using UnityEngine;
 
 namespace GlitchEscape.Effects {
@@ -53,6 +54,22 @@ namespace GlitchEscape.Effects {
             SetDefaults();
             effects.ApplyStateEffects((TState)this);
             _rebuildingState = false;
+        }
+        public override string ToString() {
+            var sb = new StringBuilder();
+            var type = typeof(TState);
+            sb.AppendFormat("{0} state {1} {{", typeof(TOwner).Name, type.Name);
+            var first = true;
+            foreach (var field in type.GetFields()) {
+                var fmt = first ? "{0} = {1}" : ", {0} = {1}";
+                sb.AppendFormat(fmt, field.Name, field.GetValue(this));
+                first = false;
+            }
+            sb.AppendFormat("}}\n{0} active effect(s):\n", effects.Count);
+            foreach (var effect in effects) {
+                sb.AppendLine(effect.ToString());
+            }
+            return sb.ToString();
         }
     }
 }

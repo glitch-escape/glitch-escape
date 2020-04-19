@@ -501,5 +501,6 @@ public class PlayerMovement : PlayerComponent, IResettable, IPlayerDebug {
         GUILayout.Label("expected position: " + moveDir + rigidbody.position);
         GUILayout.Label("player move speed: " + moveSpeed);
         GUILayout.Label("player turn speed: " + turnSpeed);
+        GUILayout.Label(state.ToString());
     }
 }

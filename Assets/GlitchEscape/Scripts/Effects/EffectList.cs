@@ -77,5 +77,6 @@ namespace GlitchEscape.Effects {
         IEnumerator IEnumerable.GetEnumerator() {
             return GetEnumerator();
         }
+        public int Count => effects.Count;
     }
 }
