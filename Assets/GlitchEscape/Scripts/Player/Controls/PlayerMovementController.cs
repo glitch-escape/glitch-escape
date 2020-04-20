@@ -77,10 +77,13 @@ public class PlayerMovementController : MonoBehaviourBorrowingConfigFrom<Player,
 
     private bool wasRunningLastFrame = false;
     void FixedUpdate() {
+        /*
         playerAnimator.SetBool("isRunning", hasMoveInput);
         if (hasMoveInput != wasRunningLastFrame) {
             playerAnimator.SetTrigger(hasMoveInput ? "startRunning" : "stopRunning");
         }
+        */
+        
         wasRunningLastFrame = hasMoveInput;
         
         if (!useAnimationDerivedMoveSpeed) {
@@ -109,6 +112,7 @@ public class PlayerMovementController : MonoBehaviourBorrowingConfigFrom<Player,
                     0f);
                 var playerRotation = Quaternion.LookRotation(desiredForward);
 
+                playerAnimator.SetFloat("runSpeed", cameraDir.magnitude * speed);
                 playerRigidbody.MovePosition(playerRigidbody.position + cameraDir * speed * Time.deltaTime);
                 //Vector3 tempVelocity = playerRigidbody.velocity;
                 //tempVelocity = cameraDir * speed * Time.deltaTime * 30;
