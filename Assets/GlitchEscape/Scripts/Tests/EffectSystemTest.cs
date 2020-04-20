@@ -189,7 +189,7 @@ namespace Tests
             Assert.AreEqual("foo", component.state.foo);
 
             effect.Cancel();
-            Assert.AreEqual(effect.finished, true);
+            Assert.AreEqual(true, effect.finished);
             Assert.AreEqual(0, (double)component.state.testEffectCount);
             Assert.AreEqual("", component.state.foo);
         }

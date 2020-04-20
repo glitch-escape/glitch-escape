@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
 
-public interface IEffect : IResettable {
+public interface IEffect_ : IResettable {
     bool started { get; }
     bool active { get; }
     bool finished { get; }
@@ -18,8 +18,8 @@ public interface IEffect : IResettable {
     IEffectManager effectOwner { get; set; }
 }
 public interface IEffectManager {
-    void Internal_RegisterEffect(IEffect effect);
-    void Internal_UnregisterEffect(IEffect effect);
+    void Internal_RegisterEffect(IEffect_ effect);
+    void Internal_UnregisterEffect(IEffect_ effect);
 }
 public interface IEffectActions {
     void ApplyEffect();
@@ -71,7 +71,7 @@ public struct EffectState : IEffectState {
 ///
 /// Can be managed by an <see cref="EffectManager{TInterface}"/>
 /// </summary>
-public class Effect : IEffect {
+public class Effect : IEffect_ {
     public IEffectActions actions   { get; set; }
     public IEffectState effectState { get; set; }
     public delegate void Delegate();
@@ -222,18 +222,18 @@ public class DurationEffect : Effect {
 
 
 public class EffectManager : IEffectManager {
-    private HashSet<IEffect> effects = new HashSet<IEffect>();
-    public void Internal_RegisterEffect(IEffect effect) {
+    private HashSet<IEffect_> effects = new HashSet<IEffect_>();
+    public void Internal_RegisterEffect(IEffect_ effect) {
         effects.Add(effect);
     }
-    public void Internal_UnregisterEffect(IEffect effect) {
+    public void Internal_UnregisterEffect(IEffect_ effect) {
         effects.Remove(effect);
     }
-    public T AddEffect<T>(T effect) where T : IEffect {
+    public T AddEffect<T>(T effect) where T : IEffect_ {
         effect.effectOwner = this;
         return effect;
     }
-    public T ApplyEffect<T>(T effect) where T : IEffect {
+    public T ApplyEffect<T>(T effect) where T : IEffect_ {
         effect.effectOwner = this;
         if (!effect.started) {
             effect.Start();
@@ -305,14 +305,14 @@ public class PlayerMovement : PlayerComponent, IResettable, IPlayerDebug {
         public float dashSpeed;
         public void Apply(State state) { state.dashSpeed += dashSpeed; }
     }
-    public IEffectHandle ApplyDashSpeed(float speed) {
+    public IEffect ApplyDashSpeed(float speed) {
         return state.CreateEffect(new ApplyDashSpeedEffect { dashSpeed = speed });
     }
     struct AddMoveSpeedEffect : IEffector<PlayerMovement, State> {
         public float multiplier;
         public void Apply(State state) { state.moveSpeedMultiplier *= multiplier; }
     }
-    public IEffectHandle AddMoveSpeed(float multiplier) {
+    public IEffect AddMoveSpeed(float multiplier) {
         return state.CreateEffect(new AddMoveSpeedEffect { multiplier = multiplier });
     }
     struct SetMovementEnabledEffect : IEffector<PlayerMovement, State> {
