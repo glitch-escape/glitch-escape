@@ -77,6 +77,12 @@ public class PlayerJumpController : MonoBehaviour, IPlayerControllerComponent
         bool wallCheck = CheckOnWall();
         if (context.performed && jumpCount + 1 < maxJumpCount && !wallCheck) //not wall jump
         {
+            if (!animator.GetBool("isJumping")) {
+                animator.SetBool("isJumping", true);
+            }
+            else {
+                animator.SetTrigger("doubleJump");
+            }
             jumpCount++;
             player.PlaySound(0); // play bloop
             if (rigidbody.velocity.y < 0f) {
@@ -87,6 +93,8 @@ public class PlayerJumpController : MonoBehaviour, IPlayerControllerComponent
         }
         else if (context.performed && wallCheck && !CheckOnGround() && (lastWallNormal != currentWallNormal)) //wall jump
         {
+            //animator.SetBool("isNearWall", true);
+            animator.SetTrigger("wallJump");
             jumpCount = 0;
             player.PlaySound(1); //play ping
             if (rigidbody.velocity.y < 0f) { 
@@ -100,30 +108,29 @@ public class PlayerJumpController : MonoBehaviour, IPlayerControllerComponent
 
     void FixedUpdate()
     {
-        if(CheckOnGround())
-        {
-            if (jumpCount > 0)
-            {
+        if (CheckOnGround()) {
+            if (jumpCount > 0) {
                 jumpCount = 0;
-                if (isJumping)
-                {
+                if (isJumping) {
                     isJumping = false;
                     player.PlaySound(2); //play dit
                 }
-                if (animator.GetBool("isJumping"))
-                {
+            }
+            if (rigidbody.velocity.y <= 0f) {
+                if (animator.GetBool("isJumping")) {
                     animator.SetBool("isJumping", false);
                     animator.SetTrigger("stopJumping");
+                    player.PlaySound(2); //play dit
                 }
             }
             currentWallNormal = Vector3.zero;
         }
-        
+
         if (isJumping)
         {
             if (Time.time >= jumpStartTime + jumpDuration)
             {
-                isJumping = false;
+              //  isJumping = false;
                 player.PlaySound(2); //play dit
             }
             else
