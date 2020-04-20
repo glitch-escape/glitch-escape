@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Cinemachine;
 
 // [RequireComponent(typeof(Rigidbody))]
 // [RequireComponent(typeof(Animator))]
@@ -83,7 +84,9 @@ public class Player : BaseAgent<Player, PlayerConfig, PlayerHealth, PlayerStamin
 
     // save initial position + rotation for player respawns
     private Vector3 initPosition;
+    private Vector3 initCameraPosition;
     private Quaternion initRotation;
+    private Quaternion initCameraRotation;
     public float playerSpawnHeight = 1f;
 
     /// <summary>
@@ -95,6 +98,8 @@ public class Player : BaseAgent<Player, PlayerConfig, PlayerHealth, PlayerStamin
     public void SetInitialSpawnLocation(Vector3 pos, Quaternion rot) {
         initPosition = pos;
         initRotation = rot;
+        initCameraPosition = Camera.main.transform.position;
+        initCameraRotation = Camera.main.transform.rotation;
     }
 
     /// <summary>
@@ -103,14 +108,20 @@ public class Player : BaseAgent<Player, PlayerConfig, PlayerHealth, PlayerStamin
     /// </summary>
     /// <param name="savePoint">Respawn location. If null, player respawns at their starting position / rotation</param>
     public void RespawnAt(Transform savePoint) {
+        Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.VirtualCameraGameObject.SetActive(false);
         if (savePoint) {
             transform.position = savePoint.position + Vector3.up * playerSpawnHeight;
             transform.rotation = initRotation;
+            Camera.main.transform.position = savePoint.position + Vector3.up * playerSpawnHeight;
+            Camera.main.transform.rotation = initCameraRotation;
         }
         else {
             transform.position = initPosition;
             transform.rotation = initRotation;
+            Camera.main.transform.position = initCameraPosition;
+            Camera.main.transform.rotation = initCameraRotation;
         }
+        Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.VirtualCameraGameObject.SetActive(true);
 
         rigidbody.velocity = Vector3.zero;
     }
