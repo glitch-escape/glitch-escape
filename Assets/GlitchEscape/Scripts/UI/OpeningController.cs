@@ -9,13 +9,15 @@ using UnityEngine.SceneManagement;
 public class OpeningController : MonoBehaviour
 {
     public Button continueButtom;
-
+    public int autoPlayDelay = 2;
     private AudioSource sceneAudioSource;
 
     public List<Image> images;
 
-    private int counter = 1;
-    
+    private int imageCounter = 0;
+    private int autoPlayCounter = 0;
+    private bool isFading = false;
+
     private static float FADE_INTERVAL = 0.05f;
     private static float FADE_DELAY = 0.01f;
 
@@ -33,6 +35,7 @@ public class OpeningController : MonoBehaviour
         images[0].color = cc;
         sceneAudioSource = GetComponent<AudioSource>();
         sceneAudioSource.Stop();
+        StartCoroutine(AutoPlayCoroutine(images[imageCounter]));
     }
 
     IEnumerator FadeOutCoroutine(Image image)
@@ -46,7 +49,8 @@ public class OpeningController : MonoBehaviour
             image.color = c;
             yield return new WaitForSeconds(FADE_DELAY);
         }
-        StartCoroutine(FadeInCoroutine(images[counter]));
+        imageCounter++;
+        StartCoroutine(FadeInCoroutine(images[imageCounter]));
     }
 
     IEnumerator FadeInCoroutine(Image image)
@@ -58,27 +62,44 @@ public class OpeningController : MonoBehaviour
             image.color = c;
             yield return new WaitForSeconds(FADE_DELAY);
         }
-        counter++;
         continueButtom.gameObject.SetActive(true);
         continueButtom.Select();
+        autoPlayCounter = 0;
+        isFading = false;
+    }
+
+    IEnumerator AutoPlayCoroutine(Image image)
+    {
+        yield return new WaitForSeconds(1);
+        autoPlayCounter++;
+        if (autoPlayCounter >= autoPlayDelay && !isFading)
+        {
+            PlayNext();
+        }
+        StartCoroutine(AutoPlayCoroutine(images[imageCounter]));
     }
 
     public void OnContinue()
     {
-        if (counter >= images.Count)
+        PlayNext();
+    }
+
+    private void PlayNext()
+    {
+        if (imageCounter >= images.Count - 1)
         {
             GameStart();
         }
         else
         {
-            StartCoroutine(FadeOutCoroutine(images[counter - 1]));
+            isFading = true;
+            StartCoroutine(FadeOutCoroutine(images[imageCounter]));
         }
 
-        if (counter == 1)
+        if (imageCounter == 0)
         {
             sceneAudioSource.Play();
         }
-
     }
 
     public void GameStart()
