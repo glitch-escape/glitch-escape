@@ -14,7 +14,7 @@ namespace GlitchEscape.Effects {
 
         public IEffect CreateEffect<TEffector>(TEffector effector)
             where TEffector : struct, IEffector<TOwner, TState> {
-            return effects.AddEffect(effector, BasicEffectBehavior.Create());
+            return effects.AddEffect(effector, new BasicEffectBehavior(false));
         }
 
         public void Reset() {
@@ -37,6 +37,16 @@ namespace GlitchEscape.Effects {
         }
 
         private bool _rebuildingState = false;
+        
+        // TODO: consider adding optimizations to do lazy state rebuilds:
+        // super low priority but we're technically rebuilding state multiple times per frame as this method is called
+        // eagerly by the effects impl whenever anything changes.
+        //
+        // if this ever is an issue, should be able to trivially optimize this by just adding a _dirtyState flag when
+        // you call this method + moving the actual state rebuild to Update(), but this could cause some potentially
+        // surprising issues as state updates would then be somewhat async, so in general this simple approach is
+        // less efficient but safer, as it will guarantee that effects + state are always updated immediately if
+        // any active effect changes / is added / etc.
         public void RebuildState() {
             if (_rebuildingState) return;
             _rebuildingState = true;

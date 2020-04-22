@@ -1,3 +1,5 @@
+using GlitchEscape.Effects.Types;
+
 namespace GlitchEscape.Effects {
     /// <summary>
     /// Represents a temporary in-game effect that can be activated / deactivated,
@@ -214,7 +216,6 @@ namespace GlitchEscape.Effects {
         IDurationEffect Start();
         void Restart();
         void Cancel();
-        void Reset();
         bool active { get; set; }
         bool finished { get; }
         float duration { get; set; }

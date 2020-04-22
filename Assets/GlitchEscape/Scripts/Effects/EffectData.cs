@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using GlitchEscape.Effects.Types;
 using UnityEngine;
 
 namespace GlitchEscape.Effects {
@@ -87,6 +88,7 @@ namespace GlitchEscape.Effects {
                 if (value) Cancel();
             }
         }
+        public IEffect Start() { active = true; return this; }
         public void Cancel() {
             if (!cancelled) {
                 _flags |= SET_CANCELLED_FLAG;
@@ -96,6 +98,37 @@ namespace GlitchEscape.Effects {
         }
         public int CompareTo(EffectData<TOwner, TState> other) {
             return id.CompareTo(other.id);
+        }
+        
+        // TODO: Add unittests for reset!!!!
+        public void Reset() {
+            effectBehavior?.Reset();
+            _flags = 0;
+            owner.RebuildState();
+        }
+        public void Restart() { Reset(); Start(); }
+
+        public IEffect WithCustomBehavior(IEffectBehavior behavior) {
+            effectBehavior = behavior;
+            owner.RebuildState();
+            return this;
+        }
+        public IDurationEffect WithDuration(IDuration duration) {
+            var effect = new DurationEffect(this, duration);
+            owner.RebuildState();
+            return effect;
+        }
+        
+        // TODO: add unittests for this
+        public IEffect WithActive(FunctionWithNoParametersReturning<bool> active) {
+            return WithCustomBehavior(new FunctionalEffectBehavior(active));
+        }
+        public IDurationEffect WithDuration(float duration) {
+            return WithDuration(duration);
+        }
+
+        public IDurationEffect WithDuration(FunctionWithNoParametersReturning<float> duration) {
+            return WithDuration(duration);
         }
     }
 }

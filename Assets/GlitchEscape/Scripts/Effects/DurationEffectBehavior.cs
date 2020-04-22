@@ -1,14 +1,13 @@
 using UnityEngine;
 
 namespace GlitchEscape.Effects {
-    public interface IDuration {
-        float duration { get; }
+    public interface IDuration : IResettable {
+        float duration { get; set; }
         void OnStarted();
         void OnStopped();
         void OnFinished();
         void OnCancelled();
         void Update();
-        void Reset();
     }
 
     public struct DurationEffect : IDurationEffect {
@@ -32,10 +31,14 @@ namespace GlitchEscape.Effects {
         public float remainingTime => behavior.remainingTime;
         public bool started => behavior.started;
         
-        public void Start () { effect.active = true; }
+        public IDurationEffect Start () { 
+            effect.active = true;
+            return this;
+        }
         public void Cancel () { effect.Cancel(); }
         public void Stop () { effect.active = false; }
-        public void Reset() { effect.Reset(); }
+        public void Reset() { effect.Reset(); behavior.Reset(); }
+        public void Restart() { Reset(); Start(); }
     }
     public class DurationEffectBehavior : IEffectBehavior {
         private IDuration _duration;
@@ -57,7 +60,15 @@ namespace GlitchEscape.Effects {
         }
         public bool finished => CheckFinished();
         public bool started { get; private set; }
-        public float duration => _duration?.duration ?? 0f;
+
+        public float duration {
+            get => _duration?.duration ?? 0f;
+            set {
+                if (_duration != null) {
+                    _duration.duration = value;
+                }
+            }
+        }
         public float elapsedTime => active ? 
             (Time.time - _startTime) + _elapsedTime : 
             _elapsedTime;
