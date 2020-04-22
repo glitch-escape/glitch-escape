@@ -45,6 +45,8 @@ public abstract class Projectile<TDerivedProjectile, TProjectileConfig> : Attack
             agent.TakeDamage(config.damage);
           //  Destroy(gameObject);
         }
-        Destroy(gameObject);
+        if (!config.doesLinger) {
+            Destroy(gameObject);
+        }
     }
 }

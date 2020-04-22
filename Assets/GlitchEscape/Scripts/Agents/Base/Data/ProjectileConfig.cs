@@ -10,4 +10,5 @@ public abstract class ProjectileConfig<TProjectile, TProjectileConfig> : Scripta
     public float damage = 10f;
     public float speed = 30f;
     public float lifetime = 10f;
+    public bool doesLinger = false;
 }
