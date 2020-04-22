@@ -38,12 +38,13 @@ public abstract class Projectile<TDerivedProjectile, TProjectileConfig> : Attack
         if (config.lifetime > 0f) Destroy(projectile.gameObject, config.lifetime);
         return projectile;
     }
-    //private void OnCollisionEnter(Collision other) {
+   // private void OnCollisionEnter(Collision other) {
     private void OnTriggerEnter(Collider other) { 
         var agent = other.gameObject.GetComponent<IAgent>();
         if (agent != null && agent.agentType == targetType) {
             agent.TakeDamage(config.damage);
-            Destroy(gameObject);
+          //  Destroy(gameObject);
         }
+        Destroy(gameObject);
     }
 }
