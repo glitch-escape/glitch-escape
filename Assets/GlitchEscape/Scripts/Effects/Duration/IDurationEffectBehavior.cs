@@ -1,4 +1,0 @@
-namespace GlitchEscape.Effects.Duration {
-
-    
-}
