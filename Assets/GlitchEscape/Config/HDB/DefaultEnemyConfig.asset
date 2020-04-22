@@ -72,10 +72,18 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   spawnHeight: 1
+  attacks:
+  - staminaCost: 0
+    shotsPerSecond: 0.001
+    startup: 0
+    cooldown: 3
+    duration: 3
+    strikeDistance: 2
+    attackProjectile: {fileID: 11400000, guid: 0cdee26cac40a478faad739ebba0a53a, type: 2}
   projectileStaminaCost: 0
   projectileShotsPerSecond: 0.001
   projectileStartup: 0
-  projectileCooldown: 3
+  projectileCooldown: 300
   attackDuration: 3
   shootDistance: 2
   attackProjectile: {fileID: 11400000, guid: 0cdee26cac40a478faad739ebba0a53a, type: 2}

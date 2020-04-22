@@ -30,9 +30,19 @@ public class Enemy : BaseAgent<Enemy, EnemyConfig> {
     [InjectComponent] public EnemyAbility[] idle;
     [InjectComponent] public EnemyAbility[] patrol;
     [InjectComponent] public EnemyAbility[] chase;
-    [InjectComponent] public EnemyAbility[] attack;
+    [HideInInspector] [InjectComponent] public EnemyAttackAbility[] attack = new EnemyAttackAbility[3];
 
     private void Awake() {
         navMeshAgent.speed = config.moveSpeed;
+        // Initialize attack data
+        EnemyAttackAbility[] attackTemp = new EnemyAttackAbility[config.attacks.Length];
+        for (int i = 0; i < attack.Length; i++) {
+            //         attack[i] = new EnemyAttackAbility();
+           /// attack[i] = gameObject.AddComponent<EnemyAttackAbility>();
+            
+            attack[i].SetConfigID(i);
+            attackTemp[i] = attack[i];
+        }
+        attack = attackTemp;
     }
 }

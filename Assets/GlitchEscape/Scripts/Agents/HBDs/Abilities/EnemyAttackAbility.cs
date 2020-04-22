@@ -3,33 +3,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyProjectileSpawnAbility : EnemyAbility {
+public class EnemyAttackAbility : EnemyAbility {
 
     private NavMeshAgent agent => enemy.navMeshAgent;
-
-    private float curAtkTime;
     private int shotsMade;
 
-    #region Projectile Implementation
+    // Sets the values of attack variables
+    #region Attack Variables
+    EnemyConfig.AttackData attackData => enemy.config.attacks[configID];
+
     // Attack variables
-    private float strikeDist => enemy.config.shootDistance;
-    private float projectileRate => 1/enemy.config.projectileShotsPerSecond;
-    private float startup => enemy.config.projectileStartup;
+    private float strikeDist => attackData.strikeDistance;
+    private float projectileRate => 1/attackData.shotsPerSecond;
+    private float startup => attackData.startup;
 
     /// <summary>
     /// Stamina cost per projectile
     /// </summary>
-    public override float resourceCost => enemy.config.projectileStaminaCost;
+    public override float resourceCost => attackData.staminaCost;
 
     /// <summary>
     /// Defines how long it takes for the ability to be used again
     /// </summary>
-    public override float cooldownTime => enemy.config.projectileCooldown;
+    public override float cooldownTime => attackData.cooldown;
 
     /// <summary>
     /// Defines how long the enemy is placed in the attack state
     /// </summary>
-    protected override float abilityDuration => enemy.config.attackDuration;
+    protected override float abilityDuration => attackData.duration;
     protected override bool hasSetDuration => true;
 
     /// <summary>
@@ -41,8 +42,18 @@ public class EnemyProjectileSpawnAbility : EnemyAbility {
     /// <summary>
     /// projectile config to use (pulls from <see cref="EnemyConfig"/> on the player object)
     /// </summary>
-    private EnemyProjectileConfig projectileConfig => enemy.config.attackProjectile;
+    private EnemyProjectileConfig projectileConfig => attackData.attackProjectile;
     #endregion
+
+    public override void SetConfigID(int id) {
+        if (id >= 0 && id < enemy.config.attacks.Length) {
+            configID = id;
+        }
+        else {
+            base.SetConfigID(id);
+        }
+        print(id);
+    }
 
     public override bool AbilityFinished(out EnemyBehaviorState nextAction) {
         nextAction = EnemyBehaviorState.ChasingPlayer;
@@ -50,7 +61,6 @@ public class EnemyProjectileSpawnAbility : EnemyAbility {
     }
 
     protected override void OnAbilityStart() {
-        curAtkTime = 0;
         shotsMade = 0;
 
         // Make the enemy stand still
@@ -60,8 +70,7 @@ public class EnemyProjectileSpawnAbility : EnemyAbility {
     protected override void OnAbilityUpdate() {
         base.OnAbilityUpdate();
 
-        curAtkTime += Time.deltaTime;
-        if ((shotsMade * projectileRate) + startup < curAtkTime) {
+        if ((shotsMade * projectileRate) + startup < timeElapsedSinceAbilityStart) {
             shotsMade += 1;
             EnemyProjectile.Spawn(projectileConfig, projectileSpawnLocation);
         }
@@ -69,7 +78,6 @@ public class EnemyProjectileSpawnAbility : EnemyAbility {
 
     protected override void OnAbilityEnd() {
         base.OnAbilityEnd();
-        curAtkTime = 0;
     }
 
     protected override void OnAbilityReset() {
