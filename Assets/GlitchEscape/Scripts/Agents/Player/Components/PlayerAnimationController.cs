@@ -20,12 +20,6 @@ public class PlayerAnimationController : PlayerComponent {
             component.OnEvent -= OnPlayerEvent;
         }
     }
-    public EffectActions SetBool(string name, bool enabled) {
-        return new EffectActions() {
-            applyEffect = () => animator.SetBool(name, enabled),
-            unapplyEffect = () => animator.SetBool(name, !enabled),
-        };
-    }
     
     private void OnPlayerEvent(PlayerEvent.Type eventType) {
         switch (eventType) {

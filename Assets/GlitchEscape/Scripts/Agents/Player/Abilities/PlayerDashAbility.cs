@@ -15,9 +15,6 @@ public class PlayerDashAbility : PlayerAbility {
     public override float cooldownTime => player.config.dashAbilityCooldownTime;
 
     // TODO: reimplement variable-length button presses
-
-
-
     private float dashStrength =>
         player.config.dashAbilityPressTimeRange.SampleCurve(
             inputButton.pressTime,
@@ -45,7 +42,7 @@ public class PlayerDashAbility : PlayerAbility {
     public const string GLITCH_MATERIAL_START_TIME = "StartTime_B9ED4C73";
     public const string GLITCH_MATERIAL_DURATION = "Duration_2B114277";
 
-    private class DashShaderEffect : IEffectActions {
+    private class DashShaderEffect {
         private PlayerDashAbility dash;
 
         public DashShaderEffect(PlayerDashAbility dash) {
@@ -64,30 +61,16 @@ public class PlayerDashAbility : PlayerAbility {
         }
 
         public void UpdateEffect() { }
+        public void Reset() { UnapplyEffect(); }
     }
 
     [InjectComponent] public PlayerMovement playerMovement;
     [InjectComponent] public PlayerAnimationController playerAnimation;
     [InjectComponent] public PlayerGravity playerGravity;
-    private Effect reusedDashVisualEffect;
-
-    private Effect GetNewResetDashVisualEffect() {
-        if (reusedDashVisualEffect == null) {
-            reusedDashVisualEffect = DurationEffect.MakeEffect(
-                new DashShaderEffect(this),
-                () => this.dashVfxDuration);
-        }
-        else {
-            reusedDashVisualEffect.Reset();
-        }
-
-        return reusedDashVisualEffect;
-    }
-
-    private EffectManager effects = new EffectManager();
-
+    private DashShaderEffect dashVfx;
+    
     protected override void OnAbilityReset() {
-        effects.Clear();
+        
     }
 
     private float GetCurrentDashDuration() {
@@ -100,45 +83,21 @@ public class PlayerDashAbility : PlayerAbility {
     private float startTime = 0f;
 
     protected override void OnAbilityStart() {
-        increaseMoveSpeedEffect = playerMovement.ApplyDashSpeed(30f);
-        increaseMoveSpeedEffect.active = true;
-        disableGravityEffect = playerGravity.ModifyGravity(0f);
-        disableGravityEffect.active = true;
-        GetNewResetDashVisualEffect().Start();
+        increaseMoveSpeedEffect = playerMovement.ApplyDashSpeed(30f).Start();
+        disableGravityEffect = playerGravity.ModifyGravity(0f).Start();
+        dashVfx = dashVfx ?? (dashVfx = new DashShaderEffect(this));
+        dashVfx.ApplyEffect();
         startTime = Time.time;
     }
 
     protected override void OnAbilityEnd() {
-        increaseMoveSpeedEffect.Cancel();
-        disableGravityEffect.Cancel();
-        reusedDashVisualEffect?.Cancel();
+        increaseMoveSpeedEffect?.Cancel();
+        disableGravityEffect?.Cancel();
+        dashVfx?.UnapplyEffect();
         var gravity = playerGravity.gravity;
         playerMovement.ApplyJump(-gravity * (Time.time - startTime));
     }
-
-    void Unused() {
-        // apply dash visual effect
-        effects.AddEffect(GetNewResetDashVisualEffect()).Start();
-
-        // play animation
-        effects.AddEffect(
-            playerAnimation.SetBool("isDashing", true),
-            () => this.abilityDuration).Start();
-
-        // cancel gravity
-        var gravity = playerGravity.gravity;
-        var disableGravityEffect = playerGravity.ModifyGravity(0f);
-        var gravityEffect = effects.AddEffect(new EffectActions {
-            applyEffect = () => disableGravityEffect.active = true,
-            unapplyEffect = () => disableGravityEffect.Cancel()
-        }, () => this.abilityDuration);
-
-        // but apply built up velocity when gravity ends
-        gravityEffect.onEffectEnded += () =>
-            playerMovement.ApplyJump(-gravity * gravityEffect.elapsedTime);
-        gravityEffect.Start();
-    }
-
+    
     public float dashVfxDuration = 1.2f;
 
     [Tooltip("use kinematic vs velocity updates")]
@@ -147,7 +106,7 @@ public class PlayerDashAbility : PlayerAbility {
     private Vector3 savedDashVelocity = Vector3.zero;
 
     protected override void OnAbilityUpdate() {
-        effects.Update();
+        dashVfx?.UpdateEffect();
     }
 
     public override string debugName => this.GetType().Name;
