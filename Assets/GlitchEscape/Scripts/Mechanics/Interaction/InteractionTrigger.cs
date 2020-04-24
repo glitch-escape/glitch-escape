@@ -64,20 +64,25 @@ public class InteractionTrigger : MonoBehaviour {
         onEnableCalledBeforeLastTriggerInteraction = true; 
     }
     private void OnDisable() {
-        PlayerControls.instance.interact.onPressed -= OnInteractPressed;
+        if ((PlayerControls.instance?.interact ?? null) != null) {
+            PlayerControls.instance.interact.onPressed -= OnInteractPressed;
+        }
     }
 
     private void OnPlayerEnterInteractionRadius(Player player) {
+        if (attachedInteractionHandlers.Length == 0) return;
         foreach (var handler in attachedInteractionHandlers) {
             handler?.OnPlayerEnterInteractionRadius(player);
         }
     }
     private void OnPlayerLeaveInteractionRadius(Player player) {
+        if (attachedInteractionHandlers.Length == 0) return;
         foreach (var handler in attachedInteractionHandlers) {
             handler?.OnPlayerExitInteractionRadius(player);
         }
     }
     public void OnPlayerInteractPressed(Player player) {
+        if (attachedInteractionHandlers.Length == 0) return;
         foreach (var handler in attachedInteractionHandlers) {
             handler?.OnInteract(player);
         }

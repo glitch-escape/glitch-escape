@@ -12,11 +12,12 @@ public class PlayerControls : MonoBehaviour {
     [InjectComponent] public Player player;
     
     private static PlayerControls m_instance = null;
+    private static bool m_currentlyInactive = false;
     public static PlayerControls instance {
         get {
             if (m_instance == null) {
                 m_instance = GameObject.FindObjectOfType<PlayerControls>();
-                if (m_instance == null) {
+                if (m_instance == null && !m_currentlyInactive) {
                     Debug.LogError("no player controls instance in this scene!");
                 }
             }
@@ -33,11 +34,13 @@ public class PlayerControls : MonoBehaviour {
     private void Awake() { instance = this; }
     private void OnEnable() {
         instance = this;
+        m_currentlyInactive = false;
         if (onInputControlTypeChanged != null) {
             onInputControlTypeChanged(activeControlType);
         }
     }
-    void OnDisable() {
+    void OnDisable() {    
+        m_currentlyInactive = true;
         instance = null;
         m_lastControlType = InputControlType.None;
     }
