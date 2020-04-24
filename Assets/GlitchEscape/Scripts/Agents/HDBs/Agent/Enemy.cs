@@ -13,17 +13,26 @@ public class Enemy : BaseAgent<Enemy, EnemyConfig> {
     protected override KillType killType => KillType.KillAndDestroyGameObject; // Not certain if this is what we want
     #endregion
 
-    /// <summary>
-    /// Reference to this script's EnemyController (should be parented to this)
-    /// </summary>
-    public OldEnemyController controller => this.GetEnforcedComponentReferenceInParent(ref m_controller);
-    private OldEnemyController m_controller;
+    // reference to the player (null until player if found using detection script)
+    [HideInInspector] public Player player;
 
     // references to components on the enemy object
-    [InjectComponent] public NavMeshAgent navMeshAgent;
-    [InjectComponent] public Animator animator;
-    [InjectComponent] public EnemyHealth health;
-    [InjectComponent] public EnemyStamina stamina;
+    [HideInInspector] [InjectComponent] public NavMeshAgent navMeshAgent;
+    [HideInInspector] [InjectComponent] public Animator animator;
+    [HideInInspector] [InjectComponent] public EnemyHealth health;
+    [HideInInspector] [InjectComponent] public EnemyStamina stamina;
 
+    // reference to the enemy controller
+    [HideInInspector] [InjectComponent] public EnemyController controller;
+    [InjectComponent] public EnemyVisionController detection;
 
+    // enemy actions
+    [InjectComponent] public EnemyAbility[] idle;
+    [InjectComponent] public EnemyAbility[] patrol;
+    [InjectComponent] public EnemyAbility[] chase;
+    [InjectComponent] public EnemyAbility[] attack;
+
+    private void Awake() {
+        navMeshAgent.speed = config.moveSpeed;
+    }
 }

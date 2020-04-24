@@ -2,16 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "EnemyConfig", menuName = "GameConfigs/EnemyConfig", order = 1)]
+[CreateAssetMenu(fileName = "EnemyConfig", menuName = "Config/HDB/EnemyConfig", order = 1)]
 public class EnemyConfig : ScriptableObject {
+
     [Header("Movement")]
-    [Range(0, 20)] public float moveSpeed = 10f;
+    [Range(0, 20)] public float moveSpeed = 2f;
 
     [Header("Health")]
     public FloatRange health = new FloatRange { minimum = 0f, maximum = 100f };
     public float healthRegen = 10f;
     public float healthRegenDelay = 0.5f;
-    public AnimationCurve healthRegenCurve = new AnimationCurve {
+    public AnimationCurve healthRegenCurve = new AnimationCurve
+    {
         keys = new[]{
             new Keyframe(0f, 1f),
             new Keyframe(1f, 1f)
@@ -22,7 +24,8 @@ public class EnemyConfig : ScriptableObject {
     public FloatRange stamina = new FloatRange { minimum = 0f, maximum = 100f };
     public float staminaRegen = 10f;
     public float staminaRegenDelay = 0.5f;
-    public AnimationCurve staminaRegenCurve = new AnimationCurve {
+    public AnimationCurve staminaRegenCurve = new AnimationCurve
+    {
         keys = new[]{
             new Keyframe(0f, 1f),
             new Keyframe(1f, 1f)
@@ -31,4 +34,27 @@ public class EnemyConfig : ScriptableObject {
 
     [Header("Spawn Height")]
     public float spawnHeight = 1f;
+
+    /*
+    [System.Serializable]
+    public class ProjectileData {
+        public float projectileStaminaCost = 0f;
+        public float projectileShotsPerSecond = 1f;
+        public float projectileStartup = 0f;
+        public float projectileCooldown = 3f;
+        public float attackDuration = 5f;
+        public float shootDistance = 1f;
+        public EnemyProjectileConfig attackProjectile;
+    }
+    */
+    [Header("Projectile Data(If Any)")]
+    //public ProjectileData[] projectiles;
+
+    public float projectileStaminaCost = 0f;
+    public float projectileShotsPerSecond = 1f;
+    public float projectileStartup = 0f;
+    public float projectileCooldown = 3f;
+    public float attackDuration = 5f;
+    public float shootDistance = 1f;
+    public EnemyProjectileConfig attackProjectile;
 }
