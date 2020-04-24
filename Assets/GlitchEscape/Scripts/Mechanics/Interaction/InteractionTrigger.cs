@@ -69,6 +69,23 @@ public class InteractionTrigger : MonoBehaviour {
         }
     }
 
+    private PlayerControls controls;
+    private bool hasListener = false;
+
+    private void EnableInteractListener() {
+        Debug.Log("starting interaction listener: "+this.gameObject);
+        controls = PlayerControls.instance;
+        if (!hasListener) {
+            hasListener = true;
+            controls.interact.onPressed += OnInteractPressed;
+        }
+    }
+    private void DisableInteractListener() {
+        Debug.Log("Stopping interaction listener: "+this.gameObject);
+        if (hasListener == false || controls == null) return;
+        hasListener = false;
+        controls.interact.onPressed -= OnInteractPressed;
+    }
     private void OnPlayerEnterInteractionRadius(Player player) {
         if (attachedInteractionHandlers.Length == 0) return;
         foreach (var handler in attachedInteractionHandlers) {
@@ -88,6 +105,7 @@ public class InteractionTrigger : MonoBehaviour {
         }
     }
     private void OnInteractPressed() {
+        Debug.Log("interact pressed!");
         if (activePlayerInInteractionRadius != null) {
             OnPlayerInteractPressed(activePlayerInInteractionRadius);
         }   
@@ -103,7 +121,7 @@ public class InteractionTrigger : MonoBehaviour {
         var player = collider.GetComponentInParent<Player>();
         if (player != null && (!playerInInteractionRadius || onEnableCalledBeforeLastTriggerInteraction)) {
             activePlayerInInteractionRadius = player;
-            PlayerControls.instance.interact.onPressed += OnInteractPressed;
+            EnableInteractListener();
             OnPlayerEnterInteractionRadius(player);
         }
         onEnableCalledBeforeLastTriggerInteraction = false;
@@ -113,7 +131,7 @@ public class InteractionTrigger : MonoBehaviour {
         var player = collider.GetComponentInParent<Player>();
         if (player == activePlayerInInteractionRadius) {
             activePlayerInInteractionRadius = null;
-            PlayerControls.instance.interact.onPressed -= OnInteractPressed;
+            DisableInteractListener();
             OnPlayerLeaveInteractionRadius(player);
         }
         onEnableCalledBeforeLastTriggerInteraction = false;
@@ -123,7 +141,7 @@ public class InteractionTrigger : MonoBehaviour {
         var player = other.collider.GetComponentInParent<Player>();
         if (player != null && (!playerInInteractionRadius || onEnableCalledBeforeLastTriggerInteraction)) {
             activePlayerInInteractionRadius = player;
-            PlayerControls.instance.interact.onPressed += OnInteractPressed;
+            EnableInteractListener();
             OnPlayerEnterInteractionRadius(player);
         }
         onEnableCalledBeforeLastTriggerInteraction = false;
@@ -133,7 +151,7 @@ public class InteractionTrigger : MonoBehaviour {
         var player = other.collider.GetComponentInParent<Player>();
         if (player == activePlayerInInteractionRadius) {
             activePlayerInInteractionRadius = null;
-            PlayerControls.instance.interact.onPressed -= OnInteractPressed;
+            DisableInteractListener();
             OnPlayerLeaveInteractionRadius(player);
         }
         onEnableCalledBeforeLastTriggerInteraction = false;

@@ -18,7 +18,7 @@ public class Dialog : MonoBehaviour
     // Public Variables
     public float charDelay = 0.03f;
     public float sentenceDelay = 3;
-    public const int MAX_DIALOG_EVENT = 2;
+    public const int MAX_DIALOG_EVENT = 5;
 
     // Private Variables
     private Transform floatTextArea;
@@ -59,6 +59,33 @@ public class Dialog : MonoBehaviour
         dialogEvents[1].Add(new DialogContent("Player", "The pieces on its own won’t budge…"));
         dialogEvents[1].Add(new DialogContent("Bunny", "Try looking at it differently. Maybe find a different angle to see if that changes anything."));
 
+        // For "Integrity" tank
+        dialogEvents[2] = new List<DialogContent>();
+        dialogEvents[2].Add(new DialogContent("Player", "My best friends would always tell me that I’m a kind-hearted person."));
+        dialogEvents[2].Add(new DialogContent("Player", "They felt that they could trust me. It made me really happy…"));
+        dialogEvents[2].Add(new DialogContent("Player", "I’ve always tried to talk honestly to people, but I try to be sensitive at the same time so I don’t hurt their feelings."));
+        dialogEvents[2].Add(new DialogContent("Player", "I don’t really talk or stand out that much, but I don’t want to be hated."));
+        dialogEvents[2].Add(new DialogContent("Player", "It feels really nice when I do talk to someone. That’s why I want to be as kind and sincere to them as possible."));
+        dialogEvents[2].Add(new DialogContent("Player", "When I go back home… I want to try to talk to more people… Slowly but surely… Thank you."));
+
+        // For "Forgiveness" tank
+        dialogEvents[3] = new List<DialogContent>();
+        dialogEvents[3].Add(new DialogContent("Player", "I’ve never stood out that much, and I don’t have a lot of accomplishments."));
+        dialogEvents[3].Add(new DialogContent("Player", "But I don’t like to boast about them. That isn’t me. I just do the best that I can."));
+        dialogEvents[3].Add(new DialogContent("Player", "If you live solely based on accomplishments and boast about them, you become more prone to the feeling of failure."));
+        dialogEvents[3].Add(new DialogContent("Player", "I think failure can be a good thing too. It can make success feel that much better."));
+        dialogEvents[3].Add(new DialogContent("Player", "Even if I don’t stand out that much… I can take pride in the things I can accomplish, but…"));
+        dialogEvents[3].Add(new DialogContent("Player", "I can’t let that feeling control me… You understand right? … I know you do."));
+
+        // For "Humility" tank
+        dialogEvents[4] = new List<DialogContent>();
+        dialogEvents[4].Add(new DialogContent("Player", "I’ve had my fair share of mistakes. Everyone does."));
+        dialogEvents[4].Add(new DialogContent("Player", "And I think it’s fine to get angry every once in a while. I know I’ve gotten angry quite a few times…"));
+        dialogEvents[4].Add(new DialogContent("Player", "But I don’t want my mistakes and anger to define who I am you know? I’m sure other people feel the same way…"));
+        dialogEvents[4].Add(new DialogContent("Player", "I’ve always forgiven people that have done something wrong to me. I couldn’t know what they were thinking or what they’ve been going through."));
+        dialogEvents[4].Add(new DialogContent("Player", "I don’t want to be a victim, but I don’t want them to feel like a culprit either."));
+        dialogEvents[4].Add(new DialogContent("Player", "No matter what someone has done, forgiving them can help them a lot… Don’t you agree?"));
+        
         // For switching scripts, just call SwitchScript(int);
     }
 

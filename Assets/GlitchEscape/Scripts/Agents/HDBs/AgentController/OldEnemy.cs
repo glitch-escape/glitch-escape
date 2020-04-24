@@ -56,6 +56,43 @@ public class OldEnemy : MonoBehaviour {
     private Player player;
     */
 
+    // REMOVE IF PATROL IS UNWANTED
+    #region Old Code to Let Enemy Prefab Move Again
+    public Transform[] patrolPoints;
+    public float ptLeniency = 1.05f;
+    private Vector3 origin;
+    private int curDest;
+    private bool isReturnTrip;
+
+    private void Start() {
+        if (patrolPoints.Length > 0) {
+            m_agent.SetDestination(patrolPoints[curDest].position);
+        }
+    }
+
+    private void Update() {
+        // Update destination point if needed
+        if (patrolPoints.Length > 0 && Vector3.Distance(transform.position, m_agent.destination) <= ptLeniency) {
+            if (isReturnTrip) {
+                curDest -= 1;
+                if (curDest < 0) {
+                    isReturnTrip = false;
+                    curDest += 1;
+                }
+            }
+            else {
+                curDest += 1;
+                if (curDest >= patrolPoints.Length) {
+                    isReturnTrip = true;
+                    curDest -= 1;
+                }
+            }
+
+            m_agent.SetDestination(patrolPoints[curDest].position);
+        }
+    }
+    #endregion
+
 
     void OnEnable() {
         player = Enforcements.GetSingleComponentInScene<Player>(this);
