@@ -69,17 +69,17 @@ public class InteractionTrigger : MonoBehaviour {
 
     private void OnPlayerEnterInteractionRadius(Player player) {
         foreach (var handler in attachedInteractionHandlers) {
-            handler.OnPlayerEnterInteractionRadius(player);
+            handler?.OnPlayerEnterInteractionRadius(player);
         }
     }
     private void OnPlayerLeaveInteractionRadius(Player player) {
         foreach (var handler in attachedInteractionHandlers) {
-            handler.OnPlayerExitInteractionRadius(player);
+            handler?.OnPlayerExitInteractionRadius(player);
         }
     }
     public void OnPlayerInteractPressed(Player player) {
         foreach (var handler in attachedInteractionHandlers) {
-            handler.OnInteract(player);
+            handler?.OnInteract(player);
         }
     }
     private void OnInteractPressed() {

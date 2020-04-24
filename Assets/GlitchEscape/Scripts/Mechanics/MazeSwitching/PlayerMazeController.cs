@@ -12,8 +12,8 @@ using Debug = UnityEngine.Debug;
 // and rename this (which should have a much smaller impl) to PlayerMazeSwitchAbility, or something
 // (or just roll into player interaction ability...)
 public class PlayerMazeController : PlayerComponent {
-    private NormalMaze normalMaze;
-    private GlitchMaze glitchMaze;
+    public NormalMaze normalMaze;
+    public GlitchMaze glitchMaze;
 
     [NonSerialized]
     private static PlayerMazeController _instance = null;
@@ -21,25 +21,25 @@ public class PlayerMazeController : PlayerComponent {
     public static PlayerMazeController instance =>
         _instance ?? (_instance = Enforcements.GetSingleComponentInScene<PlayerMazeController>());
 
-    [NonSerialized]
+    [SerializeField]
     private Maze _currentMaze = null;
     
-    private Maze currentMaze {
+    [SerializeField]
+    public Maze currentMaze {
         get => _currentMaze;
         set {
-            if (_currentMaze != value) {
-                if (_currentMaze != null) {
-                    lastMazeSwitchTime = Time.time;
-                    if (value == normalMaze) {
-                        FireEvent(PlayerEvent.Type.MazeSwitchToNormalMaze);
-                    } else if (value == glitchMaze) {
-                        FireEvent(PlayerEvent.Type.MazeSwitchToGlitchMaze);
-                    }
+            var prevMaze = currentMaze;
+            _currentMaze = value;
+            prevMaze?.gameObject.SetActive(false);
+            _currentMaze?.gameObject.SetActive(true);
+            Debug.Log("switching mazes");
+            if (prevMaze != null) {
+                lastMazeSwitchTime = Time.time;
+                if (value == normalMaze) {
+                    FireEvent(PlayerEvent.Type.MazeSwitchToNormalMaze);
+                } else if (value == glitchMaze) {
+                    FireEvent(PlayerEvent.Type.MazeSwitchToGlitchMaze);
                 }
-                _currentMaze?.gameObject.SetActive(false);
-                value?.gameObject.SetActive(true);
-                _currentMaze = value;
-                
             }
         }
     }
@@ -47,38 +47,20 @@ public class PlayerMazeController : PlayerComponent {
         Normal,
         Glitch
     };
-    
-    [SerializeField]
-    private ActiveMaze _activeMaze = ActiveMaze.Normal;
-    
-    public ActiveMaze activeMaze {
-        get => _activeMaze;
-        set {
-            if (normalMaze == null || glitchMaze == null) {
-                Debug.Log("cannot maze switch: missing normal and/or glitch maze!");
-                return;
-            }
-            switch (_activeMaze) {
-                case ActiveMaze.Normal: currentMaze = (Maze) normalMaze;
-                    break;
-                case ActiveMaze.Glitch: currentMaze = (Maze) glitchMaze;
-                    break;
-            }
-        }
-    }
+    public ActiveMaze activeMaze => inNormalMaze ? ActiveMaze.Normal : ActiveMaze.Glitch;
     public bool inNormalMaze {
-        get => activeMaze == ActiveMaze.Normal;
-        set => activeMaze = ActiveMaze.Normal;
+        get => normalMaze.gameObject.activeInHierarchy;
+        set => currentMaze = value ? (Maze)normalMaze : glitchMaze;
     }
     public bool inGlitchMaze {
-        get => activeMaze == ActiveMaze.Glitch;
-        set => activeMaze = ActiveMaze.Glitch;
+        get => glitchMaze.gameObject.activeInHierarchy;
+        set => currentMaze = value ? (Maze)glitchMaze : normalMaze;
     }
     private TMaze TryGetMaze<TMaze>(string fallbackName) where TMaze : Maze {
         // use Resources.FindObjectsOfTypeAll<T>() to find inactive game objects (this breaks w/ GameObjects.Find...)
         // (https://answers.unity.com/questions/890636/find-an-inactive-game-object.html)
         var mazes = Resources.FindObjectsOfTypeAll<TMaze>();
-        if (mazes.Length > 1) Debug.LogError("Found multiple mazes of type "+typeof(TMaze).Name+"!");
+        if (mazes.Length > 1) Debug.LogError("Found multiple mazes of type "+typeof(TMaze).Name+"! "+mazes);
         if (mazes.Length > 0) return mazes[0];
         var baseMazes = Resources.FindObjectsOfTypeAll<Maze>();
         foreach (var maze in baseMazes) {
@@ -135,7 +117,8 @@ public class PlayerMazeController : PlayerComponent {
         inNormalMaze = true;
     }
     public void SwitchMazes() {
-        inGlitchMaze = !inGlitchMaze;
+        // inGlitchMaze = !inGlitchMaze;
+        currentMaze = inGlitchMaze ? (Maze)normalMaze : (Maze)glitchMaze;
     }
 
     private float lastMazeSwitchTime = -10f;
@@ -146,7 +129,9 @@ public class PlayerMazeController : PlayerComponent {
     /// </summary>
     /// <returns></returns>
     public bool TriggerMazeSwitch() {
+        Debug.Log("attempting to maze switch");
         if (Time.time > lastMazeSwitchTime + mazeSwitchCooldown) {
+            Debug.Log("maze switching...");
             lastMazeSwitchTime = Time.time;
             SwitchMazes();
             return true;
