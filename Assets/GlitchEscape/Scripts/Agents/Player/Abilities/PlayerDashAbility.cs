@@ -3,31 +3,33 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using GlitchEscape.Effects;
+using GlitchEscape.Scripts.DebugUI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 
-public class PlayerDashAbility : PlayerAbility {
+public class PlayerDashAbility : PlayerAbility, IPlayerDebug {
     [InjectComponent] public Animator animator;
     public Material glitchMaterial;
 
-    public override float resourceCost => player.config.dashAbilityStaminaCostRange.minimum;
+    public override float resourceCost => GetStaminaCostFromPressDuration(0f);
     public override float cooldownTime => player.config.dashAbilityCooldownTime;
-
-    // TODO: reimplement variable-length button presses
-    private float dashStrength =>
-        player.config.dashAbilityPressTimeRange.SampleCurve(
-            inputButton.pressTime,
-            player.config.dashAbilityPressCurve);
-
-    private float dashDistance => player.config.dashAbilityMoveRange.Lerp(dashStrength);
     private float dashSpeed => player.config.dashAbilitySpeed;
-    protected override float abilityDuration => dashDistance / dashSpeed;
-
-    private PlayerControls.HybridButtonControl m_inputButton;
-
-    protected override PlayerControls.HybridButtonControl inputButton
-        => m_inputButton ?? (m_inputButton = PlayerControls.instance.dash);
+    protected override PlayerControls.HybridButtonControl inputButton => null; // control using PlayerController instead
+    public float GetAbilityDurationFromPressDuration(float pressDuration) {
+        var pressStrength = player.config.dashAbilityPressTimeRange.SampleCurve(
+            pressDuration, player.config.dashAbilityPressCurve);
+        var distance = player.config.dashAbilityMoveRange.Lerp(pressStrength);
+        var duration = distance / dashSpeed;
+        return duration;
+    }
+    public float GetStaminaCostFromPressDuration(float pressDuration) {
+        var pressStrength = player.config.dashAbilityPressTimeRange.SampleCurve(
+            pressDuration, player.config.dashAbilityPressCurve);
+        return player.config.dashAbilityStaminaCostRange.Lerp(pressStrength);
+    }
+    public float currentPressDuration { get; set; } = 0f;
+    protected override float abilityDuration => GetAbilityDurationFromPressDuration(currentPressDuration);
 
     /// <summary>
     /// Can trigger iff the player is already moving
@@ -37,6 +39,11 @@ public class PlayerDashAbility : PlayerAbility {
         return PlayerControls.instance.moveInput.magnitude > 0f;
     }
 
+    public IEffect TryUseAbilityAsEffect() {
+        IEffect effect = null;
+        return CanStartAbility() ? null : effect;
+    }
+    
     // TeleportEffectGraph variables
     public const string GLITCH_MATERIAL_EMISSION_COLOR = "EmissionColor_9A7229B8";
     public const string GLITCH_MATERIAL_START_TIME = "StartTime_B9ED4C73";
@@ -109,12 +116,15 @@ public class PlayerDashAbility : PlayerAbility {
         dashVfx?.UpdateEffect();
     }
 
-    public override string debugName => this.GetType().Name;
-    public override void DrawDebugUI() {
-        base.DrawDebugUI();
+    public string debugName => this.GetType().Name;
+    public void DrawDebugUI() {
         GUILayout.Label("dash speed: "+dashSpeed);
-        GUILayout.Label("current dash strength: "+dashStrength);
-        GUILayout.Label("current dash distance: "+dashDistance);
+        GUILayout.Label("current dash press time: "+currentPressDuration);
+        GUILayout.Label("current dash strength: "+
+                        player.config.dashAbilityPressTimeRange.SampleCurve(
+                            currentPressDuration, player.config.dashAbilityPressCurve));
+        GUILayout.Label("current dash distance: "+(abilityDuration * dashSpeed));
         GUILayout.Label("current dash time: "+abilityDuration);
+        GUILayout.Label("current total stamina cost: "+GetStaminaCostFromPressDuration(currentPressDuration));
     }
 }

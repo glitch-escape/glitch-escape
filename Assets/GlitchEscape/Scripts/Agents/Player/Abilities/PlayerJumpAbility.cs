@@ -1,15 +1,17 @@
 ﻿using System;
+using GlitchEscape.Effects;
+using GlitchEscape.Scripts.DebugUI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerJumpAbility : PlayerAbility {
+public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
     [InjectComponent] public PlayerMovement playerMovement;
 
     #region PlayerAbilityProperties
     public override float resourceCost => 0f; // jumping does not use stamina
     public override float cooldownTime => 0.01f; // jumping does not have any effective cooldown
     protected override float abilityDuration => 0f; // the jump action itself does not take any time
-    protected override PlayerControls.HybridButtonControl inputButton => PlayerControls.instance.jump;
+    protected override PlayerControls.HybridButtonControl inputButton => null; // control using PlayerController instead
     #endregion PlayerAbilityProperties
     #region Variable State
     public uint jumpCount = 0;
@@ -179,9 +181,8 @@ public class PlayerJumpAbility : PlayerAbility {
             FireEvent(PlayerEvent.Type.EndJump);
         }
     }
-    public override string debugName => this.GetType().Name;
-    public override void DrawDebugUI() {
-        base.DrawDebugUI();
+    public string debugName => this.GetType().Name;
+    public void DrawDebugUI() {
         GUILayout.Label("is jumping? " + isJumping);
         GUILayout.Label("jump count: " + jumpCount + " / " + player.config.maxJumps);
         GUILayout.Label("can jump? " + jumpAbilityStatus);
