@@ -75,6 +75,7 @@ public class PlayerControls : MonoBehaviour {
     private HybridButtonControl m_jump = null;
     private HybridButtonControl m_manifest = null;
     private HybridButtonControl m_interact = null;
+    private HybridButtonControl m_shoot = null;
 
     /// <summary>
     /// Provides hardcoded button state + callbacks for the Dash action
@@ -121,7 +122,7 @@ public class PlayerControls : MonoBehaviour {
     /// Provides hardcoded button state + callbacks for the Interact action
     /// </summary>
     public HybridButtonControl shoot =>
-        m_interact ?? (m_interact = new HybridButtonControl(
+        m_shoot ?? (m_shoot = new HybridButtonControl(
             new IndirectButtonControl(Mouse.current.rightButton),
             new IndirectButtonControl(() => Gamepad.current?.rightTrigger)));
 
