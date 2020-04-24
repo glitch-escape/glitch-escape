@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using GlitchEscape.Scripts.DebugUI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -48,7 +49,7 @@ public class SphereTrigger : Trigger {
     }
 }
 
-public class PlayerInteractionAbility : PlayerAbility {
+public class PlayerInteractionAbility : PlayerAbility, IPlayerDebug {
     public override float resourceCost => 0f;
     public override float cooldownTime => 0.1f;
     protected override float abilityDuration => 0f;
@@ -154,8 +155,6 @@ public class PlayerInteractionAbility : PlayerAbility {
     private void SetTriggerRadius(float radius) {
         trigger.radius = lastInteractionRadius = radius; 
     }
-    public override string debugName => this.GetType().Name;
-    public override void DrawDebugUI() {
-        base.DrawDebugUI();
-    }
+    public string debugName => this.GetType().Name;
+    public void DrawDebugUI() {}
 }

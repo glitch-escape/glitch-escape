@@ -12,11 +12,12 @@ public class PlayerControls : MonoBehaviour {
     [InjectComponent] public Player player;
     
     private static PlayerControls m_instance = null;
+    private static bool m_currentlyInactive = false;
     public static PlayerControls instance {
         get {
             if (m_instance == null) {
                 m_instance = GameObject.FindObjectOfType<PlayerControls>();
-                if (m_instance == null) {
+                if (m_instance == null && !m_currentlyInactive) {
                     Debug.LogError("no player controls instance in this scene!");
                 }
             }
@@ -33,11 +34,13 @@ public class PlayerControls : MonoBehaviour {
     private void Awake() { instance = this; }
     private void OnEnable() {
         instance = this;
+        m_currentlyInactive = false;
         if (onInputControlTypeChanged != null) {
             onInputControlTypeChanged(activeControlType);
         }
     }
-    void OnDisable() {
+    void OnDisable() {    
+        m_currentlyInactive = true;
         instance = null;
         m_lastControlType = InputControlType.None;
     }
@@ -75,6 +78,7 @@ public class PlayerControls : MonoBehaviour {
     private HybridButtonControl m_jump = null;
     private HybridButtonControl m_manifest = null;
     private HybridButtonControl m_interact = null;
+    private HybridButtonControl m_shoot = null;
 
     /// <summary>
     /// Provides hardcoded button state + callbacks for the Dash action
@@ -121,7 +125,7 @@ public class PlayerControls : MonoBehaviour {
     /// Provides hardcoded button state + callbacks for the Interact action
     /// </summary>
     public HybridButtonControl shoot =>
-        m_interact ?? (m_interact = new HybridButtonControl(
+        m_shoot ?? (m_shoot = new HybridButtonControl(
             new IndirectButtonControl(Mouse.current.rightButton),
             new IndirectButtonControl(() => Gamepad.current?.rightTrigger)));
 

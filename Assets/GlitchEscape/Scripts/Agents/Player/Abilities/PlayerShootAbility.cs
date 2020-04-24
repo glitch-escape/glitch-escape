@@ -2,11 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using GlitchEscape.Scripts.DebugUI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 
-public class PlayerShootAbility : PlayerAbility {
+public class PlayerShootAbility : PlayerAbility, IPlayerDebug {
     /// <summary>
     /// Stamina cost per projectile
     /// </summary>
@@ -44,9 +45,7 @@ public class PlayerShootAbility : PlayerAbility {
     protected override void OnAbilityStart() {
         PlayerProjectile.Spawn(projectileConfig, projectileSpawnLocation);
     }
-    public override string debugName => this.GetType().Name;
+    public string debugName => this.GetType().Name;
 
-    public override void DrawDebugUI() {
-        base.DrawDebugUI();
-    }
+    public void DrawDebugUI() {}
 }

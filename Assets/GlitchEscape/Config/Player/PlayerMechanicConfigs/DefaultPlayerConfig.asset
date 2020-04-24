@@ -61,6 +61,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   mouseSensitivity: 1
+  gravity: 9.81
   runSpeed: 10
   turnSpeed: 12
   cameraTurnSpeed: 271
@@ -86,7 +87,7 @@ MonoBehaviour:
       time: 0
       value: 0
       inSlope: 0
-      outSlope: 1
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
@@ -94,8 +95,8 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 1
-      outSlope: 0
+      inSlope: 2
+      outSlope: 2
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
@@ -107,11 +108,9 @@ MonoBehaviour:
     minimum: 30
     maximum: 45
   dashAbilityMoveRange:
-    minimum: 3
-    maximum: 8
-  dashAbilityDurationRange:
-    minimum: 0.8
-    maximum: 2.5
+    minimum: 6
+    maximum: 10
+  dashAbilitySpeed: 40
   dashAbilityCooldownTime: 0.05
   dashAbilityEnabled: 1
   shootAbilityStaminaCost: 10

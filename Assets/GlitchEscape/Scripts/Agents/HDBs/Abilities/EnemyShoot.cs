@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+namespace GlitchEscape.Legacy {
 public class EnemyShoot : MonoBehaviour, IEnemyAttackAction {
     private OldEnemy _oldEnemy;
     private OldEnemyController _oldEnemyController;
@@ -105,4 +106,5 @@ public class EnemyShoot : MonoBehaviour, IEnemyAttackAction {
         }
     }
     #endregion
+}
 }

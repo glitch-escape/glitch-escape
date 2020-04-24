@@ -2,11 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using GlitchEscape.Scripts.DebugUI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 
-public class PlayerManifestAbility : PlayerAbility {
+public class PlayerManifestAbility : PlayerAbility, IPlayerDebug {
     /// <summary>
     /// Player reference
     /// </summary>
@@ -98,8 +99,6 @@ public class PlayerManifestAbility : PlayerAbility {
     #endregion
     #endregion
     
-    public override string debugName => this.GetType().Name;
-    public override void DrawDebugUI() {
-        base.DrawDebugUI();
-    }
+    public string debugName => this.GetType().Name;
+    public void DrawDebugUI() {}
 }
