@@ -39,10 +39,16 @@ public abstract class Projectile<TDerivedProjectile, TProjectileConfig> : Attack
         return projectile;
     }
     //private void OnCollisionEnter(Collision other) {
-    private void OnTriggerEnter(Collider other) { 
+    private void OnTriggerEnter(Collider other)
+    {
         var agent = other.gameObject.GetComponent<IAgent>();
-        if (agent != null && agent.agentType == targetType) {
+        if (agent != null && agent.agentType == targetType)
+        {
             agent.TakeDamage(config.damage);
+            Destroy(gameObject);
+        }
+        if (agent == null && Time.time > spawnTime+0.1f)
+        {
             Destroy(gameObject);
         }
     }
