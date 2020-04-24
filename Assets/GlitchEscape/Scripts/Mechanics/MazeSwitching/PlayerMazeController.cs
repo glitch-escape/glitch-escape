@@ -8,6 +8,9 @@ using Debug = UnityEngine.Debug;
 
 // Manages maze switching etc.
 // TODO: add postprocessing effects to glitch maze (see inGlitchMaze and glitchPercentRemaining)
+// TODO: move actual maze switch component of this to a MazeController script w/ [InjectComponent] child refs
+// and rename this (which should have a much smaller impl) to PlayerMazeSwitchAbility, or something
+// (or just roll into player interaction ability...)
 public class PlayerMazeController : PlayerComponent {
     private NormalMaze normalMaze;
     private GlitchMaze glitchMaze;
@@ -71,12 +74,36 @@ public class PlayerMazeController : PlayerComponent {
         get => activeMaze == ActiveMaze.Glitch;
         set => activeMaze = ActiveMaze.Glitch;
     }
+    private TMaze TryGetMaze<TMaze>(string fallbackName) where TMaze : Maze {
+        // use Resources.FindObjectsOfTypeAll<T>() to find inactive game objects (this breaks w/ GameObjects.Find...)
+        // (https://answers.unity.com/questions/890636/find-an-inactive-game-object.html)
+        var mazes = Resources.FindObjectsOfTypeAll<TMaze>();
+        if (mazes.Length > 1) Debug.LogError("Found multiple mazes of type "+typeof(TMaze).Name+"!");
+        if (mazes.Length > 0) return mazes[0];
+        var baseMazes = Resources.FindObjectsOfTypeAll<Maze>();
+        foreach (var maze in baseMazes) {
+            if (maze.gameObject.name == fallbackName) {
+                Debug.Log("Found "+fallbackName+" maze with legacy maze type; replacing with "+
+                          typeof(TMaze).Name);
+                var m = maze.gameObject;
+                Destroy(maze); // remove regular maze component
+                return m.AddComponent<TMaze>();
+            }
+        }
+        Debug.LogWarning("No object with "+typeof(TMaze).Name+" component or with name '"+fallbackName+
+                         "' with Maze component found in this scene (note: this will effectively disable maze switching)");
+        return null;
+    }
+
+    private void TryGetMazeRefs() {
+        normalMaze = TryGetMaze<NormalMaze>("BazeMaze");
+        glitchMaze = TryGetMaze<GlitchMaze>("GlitchMaze");
+    }
     void Awake() {
         _instance = this;
         
         // get maze references
-        normalMaze = Enforcements.GetSingleComponentInScene<NormalMaze>();
-        glitchMaze = Enforcements.GetSingleComponentInScene<GlitchMaze>();
+        TryGetMazeRefs();
         normalMaze?.gameObject.SetActive(true);
         glitchMaze?.gameObject.SetActive(false);
         
@@ -88,8 +115,7 @@ public class PlayerMazeController : PlayerComponent {
         _instance = this;
         
         // re-get maze references
-        normalMaze = Enforcements.GetSingleComponentInScene<NormalMaze>();
-        glitchMaze = Enforcements.GetSingleComponentInScene<GlitchMaze>();
+        TryGetMazeRefs();
         
         // trigger maze updates, keeping the current maze active
         var maze = currentMaze;
