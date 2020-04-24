@@ -154,4 +154,8 @@ public class PlayerInteractionAbility : PlayerAbility {
     private void SetTriggerRadius(float radius) {
         trigger.radius = lastInteractionRadius = radius; 
     }
+    public override string debugName => this.GetType().Name;
+    public override void DrawDebugUI() {
+        base.DrawDebugUI();
+    }
 }

@@ -1,22 +1,56 @@
 ﻿using System;
-using UnityEditor.UI;
+using GlitchEscape.Effects;
+using GlitchEscape.Scripts.DebugUI;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Player))]
 [RequireComponent(typeof(Rigidbody))]
-public class PlayerMovement : PlayerComponent, IResettable {
+public class PlayerMovement : PlayerComponent, IResettable, IPlayerDebug {
     [InjectComponent] public new Rigidbody rigidbody;
     [InjectComponent] public PlayerControls playerInput;
     [InjectComponent] public new Camera camera;
+
+    public class State : EffectState<PlayerMovement, State> {
+        public bool enabled;
+        public float moveSpeed;
+        public float dashSpeed;
+        public float moveSpeedMultiplier;
+        public State(PlayerMovement owner) : base(owner) { }
+        protected override void SetDefaults(PlayerMovement owner) {
+            enabled = true;
+            moveSpeed = owner.player.config.runSpeed;
+            dashSpeed = 0f;
+            moveSpeedMultiplier = 1f;
+        }
+    }
+    private State state;
+    private void OnEnable() { state = new State(this); }
+
+    struct ApplyDashSpeedEffect : IEffector<PlayerMovement, State> {
+        public float dashSpeed;
+        public void Apply(State state) { state.dashSpeed += dashSpeed; }
+    }
+    public IEffect ApplyDashSpeed(float speed) {
+        return state.CreateEffect(new ApplyDashSpeedEffect { dashSpeed = speed });
+    }
+    struct AddMoveSpeedEffect : IEffector<PlayerMovement, State> {
+        public float multiplier;
+        public void Apply(State state) { state.moveSpeedMultiplier *= multiplier; }
+    }
+    public IEffect AddMoveSpeed(float multiplier) {
+        return state.CreateEffect(new AddMoveSpeedEffect { multiplier = multiplier });
+    }
+    struct SetMovementEnabledEffect : IEffector<PlayerMovement, State> {
+        public bool enabled;
+        public void Apply(State state) { state.enabled = enabled; }
+    }
     
     [Tooltip("Player movement mode")] 
     public PlayerMovementMode movementMode = PlayerMovementMode.TurnToFaceMoveDirection;
     public enum PlayerMovementMode {
         TurnToFaceMoveDirection,
     }
-
-    public float moveSpeed => player.config.runSpeed;
+    public float moveSpeed => state.enabled ? state.moveSpeed * state.moveSpeedMultiplier : 0f;
     public bool isFalling => rigidbody.velocity.y < 0f;
 
     /// <summary>
@@ -125,7 +159,8 @@ public class PlayerMovement : PlayerComponent, IResettable {
     /// <summary>
     /// Resets player movement state
     /// </summary>
-    public void Reset() { 
+    public void Reset() {
+        state.Reset();
         isMoving = false;
         rigidbody.velocity = Vector3.zero;
         rigidbody.angularVelocity = Vector3.zero;
@@ -136,6 +171,12 @@ public class PlayerMovement : PlayerComponent, IResettable {
     /// </summary>
     void FixedUpdate() {
         Move(playerInput.moveInput * Time.fixedDeltaTime);
+        
+        // apply dash, if active
+        if (state.dashSpeed > 0f) {
+            var dashDir = player.transform.forward;
+            rigidbody.MovePosition(rigidbody.position + dashDir * state.dashSpeed * Time.fixedDeltaTime);
+        }
     }
 
     /// <summary>
@@ -166,10 +207,8 @@ public class PlayerMovement : PlayerComponent, IResettable {
         return forward * input.y + right * input.x;
     }
     
-    public bool showDebugGui = false;
-
-    void OnGUI() {
-        if (!showDebugGui) return;
+    public string debugName => this.GetType().Name;
+    public void DrawDebugUI() {
         GUILayout.Label("PlayerMovement.cs:");
         GUILayout.Label("Movement mode: " + movementMode);
 
@@ -187,5 +226,6 @@ public class PlayerMovement : PlayerComponent, IResettable {
         GUILayout.Label("expected position: " + moveDir + rigidbody.position);
         GUILayout.Label("player move speed: " + moveSpeed);
         GUILayout.Label("player turn speed: " + turnSpeed);
+        GUILayout.Label(state.ToString());
     }
 }
