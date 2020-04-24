@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Playables;
 
 [RequireComponent(typeof(InteractionTrigger))]
-public class HubPortal : MonoBehaviour, IPlayerInteractable {
+public class HubPortal : MonoBehaviour, IInteract {
     public bool disableOnStart = true;
     // singleton
     private static HubPortal _instance = null;
@@ -22,6 +22,11 @@ public class HubPortal : MonoBehaviour, IPlayerInteractable {
             return _instance;
         }
     }
+
+    public bool isInteractive => true;
+
+    public void OnSelected(Player player){}
+    public void OnDeselected(Player player){}
 
     public Transform floatTextArea;
     public string interactMessage = "[Step through the portal]";

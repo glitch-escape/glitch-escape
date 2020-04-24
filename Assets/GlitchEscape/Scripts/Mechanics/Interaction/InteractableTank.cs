@@ -29,6 +29,7 @@ public class InteractableTank : MonoBehaviour, IActiveInteract
         // only apply interact when not yet picked up and is the last approached object.
         if (playerInTank.activeInHierarchy && floatingText.IsCurrentTarget(floatTextArea))
         {
+            /*
             if(player.shardcomp.value == player.shardcomp.maximum)
             {
                 playerInTank.SetActive(false);
@@ -36,6 +37,7 @@ public class InteractableTank : MonoBehaviour, IActiveInteract
                 //reset to 0 for the next tank?
                 interactablePortal.OpenPortal();
             }
+            */
         }
     }
 

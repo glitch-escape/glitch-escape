@@ -14,7 +14,7 @@ public class PlayerStatsView : MonoBehaviour {
 
     private const int HEALTH_BAR_MATEIRAL_INDEX = 1;
     private const int STAMINA_BAR_MATERIAL_INDEX = 0;
-    private const int SHARD_BAR_MATERIAL_INDEX = 2;
+    //private const int SHARD_BAR_MATERIAL_INDEX = 2;
     private const string MATERIAL_FILL_VAR = "FillPercent_974DFA7B";
     private const string MATERIAL_FLASH_PERIOD = "FlashPeriod_5B68FE7D";
     private const string MATERIAL_FLASH_START_TIME = "FlashStartTime_A448C5BD";
@@ -79,20 +79,20 @@ public class PlayerStatsView : MonoBehaviour {
     }
     private AttribBarSetter healthSetter = new AttribBarSetter(0.081f, 0.82f);
     private AttribBarSetter staminaSetter = new AttribBarSetter(0.079f, 0.592f);
-    private AttribBarSetter shardSetter = new AttribBarSetter(0.079f, 0.592f);
+    //private AttribBarSetter shardSetter = new AttribBarSetter(0.079f, 0.592f);
 
     private void OnEnable() {
         var renderer = Enforcements.GetComponent<Renderer>(this);
         healthSetter.SetMaterial(renderer.materials[HEALTH_BAR_MATEIRAL_INDEX]);
         staminaSetter.SetMaterial(renderer.materials[STAMINA_BAR_MATERIAL_INDEX]);
-        shardSetter.SetMaterial(renderer.materials[SHARD_BAR_MATERIAL_INDEX]);
+        //shardSetter.SetMaterial(renderer.materials[SHARD_BAR_MATERIAL_INDEX]);
         staminaFlash.SetMaterial(renderer.materials[STAMINA_BAR_MATERIAL_INDEX]);
         player.OnFailedToUseAbilityDueToLowStamina += FlashLowStamina;
     }
     private void OnDisable() {
         healthSetter.SetMaterial(null);
         staminaSetter.SetMaterial(null);
-        shardSetter.SetMaterial(null);
+        //shardSetter.SetMaterial(null);
         staminaFlash.SetMaterial(null);
         player.OnFailedToUseAbilityDueToLowStamina -= FlashLowStamina;
     }
@@ -100,10 +100,10 @@ public class PlayerStatsView : MonoBehaviour {
     void Update() {
         float health = player.health.value / player.health.maximum;
         float stamina = player.stamina.value / player.stamina.maximum;
-        float shard = (float)player.shardcomp.value / (float)player.shardcomp.maximum;
+        //float shard = (float)player.shardcomp.value / (float)player.shardcomp.maximum;
         healthSetter.Update(health);
         staminaSetter.Update(stamina);
-        shardSetter.Update(shard);
+        //shardSetter.Update(shard);
         staminaFlash.Update();
     }
 }

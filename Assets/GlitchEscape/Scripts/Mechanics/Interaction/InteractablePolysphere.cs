@@ -23,7 +23,7 @@ public class InteractablePolysphere : MonoBehaviour, IActiveInteract
         // if ... uhh, it's temporary, ignore it
         if (!_pickedUp)
         {
-            player.shardcomp.value += 1;
+            //player.shardcomp.value += 1;
             this.transform.parent.gameObject.SetActive(false);
             floatingText.DisableText(floatTextArea);
             _pickedUp = true;
