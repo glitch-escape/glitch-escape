@@ -11,7 +11,7 @@ public class PauseMenuController : MonoBehaviour
     public GameObject menus;
     public GameObject main;
 
-    public Button mainResumeButtom;
+    public Button mainResumeButton;
 
     void Awake()
     {
@@ -25,7 +25,7 @@ public class PauseMenuController : MonoBehaviour
             Time.timeScale = 0;
             AudioListener.pause = true;
             menus.SetActive(true);
-            mainResumeButtom.Select();
+            mainResumeButton.Select();
         }
         else
         {
@@ -34,10 +34,12 @@ public class PauseMenuController : MonoBehaviour
     }
 
     // basic navigating for different Menus 
-    public void MenuNav(Button seletedButton)
+    public void MenuNav(Selectable seleted)
     {
         EventSystem.current.SetSelectedGameObject(null);
-        seletedButton.Select();
+        // EventSystem.current.SetSelectedGameObject(seleted);
+        // seletedButton.SetSelectedGameObject();
+        seleted.Select();
     }
 
     public void MenuNavFrom(GameObject navFrom)
