@@ -27,7 +27,7 @@ public class InteractablePortal : MonoBehaviour, IActiveInteract
     public Transform floatTextArea;
     public string interactMessage = "[Step through the portal]";
 
-    public PlayableDirector portalCutscene;
+    //public PlayableDirector portalCutscene;
     private FloatingTextController floatingText;
     private InteractableTank interactableTank;
     public Loader.Scene levelToLoad = Loader.Scene.MainMenu;
@@ -36,8 +36,8 @@ public class InteractablePortal : MonoBehaviour, IActiveInteract
     {
         floatingText = FloatingTextController.instance;
         // portalCutscene = GetComponent<PlayableDirector>();
-        portalCutscene.Play();
-        portalCutscene.Pause();
+        //portalCutscene.Play();
+        //portalCutscene.Pause();
     }
     void Start()
     {
@@ -71,7 +71,7 @@ public class InteractablePortal : MonoBehaviour, IActiveInteract
 
     public void OpenPortal()
     {
-        portalCutscene.Resume();
+        //portalCutscene.Resume();
         // this.transform.parent.gameObject.SetActive(true);
     }
 }

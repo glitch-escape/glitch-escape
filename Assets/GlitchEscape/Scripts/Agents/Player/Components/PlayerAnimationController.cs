@@ -25,12 +25,12 @@ public class PlayerAnimationController : PlayerComponent {
         switch (eventType) {
             // movement
             case PlayerEvent.Type.BeginMovement:
-                animator.SetBool("isRunning", true);
-                animator.SetTrigger("startRunning");
+                animator.SetFloat("runSpeed", movement.moveSpeed);
+                //animator.SetTrigger("startRunning");
                 break;
             case PlayerEvent.Type.EndMovement:
-                animator.SetBool("isRunning", false);
-                animator.SetTrigger("stopRunning");
+                //animator.SetBool("isRunning", false);
+                animator.SetFloat("runSpeed", 0.0f);
                 break;
             
             // jump
@@ -38,11 +38,11 @@ public class PlayerAnimationController : PlayerComponent {
             case PlayerEvent.Type.AirJump:
             case PlayerEvent.Type.WallJump:
                 animator.SetBool("isJumping", true);
-                animator.SetTrigger("startJumping");
+                //animator.SetTrigger("startJumping");
                 break;
             case PlayerEvent.Type.EndJump:
                 animator.SetBool("isJumping", false);
-                animator.SetTrigger("stopJumping");
+                //animator.SetTrigger("stopJumping");
                 break;
             
             // interact
@@ -51,11 +51,11 @@ public class PlayerAnimationController : PlayerComponent {
             // dash
             case PlayerEvent.Type.BeginDash: 
                 animator.SetBool("isDashing", true);
-                animator.SetTrigger("startDashing");
+                //animator.SetTrigger("startDashing");
                 break;
             case PlayerEvent.Type.EndDash: 
                 animator.SetBool("isDashing", false);
-                animator.SetTrigger("stopDashing");
+                //animator.SetTrigger("stopDashing");
                 break;
             
             // shoot
@@ -69,5 +69,11 @@ public class PlayerAnimationController : PlayerComponent {
     }
     void Update() {
         // animator.SetBool("isRunning", movement.isMoving);
+        //Debug.Log(animator.deltaPosition.magnitude);
+        animator.SetFloat("runSpeed", 5.0f);
+    }
+    public void OnAnimatorMove()
+    {
+        animator.ApplyBuiltinRootMotion();
     }
 }
