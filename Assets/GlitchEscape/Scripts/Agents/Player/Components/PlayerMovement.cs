@@ -106,7 +106,6 @@ public class PlayerMovement : PlayerComponent, IResettable, IPlayerDebug {
     public Vector3 CalculateJumpVelocity(float jumpHeight, Vector3 direction) {
         var gravity = Mathf.Abs(Physics.gravity.y);
         var v0 = Mathf.Sqrt(Mathf.Abs(2f * gravity * jumpHeight));
-        Debug.Log("AAAAA" + v0);
         return v0 * direction;
     }
 

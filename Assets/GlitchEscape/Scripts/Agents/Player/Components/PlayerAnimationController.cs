@@ -7,13 +7,15 @@ public class PlayerAnimationController : PlayerComponent {
     [InjectComponent] public PlayerJumpAbility jump;
     [InjectComponent] public PlayerDashAbility dash;
     [InjectComponent] public Animator animator;
-    
-    public float currentAnimationSpeed => animator.deltaPosition.magnitude;
+
+    public float currentAnimationSpeed => movement.moveSpeed;
     
     void OnEnable() {
         foreach (var component in GetComponentsInChildren<IPlayerEventSource>()) {
             component.OnEvent += OnPlayerEvent;
         }
+        animator.applyRootMotion = false;
+        animator.SetFloat("runSpeed", 0.0f);
     }
     void OnDisable() {
         foreach (var component in GetComponentsInChildren<IPlayerEventSource>()) {
@@ -66,14 +68,5 @@ public class PlayerAnimationController : PlayerComponent {
             default: break;
                 // throw new ArgumentOutOfRangeException(nameof(eventType), eventType, null);
         }
-    }
-    void Update() {
-        // animator.SetBool("isRunning", movement.isMoving);
-        //Debug.Log(animator.deltaPosition.magnitude);
-        animator.SetFloat("runSpeed", 5.0f);
-    }
-    public void OnAnimatorMove()
-    {
-        animator.ApplyBuiltinRootMotion();
     }
 }
