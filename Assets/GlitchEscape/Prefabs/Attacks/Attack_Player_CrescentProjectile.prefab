@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 7571255092462801491}
   - component: {fileID: 3111774912475767143}
   - component: {fileID: 3111774912475767136}
-  - component: {fileID: 3111774912475767142}
+  - component: {fileID: -7968934701891768801}
+  - component: {fileID: -5295796864761823150}
   m_Layer: 0
   m_Name: Attack_Player_CrescentProjectile
   m_TagString: Untagged
@@ -48,7 +49,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!135 &3111774912475767136
 SphereCollider:
@@ -61,9 +62,9 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.39
+  m_Radius: 1.86
   m_Center: {x: 0, y: 0.09, z: 0}
---- !u!114 &3111774912475767142
+--- !u!114 &-7968934701891768801
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -72,15 +73,34 @@ MonoBehaviour:
   m_GameObject: {fileID: 3111774912475767137}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b0efda8f1d24a472d944ef5e04b6778e, type: 3}
+  m_Script: {fileID: 11500000, guid: e7c17dcb2d48444c89a805a1ec0abf7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: 0
-  acceleration: 0
-  speed: 30
-  damage: 10
-  lifetime: 30
-  growthRate: 0
+  info: 'injecting fields on Attack_Player_CrescentProjectile (Autowire)
+
+    injecting
+    fields on Attack_Player_CrescentProjectile (PlayerProjectile)
+
+    found injectable
+    field UnityEngine.Rigidbody rigidbody, value null, is null? False
+
+'
+  log: 
+  warnings: 
+  errors: 
+--- !u!114 &-5295796864761823150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3111774912475767137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f02ff7c37d66c46e0b52bbc821140905, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rigidbody: {fileID: 3111774912475767143}
 --- !u!1001 &2988308152186204152
 PrefabInstance:
   m_ObjectHideFlags: 0
