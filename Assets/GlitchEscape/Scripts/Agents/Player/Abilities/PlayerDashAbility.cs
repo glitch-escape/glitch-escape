@@ -95,6 +95,7 @@ public class PlayerDashAbility : PlayerAbility, IPlayerDebug {
         dashVfx = dashVfx ?? (dashVfx = new DashShaderEffect(this));
         dashVfx.ApplyEffect();
         startTime = Time.time;
+        FireEvent(PlayerEvent.Type.BeginDash);
     }
 
     protected override void OnAbilityEnd() {
@@ -103,6 +104,7 @@ public class PlayerDashAbility : PlayerAbility, IPlayerDebug {
         dashVfx?.UnapplyEffect();
         var gravity = playerGravity.gravity;
         playerMovement.ApplyJump(-gravity * (Time.time - startTime));
+        FireEvent(PlayerEvent.Type.EndDash);
     }
     
     public float dashVfxDuration = 1.2f;

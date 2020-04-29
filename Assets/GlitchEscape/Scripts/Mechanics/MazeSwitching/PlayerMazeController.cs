@@ -60,7 +60,7 @@ public class PlayerMazeController : PlayerComponent {
         // use Resources.FindObjectsOfTypeAll<T>() to find inactive game objects (this breaks w/ GameObjects.Find...)
         // (https://answers.unity.com/questions/890636/find-an-inactive-game-object.html)
         var mazes = Resources.FindObjectsOfTypeAll<TMaze>();
-        if (mazes.Length > 1) Debug.LogError("Found multiple mazes of type "+typeof(TMaze).Name+"! "+mazes);
+        if (mazes.Length > 2) Debug.LogError("Found multiple mazes of type "+typeof(TMaze).Name+"! "+mazes);
         if (mazes.Length > 0) return mazes[0];
         var baseMazes = Resources.FindObjectsOfTypeAll<Maze>();
         foreach (var maze in baseMazes) {
