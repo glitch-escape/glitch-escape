@@ -114,7 +114,7 @@ public class PlayerMovement : PlayerComponent, IResettable, IPlayerDebug {
     /// Used to implement <see cref="ApplyJump(float)"/>, etc.
     /// </summary>
     public void SetVelocity(Vector3 velocity) {
-        Debug.Log("Set player velocity at "+Time.time+" to "+velocity);
+        // Debug.Log("Set player velocity at "+Time.time+" to "+velocity);
         rigidbody.velocity = velocity;
     }
 

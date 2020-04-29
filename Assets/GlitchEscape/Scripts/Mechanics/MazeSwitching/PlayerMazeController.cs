@@ -32,7 +32,7 @@ public class PlayerMazeController : PlayerComponent {
             _currentMaze = value;
             prevMaze?.gameObject.SetActive(false);
             _currentMaze?.gameObject.SetActive(true);
-            Debug.Log("switching mazes");
+            // Debug.Log("switching mazes");
             if (prevMaze != null) {
                 lastMazeSwitchTime = Time.time;
                 if (value == normalMaze) {
@@ -49,11 +49,11 @@ public class PlayerMazeController : PlayerComponent {
     };
     public ActiveMaze activeMaze => inNormalMaze ? ActiveMaze.Normal : ActiveMaze.Glitch;
     public bool inNormalMaze {
-        get => normalMaze.gameObject.activeInHierarchy;
+        get => normalMaze?.gameObject.activeInHierarchy ?? false;
         set => currentMaze = value ? (Maze)normalMaze : glitchMaze;
     }
     public bool inGlitchMaze {
-        get => glitchMaze.gameObject.activeInHierarchy;
+        get => glitchMaze?.gameObject.activeInHierarchy ?? false;
         set => currentMaze = value ? (Maze)glitchMaze : normalMaze;
     }
     private TMaze TryGetMaze<TMaze>(string fallbackName) where TMaze : Maze {
