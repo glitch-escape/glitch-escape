@@ -32,7 +32,7 @@ public class PlayerMazeController : PlayerComponent {
             _currentMaze = value;
             prevMaze?.gameObject.SetActive(false);
             _currentMaze?.gameObject.SetActive(true);
-            Debug.Log("switching mazes");
+            // Debug.Log("switching mazes");
             if (prevMaze != null) {
                 lastMazeSwitchTime = Time.time;
                 if (value == normalMaze) {
