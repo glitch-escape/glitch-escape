@@ -1,0 +1,186 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73482ea8f22084fa499fef9ce6a5d2ca, type: 3}
+  m_Name: DefaultPlayerConfig
+  m_EditorClassIdentifier: 
+  gamepadInputCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.0020751953
+      value: 0.0021972656
+      inSlope: 0.6989535
+      outSlope: 0.6989535
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.17906345
+    - serializedVersion: 3
+      time: 1.002904
+      value: 1.4800935
+      inSlope: 3.9646351
+      outSlope: 3.9646351
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.04237545
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  mouseInputCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0.006289164
+      outSlope: 0.006289164
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.375
+    - serializedVersion: 3
+      time: 0.9916687
+      value: 1.070282
+      inSlope: 0.2239732
+      outSlope: 0.2239732
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.05042212
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  mouseSensitivity: 1
+  gravity: 9.81
+  runSpeed: 10
+  turnSpeed: 12
+  cameraTurnSpeed: 271
+  interactionRadius: 10.8
+  playerRayDistanceToGround: 0.7
+  wallRaycastDistance: 1
+  canJump: 1
+  canAirJump: 1
+  canWallJump: 1
+  jumpHeight: 2.04
+  maxJumps: 2
+  useGravityModifications: 1
+  downGravityMultiplier: 2.2
+  upGravityMultiplier: 0.8
+  wallJumpMultiplier: 1.5
+  dashAbilityPressTimeRange:
+    minimum: 0.1
+    maximum: 0.3
+  dashAbilityPressCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  dashAbilityStaminaCostRange:
+    minimum: 30
+    maximum: 45
+  dashAbilityMoveRange:
+    minimum: 6
+    maximum: 10
+  dashAbilitySpeed: 40
+  dashAbilityCooldownTime: 0.05
+  dashAbilityEnabled: 1
+  shootAbilityStaminaCost: 10
+  shootAbilityShotsPerSec: 3
+  shootAbilityProjectileSpeed: 30
+  shootAbilityProjectileDamage: 10
+  shootAbilityEnabled: 1
+  shootAbilityProjectile: {fileID: 11400000, guid: 85fb5e201fd3a467185eb3cebde2453a,
+    type: 2}
+  manifestAbilityStaminaCost: 20
+  manifestAbilityCooldownTime: 0.2
+  manifestAbilityShieldDuration: 3
+  manifestAbilityShieldDistanceFromPlayer: 1
+  manifestAbilityShieldPrefab: {fileID: 0}
+  health:
+    minimum: 0
+    maximum: 100
+  healthRegen: 10
+  healthRegenDelay: 2
+  healthRegenCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.49450225
+      inSlope: 0.09473946
+      outSlope: 0.09473946
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.40333587
+    - serializedVersion: 3
+      time: 1
+      value: 2.005249
+      inSlope: 5.2563887
+      outSlope: 5.2563887
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.08234131
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  stamina:
+    minimum: 0
+    maximum: 100
+  staminaRegen: 45
+  staminaRegenDelay: 0.5
+  staminaRegenCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0.07461162
+      outSlope: 0.07461162
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.43981916
+    - serializedVersion: 3
+      time: 1.0001221
+      value: 1.2295418
+      inSlope: 0.513172
+      outSlope: 0.513172
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.04034377
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spawnHeight: 1
