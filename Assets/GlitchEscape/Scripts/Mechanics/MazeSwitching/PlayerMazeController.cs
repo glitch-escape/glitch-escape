@@ -32,7 +32,7 @@ public class PlayerMazeController : PlayerComponent {
             _currentMaze = value;
             prevMaze?.gameObject.SetActive(false);
             _currentMaze?.gameObject.SetActive(true);
-            Debug.Log("switching mazes");
+            // Debug.Log("switching mazes");
             if (prevMaze != null) {
                 lastMazeSwitchTime = Time.time;
                 if (value == normalMaze) {
@@ -49,18 +49,18 @@ public class PlayerMazeController : PlayerComponent {
     };
     public ActiveMaze activeMaze => inNormalMaze ? ActiveMaze.Normal : ActiveMaze.Glitch;
     public bool inNormalMaze {
-        get => normalMaze.gameObject.activeInHierarchy;
+        get => normalMaze?.gameObject.activeInHierarchy ?? false;
         set => currentMaze = value ? (Maze)normalMaze : glitchMaze;
     }
     public bool inGlitchMaze {
-        get => glitchMaze.gameObject.activeInHierarchy;
+        get => glitchMaze?.gameObject.activeInHierarchy ?? false;
         set => currentMaze = value ? (Maze)glitchMaze : normalMaze;
     }
     private TMaze TryGetMaze<TMaze>(string fallbackName) where TMaze : Maze {
         // use Resources.FindObjectsOfTypeAll<T>() to find inactive game objects (this breaks w/ GameObjects.Find...)
         // (https://answers.unity.com/questions/890636/find-an-inactive-game-object.html)
         var mazes = Resources.FindObjectsOfTypeAll<TMaze>();
-        if (mazes.Length > 1) Debug.LogError("Found multiple mazes of type "+typeof(TMaze).Name+"! "+mazes);
+        if (mazes.Length > 2) Debug.LogError("Found multiple mazes of type "+typeof(TMaze).Name+"! "+mazes);
         if (mazes.Length > 0) return mazes[0];
         var baseMazes = Resources.FindObjectsOfTypeAll<Maze>();
         foreach (var maze in baseMazes) {
