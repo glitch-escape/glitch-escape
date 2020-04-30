@@ -186,8 +186,9 @@ public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
         GUILayout.Label("jump height: " + jumpHeight);
         GUILayout.Label("gravity: " + player.gravity.standingGravity);
         GUILayout.Label("expected velocity: " + Mathf.Sqrt(player.gravity.standingGravity * 2f * jumpHeight));
-        GUILayout.Label("calculated jump velocity " + playerMovement.CalculateJumpVelocity(jumpHeight));
-        GUILayout.Label("calculated wall jump velocity " + playerMovement.CalculateJumpVelocity(jumpHeight, currentWallNormal));
+        GUILayout.Label("calculated jump velocity " + playerMovement.CalculateJumpVector(jumpHeight));
+        GUILayout.Label("calculated wall jump velocity " + playerMovement.CalculateWallJumpVector(
+                            jumpHeight, currentWallNormal, player.config.wallJumpMultiplier));
 
         var currentVelocity = playerMovement.rigidbody.velocity;
         GUILayout.Label("current velocity: " + currentVelocity);

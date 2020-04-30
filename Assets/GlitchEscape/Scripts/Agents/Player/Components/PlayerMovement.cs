@@ -70,7 +70,16 @@ public class PlayerMovement : PlayerComponent, IResettable, IPlayerDebug {
         }
     }
     private bool _isMoving = false;
-    
+
+    public Vector3 CalculateJumpVector(float jumpHeight) {
+        return CalculateJumpVelocity(jumpHeight) * player.transform.up;
+    }
+
+    public Vector3 CalculateWallJumpVector(float jumpHeight, Vector3 wallDirection, float wallJumpComponentStrength) {
+        var direction = player.transform.up + wallDirection * wallJumpComponentStrength;
+        if (direction.y > 1f) direction.y = 1f;
+        return CalculateJumpVelocity(jumpHeight) * direction;
+    }
     /// <summary>
     /// Makes the player jump to a target jump height.
     /// Used by <see cref="PlayerJumpAbility"/>
@@ -78,7 +87,7 @@ public class PlayerMovement : PlayerComponent, IResettable, IPlayerDebug {
     /// <param name="jumpHeight">Peak jump height (in meters), used to calcualte jump force</param>
     /// <param name="direction">Jump direction (should default to player.transform.up)</param>
     public void JumpToHeight(float jumpHeight) {
-        SetVelocity(CalculateJumpVelocity(jumpHeight) * player.transform.up);
+        SetVelocity(CalculateJumpVector(jumpHeight));
     }
 
     /// <summary>
@@ -88,9 +97,8 @@ public class PlayerMovement : PlayerComponent, IResettable, IPlayerDebug {
     /// <param name="jumpHeight">Peak jump height (in meters), used to calcualte jump force</param>
     /// <param name="direction">Jump direction (should default to player.transform.up)</param>
     public void JumpToHeightWithWallJump(float jumpHeight, Vector3 wallDirection, float wallJumpComponentStrength) {
-        var direction = player.transform.up + wallDirection * wallJumpComponentStrength;
-        if (direction.y > 1f) direction.y = 1f;
-        SetVelocity(CalculateJumpVelocity(jumpHeight) * direction);
+        
+        SetVelocity(CalculateWallJumpVector(jumpHeight, wallDirection, wallJumpComponentStrength));
     }
 
     /// <summary>
