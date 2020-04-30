@@ -4,9 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using TMPro;
+using Yarn.Unity;
 
-public class Dialog : MonoBehaviour
-{
+public class Dialog : MonoBehaviour {
+    public DialogueRunner yarnDialog;
+
     // Objects
     public TextMeshProUGUI dialogText;
     public TextMeshProUGUI staticText;
