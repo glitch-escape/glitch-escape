@@ -5,22 +5,15 @@ using UnityEngine;
 [RequireComponent(typeof(Player))]
 public class FragmentComponent : PlayerComponent
 {
-    public int fragmentMax;
+    public int fragmentMax => player.config.fragmentTotal;
     public int fragmentCount;
 
     private void Start()
     {
-        fragmentMax = player.config.fragmentTotal;
-        if (fragmentMax == null || fragmentMax == 0)
-        {
-            fragmentMax = 10;
-        }
-        if (fragmentCount == null || fragmentCount == 0)
-        {
-            fragmentCount = 0;
-        }
+        FragmentComponent[] allFragments = FindObjectsOfType<FragmentComponent>();
+        int fragmentTotal = allFragments.Length;
     }
-
+    
     public void PickUpFragment(FragmentInteraction someFragment)
     {
         fragmentCount++;
