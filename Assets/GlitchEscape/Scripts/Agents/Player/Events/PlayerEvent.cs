@@ -26,7 +26,7 @@ public static class PlayerEvent {
         BeginDash, EndDash, RegainedEnoughStaminaForDash,
 
         // interact
-        Interact,
+        Interact, FragmentPickup,
         
         // maze switch
         MazeSwitchToGlitchMaze, MazeSwitchToNormalMaze,
