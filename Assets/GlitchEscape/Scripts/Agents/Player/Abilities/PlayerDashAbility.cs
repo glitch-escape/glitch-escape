@@ -103,7 +103,7 @@ public class PlayerDashAbility : PlayerAbility, IPlayerDebug {
         disableGravityEffect?.Cancel();
         dashVfx?.UnapplyEffect();
         var gravity = playerGravity.gravity;
-        playerMovement.ApplyJump(-gravity * (Time.time - startTime));
+        playerMovement.AddVelocity(-player.transform.up * gravity * (Time.time - startTime));
         FireEvent(PlayerEvent.Type.EndDash);
     }
     

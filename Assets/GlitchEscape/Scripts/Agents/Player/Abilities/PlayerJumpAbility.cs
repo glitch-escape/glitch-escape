@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
     [InjectComponent] public PlayerMovement playerMovement;
-
+    
     #region PlayerAbilityProperties
     public override float resourceCost => 0f; // jumping does not use stamina
     public override float cooldownTime => 0.01f; // jumping does not have any effective cooldown
@@ -20,12 +20,7 @@ public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
     #endregion
     
     public float elapsedJumpTime => isJumping ? Time.time - jumpStartTime : 0f;
-
-    private Vector3 currentUpGravity =>
-        player.config.useGravityModifications 
-            ? Physics.gravity * player.config.upGravityMultiplier 
-            : Physics.gravity;
-
+    
     /// <summary>
     /// should reset all player jump state
     /// </summary>
@@ -77,23 +72,23 @@ public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
                 jumpCount = 1;
                 isJumping = true;
                 jumpStartTime = Time.time;
-                playerMovement.ApplyJump(player.config.jumpHeight);
+                playerMovement.JumpToHeight(player.config.jumpHeight);
                 FireEvent(PlayerEvent.Type.FloorJump);
                 break;
             case JumpAbilityUseStatus.CanAirJump:
                 jumpCount += 1;
                 isJumping = true;
                 jumpStartTime = Time.time;
-                playerMovement.ApplyJump(player.config.jumpHeight);
+                playerMovement.JumpToHeight(player.config.jumpHeight);
                 FireEvent(PlayerEvent.Type.AirJump);
                 break;
             case JumpAbilityUseStatus.CanWallJump:
                 jumpCount = 1;
                 isJumping = true;
-                // TODO: check if this results in correct wall jump behavior
-                playerMovement.ApplyJump(
-                    player.config.jumpHeight * player.config.wallJumpMultiplier,
-                    currentWallNormal);
+                playerMovement.JumpToHeightWithWallJump(
+                    player.config.jumpHeight, 
+                    currentWallNormal,
+                    player.config.wallJumpMultiplier);
                 jumpStartTime = Time.time;
                 FireEvent(PlayerEvent.Type.WallJump);
                 break;
@@ -189,8 +184,11 @@ public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
 
         var jumpHeight = player.config.jumpHeight;
         GUILayout.Label("jump height: " + jumpHeight);
-        GUILayout.Label("calculated jump velocity " + playerMovement.CalculateJumpVelocity(jumpHeight));
-        GUILayout.Label("calculated wall jump velocity " + playerMovement.CalculateJumpVelocity(jumpHeight, currentWallNormal));
+        GUILayout.Label("gravity: " + player.gravity.standingGravity);
+        GUILayout.Label("expected velocity: " + Mathf.Sqrt(player.gravity.standingGravity * 2f * jumpHeight));
+        GUILayout.Label("calculated jump velocity " + playerMovement.CalculateJumpVector(jumpHeight));
+        GUILayout.Label("calculated wall jump velocity " + playerMovement.CalculateWallJumpVector(
+                            jumpHeight, currentWallNormal, player.config.wallJumpMultiplier));
 
         var currentVelocity = playerMovement.rigidbody.velocity;
         GUILayout.Label("current velocity: " + currentVelocity);

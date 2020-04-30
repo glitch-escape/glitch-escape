@@ -133,20 +133,36 @@ public class PlayerGravity : PlayerComponent, IResettable, IPlayerDebug {
     /// </summary>
     public Vector3 gravityDirection => state.direction;
 
+
+    private float jumpGravityMultiplier => player.movement.isFalling
+        ? player.config.downGravityMultiplier
+        : player.config.upGravityMultiplier;
+
     /// <summary>
     /// Current gravity value, in meters / sec^2
     /// Changes so player has a different effective gravity when falling - used to
     /// make jumping (ie. player has y-axis velocity + is not falling) balanced while
     /// still falling quickly
     /// </summary>
-    public float gravity => state.gravity * state.gravityMultipliers;
+    public float gravity => state.gravity * state.gravityMultipliers * jumpGravityMultiplier;
+    
+    /// <summary>
+    /// current gravity w/ multipliers assuming that player is standing / not falling
+    /// needed for jump calculations
+    /// </summary>
+    public float standingGravity => state.gravity * state.gravityMultipliers * player.config.downGravityMultiplier;
 
+    /// <summary>
+    /// Current gravity vector, ie. gravity * gravityDirection
+    /// </summary>
+    public Vector3 gravityVector => gravity * gravityDirection;
+    
     /// <summary>
     /// Applies gravity each time step, if it is enabled
     /// </summary>
     private void FixedUpdate() {
         if (gravityEnabled) {
-            playerMovement.ApplyAcceleration(gravity * Time.deltaTime * gravityDirection);
+            playerMovement.ApplyAcceleration(gravityVector * Time.deltaTime);
         }
 
         if (Mathf.Abs(gravityDirection.magnitude) - 1f > 1e-6f) {
