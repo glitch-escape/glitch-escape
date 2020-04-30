@@ -31,7 +31,7 @@ public class PlayerAnimationController : PlayerComponent, IResettable {
     }
     private void Update() {
         animator.SetFloat("runSpeed", player.input.moveInput.magnitude);
-        animator.SetBool("isJumping", player.jump.isJumping);
+        animator.SetBool("isJumping", player.jump.isJumping || player.movement.isFalling);
         animator.SetBool("isNearWall", player.jump.isPlayerNearWall);
         // animator.SetFloat("runSpeed", player.movement.moveSpeed * player.input.moveInput.magnitude);
     }
@@ -47,9 +47,11 @@ public class PlayerAnimationController : PlayerComponent, IResettable {
             animator.SetBool("isDoubleJump", true);
             animator.SetTrigger("doubleJump");
         } else if (wallJumping) {
+            animator.SetBool("isDoubleJump", isDoubleJump);
             animator.SetTrigger("wallJump");
             animator.SetBool("isJumping", true);
         } else {
+            animator.SetBool("isDoubleJump", isDoubleJump);
             animator.SetBool("isJumping", isJumping);
         }
     }
