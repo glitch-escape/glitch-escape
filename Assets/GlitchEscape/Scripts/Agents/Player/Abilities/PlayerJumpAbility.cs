@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
     [InjectComponent] public PlayerMovement playerMovement;
-
+    
     #region PlayerAbilityProperties
     public override float resourceCost => 0f; // jumping does not use stamina
     public override float cooldownTime => 0.01f; // jumping does not have any effective cooldown
@@ -20,12 +20,7 @@ public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
     #endregion
     
     public float elapsedJumpTime => isJumping ? Time.time - jumpStartTime : 0f;
-
-    private Vector3 currentUpGravity =>
-        player.config.useGravityModifications 
-            ? Physics.gravity * player.config.upGravityMultiplier 
-            : Physics.gravity;
-
+    
     /// <summary>
     /// should reset all player jump state
     /// </summary>
@@ -189,6 +184,8 @@ public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
 
         var jumpHeight = player.config.jumpHeight;
         GUILayout.Label("jump height: " + jumpHeight);
+        GUILayout.Label("gravity: " + player.gravity.standingGravity);
+        GUILayout.Label("expected velocity: " + Mathf.Sqrt(player.gravity.standingGravity * 2f * jumpHeight));
         GUILayout.Label("calculated jump velocity " + playerMovement.CalculateJumpVelocity(jumpHeight));
         GUILayout.Label("calculated wall jump velocity " + playerMovement.CalculateJumpVelocity(jumpHeight, currentWallNormal));
 
