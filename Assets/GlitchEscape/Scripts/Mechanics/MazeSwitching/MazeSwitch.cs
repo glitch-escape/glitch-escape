@@ -46,6 +46,6 @@ public class MazeSwitch : MonoBehaviour, IActiveInteract
     public void OnDeselected(Player player) {
         SetMazeSwitchActive(false);
     }
-    public void OnPlayerEnterInteractionRadius(Player player) { SetMazeSwitchActive(true); }
+    public void OnPlayerEnterInteractionRadius(Player player) { SetMazeSwitchActive(true); player.spawn.SetSpawnPosition(this); }
     public void OnPlayerExitInteractionRadius(Player player) { SetMazeSwitchActive(false); }
 }

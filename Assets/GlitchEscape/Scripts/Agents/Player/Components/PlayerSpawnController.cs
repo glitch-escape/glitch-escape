@@ -14,13 +14,24 @@ public class PlayerSpawnController : PlayerComponent {
         player.OnKilled -= Respawn;
     }
     public void SetSpawnPosition(Vector3 position, Quaternion rotation) {
+        Debug.Log("Set spawn position: "+position);
         respawnPosition = position;
         respawnRotation = rotation;
     }
     public void SetSpawnPosition(MazeSwitch mazeSwitch) {
+        // TODO: FIX MAZE ORIENTATION!!!
+        // PREFAB ROOTS SHOULD NOT HAVE NON-ZERO DEFAULT ROTATIONS!!!!
+        // (fix this by moving maze trigger graphics one level lower (w/ rotation) OR clearing default rotation and
+        // editing the .blend file so the mandala is facing flat on the floor, NOT vertical. problem: this may
+        // require editing EVERY maze switch instance to have correct rotation (and if this wasn't necessary I'd just do
+        // this right now)
+        // Shitty fix: completely ignore maze switch rotation b/c as is this will result in the player getting respawned
+        // sideways, aaghhhhh....
+        // (note: we prev did not use rotation, but this is an easy way to determine what direction player should be
+        // facing on respawn)
         SetSpawnPosition(
             mazeSwitch.transform.position + Vector3.up * player.config.spawnHeight, 
-            mazeSwitch.transform.rotation);   
+            Quaternion.identity);
     }
     public void SetSpawnPosition(SavePoint savePoint) {
         SetSpawnPosition(
