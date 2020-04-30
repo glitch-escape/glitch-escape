@@ -316,6 +316,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da3bebaab3c2d3743859d961da94e951, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &520779010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 520778983}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2eaa638ec0809d24184c361dca69e6ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
 --- !u!1 &1027342526 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 963194225, guid: 7fb674626e4de46f49d82caad6d6ce93,
@@ -335,6 +348,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationMode: 0
+--- !u!1 &1515129867 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2960319797277645194, guid: 7fb674626e4de46f49d82caad6d6ce93,
+    type: 3}
+  m_PrefabInstance: {fileID: 2043050775}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1515129868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1515129867}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff789f4f1bcdc704d91109fbb582bc76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shardsPickups: {fileID: 0}
+  orbsPickups: {fileID: 0}
 --- !u!1 &1734344512
 GameObject:
   m_ObjectHideFlags: 0
@@ -537,15 +570,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 963194228, guid: 7fb674626e4de46f49d82caad6d6ce93, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000000008577024
+      value: -0.000000008577024
       objectReference: {fileID: 0}
     - target: {fileID: 963194228, guid: 7fb674626e4de46f49d82caad6d6ce93, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -6.7049394e-10
+      value: 6.70494e-10
       objectReference: {fileID: 0}
     - target: {fileID: 963194228, guid: 7fb674626e4de46f49d82caad6d6ce93, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.077935494
+      value: 0.0779355
       objectReference: {fileID: 0}
     - target: {fileID: 963194228, guid: 7fb674626e4de46f49d82caad6d6ce93, type: 3}
       propertyPath: m_LocalPosition.x
@@ -579,6 +612,16 @@ PrefabInstance:
       propertyPath: defaultMaze
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 222169162131300172, guid: 7fb674626e4de46f49d82caad6d6ce93,
+        type: 3}
+      propertyPath: m_TagString
+      value: OrbUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 740384356845786215, guid: 7fb674626e4de46f49d82caad6d6ce93,
+        type: 3}
+      propertyPath: m_TagString
+      value: FragBG
+      objectReference: {fileID: 0}
     - target: {fileID: 778320031773460715, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
       propertyPath: m_Name
@@ -588,6 +631,11 @@ PrefabInstance:
         type: 3}
       propertyPath: maze
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1889572084254059996, guid: 7fb674626e4de46f49d82caad6d6ce93,
+        type: 3}
+      propertyPath: m_TagString
+      value: FragBG
       objectReference: {fileID: 0}
     - target: {fileID: 4480004948019582980, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
@@ -607,37 +655,47 @@ PrefabInstance:
     - target: {fileID: 4480004948942281807, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.11958467
+      value: 0.119584665
       objectReference: {fileID: 0}
     - target: {fileID: 4480004948942281807, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000004283195
+      value: 0.0000000042582586
       objectReference: {fileID: 0}
     - target: {fileID: 4480004948942281807, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 6.179186e-10
+      value: -4.1089104e-10
       objectReference: {fileID: 0}
     - target: {fileID: 4480004949643349518, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.0000000042425405
+      value: -0.0000000043344834
       objectReference: {fileID: 0}
     - target: {fileID: 4480004949643349518, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.07793549
+      value: 0.077935494
       objectReference: {fileID: 0}
     - target: {fileID: 4480004949643349518, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 2.5282673e-10
+      value: 9.2332064e-10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5412826840113217430, guid: 7fb674626e4de46f49d82caad6d6ce93,
+        type: 3}
+      propertyPath: m_TagString
+      value: OrbUI
       objectReference: {fileID: 0}
     - target: {fileID: 5654156483902910647, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5938261973491442515, guid: 7fb674626e4de46f49d82caad6d6ce93,
+        type: 3}
+      propertyPath: m_TagString
+      value: FragBG
       objectReference: {fileID: 0}
     - target: {fileID: 6000536029174171417, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
@@ -645,6 +703,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: fe92a49431b14457790109139d13d086,
         type: 2}
+    - target: {fileID: 6455793422468976984, guid: 7fb674626e4de46f49d82caad6d6ce93,
+        type: 3}
+      propertyPath: m_TagString
+      value: FragmentUI
+      objectReference: {fileID: 0}
     - target: {fileID: 7934903708078051019, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -704,6 +767,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -29.799805
+      objectReference: {fileID: 0}
+    - target: {fileID: 9113288834877270616, guid: 7fb674626e4de46f49d82caad6d6ce93,
+        type: 3}
+      propertyPath: m_TagString
+      value: OrbUI
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7fb674626e4de46f49d82caad6d6ce93, type: 3}

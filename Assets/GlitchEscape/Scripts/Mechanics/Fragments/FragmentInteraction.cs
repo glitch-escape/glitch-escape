@@ -9,13 +9,20 @@ public class FragmentInteraction : MonoBehaviour, IActiveInteract
     public Transform floatTextArea;
     public string interactMessage = "[Collect Shard]";
 
-
     //private FloatingTextController floatingText;
     public bool fragmentIsPickedUp = false;
     private bool _pickedUp = false;
     public bool isInteractive => true;
+
+    public GameObject fragmentUI;
+
     void Start()
     {
+    }
+
+    public void Awake()
+    {
+
     }
 
     public void OnInteract(Player player)
