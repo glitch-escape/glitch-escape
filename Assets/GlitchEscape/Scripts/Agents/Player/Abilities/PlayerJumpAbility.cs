@@ -85,10 +85,10 @@ public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
             case JumpAbilityUseStatus.CanWallJump:
                 jumpCount = 1;
                 isJumping = true;
-                // TODO: check if this results in correct wall jump behavior
-                playerMovement.JumpToHeight(
-                    player.config.jumpHeight * player.config.wallJumpMultiplier,
-                    currentWallNormal);
+                playerMovement.JumpToHeightWithWallJump(
+                    player.config.jumpHeight, 
+                    currentWallNormal,
+                    player.config.wallJumpMultiplier);
                 jumpStartTime = Time.time;
                 FireEvent(PlayerEvent.Type.WallJump);
                 break;

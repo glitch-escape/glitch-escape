@@ -78,7 +78,7 @@ public class PlayerMovement : PlayerComponent, IResettable, IPlayerDebug {
     /// <param name="jumpHeight">Peak jump height (in meters), used to calcualte jump force</param>
     /// <param name="direction">Jump direction (should default to player.transform.up)</param>
     public void JumpToHeight(float jumpHeight) {
-        SetVelocity(CalculateJumpVelocity(jumpHeight));
+        SetVelocity(CalculateJumpVelocity(jumpHeight) * player.transform.up);
     }
 
     /// <summary>
@@ -87,25 +87,18 @@ public class PlayerMovement : PlayerComponent, IResettable, IPlayerDebug {
     /// </summary>
     /// <param name="jumpHeight">Peak jump height (in meters), used to calcualte jump force</param>
     /// <param name="direction">Jump direction (should default to player.transform.up)</param>
-    public void JumpToHeight(float jumpHeight, Vector3 direction) {
-        SetVelocity(CalculateJumpVelocity(jumpHeight, direction));
-    }
-    
-    /// <summary>
-    /// Calculates initial jump velocity given jump height
-    /// Used by <see cref="JumpToHeight"/>
-    /// </summary>
-    public Vector3 CalculateJumpVelocity(float jumpHeight) {
-        return CalculateJumpVelocity(jumpHeight, player.transform.up);
+    public void JumpToHeightWithWallJump(float jumpHeight, Vector3 wallDirection, float wallJumpComponentStrength) {
+        var direction = player.transform.up + wallDirection * wallJumpComponentStrength;
+        if (direction.y > 1f) direction.y = 1f;
+        SetVelocity(CalculateJumpVelocity(jumpHeight) * direction);
     }
 
     /// <summary>
     /// Calculates initial jump velocity given jump height + direction
     /// Used by <see cref="JumpToHeight(float,UnityEngine.Vector3)"/>
     /// </summary>
-    public Vector3 CalculateJumpVelocity(float jumpHeight, Vector3 direction) {
-        var v0 = Mathf.Sqrt(Mathf.Abs(2f * player.gravity.standingGravity * jumpHeight));
-        return v0 * direction;
+    public float CalculateJumpVelocity(float jumpHeight) {
+        return Mathf.Sqrt(Mathf.Abs(2f * player.gravity.standingGravity * jumpHeight));
     }
 
     /// <summary>
