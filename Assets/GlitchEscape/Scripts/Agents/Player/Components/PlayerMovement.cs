@@ -77,7 +77,7 @@ public class PlayerMovement : PlayerComponent, IResettable, IPlayerDebug {
     /// </summary>
     /// <param name="jumpHeight">Peak jump height (in meters), used to calcualte jump force</param>
     /// <param name="direction">Jump direction (should default to player.transform.up)</param>
-    public void ApplyJump(float jumpHeight) {
+    public void JumpToHeight(float jumpHeight) {
         SetVelocity(CalculateJumpVelocity(jumpHeight));
     }
 
@@ -87,13 +87,13 @@ public class PlayerMovement : PlayerComponent, IResettable, IPlayerDebug {
     /// </summary>
     /// <param name="jumpHeight">Peak jump height (in meters), used to calcualte jump force</param>
     /// <param name="direction">Jump direction (should default to player.transform.up)</param>
-    public void ApplyJump(float jumpHeight, Vector3 direction) {
+    public void JumpToHeight(float jumpHeight, Vector3 direction) {
         SetVelocity(CalculateJumpVelocity(jumpHeight, direction));
     }
     
     /// <summary>
     /// Calculates initial jump velocity given jump height
-    /// Used by <see cref="ApplyJump(float)"/>
+    /// Used by <see cref="JumpToHeight"/>
     /// </summary>
     public Vector3 CalculateJumpVelocity(float jumpHeight) {
         return CalculateJumpVelocity(jumpHeight, player.transform.up);
@@ -101,7 +101,7 @@ public class PlayerMovement : PlayerComponent, IResettable, IPlayerDebug {
 
     /// <summary>
     /// Calculates initial jump velocity given jump height + direction
-    /// Used by <see cref="ApplyJump(float, Vector3)"/>
+    /// Used by <see cref="JumpToHeight(float,UnityEngine.Vector3)"/>
     /// </summary>
     public Vector3 CalculateJumpVelocity(float jumpHeight, Vector3 direction) {
         var v0 = Mathf.Sqrt(Mathf.Abs(2f * player.gravity.standingGravity * jumpHeight));
@@ -110,7 +110,7 @@ public class PlayerMovement : PlayerComponent, IResettable, IPlayerDebug {
 
     /// <summary>
     /// Applies an immediate velocity change to the player
-    /// Used to implement <see cref="ApplyJump(float)"/>, etc.
+    /// Used to implement <see cref="JumpToHeight"/>, etc.
     /// </summary>
     public void SetVelocity(Vector3 velocity) {
         // Debug.Log("Set player velocity at "+Time.time+" to "+velocity);
