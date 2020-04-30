@@ -29,43 +29,60 @@ public class PlayerAnimationController : PlayerComponent, IResettable {
         animator.SetBool("isJumping", false);
         animator.SetBool("isDashing", false);
     }
+    private void Update() {
+        animator.SetFloat("runSpeed", player.input.moveInput.magnitude);
+        animator.SetBool("isJumping", player.jump.isJumping);
+        animator.SetBool("isNearWall", player.jump.isPlayerNearWall);
+        // animator.SetFloat("runSpeed", player.movement.moveSpeed * player.input.moveInput.magnitude);
+    }
 
+    private void UpdateJump(bool wallJumping = false) {
 
+        var isJumping = player.jump.isJumping;
+        animator.SetBool("isNearWall", player.jump.isPlayerNearWall);
+        var isDoubleJump = player.jump.jumpCount > 1;
+        
+        if (isJumping && isDoubleJump) {
+            animator.SetBool("isJumping", true);
+            animator.SetBool("isDoubleJump", true);
+            animator.SetTrigger("doubleJump");
+        } else if (wallJumping) {
+            animator.SetTrigger("wallJump");
+            animator.SetBool("isJumping", true);
+        } else {
+            animator.SetBool("isJumping", isJumping);
+        }
+    }
+    
     private void OnPlayerEvent(PlayerEvent.Type eventType) {
         switch (eventType) {
             // movement
             case PlayerEvent.Type.BeginMovement:
-                animator.SetFloat("runSpeed", movement.moveSpeed);
                 //animator.SetTrigger("startRunning");
                 break;
             case PlayerEvent.Type.EndMovement:
                 //animator.SetBool("isRunning", false);
-                animator.SetFloat("runSpeed", 0.0f);
                 break;
-            
             // jump
             case PlayerEvent.Type.FloorJump:
             case PlayerEvent.Type.AirJump:
+                UpdateJump();
+                break;
             case PlayerEvent.Type.WallJump:
-                animator.SetBool("isJumping", true);
-                //animator.SetTrigger("startJumping");
+                UpdateJump(true);
                 break;
             case PlayerEvent.Type.EndJump:
-                animator.SetBool("isJumping", false);
-                //animator.SetTrigger("stopJumping");
+                UpdateJump();
                 break;
-            
             // interact
             case PlayerEvent.Type.Interact: break;
             
             // dash
             case PlayerEvent.Type.BeginDash: 
                 animator.SetBool("isDashing", true);
-                //animator.SetTrigger("startDashing");
                 break;
             case PlayerEvent.Type.EndDash: 
                 animator.SetBool("isDashing", false);
-                //animator.SetTrigger("stopDashing");
                 break;
             
             // shoot
