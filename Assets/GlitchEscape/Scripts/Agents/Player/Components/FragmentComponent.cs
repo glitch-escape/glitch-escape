@@ -10,8 +10,8 @@ public class FragmentComponent : PlayerComponent
 
     private void Start()
     {
-        FragmentComponent[] allFragments = FindObjectsOfType<FragmentComponent>();
-        int fragmentTotal = allFragments.Length;
+        FragmentInteraction[] allFragments = FindObjectsOfType<FragmentInteraction>();
+        player.config.fragmentTotal = allFragments.Length;
     }
     
     public void PickUpFragment(FragmentInteraction someFragment)
