@@ -66,11 +66,11 @@ namespace GlitchEscape.Effects {
         public bool active {
             get => !cancelled && (effectBehavior?.active ?? true);
             set {
-                Debug.Log("Set active = "+value+": "+this);
+                // Debug.Log("Set active = "+value+": "+this);
                 if (cancelled || effectBehavior == null || (_flags & SETTING_ACTIVE_FLAG) != 0
                     || effectBehavior.active == value)
                     return;
-                Debug.Log(" => effect changed");
+                // Debug.Log(" => effect changed");
                 _flags |= SETTING_ACTIVE_FLAG;
                 effectBehavior.active = value;
                 _flags &= ~SETTING_ACTIVE_FLAG;
@@ -80,11 +80,11 @@ namespace GlitchEscape.Effects {
         public bool finished {
             get => cancelled || (effectBehavior?.finished ?? false);
             set {
-                Debug.Log("Set finished = "+value+": "+this);
+                // Debug.Log("Set finished = "+value+": "+this);
                 if (effectBehavior == null || (_flags & SETTING_FINISHED_FLAG) == 0
                     || effectBehavior.finished == value)
                     return;
-                Debug.Log(" => effect changed");
+                // Debug.Log(" => effect changed");
                 if (value) Cancel();
             }
         }

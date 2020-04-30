@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAnimationController : PlayerComponent {
+public class PlayerAnimationController : PlayerComponent, IResettable {
     [InjectComponent] public PlayerMovement movement;
     [InjectComponent] public PlayerJumpAbility jump;
     [InjectComponent] public PlayerDashAbility dash;
@@ -22,7 +23,14 @@ public class PlayerAnimationController : PlayerComponent {
             component.OnEvent -= OnPlayerEvent;
         }
     }
-    
+
+    public void Reset() {
+        animator.SetFloat("runSpeed", 0f);
+        animator.SetBool("isJumping", false);
+        animator.SetBool("isDashing", false);
+    }
+
+
     private void OnPlayerEvent(PlayerEvent.Type eventType) {
         switch (eventType) {
             // movement

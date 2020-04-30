@@ -1359,8 +1359,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: -0.0000035670232, y: 0.99695843, z: -0.077935494, w: -0.00004562971}
-  m_LocalPosition: {x: -2.8993344, y: 4.5, z: 36.8}
+  m_LocalRotation: {x: 0.07793552, y: 0.00000000742792, z: -5.806649e-10, w: 0.99695843}
+  m_LocalPosition: {x: 0, y: 2.5, z: -7.27}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1102068784}
@@ -7297,7 +7297,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8205065932806022779}
   - component: {fileID: 8148841275887276840}
-  - component: {fileID: 5506974976696401752}
   m_Layer: 5
   m_Name: KeyUI
   m_TagString: Untagged
@@ -7332,34 +7331,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6933644966871145513}
   m_CullTransparentMesh: 0
---- !u!114 &5506974976696401752
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6933644966871145513}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
-  m_RaycastTarget: 0
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &7082617991344410029
 GameObject:
   m_ObjectHideFlags: 0
@@ -7520,7 +7491,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 669889620133702292}
-  - component: {fileID: 4597118574289714390}
+  - component: {fileID: 5506974976696401752}
   m_Layer: 5
   m_Name: MusicVolSlider
   m_TagString: Untagged
@@ -7552,14 +7523,6 @@ RectTransform:
   m_AnchoredPosition: {x: 60, y: 50}
   m_SizeDelta: {x: 160, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &8148841275887276840
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6933644966871145513}
-  m_CullTransparentMesh: 0
 --- !u!114 &5506974976696401752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8792,7 +8755,7 @@ MonoBehaviour:
   menus: {fileID: 7129056960182711981}
   main: {fileID: 7929730976146361117}
   masterSlider: {fileID: 4757678431148617619}
-  musicSlider: {fileID: 4597118574289714390}
+  musicSlider: {fileID: 5506974976696401752}
   SFXSlider: {fileID: 5471052081450558236}
   audioMixer: {fileID: 24100000, guid: 83b9268f8d44ecb489e15615b0409209, type: 2}
   mainResumeButton: {fileID: 172462621416534185}
@@ -9076,17 +9039,17 @@ PrefabInstance:
     - target: {fileID: 3505488081016921733, guid: d2ebc241853cd416cb4411bbc3550e8b,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.00000001695823
+      value: -0.000000017328581
       objectReference: {fileID: 0}
     - target: {fileID: 3505488081016921733, guid: d2ebc241853cd416cb4411bbc3550e8b,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -6.232621e-10
+      value: 6.368685e-10
       objectReference: {fileID: 0}
     - target: {fileID: 3505488081016921733, guid: d2ebc241853cd416cb4411bbc3550e8b,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.03672799
+      value: 0.036727984
       objectReference: {fileID: 0}
     - target: {fileID: 3505488081016921733, guid: d2ebc241853cd416cb4411bbc3550e8b,
         type: 3}
@@ -9190,12 +9153,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d2ebc241853cd416cb4411bbc3550e8b, type: 3}
---- !u!4 &4480004948466616469 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3505488080566636052, guid: d2ebc241853cd416cb4411bbc3550e8b,
-    type: 3}
-  m_PrefabInstance: {fileID: 1047599378792056449}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &4480004948466616470 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3505488080566636055, guid: d2ebc241853cd416cb4411bbc3550e8b,
@@ -9307,6 +9264,12 @@ PrefabInstance:
       propertyPath: freeLookCam
       value: 
       objectReference: {fileID: 4480004948466616470}
+    - target: {fileID: 7575837829180197356, guid: ea0020a54320349b3aab3a61f3382dcd,
+        type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 6677134991145738350, guid: 83b9268f8d44ecb489e15615b0409209,
+        type: 2}
     - target: {fileID: 8734025722128903189, guid: ea0020a54320349b3aab3a61f3382dcd,
         type: 3}
       propertyPath: _config
@@ -9328,12 +9291,6 @@ PrefabInstance:
       propertyPath: camera
       value: 
       objectReference: {fileID: 963194227}
-    - target: {fileID: 7575837829180197356, guid: ea0020a54320349b3aab3a61f3382dcd,
-        type: 3}
-      propertyPath: OutputAudioMixerGroup
-      value: 
-      objectReference: {fileID: 6677134991145738350, guid: 83b9268f8d44ecb489e15615b0409209,
-        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea0020a54320349b3aab3a61f3382dcd, type: 3}
 --- !u!4 &2215162349477780392 stripped
