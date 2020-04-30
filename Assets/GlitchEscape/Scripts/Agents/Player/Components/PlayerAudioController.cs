@@ -40,7 +40,7 @@ public class PlayerAudioController : MonoBehaviourWithConfig<PlayerAudioConfig> 
             
             // shoot
             case PlayerEvent.Type.Shoot: PlaySound(config.shootSounds); break;
-            
+
             // TODO: add audio clips for other player events
             
             default: break;

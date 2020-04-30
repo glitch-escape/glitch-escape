@@ -24,13 +24,14 @@ public class FragmentComponent : PlayerComponent
     public void PickUpFragment(FragmentInteraction someFragment)
     {
         fragmentCount++;
+        FireEvent(PlayerEvent.Type.FragmentPickup);
     }
 
+    //guess this should be used in the animation controller or sound controller instead?
     private void OnPlayerEvent(PlayerEvent.Type eventType)
     {
         if (eventType == PlayerEvent.Type.FragmentPickup)
         {
-
             //guess this should be in animation + sound controller?
             //play some animation or sound?
         }
