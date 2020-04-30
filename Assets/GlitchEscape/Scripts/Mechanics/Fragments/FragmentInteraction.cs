@@ -20,6 +20,10 @@ public class FragmentInteraction : MonoBehaviour, IActiveInteract
 
     public void OnInteract(Player player)
     {
+    }
+
+    public void OnPlayerEnterInteractionRadius(Player player)
+    {
         if (!_pickedUp)
         {
             //increase player fragment count?
@@ -30,10 +34,6 @@ public class FragmentInteraction : MonoBehaviour, IActiveInteract
             //give some sort of notification that the fragment was picked up
 
         }
-    }
-
-    public void OnPlayerEnterInteractionRadius(Player player)
-    {
     }
 
     public void OnPlayerExitInteractionRadius(Player player)
