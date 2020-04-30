@@ -117,6 +117,9 @@ public class PlayerMovement : PlayerComponent, IResettable, IPlayerDebug {
         // Debug.Log("Set player velocity at "+Time.time+" to "+velocity);
         rigidbody.velocity = velocity;
     }
+    public void AddVelocity(Vector3 velocity) {
+        rigidbody.velocity = rigidbody.velocity + velocity;
+    }
 
     /// <summary>
     /// Applies an acceleration to the player
