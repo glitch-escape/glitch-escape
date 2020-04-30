@@ -103,4 +103,7 @@ public class PlayerConfig : ScriptableObject {
 
     [Header("Spawn Height")] 
     public float spawnHeight = 1f;
+
+    [Header("Fragments in level")]
+    public int fragmentTotal = 10;
 }

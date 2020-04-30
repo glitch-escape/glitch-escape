@@ -18,28 +18,29 @@ namespace GlitchEscape.Effects {
             var effect = new EffectData<TOwner, TState>(++nextId, owner, effectBehavior);
             effect.SetEffector(effector);
             effects.Add(effect);
-            Debug.Log("Added effect: "+effect);
+            // Debug.Log("Added effect: "+effect);
             if (effect.active)
                 owner.RebuildState();
             return effect;
         }
         public void ApplyStateEffects(TState state) {
-            Debug.Log("Applying effects (have "+effects.Count+" effect(s))");
-            foreach (var effect in effects) {
-                if (effect.finished)
-                    Debug.Log("  removing "+effect);
-            }
+            // Debug.Log("Applying effects (have "+effects.Count+" effect(s))");
+            // foreach (var effect in effects) {
+            //     if (effect.finished) {
+            //         Debug.Log("  removing "+effect);
+            //     }
+            // }
             effects.RemoveWhere(effect => effect.finished);
             foreach (var effect in effects) {
                 if (effect.active) {
-                    Debug.Log("  applying "+effect);
+                    // Debug.Log("  applying "+effect);
                     effect.Apply(state);
                 }
-                else {
-                    Debug.Log("  skipping "+effect);
-                }
+                // else {
+                //     Debug.Log("  skipping "+effect);
+                // }
             }
-            Debug.Log("  done");
+            // Debug.Log("  done");
         }
         public void Clear() {
             // Debug.Log("EffectList: Clear()");
@@ -50,9 +51,9 @@ namespace GlitchEscape.Effects {
             }
             effects.Clear();
             // Debug.Log("  after clear have "+effects.Count+" item(s):");
-            foreach (var effect in effects) {
-                Debug.Log("  - "+effect);
-            }            
+            // foreach (var effect in effects) {
+            //     Debug.Log("  - "+effect);
+            // }            
             nextId = 0;
             owner.RebuildState();
         }

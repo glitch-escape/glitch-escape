@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Audio;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
@@ -10,12 +11,21 @@ public class PauseMenuController : MonoBehaviour
 {
     public GameObject menus;
     public GameObject main;
-
-    public Button mainResumeButtom;
+    public Slider masterSlider;
+    public Slider musicSlider;
+    public Slider SFXSlider;
+    public AudioMixer audioMixer;
+    public Button mainResumeButton;
 
     void Awake()
     {
         ResetMenu();
+        // PlayerPrefs.SetFloat("MasterVolume", 0f);
+    }
+
+    void Start()
+    {
+        LoadSettings();
     }
 
     public void OnPauseMenu()
@@ -25,7 +35,7 @@ public class PauseMenuController : MonoBehaviour
             Time.timeScale = 0;
             AudioListener.pause = true;
             menus.SetActive(true);
-            mainResumeButtom.Select();
+            mainResumeButton.Select();
         }
         else
         {
@@ -34,10 +44,12 @@ public class PauseMenuController : MonoBehaviour
     }
 
     // basic navigating for different Menus 
-    public void MenuNav(Button seletedButton)
+    public void MenuNav(Selectable seleted)
     {
         EventSystem.current.SetSelectedGameObject(null);
-        seletedButton.Select();
+        // EventSystem.current.SetSelectedGameObject(seleted);
+        // seletedButton.SetSelectedGameObject();
+        seleted.Select();
     }
 
     public void MenuNavFrom(GameObject navFrom)
@@ -83,5 +95,33 @@ public class PauseMenuController : MonoBehaviour
         }
         main.SetActive(true);
         menus.SetActive(false);
+    }
+
+    public void LoadSettings()
+    {
+        masterSlider.value = PlayerPrefs.GetFloat("MasterVolume", 1f);
+        audioMixer.SetFloat("Master", Mathf.Log10(PlayerPrefs.GetFloat("MasterVolume")) * 20);
+        musicSlider.value = PlayerPrefs.GetFloat("MusicVolume", 1f);
+        audioMixer.SetFloat("Music", Mathf.Log10(PlayerPrefs.GetFloat("MusicVolume")) * 20);
+        SFXSlider.value = PlayerPrefs.GetFloat("SFXVolume", 1f);
+        audioMixer.SetFloat("Sound Effects", Mathf.Log10(PlayerPrefs.GetFloat("SFXVolume")) * 20);
+    }
+
+    public void ChangeMasterVol(float val)
+    {
+        PlayerPrefs.SetFloat("MasterVolume", val);
+        audioMixer.SetFloat("Master", Mathf.Log10(PlayerPrefs.GetFloat("MasterVolume")) * 20);
+    }
+
+    public void ChangeMusicVol(float val)
+    {
+        PlayerPrefs.SetFloat("MusicVolume", val);
+        audioMixer.SetFloat("Music", Mathf.Log10(PlayerPrefs.GetFloat("MusicVolume")) * 20);
+    }
+
+    public void ChangeSFXVol(float val)
+    {
+        PlayerPrefs.SetFloat("SFXVolume", val);
+        audioMixer.SetFloat("Sound Effects", Mathf.Log10(PlayerPrefs.GetFloat("SFXVolume")) * 20);
     }
 }

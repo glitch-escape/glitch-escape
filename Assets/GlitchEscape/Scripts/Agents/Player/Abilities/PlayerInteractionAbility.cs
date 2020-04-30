@@ -64,7 +64,7 @@ public class PlayerInteractionAbility : PlayerAbility, IPlayerDebug {
 
     protected override void OnAbilityStart()
     {
-        Debug.Log("Ability Started");
+        // Debug.Log("Ability Started");
         var obj = GetNearestObject<IActiveInteract>(activeInRange);
         if (obj != null && activeInRange.Contains(obj) && obj == lastNearestObject)
         {

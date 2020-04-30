@@ -15,12 +15,12 @@ public class PlayerController : MonoBehaviour, IResettable {
     private List<IPlayerAbilityController> controllers;
     
     private void Awake() {
-        if (instance != null) {
-            Destroy(gameObject);
-        } else {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
+        // if (instance != null) {
+        //     Destroy(gameObject);
+        // } else {
+        instance = this;
+        //     DontDestroyOnLoad(gameObject);
+        // }
     }
     // pattern to use on enable + on disable to handle code assembly reloading
     // (TODO: figure out a better / more efficient way to do this - though note, this class should never get disabled
