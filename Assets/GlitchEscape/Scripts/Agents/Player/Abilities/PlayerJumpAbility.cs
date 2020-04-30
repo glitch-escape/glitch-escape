@@ -112,7 +112,7 @@ public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
     /// returns true iff player is currently near a wall (using raycast detection from player center forward)
     /// Fires raycasts iff raycasts were not already executed this frame.
     /// </summary>
-    private bool isPlayerNearWall {
+    public bool isPlayerNearWall {
         get {
             if (dirtyRaycastInfo) UpdateRaycastInfo();
             return hitWall;
