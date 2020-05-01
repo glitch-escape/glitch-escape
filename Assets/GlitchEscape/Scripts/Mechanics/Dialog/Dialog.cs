@@ -17,23 +17,7 @@ public class Dialog : MonoBehaviour {
     private GameObject floatPannel;
 
     // Public Variables
-    public float charDelay = 0.03f;
     public float sentenceDelay = 3;
-    public const int MAX_DIALOG_EVENT = 5;
-
-    // Private Variables
-    private Transform floatTextArea;
-    private string text = "";
-    private int index = 0;
-    private int currEvent = 0;
-    private bool targetNearBy = false;
-    private bool isPlayer = false;
-    private List<DialogContent> currDialogEvent;
-    private List<DialogContent>[] dialogEvents = new List<DialogContent>[MAX_DIALOG_EVENT];
-    private string speaker;
-    private bool dialogRunning = false;
-    private IEnumerator coroutineChar;
-    private IEnumerator coroutineSent;
 
     // I have no idea how we want this to be set up so these are temporary
     public YarnProgram test;
@@ -41,6 +25,13 @@ public class Dialog : MonoBehaviour {
     private DialogueRunner dr;
     private DialogueUI dUI;
 
+    /*
+     * Notes:
+     * - prob need to make a DialogConfig
+     *     - takes in a float for sentence delay
+     *     - takes in yarn object that contains all the dialog
+     */
+    
     private void Start() {
         dialogPannel = dialogText.transform.parent.gameObject;
         staticPannel = staticText.transform.parent.gameObject;
@@ -56,13 +47,17 @@ public class Dialog : MonoBehaviour {
     }
 
     void Update() {
+            // For testing purposes
         if (Input.GetKeyDown(KeyCode.I)) {
             dr.StartDialogue(textNode);
         } 
     }
 
+    public void BeginDialouge(string dialogNode) {
+        dr.StartDialogue(dialogNode);
+    }
 
-    public void WaitForNextLine() {
+    private void WaitForNextLine() {
         coroutineSent = DisplayNext();
         StartCoroutine(coroutineSent);
     }
@@ -73,6 +68,23 @@ public class Dialog : MonoBehaviour {
     }
 
     #region Old Stuff
+    public float charDelay = 0.03f;
+
+    public const int MAX_DIALOG_EVENT = 5;
+
+    // Private Variables
+    private Transform floatTextArea;
+    private string text = "";
+    private int index = 0;
+    private int currEvent = 0;
+    private bool targetNearBy = false;
+    private bool isPlayer = false;
+    private List<DialogContent> currDialogEvent;
+    private List<DialogContent>[] dialogEvents = new List<DialogContent>[MAX_DIALOG_EVENT];
+    private string speaker;
+    private bool dialogRunning = false;
+    private IEnumerator coroutineChar;
+    private IEnumerator coroutineSent;
     /*
     void Start() {
         dialogPannel = dialogText.transform.parent.gameObject;

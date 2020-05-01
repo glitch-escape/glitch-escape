@@ -1,0 +1,69 @@
+title: HDB-Act1
+tags: 
+colorID: 0
+position: 136,108
+---
+<<if $curMsg eq null>> 
+    <<set $curMsg to 0>> 
+<<endif>>
+
+<<if $curMsg % 4 eq 0>> 
+    This place is the anchor point of this world. 
+    It’s tethered to all sorts of different parts of this realm through the portals here.
+<<elseif $curMsg % 4 eq 1>> 
+    I do not remember when those people got here. It is strange.
+<<elseif $curMsg % 4 eq 2>> 
+    That orb in your possession… I can see it resonating around you.
+<<else>>
+    This realm is deeply connected with you. 
+    The more you explore this realm, you might learn new things about yourself.
+<<endif>>
+
+<<set $curMsg to $curMsg + 1>>
+===
+title: Hostages-Act1
+tags: 
+colorID: 0
+position: 381,120
+---
+<<if $curMsg eq null>> 
+    <<set $curMsg to 0>> 
+<<endif>>
+
+<<if $curMsg % 5 eq 0>> 
+    I can’t recall how I got trapped inside those things… But someone had to put me into that thing right?
+<<elseif $curMsg % 5 eq 1>> 
+    Thank you again for freeing me. I would help you, but I can’t go outside this area without glitching out… Good luck.
+<<elseif $curMsg % 5 eq 2>> 
+    Make sure you hold onto that orb. I hope it helps you as much as it helped me escape that thing.
+<<elseif $curMsg % 5 eq 3>>
+    There are other versions of us trapped here… I hope we can free them soon…
+<<else>>
+    The more versions of us we free, the more information we can hopefully get.
+<<endif>>
+
+<<set $curMsg to $curMsg + 1>>
+===
+title: HDB-Act2
+tags: 
+colorID: 0
+position: 678,175
+---
+<<if $curMsg eq null>> 
+    <<set $curMsg to 0>> 
+<<endif>>
+
+<<if $curMsg % 5 eq 0>> 
+    That… version of you… has deep… knowledge of this... realm
+<<elseif $curMsg % 5 eq 1>> 
+    Please… be careful of… other beings like me...
+<<elseif $curMsg % 5 eq 2>> 
+    You need… to chase… after them...
+<<elseif $curMsg % 5 eq 3>>
+    ...
+<<else>>
+    You... don’t have... much time...
+<<endif>>
+
+<<set $curMsg to $curMsg + 1>>
+===
