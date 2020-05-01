@@ -51,7 +51,7 @@ public class PlayerMovement : PlayerComponent, IResettable, IPlayerDebug {
         TurnToFaceMoveDirection,
     }
     public float moveSpeed => state.enabled ? state.moveSpeed * state.moveSpeedMultiplier : 0f;
-    public bool isFalling => rigidbody.velocity.y < 0.0f;
+    public bool isFalling => rigidbody.velocity.y < -1.0f;
 
     /// <summary>
     /// Determines if the player is currently moving or not.
