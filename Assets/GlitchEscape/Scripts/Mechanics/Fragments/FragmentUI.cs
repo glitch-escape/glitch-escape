@@ -23,6 +23,7 @@ public class FragmentUI : MonoBehaviour
                 fragmentUIIndicator = child.gameObject;
         }
 
+        //get reference to fragment shards UI
         fragmentPieces = new List<GameObject>();
         GameObject fragmentHolder = null;
         foreach(Transform child in fragmentUIIndicator.transform) 
