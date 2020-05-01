@@ -31,7 +31,7 @@ public class PlayerAnimationController : PlayerComponent, IResettable {
     }
     private void Update() {
         animator.SetFloat("runSpeed", player.input.moveInput.magnitude);
-        animator.SetBool("isJumping", player.jump.isJumping || player.movement.isFalling);
+        animator.SetBool("isJumping", player.jump.isJumping || !player.jump.isPlayerGrounded || player.movement.isFalling);
         animator.SetBool("isNearWall", player.jump.isPlayerNearWall);
         // animator.SetFloat("runSpeed", player.movement.moveSpeed * player.input.moveInput.magnitude);
     }

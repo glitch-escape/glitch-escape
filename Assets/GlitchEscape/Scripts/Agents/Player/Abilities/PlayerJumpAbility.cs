@@ -101,7 +101,7 @@ public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
     /// returns true iff player is currently grounded (using raycast detection from player center downwards)
     /// Fires raycasts iff raycasts were not already executed this frame.
     /// </summary>
-    private bool isPlayerGrounded {
+    public bool isPlayerGrounded {
         get {
             if (dirtyRaycastInfo) UpdateRaycastInfo();
             return hitGround;
@@ -148,7 +148,7 @@ public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
         var wallLayer = LayerMask.GetMask("Wall");
         hitGround = Physics.Raycast(
             player.transform.position, 
-            Vector3.down, 
+            Vector3.down,
             out groundHitInfo,
             player.config.playerRayDistanceToGround);
         hitWall = Physics.Raycast(
