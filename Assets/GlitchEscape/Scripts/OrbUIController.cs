@@ -11,10 +11,12 @@ public class OrbUIController : MonoBehaviour
     private Animation orbGetAnim;
 
     private bool animPlayed = false;
+    public bool activatePortal = false;
 
     public TextMeshProUGUI returnToPortalPrompt;
 
     public InteractablePortal portal;
+    public GameObject rootPortalObject;
 
     private void Awake()
     {
@@ -24,8 +26,11 @@ public class OrbUIController : MonoBehaviour
 
     private void Update()
     {
-        if(!animPlayed && player.fragments.fragmentCount == 7)
+        if(activatePortal || !animPlayed && player.fragments.fragmentCount == 7)
         {
+            if (rootPortalObject != null) {
+                rootPortalObject.SetActive(true);
+            }
             orbGetAnim.Play();
             animPlayed = true;
             returnToPortalPrompt.gameObject.SetActive(true);
