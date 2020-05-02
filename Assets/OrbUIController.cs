@@ -14,6 +14,8 @@ public class OrbUIController : MonoBehaviour
 
     public TextMeshProUGUI returnToPortalPrompt;
 
+    public InteractablePortal portal;
+
     private void Awake()
     {
         orbGetAnim = GetComponent<Animation>();
@@ -27,6 +29,7 @@ public class OrbUIController : MonoBehaviour
             orbGetAnim.Play();
             animPlayed = true;
             returnToPortalPrompt.gameObject.SetActive(true);
+            portal.OpenPortal();
         }
     }
 }
