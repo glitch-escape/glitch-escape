@@ -15,6 +15,8 @@ public class MazeSwitch : MonoBehaviour, IActiveInteract
     private Color colorWhenActive;
     private const float speedWhenDisabled = 0f;
     private static Color colorWhenDisabled = Color.grey;
+
+    //[InjectComponent] public Player player;
     
     private const string SPEED_PARAM = "Speed_EA381B29";
     private const string COLOR_PARAM = "Color_C8A5C6B";
@@ -46,6 +48,6 @@ public class MazeSwitch : MonoBehaviour, IActiveInteract
     public void OnDeselected(Player player) {
         SetMazeSwitchActive(false);
     }
-    public void OnPlayerEnterInteractionRadius(Player player) { SetMazeSwitchActive(true); player.spawn.SetSpawnPosition(this); }
-    public void OnPlayerExitInteractionRadius(Player player) { SetMazeSwitchActive(false); }
+    public void OnPlayerEnterInteractionRadius(Player player) { SetMazeSwitchActive(true); player.spawn.SetSpawnPosition(this); player.config.isOnMazeTrigger = true; }
+    public void OnPlayerExitInteractionRadius(Player player) { SetMazeSwitchActive(false); player.config.isOnMazeTrigger = false; }
 }
