@@ -10,7 +10,7 @@ public static class Loader
     public enum Scene
     {
         MainMenu, Opening, Tutorial_01_Movement, Vertical_Main_Level, Vertical_Platforming_Level, Hub_Level,
-        CorruptionVisualTest, Tutorial_02_Advanced_Movement, Tutorial_03_Maze_Switch, Third_Level
+        CorruptionVisualTest, Tutorial_02_Advanced_Movement, Tutorial_03_Maze_Switch, Third_Level, SGDAEndCard
     }
 
     private static Action onLoadCallback;
