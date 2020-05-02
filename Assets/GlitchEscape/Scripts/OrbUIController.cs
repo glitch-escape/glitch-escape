@@ -26,7 +26,7 @@ public class OrbUIController : MonoBehaviour
 
     private void Update()
     {
-        if(activatePortal || !animPlayed && player.fragments.fragmentCount == 7)
+        if(activatePortal || !animPlayed && player.fragments.fragmentCount >= 7)
         {
             if (rootPortalObject != null) {
                 rootPortalObject.SetActive(true);
