@@ -790,7 +790,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 577428603}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 79ed28f5ae802014c8b1e492ce2e14f9, type: 3}
   m_Name: 
@@ -799,8 +799,8 @@ MonoBehaviour:
   staticText: {fileID: 381486974}
   floatText: {fileID: 2029278297}
   sentenceDelay: 3
-  test: {fileID: 2480198943629176163, guid: 177c68f5367ba4662b4e0c610dcf47f7, type: 3}
-  textNode: 
+  test: {fileID: 2480198943629176163, guid: 1d1d01b34431944209f17e64d751a722, type: 3}
+  textNode: Hostages-Act1
   charDelay: 0.003
 --- !u!1 &599833176
 GameObject:
@@ -7295,11 +7295,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogueContainer: {fileID: 2734313069221803410}
   textSpeed: 0.025
-  optionButtons:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  optionButtons: []
   onDialogueStart:
     m_PersistentCalls:
       m_Calls:
@@ -9430,6 +9426,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3868026754479311741, guid: ea0020a54320349b3aab3a61f3382dcd,
+        type: 3}
+      propertyPath: _config
+      value: 
+      objectReference: {fileID: 11400000, guid: fa51b7db9570b42f5a5a07fddbd71ea6,
+        type: 2}
     - target: {fileID: 6504468955013832158, guid: ea0020a54320349b3aab3a61f3382dcd,
         type: 3}
       propertyPath: m_CullingMode
