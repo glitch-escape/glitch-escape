@@ -20,10 +20,10 @@ public class EndCardController : MonoBehaviour
     void Update()
     {
         timeElapsed += Time.deltaTime;
-
         if(!fadeStarted && timeElapsed > timeToFade)
         {
             fadeStarted = true;
+            GetComponent<EndCardButton>().Activate();
             StartCoroutine(FadeIn());
         }
     }

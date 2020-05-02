@@ -7,7 +7,11 @@ using UnityEngine.EventSystems;
 public class EndCardButton : MonoBehaviour
 {
     public Button defaultButton;
+    public bool canAdvanceToMainMenu = false;
 
+    public void Activate() {
+        canAdvanceToMainMenu = true;
+    }
     void Start()
     {
         defaultButton.Select();
@@ -28,5 +32,10 @@ public class EndCardButton : MonoBehaviour
     {
         navTo.SetActive(true);
     }
-    public void PlayMainMenu() { Loader.Load(Loader.Scene.MainMenu); }
+
+    public void PlayMainMenu() {
+        if (canAdvanceToMainMenu) {
+            Loader.Load(Loader.Scene.MainMenu);
+        }
+    }
 }
