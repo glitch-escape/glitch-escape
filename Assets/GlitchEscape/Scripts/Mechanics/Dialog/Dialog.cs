@@ -53,6 +53,10 @@ public class Dialog : MonoBehaviour {
         } 
     }
 
+    /// <summary>
+    /// Begins to display dialog, provided a 
+    /// </summary>
+    /// <param name="clip"></param>
     public void BeginDialouge(string dialogNode) {
         dr.StartDialogue(dialogNode);
     }

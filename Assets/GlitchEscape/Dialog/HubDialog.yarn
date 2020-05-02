@@ -8,15 +8,15 @@ position: 136,108
 <<endif>>
 
 <<if $curMsg % 4 eq 0>> 
-    This place is the anchor point of this world. 
-    It’s tethered to all sorts of different parts of this realm through the portals here.
+    This place is the anchor point of this world.  #line:01554e0
+    It’s tethered to all sorts of different parts of this realm through the portals here. #line:0bb048e
 <<elseif $curMsg % 4 eq 1>> 
-    I do not remember when those people got here. It is strange.
+    I do not remember when those people got here. It is strange. #line:0105841
 <<elseif $curMsg % 4 eq 2>> 
-    That orb in your possession… I can see it resonating around you.
+    That orb in your possession… I can see it resonating around you. #line:0cb0f5c
 <<else>>
-    This realm is deeply connected with you. 
-    The more you explore this realm, you might learn new things about yourself.
+    This realm is deeply connected with you.  #line:04a8ef3
+    The more you explore this realm, you might learn new things about yourself. #line:0a638d5
 <<endif>>
 
 <<set $curMsg to $curMsg + 1>>
@@ -31,15 +31,20 @@ position: 381,120
 <<endif>>
 
 <<if $curMsg % 5 eq 0>> 
-    I can’t recall how I got trapped inside those things… But someone had to put me into that thing right?
+    I can’t recall how I got trapped inside those things… #line:0e57892
+    But someone had to put me into that thing right? #line:012d0dd
 <<elseif $curMsg % 5 eq 1>> 
-    Thank you again for freeing me. I would help you, but I can’t go outside this area without glitching out… Good luck.
+    Thank you again for freeing me. #line:0d6cfae
+    I would help you, but I can’t go outside this area without glitching out… #line:0af6847
+    Good luck. #line:073992b
 <<elseif $curMsg % 5 eq 2>> 
-    Make sure you hold onto that orb. I hope it helps you as much as it helped me escape that thing.
+    Make sure you hold onto that orb. #line:01060bb
+    I hope it helps you as much as it helped me escape that thing. #line:061dd38
 <<elseif $curMsg % 5 eq 3>>
-    There are other versions of us trapped here… I hope we can free them soon…
+    There are other versions of us trapped here… #line:0b70f4e
+    I hope we can free them soon… #line:0c4ceb4
 <<else>>
-    The more versions of us we free, the more information we can hopefully get.
+    The more versions of us we free, the more information we can hopefully get. #line:0d7edcf
 <<endif>>
 
 <<set $curMsg to $curMsg + 1>>
@@ -54,15 +59,15 @@ position: 678,175
 <<endif>>
 
 <<if $curMsg % 5 eq 0>> 
-    That… version of you… has deep… knowledge of this... realm
+    That... version of you... has deep... knowledge of this... realm #line:058ee3a
 <<elseif $curMsg % 5 eq 1>> 
-    Please… be careful of… other beings like me...
+    Please... be careful of… other beings like me... #line:0c3bee3
 <<elseif $curMsg % 5 eq 2>> 
-    You need… to chase… after them...
+    You need... to chase... after them... #line:0a82705
 <<elseif $curMsg % 5 eq 3>>
-    ...
+    ... #line:01f8df6
 <<else>>
-    You... don’t have... much time...
+    You... don’t have... much time... #line:081c167
 <<endif>>
 
 <<set $curMsg to $curMsg + 1>>
