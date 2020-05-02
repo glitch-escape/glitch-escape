@@ -18,11 +18,14 @@ public class ProjectileSpawner : MonoBehaviour
     public ProjectileSpawnerProjectileConfig projectileInSpawner;
 
     //setting values for the projectile's cooldown and timer and if this spawner is active
-    private float spawnCooldown = 2f;
+    public float spawnCooldown = 2f;
+    public float spawnTimerOffset = 0f;
     private float spawnTimer = 2f;
     public bool projectileSpawnerActive = true;
 
-    public void Start(){}
+    public void Start() {
+        spawnTimer = spawnCooldown - spawnTimerOffset;
+    }
 
     //spawns a projectile after the timer reaches 0 and resets
     //it also checks if the ProjectileSpawner is active or not
