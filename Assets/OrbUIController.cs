@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class OrbUIController : MonoBehaviour
 {
@@ -11,9 +12,12 @@ public class OrbUIController : MonoBehaviour
 
     private bool animPlayed = false;
 
+    public TextMeshProUGUI returnToPortalPrompt;
+
     private void Awake()
     {
         orbGetAnim = GetComponent<Animation>();
+        returnToPortalPrompt.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -22,6 +26,7 @@ public class OrbUIController : MonoBehaviour
         {
             orbGetAnim.Play();
             animPlayed = true;
+            returnToPortalPrompt.gameObject.SetActive(true);
         }
     }
 }
