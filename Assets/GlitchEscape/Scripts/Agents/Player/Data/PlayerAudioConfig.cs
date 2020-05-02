@@ -25,6 +25,9 @@ public class PlayerAudioConfig : ScriptableObject {
     
     [Header("Walk")]
     public AudioClip[] footstepSounds;
+
+    [Header("Interaction")]
+    public AudioClip fragmentInteraction;
     
     // TODO: add audio clips for other player events
 }

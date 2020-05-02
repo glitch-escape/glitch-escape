@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -761,7 +761,7 @@ PrefabInstance:
     - target: {fileID: 1454180516294464616, guid: a6baf079ec86a455db60db3531a558ed,
         type: 3}
       propertyPath: message
-      value: Use WASD or Left Stick to move
+      value: Get to the portal
       objectReference: {fileID: 0}
     - target: {fileID: 1454180516294464617, guid: a6baf079ec86a455db60db3531a558ed,
         type: 3}
@@ -1454,12 +1454,12 @@ PrefabInstance:
     - target: {fileID: 4480004949643349518, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000004261177
+      value: -0.000000004261179
       objectReference: {fileID: 0}
     - target: {fileID: 4480004949643349518, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -1.4422304e-11
+      value: -1.4399322e-11
       objectReference: {fileID: 0}
     - target: {fileID: 4480004949643349518, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
@@ -7772,7 +7772,8 @@ PrefabInstance:
     - target: {fileID: 1454180516294464616, guid: a6baf079ec86a455db60db3531a558ed,
         type: 3}
       propertyPath: message
-      value: Press E to interact with objects
+      value: 'Press E (Keyboard) or X (Controller) to interact with objects (DS4:
+        Square)'
       objectReference: {fileID: 0}
     - target: {fileID: 1454180516294464617, guid: a6baf079ec86a455db60db3531a558ed,
         type: 3}
@@ -7867,12 +7868,17 @@ PrefabInstance:
     - target: {fileID: 1454180517829018253, guid: a6baf079ec86a455db60db3531a558ed,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.87
+      value: -3.31
       objectReference: {fileID: 0}
     - target: {fileID: 1454180517829018253, guid: a6baf079ec86a455db60db3531a558ed,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 6.21
+      value: 6.53
+      objectReference: {fileID: 0}
+    - target: {fileID: 1454180517829018253, guid: a6baf079ec86a455db60db3531a558ed,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 3.61
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a6baf079ec86a455db60db3531a558ed, type: 3}
@@ -7902,7 +7908,7 @@ PrefabInstance:
     - target: {fileID: 1454180516294464919, guid: a6baf079ec86a455db60db3531a558ed,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 8.453732
+      value: 10.65
       objectReference: {fileID: 0}
     - target: {fileID: 1454180516294464919, guid: a6baf079ec86a455db60db3531a558ed,
         type: 3}
@@ -7912,27 +7918,27 @@ PrefabInstance:
     - target: {fileID: 1454180516294464919, guid: a6baf079ec86a455db60db3531a558ed,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 19.743439
+      value: 20.67
       objectReference: {fileID: 0}
     - target: {fileID: 1454180516294464919, guid: a6baf079ec86a455db60db3531a558ed,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1454180516294464919, guid: a6baf079ec86a455db60db3531a558ed,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.35118234
+      value: 0.42261827
       objectReference: {fileID: 0}
     - target: {fileID: 1454180516294464919, guid: a6baf079ec86a455db60db3531a558ed,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1454180516294464919, guid: a6baf079ec86a455db60db3531a558ed,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.93630713
+      value: 0.9063079
       objectReference: {fileID: 0}
     - target: {fileID: 1454180516294464919, guid: a6baf079ec86a455db60db3531a558ed,
         type: 3}
@@ -7947,7 +7953,7 @@ PrefabInstance:
     - target: {fileID: 1454180516294464919, guid: a6baf079ec86a455db60db3531a558ed,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 41.119003
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 1454180516294464919, guid: a6baf079ec86a455db60db3531a558ed,
         type: 3}
@@ -7983,6 +7989,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_textInfo.pageCount
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1454180517829018253, guid: a6baf079ec86a455db60db3531a558ed,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 1.61
+      objectReference: {fileID: 0}
+    - target: {fileID: 1454180517829018253, guid: a6baf079ec86a455db60db3531a558ed,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 1454180517829018253, guid: a6baf079ec86a455db60db3531a558ed,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 6.42
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a6baf079ec86a455db60db3531a558ed, type: 3}
@@ -10673,7 +10694,7 @@ PrefabInstance:
     - target: {fileID: 1454180516294464616, guid: a6baf079ec86a455db60db3531a558ed,
         type: 3}
       propertyPath: message
-      value: Double jump by pressing jump twice
+      value: Double jump by pressing Jump twice
       objectReference: {fileID: 0}
     - target: {fileID: 1454180516294464617, guid: a6baf079ec86a455db60db3531a558ed,
         type: 3}
@@ -11216,6 +11237,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1327564980}
     m_Modifications:
+    - target: {fileID: 1454180516294464616, guid: a6baf079ec86a455db60db3531a558ed,
+        type: 3}
+      propertyPath: message
+      value: Use WASD or Left Stick to move
+      objectReference: {fileID: 0}
     - target: {fileID: 1454180516294464617, guid: a6baf079ec86a455db60db3531a558ed,
         type: 3}
       propertyPath: m_Name
