@@ -140,7 +140,7 @@ public class PlayerMazeController : PlayerComponent {
     }
     
     void Update() {
-        if (inGlitchMaze) {
+        if (inGlitchMaze && player.config.isOnMazeTrigger == false) {
             // instead of updating maze timer, just apply damage over time
             // 10 damage / sec, default 100 health = 10 seconds, same as we had previously
             player.TakeDamage(10f * Time.deltaTime);
