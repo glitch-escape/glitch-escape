@@ -35,7 +35,9 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
     /// </summary>
     /// <param name="dialogNode"></param>
     public void BeginDialog(string dialogNode) {
-        dr.StartDialogue(dialogNode);
+        if (!dr.IsDialogueRunning) {
+            dr.StartDialogue(dialogNode);
+        }
     }
     
     private void WaitForNextLine() {
