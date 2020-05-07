@@ -16,7 +16,8 @@ public class PlayerController : MonoBehaviour, IResettable {
     
     private void Awake() {
         if (instance != null) {
-            instance.player.transform.position = player.transform.position;
+            instance.player.spawn.SetSpawnPosition(player.transform.position, player.transform.rotation);
+            instance.player.spawn.Respawn();
             Destroy(gameObject);
         } else {
             instance = this;

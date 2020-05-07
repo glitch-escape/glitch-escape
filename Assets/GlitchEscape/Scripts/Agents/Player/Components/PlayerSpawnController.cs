@@ -44,7 +44,7 @@ public class PlayerSpawnController : PlayerComponent {
             savePoint.transform.position + Vector3.up * player.config.spawnHeight, 
             savePoint.transform.rotation);   
     }
-    private void Respawn() {
+    public void Respawn() {
         Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.VirtualCameraGameObject.SetActive(false);
         player.transform.position = respawnPosition;
         player.transform.rotation = respawnRotation;
