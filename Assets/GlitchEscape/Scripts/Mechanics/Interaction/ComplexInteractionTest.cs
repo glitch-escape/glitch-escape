@@ -8,7 +8,7 @@ using UnityEngine;
 /// Example script to show how to implement player-interactive objects
 /// </summary>
 [RequireComponent(typeof(Collider))]
-public class TestInteractable : AInteractiveObject {
+public class ComplexInteractionTest : AInteractiveObject {
     public TMP_Text displayText;
     public string interactMessage = "Press <interact> to interact";
     public string[] messages;

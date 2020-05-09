@@ -16,7 +16,7 @@ public interface IInteractiveObject {
 /// <summary>
 /// Interactive object that forwards callbacks to unity events.
 /// To implement an interactive object with a single script, inheirt from <see cref="AInteractiveObject"/>.
-/// For an example of object interaction, see the <see cref="InteractiveTest"/> script and InteractionTest.unity.
+/// For an example of object interaction, see the <see cref="InteractiveObjectTest"/> script and InteractionTest.unity.
 /// </summary>
 [RequireComponent(typeof(Collider))]
 public class InteractiveObject : AInteractiveObject {
@@ -46,7 +46,7 @@ public class InteractiveObject : AInteractiveObject {
 ///   as public override methods
 /// 2) use <see cref="InteractiveObject"/> and use the unity events there to link callbacks, etc.
 ///
-/// To debug an interactive object, you can add a <see cref="InteractiveTest"/> script.
+/// To debug an interactive object, you can add a <see cref="InteractiveObjectTest"/> script.
 /// </summary>
 [RequireComponent(typeof(Collider))]
 public abstract class AInteractiveObject : MonoBehaviour, IInteractiveObject {
