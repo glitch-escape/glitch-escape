@@ -34,7 +34,7 @@ public class OrbUIController : MonoBehaviour
             orbGetAnim.Play();
             animPlayed = true;
             returnToPortalPrompt.gameObject.SetActive(true);
-            portal.OpenPortal();
+            portal.active = true;
         }
     }
 }
