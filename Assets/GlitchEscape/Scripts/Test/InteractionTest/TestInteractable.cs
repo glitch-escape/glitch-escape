@@ -7,8 +7,8 @@ using UnityEngine;
 /// <summary>
 /// Example script to show how to implement player-interactive objects
 /// </summary>
-[RequireComponent(typeof(InteractionTrigger))]
-public class TestInteractable : MonoBehaviour, IActiveInteract {
+[RequireComponent(typeof(Collider))]
+public class TestInteractable : AInteractiveObject {
     public TMP_Text displayText;
     public string interactMessage = "Press <interact> to interact";
     public string[] messages;
@@ -76,6 +76,7 @@ public class TestInteractable : MonoBehaviour, IActiveInteract {
         ShowNextMessage();
     }
     void Update() {
+        base.Update();
         if (showMessages && elapsedTime > messageDisplayTime) {
             ShowNextMessage();
         } else if (playerInInteractionRadius && elapsedTime > messageDisplayTime) {
@@ -83,7 +84,7 @@ public class TestInteractable : MonoBehaviour, IActiveInteract {
             ShowTooltip();
         }
     }
-    public void OnInteract(Player player) {
+    public override void OnInteract(Player player) {
         switch (messageState) {
             case ShowMessageState.ShowTooltip: StartShowingMessages(); break;
             case ShowMessageState.ShowMessage: ShowNextMessage(); break;
@@ -93,26 +94,12 @@ public class TestInteractable : MonoBehaviour, IActiveInteract {
         }
     }
 
-    public void OnPlayerEnterInteractionRadius(Player player) {
-        if (!showMessages) {
-            // show interaction text
-            ShowTooltip();
+    public override void OnFocusChanged(bool focused) {
+        if (!showMessages) { // not currently displaying a series of messages, ie. can begin interaction
+            // show / hide interaction text
+            if (focused) ShowTooltip();
+            else ShowMessage(null);
         }
-        playerInInteractionRadius = true;
-    }
-
-    public void OnPlayerExitInteractionRadius(Player player) {
-        if (!showMessages) {
-            // hide interaction text
-            ShowMessage(null);
-        }
-        playerInInteractionRadius = false;
-    }
-
-    public bool isInteractive => true;
-    public void OnSelected(Player player) {
-    }
-
-    public void OnDeselected(Player player) {
+        playerInInteractionRadius = focused;
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -8,7 +9,7 @@ using UnityEngine.Events;
 /// Implemented by <see cref="AInteractiveObject"/>
 /// </summary>
 public interface IInteractiveObject {
-    void OnInteract();
+    void OnInteract(Player player);
     void OnFocusChanged(bool focused);
 }
 
@@ -26,7 +27,7 @@ public class InteractiveObject : AInteractiveObject {
     [Tooltip("triggered by OnFocusChanged(false)")]
     public UnityEvent onHighlightEnd;
 
-    public override void OnInteract() {
+    public override void OnInteract(Player player) {
         onInteract.Invoke();
     }
     public override void OnFocusChanged(bool focused) {
@@ -103,7 +104,7 @@ public abstract class AInteractiveObject : MonoBehaviour, IInteractiveObject {
     /// <summary>
     /// Called when player interacts with something (must be implemented by derived class)
     /// </summary>
-    public abstract void OnInteract();
+    public abstract void OnInteract(Player player);
     
     /// <summary>
     /// Called when this object is "focused" (ie. player is within trigger radius; must be impl by derived class)
@@ -114,13 +115,13 @@ public abstract class AInteractiveObject : MonoBehaviour, IInteractiveObject {
     /// <summary>
     /// Tracks an active player ref; used to implement behavior for <see cref="InteractTriggerType.PlayerPressedInteract"/>
     /// </summary>
-    private Player activePlayer;
+    public Player activePlayer;
     
     private void OnTriggerEnter(Collider other) {
         var player = other.GetComponent<Player>();
         if (player != null) {
             if (interactOnTriggerEnter) {
-                OnInteract();
+                OnInteract(player);
             }
             if (interactOnPressed) {
                 activePlayer = player;
@@ -145,13 +146,26 @@ public abstract class AInteractiveObject : MonoBehaviour, IInteractiveObject {
         var player = other.gameObject.GetComponent<Player>();
         if (player != null) {
             if (interactOnCollisionEnter) {
-                OnInteract();
+                OnInteract(player);
             }
         }
     }
-    private void Update() {
+
+    private int interactPressCount = 0;
+    protected void Update() {
         if (interactOnPressed && (activePlayer?.input.interact.wasPressedThisFrame ?? false)) {
-            OnInteract();
+            ++interactPressCount;
+            OnInteract(activePlayer);
+        }
+    }
+
+    public bool showDebugGUI = false;
+    private void OnGUI() {
+        if (showDebugGUI) {
+            GUILayout.Label("interactOnPressed? "+interactOnPressed);
+            GUILayout.Label("activePlayer? "+activePlayer);
+            GUILayout.Label("interact pressed this frame? "+(activePlayer?.input.interact.wasPressedThisFrame ?? false));
+            GUILayout.Label("interact press count: "+interactPressCount);
         }
     }
 }

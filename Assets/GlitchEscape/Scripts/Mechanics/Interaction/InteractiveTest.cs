@@ -11,7 +11,6 @@ using UnityEngine;
 /// - can turn on basic debug logging by setting <see cref="InteractiveTest.enableDebugLogging"/>
 /// </summary>
 [RequireComponent(typeof(Collider))]
-[RequireComponent(typeof(MeshRenderer))]
 [RequireComponent(typeof(Autowire))]
 public class InteractiveTest : AInteractiveObject {
     [InjectComponent] public MeshRenderer renderer;
@@ -27,7 +26,7 @@ public class InteractiveTest : AInteractiveObject {
     private void Awake() {
         SetColor(Color.gray);
     }
-    public override void OnInteract() {
+    public override void OnInteract(Player player) {
         if (enableDebugLogging) Debug.Log("interact pressed!");
         StartCoroutine(FlashInteract());
     }
