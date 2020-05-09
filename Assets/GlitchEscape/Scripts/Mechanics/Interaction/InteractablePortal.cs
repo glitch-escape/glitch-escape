@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 
-[RequireComponent(typeof(InteractionTrigger))]
-public class InteractablePortal : MonoBehaviour, IActiveInteract
+[RequireComponent(typeof(Collider))]
+public class InteractablePortal : AInteractiveObject
 {
-    public bool disableOnStart = true;
+    public bool disableOnStart = false;
     // singleton
     private static InteractablePortal _instance = null;
     public static InteractablePortal instance
@@ -26,18 +26,17 @@ public class InteractablePortal : MonoBehaviour, IActiveInteract
 
     public Transform floatTextArea;
     public string interactMessage = "[Step through the portal]";
-
     public PlayableDirector portalCutscene;
-    private FloatingTextController floatingText;
-    private InteractableTank interactableTank;
+    [InjectComponent] public FloatingTextController floatingText;
+    public InteractableTank interactableTank;
     public Loader.Scene levelToLoad = Loader.Scene.MainMenu;
 
     void Awake()
     {
         floatingText = FloatingTextController.instance;
         portalCutscene = GetComponent<PlayableDirector>();
-        portalCutscene.Play();
-        portalCutscene.Pause();
+        portalCutscene?.Play();
+        portalCutscene?.Pause();
     }
     void Start()
     {
@@ -46,32 +45,22 @@ public class InteractablePortal : MonoBehaviour, IActiveInteract
         }
     }
 
-    [Obsolete]
-    public void OnInteract(Player player)
-    {
-        Application.LoadLevel(levelToLoad.ToString());
+    public override void OnInteract(Player player) {
+        if (levelToLoad != Loader.Scene.None) {
+            Application.LoadLevel(levelToLoad.ToString());
+        }
     }
 
-    public void OnPlayerEnterInteractionRadius(Player player)
-    {
-        floatingText.EnableText(floatTextArea, interactMessage);
+    public override void OnFocusChanged(bool focused) {
+        if (focused) {
+            floatingText.EnableText(floatTextArea, interactMessage);
+        } else {
+            floatingText.DisableText(floatTextArea);
+        }
     }
-
-    public void OnPlayerExitInteractionRadius(Player player)
-    {
-        floatingText.DisableText(floatTextArea);
-    }
-
-    public bool isInteractive => true;
-    public void OnSelected(Player player) {
-    }
-
-    public void OnDeselected(Player player) {
-    }
-
     public void OpenPortal()
     {
-        portalCutscene.Resume();
+        portalCutscene?.Resume();
         this.gameObject.SetActive(true);
     }
 }

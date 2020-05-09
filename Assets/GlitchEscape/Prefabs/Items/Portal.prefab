@@ -165,6 +165,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee577f95e950a5846b397813c877f54d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interactTrigger: 0
+  highlightTrigger: 0
+  activePlayer: {fileID: 0}
+  showDebugGUI: 0
   disableOnStart: 1
   floatTextArea: {fileID: 1395493124}
   interactMessage: '[Go through]'
@@ -188,7 +192,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1433159518825179661
 Transform:
   m_ObjectHideFlags: 0
@@ -274,6 +278,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4238522357865078272}
+  - component: {fileID: 636974862447120133}
+  - component: {fileID: 1952435607644081782}
   m_Layer: 0
   m_Name: Portal
   m_TagString: Untagged
@@ -299,6 +305,40 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &636974862447120133
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4238522357865078276}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.19
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1952435607644081782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4238522357865078276}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee577f95e950a5846b397813c877f54d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactTrigger: 1
+  highlightTrigger: 1
+  activePlayer: {fileID: 0}
+  showDebugGUI: 0
+  disableOnStart: 1
+  floatTextArea: {fileID: 2344534524734679324}
+  interactMessage: '[Step through the portal]'
+  portalCutscene: {fileID: 0}
+  levelToLoad: 0
 --- !u!1 &7769495591429687737
 GameObject:
   m_ObjectHideFlags: 0
@@ -317,7 +357,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7473420886320343908
 Transform:
   m_ObjectHideFlags: 0
@@ -371,6 +411,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee577f95e950a5846b397813c877f54d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interactTrigger: 0
+  highlightTrigger: 0
+  activePlayer: {fileID: 0}
+  showDebugGUI: 0
   disableOnStart: 1
   floatTextArea: {fileID: 0}
   interactMessage: '[Go through]'
