@@ -17,7 +17,7 @@ public class InteractableTank : MonoBehaviour, IActiveInteract
 
     void Awake()
     {
-        interactablePortal = InteractablePortal.instance;
+        // interactablePortal = InteractablePortal.instance;
 
         // initialize and error check
         floatingText = FloatingTextController.instance;

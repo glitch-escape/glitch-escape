@@ -1,77 +1,69 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Playables;
 
-[RequireComponent(typeof(InteractionTrigger))]
-public class InteractablePortal : MonoBehaviour, IActiveInteract
+[RequireComponent(typeof(Collider))]
+public class InteractablePortal : AInteractiveObject
 {
-    public bool disableOnStart = true;
-    // singleton
-    private static InteractablePortal _instance = null;
-    public static InteractablePortal instance
-    {
-        get
-        {
-            if (_instance == null)
-            {
-                _instance = GameObject.FindObjectOfType<InteractablePortal>();
-                if (_instance == null)
-                    Debug.LogError("No InteractablePortal instance in this scene!");
-            }
-            return _instance;
-        }
-    }
-
-    public Transform floatTextArea;
     public string interactMessage = "[Step through the portal]";
-
-    public PlayableDirector portalCutscene;
-    private FloatingTextController floatingText;
-    private InteractableTank interactableTank;
     public Loader.Scene levelToLoad = Loader.Scene.MainMenu;
-
-    void Awake()
-    {
-        floatingText = FloatingTextController.instance;
-        portalCutscene = GetComponent<PlayableDirector>();
-        portalCutscene.Play();
-        portalCutscene.Pause();
-    }
-    void Start()
-    {
-        if (disableOnStart) {
-            this.transform.parent.gameObject.SetActive(false);
+    private float defaultPortalSpeed;
+    public FloatRange focusedPortalSpeed = new FloatRange { maximum = 3f, minimum = 1f };
+    [InjectComponent] public SphereCollider collider;
+    [InjectComponent] public MeshRenderer renderer;
+    
+    /// <summary>
+    /// Enable / disable this portal
+    /// </summary>
+    public bool active {
+        get => gameObject.activeInHierarchy;
+        set {
+            if (active == value) return;
+            gameObject.SetActive(value);
         }
     }
 
-    [Obsolete]
-    public void OnInteract(Player player)
-    {
-        Application.LoadLevel(levelToLoad.ToString());
+    /// <summary>
+    /// Is this portal currently focused by a nearby player?
+    /// </summary>
+    public bool focused { get; private set; } = false;
+
+    public float distanceToPlayer {
+        get {
+            var player = PlayerController.instance?.player;
+            return player != null ? Vector3.Distance(player.transform.position, transform.position) : Mathf.Infinity;
+        }
     }
 
-    public void OnPlayerEnterInteractionRadius(Player player)
-    {
-        floatingText.EnableText(floatTextArea, interactMessage);
+    void Awake() {
+        defaultPortalSpeed = renderer.material.GetFloat(PORTAL_SHADER_SPEED);
+    }
+    public override void OnInteract(Player player) {
+        if (levelToLoad != Loader.Scene.None) {
+            Application.LoadLevel(levelToLoad.ToString());
+        }
+    }
+    public override void OnFocusChanged(bool focused) {
+        this.focused = focused;
+        if (!focused) renderer.material.SetFloat(PORTAL_SHADER_SPEED, defaultPortalSpeed);
     }
 
-    public void OnPlayerExitInteractionRadius(Player player)
-    {
-        floatingText.DisableText(floatTextArea);
-    }
-
-    public bool isInteractive => true;
-    public void OnSelected(Player player) {
-    }
-
-    public void OnDeselected(Player player) {
-    }
-
-    public void OpenPortal()
-    {
-        portalCutscene.Resume();
-        this.gameObject.SetActive(true);
+    private const string PORTAL_SHADER_SPEED = "Vector1_5C84EC34";
+    private const string PORTAL_SHADER_COLOR = "Color_FFD634D4";
+    public float speed;
+    
+    private void Update() {
+        if (focused) {
+            var player = PlayerController.instance.player;
+            if (player == null || collider == null) return;
+            var distanceToPlayer = Vector3.Distance(player.transform.position, transform.position);
+            var normalizedDistance = 1f - distanceToPlayer / collider.radius;
+            var portalSpeedWhenFocused = focusedPortalSpeed.Lerp(normalizedDistance);
+            speed = portalSpeedWhenFocused;
+            renderer.material.SetFloat(PORTAL_SHADER_SPEED, portalSpeedWhenFocused);
+        }
     }
 }
