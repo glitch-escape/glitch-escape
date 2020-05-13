@@ -39,6 +39,7 @@ public class MazeSwitch : MonoBehaviour, IActiveInteract
         }
     }
     public void OnInteract(Player player) {
+        //SceneMazeController.MazesInScene.TriggerMazeSwitch();
         PlayerMazeController.instance.TriggerMazeSwitch();
     }
     public void OnSelected(Player player) {
