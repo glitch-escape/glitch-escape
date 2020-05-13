@@ -73,7 +73,7 @@ public class InteractionTrigger : MonoBehaviour {
     private bool hasListener = false;
 
     private void EnableInteractListener() {
-        // Debug.Log("starting interaction listener: "+this.gameObject);
+        //Debug.Log("starting interaction listener: "+this.gameObject);
         controls = PlayerControls.instance;
         if (!hasListener) {
             hasListener = true;
@@ -87,6 +87,7 @@ public class InteractionTrigger : MonoBehaviour {
         controls.interact.onPressed -= OnInteractPressed;
     }
     private void OnPlayerEnterInteractionRadius(Player player) {
+        //Debug.Log("entered interact radius!");
         if (attachedInteractionHandlers.Length == 0) return;
         foreach (var handler in attachedInteractionHandlers) {
             handler?.OnPlayerEnterInteractionRadius(player);
@@ -105,7 +106,7 @@ public class InteractionTrigger : MonoBehaviour {
         }
     }
     private void OnInteractPressed() {
-        // Debug.Log("interact pressed!");
+        //Debug.Log("interact pressed!");
         if (activePlayerInInteractionRadius != null) {
             OnPlayerInteractPressed(activePlayerInInteractionRadius);
         }   
