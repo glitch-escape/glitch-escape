@@ -36,4 +36,21 @@ public class PlayerMazeController : PlayerComponent {
         }
         return false;
     }
+
+    private void OnEnable() {
+        player.OnKilled += OnPlayerRespawn;
+    }
+    private void OnDisable() {
+        player.OnKilled -= OnPlayerRespawn;
+    }
+    private void OnPlayerRespawn() {
+        SceneMazeController.instance?.ResetMaze();
+    }
+    void Update() {
+        if ((SceneMazeController.instance?.inGlitchMaze ?? false) && player.config.isOnMazeTrigger == false) {
+            // instead of updating maze timer, just apply damage over time
+            // 10 damage / sec, default 100 health = 10 seconds, same as we had previously
+            player.TakeDamage(10f * Time.deltaTime);
+        }
+    }
 }

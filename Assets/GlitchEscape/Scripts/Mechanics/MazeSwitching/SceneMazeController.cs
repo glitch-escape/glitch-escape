@@ -8,10 +8,7 @@ public class SceneMazeController : MonoBehaviour
 
     [InjectComponent] public NormalMaze normalMaze;
     [InjectComponent] public GlitchMaze glitchMaze;
-
-
-    private Player player;
-
+    
     public static SceneMazeController instance { get; private set; } = null;
 
     [SerializeField]
@@ -52,12 +49,6 @@ public class SceneMazeController : MonoBehaviour
     {
         instance = this;
 
-        //get player in the scene, inject component doesnt seem to work?
-        if (player == null)
-        {
-            player = (Player)FindObjectOfType(typeof(Player));
-        }
-
         // get maze references
         normalMaze?.gameObject.SetActive(true);
         glitchMaze?.gameObject.SetActive(false);
@@ -73,22 +64,17 @@ public class SceneMazeController : MonoBehaviour
         // trigger maze updates, keeping the current maze active
         var maze = currentMaze;
         currentMaze = maze;
-        player.OnKilled += OnPlayerRespawn;
     }
 
     
     void OnDisable()
     {
         instance = null;
-
         // clear maze references, in case these objects get destroyed
         normalMaze = null;
         glitchMaze = null;
-        player.OnKilled -= OnPlayerRespawn;
     }
-   
-    void OnPlayerRespawn()
-    {
+    public void ResetMaze() {
         inNormalMaze = true;
     }
     public void SwitchMazes()
@@ -99,15 +85,5 @@ public class SceneMazeController : MonoBehaviour
     private float lastMazeSwitchTime = -10f;
     [Range(0f, 1f)] public float mazeSwitchCooldown = 0.2f;
 
-    void Update()
-    {
-        
-        if (inGlitchMaze && player.config.isOnMazeTrigger == false)
-        {
-            // instead of updating maze timer, just apply damage over time
-            // 10 damage / sec, default 100 health = 10 seconds, same as we had previously
-            player.TakeDamage(10f * Time.deltaTime);
-        }
-        
-    }
+    
 }
