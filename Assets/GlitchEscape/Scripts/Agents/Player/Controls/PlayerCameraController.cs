@@ -4,7 +4,6 @@ using Cinemachine;
 public class PlayerCameraController : MonoBehaviourBorrowingConfigFrom<Player, PlayerConfig> {
 
     [InjectComponent] public CinemachineFreeLook freeLookCam;
-
     void OnEnable() {
         if (freeLookCam == null) {
             freeLookCam = (transform.parent ?? transform).GetComponentInChildren<CinemachineFreeLook>();
