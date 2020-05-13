@@ -260,7 +260,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 378609569}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8489b957158684fcfb67d00c71a24302, type: 3}
+  m_Script: {fileID: 11500000, guid: b0b3c1d29719f480b915c4fbab64fbaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &508495485
@@ -1301,16 +1301,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 963194228, guid: 7fb674626e4de46f49d82caad6d6ce93, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4.5
+      value: -7.27
       objectReference: {fileID: 0}
     - target: {fileID: 2108366787, guid: 7fb674626e4de46f49d82caad6d6ce93, type: 3}
       propertyPath: glitchMaze
       value: 
-      objectReference: {fileID: 1920666111}
+      objectReference: {fileID: 0}
     - target: {fileID: 2108366787, guid: 7fb674626e4de46f49d82caad6d6ce93, type: 3}
       propertyPath: defaultMaze
       value: 
-      objectReference: {fileID: 378609571}
+      objectReference: {fileID: 0}
     - target: {fileID: 778320031773460715, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
       propertyPath: m_Name
@@ -1420,6 +1420,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8205065932806022779, guid: 7fb674626e4de46f49d82caad6d6ce93,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -29.799805
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7fb674626e4de46f49d82caad6d6ce93, type: 3}
@@ -1680,7 +1685,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1920666109}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8489b957158684fcfb67d00c71a24302, type: 3}
+  m_Script: {fileID: 11500000, guid: 2cc30c90a680440ad8d9a8e8a2cc6721, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &2102911916
@@ -1780,7 +1785,8 @@ PrefabInstance:
       propertyPath: m_textInfo.pageCount
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7945928773269187814, guid: 4a501baecd4bf4c34b5b9aa86e26a4d7, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 4a501baecd4bf4c34b5b9aa86e26a4d7, type: 3}
 --- !u!1 &2131225982
 GameObject:
@@ -1883,6 +1889,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5390657833174700324, guid: 4a501baecd4bf4c34b5b9aa86e26a4d7,
+        type: 3}
+      propertyPath: showDebugGUI
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5390657833174700324, guid: 4a501baecd4bf4c34b5b9aa86e26a4d7,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7945928773269187808, guid: 4a501baecd4bf4c34b5b9aa86e26a4d7,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1942,6 +1958,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TestInteractable
+      objectReference: {fileID: 0}
+    - target: {fileID: 7945928773269187815, guid: 4a501baecd4bf4c34b5b9aa86e26a4d7,
+        type: 3}
+      propertyPath: interactTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7945928773269187815, guid: 4a501baecd4bf4c34b5b9aa86e26a4d7,
+        type: 3}
+      propertyPath: showDebugGUI
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7945928773809211744, guid: 4a501baecd4bf4c34b5b9aa86e26a4d7,
         type: 3}

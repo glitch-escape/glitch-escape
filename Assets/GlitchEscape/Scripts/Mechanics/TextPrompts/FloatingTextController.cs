@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,32 +8,33 @@ using TMPro;
 
 public class FloatingTextController : MonoBehaviour
 {
-    // singleton
-    private static FloatingTextController _instance = null;
-    public static FloatingTextController instance
-    {
-        get
-        {
-            if (_instance == null)
-            {
-                _instance = GameObject.FindObjectOfType<FloatingTextController>();
-                if (_instance == null)
-                    Debug.LogError("No FloatingTextController instance in this scene!");
-            }
-            return _instance;
-        }
-    }
+    public static FloatingTextController instance { get; private set; }
 
-    private TextMeshProUGUI floatText;
+    [InjectComponent] public TextMeshProUGUI floatText;
     private GameObject floatPanel;
     private Transform floatTextArea;
 
     void Awake()
     {
-        floatText = gameObject.GetComponent<TextMeshProUGUI>();
+        if (instance == null) {
+            instance = this;
+        } else if (instance != this) {
+            Destroy(gameObject);
+        }
         floatPanel = this.transform.parent.gameObject;
         floatPanel.SetActive(false);
         floatTextArea = null;
+    }
+
+    private void OnEnable() {
+        if (instance == null) {
+            instance = this;
+        } else if (instance != this) {
+            Destroy(gameObject);
+        }
+    }
+    private void OnDisable() {
+        instance = null;
     }
 
     void Update()

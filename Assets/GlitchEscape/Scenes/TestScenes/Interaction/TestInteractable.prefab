@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7945928773269187812
+--- !u!1 &3882198957988090219
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,129 +8,12 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7945928773269187808}
-  - component: {fileID: 7945928773269187809}
-  - component: {fileID: 7945928773269187815}
-  - component: {fileID: 8403881893642987666}
-  - component: {fileID: 5390657833174700324}
-  m_Layer: 0
-  m_Name: TestInteractable
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7945928773269187808
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7945928773269187812}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.12, y: 1.74, z: 4.89}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 7945928774005008291}
-  - {fileID: 7945928773809211751}
-  m_Father: {fileID: 0}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &7945928773269187809
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7945928773269187812}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 4.46
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7945928773269187815
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7945928773269187812}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1200430c9d4af42d68308ad7ff0dcfe0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  interactTrigger: 1
-  highlightTrigger: 1
-  displayText: {fileID: 0}
-  interactMessage: Press <interact> to interact
-  messages:
-  - Hello, world!
-  - I'm a cube
-  - a cubity cube
-  messageDisplayTime: 2
-  pressInteractSkipsToNextMessage: 1
-  messageState: 0
---- !u!114 &8403881893642987666
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7945928773269187812}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7c17dcb2d48444c89a805a1ec0abf7b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  info: 'injecting fields on TestInteractable (TestInteractable)
-
-    injecting fields
-    on TestInteractable (Autowire)
-
-    injecting fields on TestInteractable (InteractiveTest)
-
-    found
-    injectable field UnityEngine.MeshRenderer renderer, value null, is null? False
-
-'
-  log: 
-  warnings: 
-  errors: 
---- !u!114 &5390657833174700324
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7945928773269187812}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddc4f548a5e3840e7b6d7beb0cd23c94, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  interactTrigger: 1
-  highlightTrigger: 1
-  renderer: {fileID: 7945928774005008301}
-  materialColorName: _BaseColor
-  interactFlashDuration: 0.1
-  enableDebugLogging: 0
---- !u!1 &7945928773809211748
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7945928773809211751}
-  - component: {fileID: 7945928773809211747}
-  - component: {fileID: 7945928773809211744}
-  - component: {fileID: 7945928773809211745}
-  - component: {fileID: 7945928773809211750}
-  - component: {fileID: 7945928773809211746}
-  - component: {fileID: 7945928773809211757}
+  - component: {fileID: 3882198957988090218}
+  - component: {fileID: 3882198957988090193}
+  - component: {fileID: 3882198957988090222}
+  - component: {fileID: 3882198957988090223}
+  - component: {fileID: 3882198957988090220}
+  - component: {fileID: 3882198957988090221}
   m_Layer: 0
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -138,32 +21,32 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &7945928773809211751
+--- !u!224 &3882198957988090218
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7945928773809211748}
+  m_GameObject: {fileID: 3882198957988090219}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.15525916, y: 0.15525916, z: 0.15525916}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_Children: []
-  m_Father: {fileID: 7945928773269187808}
-  m_RootOrder: 1
+  m_Father: {fileID: 3882198959311948848}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.01908, y: 0.97}
+  m_AnchoredPosition: {x: 0, y: 1.746}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!23 &7945928773809211747
+--- !u!23 &3882198957988090193
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7945928773809211748}
+  m_GameObject: {fileID: 3882198957988090219}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -196,29 +79,29 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!33 &7945928773809211744
+--- !u!33 &3882198957988090222
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7945928773809211748}
+  m_GameObject: {fileID: 3882198957988090219}
   m_Mesh: {fileID: 0}
---- !u!222 &7945928773809211745
+--- !u!222 &3882198957988090223
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7945928773809211748}
+  m_GameObject: {fileID: 3882198957988090219}
   m_CullTransparentMesh: 0
---- !u!114 &7945928773809211750
+--- !u!114 &3882198957988090220
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7945928773809211748}
+  m_GameObject: {fileID: 3882198957988090219}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
@@ -230,7 +113,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Sample text
+  m_text: 'Focus on trigger, interact on button press
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -296,22 +181,22 @@ MonoBehaviour:
   m_firstVisibleCharacter: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -14.529451, y: 0, z: -16.569942, w: 0}
+  m_margin: {x: -10.45373, y: 0, z: -7.8477573, w: -8.63606}
   m_textInfo:
-    textComponent: {fileID: 7945928773809211750}
-    characterCount: 11
+    textComponent: {fileID: 3882198957988090220}
+    characterCount: 43
     spriteCount: 0
-    spaceCount: 1
-    wordCount: 2
+    spaceCount: 7
+    wordCount: 7
     linkCount: 0
-    lineCount: 1
+    lineCount: 2
     pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
   m_hasFontAssetChanged: 0
-  m_renderer: {fileID: 7945928773809211747}
+  m_renderer: {fileID: 3882198957988090193}
   m_subTextObjects:
   - {fileID: 0}
   - {fileID: 0}
@@ -322,36 +207,20 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   m_maskType: 0
---- !u!114 &7945928773809211746
+--- !u!114 &3882198957988090221
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7945928773809211748}
+  m_GameObject: {fileID: 3882198957988090219}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: af8290941544a4e2198ae2db62bd0cd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   rotationMode: 3
---- !u!54 &7945928773809211757
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7945928773809211748}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 94
-  m_CollisionDetection: 0
---- !u!1 &7945928774005008288
+--- !u!1 &3882198959311948874
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -359,46 +228,49 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7945928774005008291}
-  - component: {fileID: 7945928774005008300}
-  - component: {fileID: 7945928774005008301}
-  - component: {fileID: 7945928774005008290}
+  - component: {fileID: 3882198959311948848}
+  - component: {fileID: 3882198959311948849}
+  - component: {fileID: 3882198959311948878}
+  - component: {fileID: 3882198959311948879}
+  - component: {fileID: 3882198959311948876}
+  - component: {fileID: 3882198959311948877}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: TestInteractable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7945928774005008291
+--- !u!4 &3882198959311948848
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7945928774005008288}
+  m_GameObject: {fileID: 3882198959311948874}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -7.81, y: 2.53, z: 4.04}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 7945928773269187808}
+  m_Children:
+  - {fileID: 3882198957988090218}
+  m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &7945928774005008300
+--- !u!33 &3882198959311948849
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7945928774005008288}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &7945928774005008301
+  m_GameObject: {fileID: 3882198959311948874}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &3882198959311948878
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7945928774005008288}
+  m_GameObject: {fileID: 3882198959311948874}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -410,7 +282,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 7ae7ca6cebef940949f51df46d3bed02, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -431,16 +303,59 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &7945928774005008290
-BoxCollider:
+--- !u!135 &3882198959311948879
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7945928774005008288}
+  m_GameObject: {fileID: 3882198959311948874}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Radius: 4.17
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3882198959311948876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3882198959311948874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7c17dcb2d48444c89a805a1ec0abf7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  info: 'injecting fields on Sphere (Autowire)
+
+    injecting fields on Sphere (InteractiveTest)
+
+    found
+    injectable field UnityEngine.MeshRenderer renderer, value null, is null? False
+
+'
+  log: 
+  warnings: 
+  errors: 
+--- !u!114 &3882198959311948877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3882198959311948874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddc4f548a5e3840e7b6d7beb0cd23c94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactTrigger: 1
+  highlightTrigger: 1
+  activePlayer: {fileID: 0}
+  showDebugGUI: 0
+  renderer: {fileID: 3882198959311948878}
+  materialColorName: _BaseColor
+  interactFlashDuration: 0.3
+  enableDebugLogging: 0
