@@ -12,135 +12,70 @@ using Debug = UnityEngine.Debug;
 // and rename this (which should have a much smaller impl) to PlayerMazeSwitchAbility, or something
 // (or just roll into player interaction ability...)
 public class PlayerMazeController : PlayerComponent {
-    public NormalMaze normalMaze;
-    public GlitchMaze glitchMaze;
-
-    [NonSerialized]
-    private static PlayerMazeController _instance = null;
-
-    public static PlayerMazeController instance =>
-        _instance ?? (_instance = Enforcements.GetSingleComponentInScene<PlayerMazeController>());
-
-    [SerializeField]
-    private Maze _currentMaze = null;
-    
-    [SerializeField]
-    public Maze currentMaze {
-        get => _currentMaze;
-        set {
-            var prevMaze = currentMaze;
-            _currentMaze = value;
-            prevMaze?.gameObject.SetActive(false);
-            _currentMaze?.gameObject.SetActive(true);
-            // Debug.Log("switching mazes");
-            if (prevMaze != null) {
-                lastMazeSwitchTime = Time.time;
-                if (value == normalMaze) {
-                    FireEvent(PlayerEvent.Type.MazeSwitchToNormalMaze);
-                } else if (value == glitchMaze) {
-                    FireEvent(PlayerEvent.Type.MazeSwitchToGlitchMaze);
-                }
-            }
-        }
-    }
-    public enum ActiveMaze {
-        Normal,
-        Glitch
-    };
-    public ActiveMaze activeMaze => inNormalMaze ? ActiveMaze.Normal : ActiveMaze.Glitch;
-    public bool inNormalMaze {
-        get => normalMaze?.gameObject.activeInHierarchy ?? false;
-        set => currentMaze = value ? (Maze)normalMaze : glitchMaze;
-    }
-    public bool inGlitchMaze {
-        get => glitchMaze?.gameObject.activeInHierarchy ?? false;
-        set => currentMaze = value ? (Maze)glitchMaze : normalMaze;
-    }
-    private TMaze TryGetMaze<TMaze>(string fallbackName) where TMaze : Maze {
-        // use Resources.FindObjectsOfTypeAll<T>() to find inactive game objects (this breaks w/ GameObjects.Find...)
-        // (https://answers.unity.com/questions/890636/find-an-inactive-game-object.html)
-        var mazes = Resources.FindObjectsOfTypeAll<TMaze>();
-        if (mazes.Length > 2) Debug.LogError("Found multiple mazes of type "+typeof(TMaze).Name+"! "+mazes);
-        if (mazes.Length > 0) return mazes[0];
-        var baseMazes = Resources.FindObjectsOfTypeAll<Maze>();
-        foreach (var maze in baseMazes) {
-            if (maze.gameObject.name == fallbackName) {
-                Debug.Log("Found "+fallbackName+" maze with legacy maze type; replacing with "+
-                          typeof(TMaze).Name);
-                var m = maze.gameObject;
-                Destroy(maze); // remove regular maze component
-                return m.AddComponent<TMaze>();
-            }
-        }
-        Debug.LogWarning("No object with "+typeof(TMaze).Name+" component or with name '"+fallbackName+
-                         "' with Maze component found in this scene (note: this will effectively disable maze switching)");
-        return null;
-    }
-
-    private void TryGetMazeRefs() {
-        normalMaze = TryGetMaze<NormalMaze>("BazeMaze");
-        glitchMaze = TryGetMaze<GlitchMaze>("GlitchMaze");
-    }
-    void Awake() {
-        _instance = this;
-        
-        // get maze references
-        TryGetMazeRefs();
-        normalMaze?.gameObject.SetActive(true);
-        glitchMaze?.gameObject.SetActive(false);
-        
-        // set the default maze to active (and deactivate the glitch maze)
-        inNormalMaze = true;
-    }
-
-    void OnEnable() {
-        _instance = this;
-        
-        // re-get maze references
-        TryGetMazeRefs();
-        
-        // trigger maze updates, keeping the current maze active
-        var maze = currentMaze;
-        currentMaze = maze;
-        player.OnKilled += OnPlayerRespawn;
-    }
-
-    void OnDisable() {
-        _instance = null;
-        
-        // clear maze references, in case these objects get destroyed
-        normalMaze = null;
-        glitchMaze = null;
-        player.OnKilled -= OnPlayerRespawn;
-    }
-    void OnPlayerRespawn() {
-        inNormalMaze = true;
-    }
-    public void SwitchMazes() {
-        // inGlitchMaze = !inGlitchMaze;
-        currentMaze = inGlitchMaze ? (Maze)normalMaze : (Maze)glitchMaze;
-    }
-
     private float lastMazeSwitchTime = -10f;
     [Range(0f, 1f)] public float mazeSwitchCooldown = 0.2f;
 
     /// <summary>
+    /// Tells us whether we're currently on a maze switch or not
+    /// Set by SetMazeSwitch() and ClearMazeSwitch(); also cleared in OnDisable() and OnLevelTransition()
+    /// </summary>
+    private MazeSwitch activeMazeSwitch = null;
+    private bool onMazeSwitch = false;
+
+    /// <summary>
+    /// Called by MazeSwitch.OnFocusChanged(true)
+    /// </summary>
+    public void SetMazeSwitch(MazeSwitch mazeSwitch) {
+        activeMazeSwitch = mazeSwitch;
+        onMazeSwitch = mazeSwitch == null;
+    }
+    
+    /// <summary>
+    /// Called by MazeSwitch.OnFocusChanged(false)
+    /// </summary>
+    public void ClearMazeSwitch(MazeSwitch mazeSwitch = null) {
+        if (mazeSwitch == null || activeMazeSwitch == mazeSwitch) {
+            activeMazeSwitch = null;
+            onMazeSwitch = false;
+        }
+    }
+    
+    /// <summary>
     /// Call this function to switch mazes (with a cooldown, ie. this call may fail)
+    /// Called by MazeSwitch.OnInteract()
     /// </summary>
     /// <returns></returns>
     public bool TriggerMazeSwitch() {
-        Debug.Log("attempting to maze switch");
-        if (Time.time > lastMazeSwitchTime + mazeSwitchCooldown) {
-            Debug.Log("maze switching...");
+        // Debug.Log("attempting to maze switch");
+
+        var mazeController = SceneMazeController.instance;
+        if (mazeController != null && Time.time > lastMazeSwitchTime + mazeSwitchCooldown) {
+            // Debug.Log("maze switching...");
             lastMazeSwitchTime = Time.time;
-            SwitchMazes();
+            var activeMaze = mazeController.SwitchMazes();
+            switch (activeMaze) {
+                case SceneMazeController.ActiveMaze.Glitch: FireEvent(PlayerEvent.Type.MazeSwitchToGlitchMaze);
+                    break;
+                case SceneMazeController.ActiveMaze.Normal: FireEvent(PlayerEvent.Type.MazeSwitchToNormalMaze);
+                    break;
+            }
             return true;
         }
         return false;
     }
-    
+
+    private void OnEnable() {
+        player.OnKilled += OnPlayerRespawn;
+    }
+    private void OnDisable() {
+        player.OnKilled -= OnPlayerRespawn;
+        ClearMazeSwitch();
+    }
+    private void OnPlayerRespawn() {
+        SceneMazeController.instance?.ResetMaze();
+    }
     void Update() {
-        if (inGlitchMaze && player.config.isOnMazeTrigger == false) {
+        if (!onMazeSwitch && (SceneMazeController.instance?.inGlitchMaze ?? false)) {
             // instead of updating maze timer, just apply damage over time
             // 10 damage / sec, default 100 health = 10 seconds, same as we had previously
             player.TakeDamage(10f * Time.deltaTime);

@@ -10,8 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7945928773269187808}
   - component: {fileID: 7945928773269187809}
-  - component: {fileID: 7945928773269187814}
   - component: {fileID: 7945928773269187815}
+  - component: {fileID: 8403881893642987666}
+  - component: {fileID: 5390657833174700324}
   m_Layer: 0
   m_Name: TestInteractable
   m_TagString: Untagged
@@ -48,19 +49,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 4.46
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7945928773269187814
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7945928773269187812}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65e6248d2c8b449f79cdb26b63380cea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  interactionTriggerType: 0
 --- !u!114 &7945928773269187815
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -73,6 +61,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1200430c9d4af42d68308ad7ff0dcfe0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interactTrigger: 1
+  highlightTrigger: 1
   displayText: {fileID: 0}
   interactMessage: Press <interact> to interact
   messages:
@@ -82,6 +72,50 @@ MonoBehaviour:
   messageDisplayTime: 2
   pressInteractSkipsToNextMessage: 1
   messageState: 0
+--- !u!114 &8403881893642987666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7945928773269187812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7c17dcb2d48444c89a805a1ec0abf7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  info: 'injecting fields on TestInteractable (TestInteractable)
+
+    injecting fields
+    on TestInteractable (Autowire)
+
+    injecting fields on TestInteractable (InteractiveTest)
+
+    found
+    injectable field UnityEngine.MeshRenderer renderer, value null, is null? False
+
+'
+  log: 
+  warnings: 
+  errors: 
+--- !u!114 &5390657833174700324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7945928773269187812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddc4f548a5e3840e7b6d7beb0cd23c94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactTrigger: 1
+  highlightTrigger: 1
+  renderer: {fileID: 7945928774005008301}
+  materialColorName: _BaseColor
+  interactFlashDuration: 0.1
+  enableDebugLogging: 0
 --- !u!1 &7945928773809211748
 GameObject:
   m_ObjectHideFlags: 0

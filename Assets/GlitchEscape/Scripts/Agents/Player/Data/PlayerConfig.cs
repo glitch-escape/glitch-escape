@@ -94,7 +94,6 @@ public class PlayerConfig : ScriptableObject {
     public float healthRegen = 10f;
     public float healthRegenDelay = 0.5f;
     public AnimationCurve healthRegenCurve = AnimationCurve.Constant(0f, 1f, 1f);
-    public bool isOnMazeTrigger = false;
     
     [Header("Stamina")] 
     public FloatRange stamina = new FloatRange {minimum = 0f, maximum = 100f};
