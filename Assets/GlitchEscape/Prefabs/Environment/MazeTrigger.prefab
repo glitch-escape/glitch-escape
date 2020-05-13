@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 1240788057615283906}
   - component: {fileID: 1216106425}
   - component: {fileID: 1216106424}
-  - component: {fileID: 541835654403262803}
   m_Layer: 0
   m_Name: MazeTrigger
   m_TagString: Untagged
@@ -107,17 +106,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1110ff7cced99450b974505616ca9a48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &541835654403262803
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 649921489107583518}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65e6248d2c8b449f79cdb26b63380cea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  affectorMode: 0
-  interactionTriggerType: 0
+  interactTrigger: 1
+  highlightTrigger: 1
+  activePlayer: {fileID: 0}
+  showDebugGUI: 0
