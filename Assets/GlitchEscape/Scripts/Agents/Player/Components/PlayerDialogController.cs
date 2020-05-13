@@ -5,7 +5,7 @@ using Yarn.Unity;
 
 public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
 {
-    [InjectComponent] public Player player;
+    //[InjectComponent] public Player player;
     
     private IEnumerator coroutineSent;
     // These are outside of the player gameObject(in UI part of prefab), 

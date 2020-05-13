@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1972,7 +1972,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &625474294
 Transform:
   m_ObjectHideFlags: 0
@@ -3116,7 +3116,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 990771303}
-  m_LocalRotation: {x: 0.0779355, y: 0.000000007432391, z: -5.8139454e-10, w: 0.99695843}
+  m_LocalRotation: {x: 0.077935494, y: -0.000000007425115, z: 5.802577e-10, w: 0.99695843}
   m_LocalPosition: {x: -0.000000076484866, y: 2.5, z: -7.2699986}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -3785,7 +3785,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1001 &1276432221
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8663,8 +8663,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7934903708037995485}
-  - component: {fileID: 7614808635056631891}
-  - component: {fileID: 8343462014658009674}
   m_Layer: 0
   m_Name: PlayerCameraRig
   m_TagString: Untagged
@@ -15722,7 +15720,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3494878475129414796}
-  - component: {fileID: 7090341324344661447}
   m_Layer: 5
   m_Name: Objective UI
   m_TagString: Untagged
@@ -21577,7 +21574,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4480004949603719966}
-  m_LocalRotation: {x: 0.07793549, y: 0.000000007050403, z: 0.000000004335334, w: 0.99695843}
+  m_LocalRotation: {x: 0.07793548, y: -3.783498e-10, z: 0.000000004915819, w: 0.99695843}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -29594,20 +29591,6 @@ Transform:
   m_Father: {fileID: 3519451435581694300}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7090341324344661447
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2960319797242268828}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff789f4f1bcdc704d91109fbb582bc76, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shardsPickups: {fileID: 0}
-  orbsPickups: {fileID: 0}
 --- !u!1 &7090484678822652570
 GameObject:
   m_ObjectHideFlags: 0
@@ -31358,38 +31341,6 @@ Transform:
   m_Father: {fileID: 6285102688492337318}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7614808635056631891
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 778320031733341693}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7c17dcb2d48444c89a805a1ec0abf7b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  info: 'injecting fields on PlayerCameraRig (Autowire)
-
-    injecting fields on
-    PlayerCameraRig (PlayerController)
-
-    found injectable field Player player,
-    value Player (Player), is null? False
-
-    found injectable field PlayerControls
-    playerControls, value , is null? True
-
-    field is currently null
-
-'
-  log: 'Setting missing PlayerControls component reference for PlayerControls playerControls
-    in PlayerCameraRig (PlayerController)
-
-'
-  warnings: 
-  errors: 
 --- !u!1 &7633881691416649979
 GameObject:
   m_ObjectHideFlags: 0
@@ -33361,20 +33312,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &8343462014658009674
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 778320031733341693}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52a69d5537dcd4c3897b904c3dc9f0f3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  playerControls: {fileID: 0}
 --- !u!4 &8347664099118808058
 Transform:
   m_ObjectHideFlags: 0
