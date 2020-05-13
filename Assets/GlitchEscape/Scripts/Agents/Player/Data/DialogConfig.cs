@@ -9,4 +9,5 @@ public class DialogConfig : ScriptableObject {
     [Header("Text Speed Control")]
     public float sentenceDelay = 3;
     public float textSpeed = 0.025f;
+    public bool isCutscene;
 }

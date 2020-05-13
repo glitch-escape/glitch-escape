@@ -15765,6 +15765,7 @@ MonoBehaviour:
   m_Events:
     m_Signals:
     - {fileID: 11400000, guid: 231e8da0dabf94ce58d6bcfba9e19feb, type: 2}
+    - {fileID: 11400000, guid: d4a5b4f1b28ff486b962134a28df0148, type: 2}
     m_Events:
     - m_PersistentCalls:
         m_Calls:
@@ -15777,6 +15778,19 @@ MonoBehaviour:
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: Act1-End
+            m_BoolArgument: 0
+          m_CallState: 2
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2296462463657620839}
+          m_MethodName: ContinueDialog
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
 --- !u!320 &474088453
@@ -82257,7 +82271,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a59c5092db5004cde868417b1ab8ee06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _config: {fileID: 11400000, guid: fa51b7db9570b42f5a5a07fddbd71ea6, type: 2}
+  _config: {fileID: 11400000, guid: 69a57348cccd24ae499937d16ea85275, type: 2}
+  test: 1
 --- !u!4 &2302470682914261903
 Transform:
   m_ObjectHideFlags: 0
@@ -83138,7 +83153,18 @@ MonoBehaviour:
         m_CallState: 2
   onLineFinishDisplaying:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2296462463657620839}
+        m_MethodName: WaitToHideText
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 629810825910940962}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onLineUpdate:
     m_PersistentCalls:
       m_Calls:
