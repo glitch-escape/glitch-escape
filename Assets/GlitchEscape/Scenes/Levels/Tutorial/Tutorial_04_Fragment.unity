@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -3577,6 +3577,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 76859555}
+  - component: {fileID: 76859556}
   m_Layer: 0
   m_Name: Maze
   m_TagString: Untagged
@@ -3601,6 +3602,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &76859556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 76859554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6dc271a4cdf169a4cb53c88b25a2d29f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  normalMaze: {fileID: 1715510018}
+  glitchMaze: {fileID: 109423616}
+  _currentMaze: {fileID: 0}
+  mazeSwitchCooldown: 0.2
 --- !u!1001 &83037152
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5001,7 +5018,7 @@ PrefabInstance:
     - target: {fileID: 4480004949643349518, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -6.836118e-10
+      value: -6.836112e-10
       objectReference: {fileID: 0}
     - target: {fileID: 4480004949643349518, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
@@ -7606,7 +7623,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh26004
+  m_Name: pb_Mesh190652
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -9036,7 +9053,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh25900
+  m_Name: pb_Mesh190548
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -11464,7 +11481,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh25878
+  m_Name: pb_Mesh190526
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2

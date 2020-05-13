@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Autowire))]
-//[InjectComponent] Maze allMazes;
+
 public class SceneMazeController : MonoBehaviour
 {
 
