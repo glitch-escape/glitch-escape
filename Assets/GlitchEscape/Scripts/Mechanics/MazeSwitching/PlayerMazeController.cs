@@ -12,20 +12,6 @@ using Debug = UnityEngine.Debug;
 // and rename this (which should have a much smaller impl) to PlayerMazeSwitchAbility, or something
 // (or just roll into player interaction ability...)
 public class PlayerMazeController : PlayerComponent {
-    public NormalMaze normalMaze;
-    public GlitchMaze glitchMaze;
-
-    [NonSerialized]
-    private static PlayerMazeController _instance = null;
-
-    public static PlayerMazeController instance =>
-        _instance ?? (_instance = Enforcements.GetSingleComponentInScene<PlayerMazeController>());
-
-    
-    void Awake() {
-        _instance = this;
-    }
-    
     private float lastMazeSwitchTime = -10f;
     [Range(0f, 1f)] public float mazeSwitchCooldown = 0.2f;
 
@@ -34,11 +20,11 @@ public class PlayerMazeController : PlayerComponent {
     /// </summary>
     /// <returns></returns>
     public bool TriggerMazeSwitch() {
-        Debug.Log("attempting to maze switch");
+        // Debug.Log("attempting to maze switch");
 
         var mazeController = SceneMazeController.instance;
         if (mazeController != null && Time.time > lastMazeSwitchTime + mazeSwitchCooldown) {
-            Debug.Log("maze switching...");
+            // Debug.Log("maze switching...");
             lastMazeSwitchTime = Time.time;
             if (mazeController.inNormalMaze) {
                 FireEvent(PlayerEvent.Type.MazeSwitchToGlitchMaze);
@@ -46,7 +32,6 @@ public class PlayerMazeController : PlayerComponent {
                 FireEvent(PlayerEvent.Type.MazeSwitchToNormalMaze);
             }
             mazeController.SwitchMazes();
-            SceneMazeController.instance.SwitchMazes();
             return true;
         }
         return false;
