@@ -60,7 +60,7 @@ public class Portal : AInteractiveObject
             var player = PlayerController.instance.player;
             if (player == null || collider == null) return;
             var distanceToPlayer = Vector3.Distance(player.transform.position, transform.position);
-            var normalizedDistance = 1f - distanceToPlayer / collider.radius;
+            var normalizedDistance = Mathf.Clamp01(1f - distanceToPlayer / collider.radius);
             var portalSpeedWhenFocused = focusedPortalSpeed.Lerp(normalizedDistance);
             speed = portalSpeedWhenFocused;
             renderer.material.SetFloat(PORTAL_SHADER_SPEED, portalSpeedWhenFocused);
