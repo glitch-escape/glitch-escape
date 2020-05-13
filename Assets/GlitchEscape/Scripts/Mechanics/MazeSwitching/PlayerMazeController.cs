@@ -52,12 +52,13 @@ public class PlayerMazeController : PlayerComponent {
         if (mazeController != null && Time.time > lastMazeSwitchTime + mazeSwitchCooldown) {
             // Debug.Log("maze switching...");
             lastMazeSwitchTime = Time.time;
-            if (mazeController.inNormalMaze) {
-                FireEvent(PlayerEvent.Type.MazeSwitchToGlitchMaze);
-            } else {
-                FireEvent(PlayerEvent.Type.MazeSwitchToNormalMaze);
+            var activeMaze = mazeController.SwitchMazes();
+            switch (activeMaze) {
+                case SceneMazeController.ActiveMaze.Glitch: FireEvent(PlayerEvent.Type.MazeSwitchToGlitchMaze);
+                    break;
+                case SceneMazeController.ActiveMaze.Normal: FireEvent(PlayerEvent.Type.MazeSwitchToNormalMaze);
+                    break;
             }
-            mazeController.SwitchMazes();
             return true;
         }
         return false;

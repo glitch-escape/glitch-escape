@@ -3,87 +3,54 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class SceneMazeController : MonoBehaviour
-{
-
+public class SceneMazeController : MonoBehaviour {
+    public static SceneMazeController instance { get; private set; } = null;
+    public enum ActiveMaze { Normal, Glitch };
+    
     [InjectComponent] public NormalMaze normalMaze;
     [InjectComponent] public GlitchMaze glitchMaze;
-    
-    public static SceneMazeController instance { get; private set; } = null;
 
-    [SerializeField]
-    private Maze _currentMaze = null;
+    public ActiveMaze activeMaze = ActiveMaze.Normal;
+    public event System.Action<ActiveMaze> OnMazeSwitch;
 
-    
-    [SerializeField]
-    public Maze currentMaze
-    {
-        get => _currentMaze;
-        set
-        {
-            var prevMaze = currentMaze;
-            _currentMaze = value;
-            prevMaze?.gameObject.SetActive(false);
-            _currentMaze?.gameObject.SetActive(true);
+    public bool inGlitchMaze => activeMaze == ActiveMaze.Glitch;
+    public bool inNormalMaze => activeMaze == ActiveMaze.Normal;
+
+    void Awake() {
+        instance = this;
+        SetActiveMaze(activeMaze);
+    }
+    private void OnEnable() { instance = this; }
+    private void OnDisable() {
+        if (instance == this) {
+            instance = null;
         }
     }
     
-    public enum ActiveMaze
-    {
-        Normal,
-        Glitch
-    };
-    public ActiveMaze activeMaze => inNormalMaze ? ActiveMaze.Normal : ActiveMaze.Glitch;
-    public bool inNormalMaze
-    {
-        get => normalMaze?.gameObject.activeInHierarchy ?? false;
-        set => currentMaze = value ? (Maze)normalMaze : glitchMaze;
+    public void SetActiveMaze(ActiveMaze maze) {
+        var mazeChanged = maze != activeMaze;
+        switch (activeMaze = maze) {
+            case ActiveMaze.Normal:
+                normalMaze?.gameObject.SetActive(true);
+                glitchMaze?.gameObject.SetActive(false);
+                break;
+            case ActiveMaze.Glitch:
+                normalMaze?.gameObject.SetActive(false);
+                glitchMaze?.gameObject.SetActive(true);
+                break;
+        }
+        if (mazeChanged) {
+            OnMazeSwitch?.Invoke(activeMaze);
+        }
     }
-    public bool inGlitchMaze
-    {
-        get => glitchMaze?.gameObject.activeInHierarchy ?? false;
-        set => currentMaze = value ? (Maze)glitchMaze : normalMaze;
-    }
-    
-    void Awake()
-    {
-        instance = this;
-
-        // get maze references
-        normalMaze?.gameObject.SetActive(true);
-        glitchMaze?.gameObject.SetActive(false);
-
-        // set the default maze to active (and deactivate the glitch maze)
-        inNormalMaze = true;
-    }
-
-    void OnEnable()
-    {
-        instance = this;
-
-        // trigger maze updates, keeping the current maze active
-        var maze = currentMaze;
-        currentMaze = maze;
-    }
-
-    
-    void OnDisable()
-    {
-        instance = null;
-        // clear maze references, in case these objects get destroyed
-        normalMaze = null;
-        glitchMaze = null;
+    public ActiveMaze SwitchMazes() {
+        switch (activeMaze) {
+            case ActiveMaze.Glitch: SetActiveMaze(ActiveMaze.Normal); return ActiveMaze.Normal;
+            case ActiveMaze.Normal: SetActiveMaze(ActiveMaze.Glitch); return ActiveMaze.Glitch;
+        }
+        return ActiveMaze.Normal;
     }
     public void ResetMaze() {
-        inNormalMaze = true;
+        SetActiveMaze(ActiveMaze.Normal);
     }
-    public void SwitchMazes()
-    {
-        currentMaze = inGlitchMaze ? (Maze)normalMaze : (Maze)glitchMaze;
-    }
-
-    private float lastMazeSwitchTime = -10f;
-    [Range(0f, 1f)] public float mazeSwitchCooldown = 0.2f;
-
-    
 }
