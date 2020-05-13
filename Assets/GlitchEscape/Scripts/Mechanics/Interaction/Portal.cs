@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Playables;
 
 [RequireComponent(typeof(Collider))]
-public class InteractablePortal : AInteractiveObject
+public class Portal : AInteractiveObject
 {
     public string interactMessage = "[Step through the portal]";
     public Loader.Scene levelToLoad = Loader.Scene.MainMenu;
