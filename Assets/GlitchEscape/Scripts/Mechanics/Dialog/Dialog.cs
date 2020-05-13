@@ -7,7 +7,6 @@ using TMPro;
 using Yarn.Unity;
 
 public class Dialog : MonoBehaviour {
-    public DialogueRunner yarnDialog;
 
     // Objects
     public TextMeshProUGUI dialogText;
@@ -18,8 +17,63 @@ public class Dialog : MonoBehaviour {
     private GameObject floatPannel;
 
     // Public Variables
-    public float charDelay = 0.03f;
     public float sentenceDelay = 3;
+
+    // I have no idea how we want this to be set up so these are temporary
+    public YarnProgram test;
+    public string textNode;
+    private DialogueRunner dr;
+    private DialogueUI dUI;
+
+    /*
+     * Notes:
+     * - prob need to make a DialogConfig
+     *     - takes in a float for sentence delay
+     *     - takes in yarn object that contains all the dialog
+     */
+    
+    private void Start() {
+        dialogPannel = dialogText.transform.parent.gameObject;
+        staticPannel = staticText.transform.parent.gameObject;
+        floatPannel = floatText.transform.parent.gameObject;
+        dialogPannel.gameObject.SetActive(false);
+        staticPannel.gameObject.SetActive(false);
+        floatPannel.gameObject.SetActive(false);
+
+        dr = FindObjectOfType<DialogueRunner>();
+        if(dr) dr.Add(test);
+        dUI = FindObjectOfType<DialogueUI>();
+        if(dUI) dUI.onLineFinishDisplaying.AddListener(WaitForNextLine);
+    }
+
+    void Update() {
+            // For testing purposes
+        if (Input.GetKeyDown(KeyCode.I)) {
+            dr.StartDialogue(textNode);
+        } 
+    }
+
+    /// <summary>
+    /// Begins to display dialog, provided a node of text was given
+    /// </summary>
+    /// <param name="dialogNode"></param>
+    public void BeginDialouge(string dialogNode) {
+        dr.StartDialogue(dialogNode);
+    }
+
+    private void WaitForNextLine() {
+        coroutineSent = DisplayNext();
+        StartCoroutine(coroutineSent);
+    }
+
+    IEnumerator DisplayNext() {
+        yield return new WaitForSeconds(sentenceDelay);
+        FindObjectOfType<DialogueUI>().MarkLineComplete();
+    }
+
+    #region Old Stuff
+    public float charDelay = 0.03f;
+
     public const int MAX_DIALOG_EVENT = 5;
 
     // Private Variables
@@ -35,9 +89,8 @@ public class Dialog : MonoBehaviour {
     private bool dialogRunning = false;
     private IEnumerator coroutineChar;
     private IEnumerator coroutineSent;
-
-    void Start()
-    {
+    /*
+    void Start() {
         dialogPannel = dialogText.transform.parent.gameObject;
         staticPannel = staticText.transform.parent.gameObject;
         floatPannel = floatText.transform.parent.gameObject;
@@ -87,22 +140,19 @@ public class Dialog : MonoBehaviour {
         dialogEvents[4].Add(new DialogContent("Player", "I’ve always forgiven people that have done something wrong to me. I couldn’t know what they were thinking or what they’ve been going through."));
         dialogEvents[4].Add(new DialogContent("Player", "I don’t want to be a victim, but I don’t want them to feel like a culprit either."));
         dialogEvents[4].Add(new DialogContent("Player", "No matter what someone has done, forgiving them can help them a lot… Don’t you agree?"));
-        
+
         // For switching scripts, just call SwitchScript(int);
     }
 
-    void Update()
-    {
-        if (dialogRunning)
-        {
+    void Update() { 
+        if (dialogRunning) {
             dialogPannel.gameObject.SetActive(false);
             staticPannel.gameObject.SetActive(false);
             floatPannel.gameObject.SetActive(false);
             dialogText.text = "";
             floatText.text = "";
             staticText.text = "";
-            switch (speaker)
-            {
+            switch (speaker) {
                 case "Player":
                     // Full size dialog only
                     dialogText.text = text;
@@ -110,14 +160,12 @@ public class Dialog : MonoBehaviour {
                     break;
                 case "Bunny":
                     // Side dialog + floating dialog
-                    if (targetNearBy)
-                    {
+                    if (targetNearBy) {
                         floatText.text = text;
                         floatPannel.transform.position = Camera.main.WorldToScreenPoint(floatTextArea.position);
                         floatPannel.gameObject.SetActive(true);
                     }
-                    else
-                    {
+                    else {
                         staticText.text = text;
                         staticPannel.gameObject.SetActive(true);
                     }
@@ -137,12 +185,10 @@ public class Dialog : MonoBehaviour {
             }
         }
     }
-
-    IEnumerator DisplayByChar()
-    {
+    */
+    IEnumerator DisplayByChar() {
         speaker = currDialogEvent[index].name;
-        foreach (char letter in currDialogEvent[index].sentence.ToCharArray())
-        {
+        foreach (char letter in currDialogEvent[index].sentence.ToCharArray()) {
             text += letter;
             // Line break detection here(not implemented)
             yield return new WaitForSeconds(charDelay);
@@ -151,23 +197,19 @@ public class Dialog : MonoBehaviour {
         StartCoroutine(coroutineSent);
     }
 
-    IEnumerator DisplayBySent()
-    {
+    IEnumerator DisplayBySent() {
         yield return new WaitForSeconds(sentenceDelay);
         NextSentence();
     }
 
-    void NextSentence()
-    {
-        if (index < currDialogEvent.Count - 1)
-        {
+    void NextSentence() {
+        if (index < currDialogEvent.Count - 1) {
             index++;
             text = "";
             coroutineChar = DisplayByChar();
             StartCoroutine(coroutineChar);
         }
-        else
-        {
+        else {
             dialogRunning = false;
             text = "";
             dialogPannel.gameObject.SetActive(false);
@@ -176,22 +218,19 @@ public class Dialog : MonoBehaviour {
         }
     }
 
-    public void CheckPlayerNearBy(bool nearby, int eventNumber)
-    {
+    public void CheckPlayerNearBy(bool nearby, int eventNumber) {
         if (eventNumber == currEvent)
             targetNearBy = nearby;
     }
 
-    public void SwitchDialogEvent(int eventNumber, Transform newFloatTextArea)
-    {
+    public void SwitchDialogEvent(int eventNumber, Transform newFloatTextArea) {
         if (coroutineChar != null)
             StopCoroutine(coroutineChar);
         if (coroutineChar != null)
             StopCoroutine(coroutineSent);
         floatTextArea = newFloatTextArea;
         dialogRunning = true;
-        if (eventNumber > MAX_DIALOG_EVENT)
-        {
+        if (eventNumber > MAX_DIALOG_EVENT) {
             Debug.Log("Need to increase MAX_DIALOG_EVENT value in Dialog.cs");
         }
         currDialogEvent = dialogEvents[eventNumber];
@@ -201,4 +240,6 @@ public class Dialog : MonoBehaviour {
         coroutineChar = DisplayByChar();
         StartCoroutine(coroutineChar);
     }
+    
+    #endregion
 }
