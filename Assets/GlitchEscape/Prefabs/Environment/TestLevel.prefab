@@ -425,6 +425,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 611469656938052446}
+  - component: {fileID: 6122422118938720407}
   m_Layer: 0
   m_Name: TestLevel
   m_TagString: Untagged
@@ -450,6 +451,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6122422118938720407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 611469656938052441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6dc271a4cdf169a4cb53c88b25a2d29f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  normalMaze: {fileID: 1182071409503030556}
+  glitchMaze: {fileID: 7536722051431577523}
+  _currentMaze: {fileID: 0}
+  mazeSwitchCooldown: 0.2
 --- !u!1 &611469657195435488
 GameObject:
   m_ObjectHideFlags: 0
