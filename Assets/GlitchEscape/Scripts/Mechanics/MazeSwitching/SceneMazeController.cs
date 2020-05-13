@@ -88,7 +88,6 @@ public class SceneMazeController : MonoBehaviour
         mazesInScene = null;
 
         // clear maze references, in case these objects get destroyed
-        Debug.Log("on disable was called");
         normalMaze = null;
         glitchMaze = null;
         player.OnKilled -= OnPlayerRespawn;
