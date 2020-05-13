@@ -12,12 +12,7 @@ public class SceneMazeController : MonoBehaviour
 
     private Player player;
 
-    private static SceneMazeController mazesInScene = null;
-
-    public static SceneMazeController MazesInScene
-    {
-        get {return mazesInScene; }
-    }
+    public static SceneMazeController instance { get; private set; } = null;
 
     [SerializeField]
     private Maze _currentMaze = null;
@@ -55,7 +50,7 @@ public class SceneMazeController : MonoBehaviour
     
     void Awake()
     {
-        mazesInScene = this;
+        instance = this;
 
         //get player in the scene, inject component doesnt seem to work?
         if (player == null)
@@ -73,7 +68,7 @@ public class SceneMazeController : MonoBehaviour
 
     void OnEnable()
     {
-        mazesInScene = this;
+        instance = this;
 
         // trigger maze updates, keeping the current maze active
         var maze = currentMaze;
@@ -84,7 +79,7 @@ public class SceneMazeController : MonoBehaviour
     
     void OnDisable()
     {
-        mazesInScene = null;
+        instance = null;
 
         // clear maze references, in case these objects get destroyed
         normalMaze = null;

@@ -35,25 +35,20 @@ public class PlayerMazeController : PlayerComponent {
     /// <returns></returns>
     public bool TriggerMazeSwitch() {
         Debug.Log("attempting to maze switch");
-        if (Time.time > lastMazeSwitchTime + mazeSwitchCooldown) {
+
+        var mazeController = SceneMazeController.instance;
+        if (mazeController != null && Time.time > lastMazeSwitchTime + mazeSwitchCooldown) {
             Debug.Log("maze switching...");
             lastMazeSwitchTime = Time.time;
-            CallMazeEvent();
-            SceneMazeController.MazesInScene.SwitchMazes();
+            if (mazeController.inNormalMaze) {
+                FireEvent(PlayerEvent.Type.MazeSwitchToGlitchMaze);
+            } else {
+                FireEvent(PlayerEvent.Type.MazeSwitchToNormalMaze);
+            }
+            mazeController.SwitchMazes();
+            SceneMazeController.instance.SwitchMazes();
             return true;
         }
         return false;
-    }
-
-    public void CallMazeEvent()
-    {
-        if (SceneMazeController.MazesInScene.inNormalMaze)
-        {
-            FireEvent(PlayerEvent.Type.MazeSwitchToGlitchMaze);
-        }
-        else
-        {
-            FireEvent(PlayerEvent.Type.MazeSwitchToNormalMaze);
-        }
     }
 }
