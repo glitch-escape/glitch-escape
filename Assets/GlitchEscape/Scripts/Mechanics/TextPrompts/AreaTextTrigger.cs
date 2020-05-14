@@ -14,7 +14,6 @@ public class AreaTextTrigger : MonoBehaviour, IActiveInteract
           text.text = message;
           text.gameObject.SetActive(false);
      }
-
      // non-interactive
      public void OnInteract(Player player) {}
 
