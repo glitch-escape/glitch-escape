@@ -17,6 +17,7 @@ public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
     public uint jumpCount = 0;
     private float jumpStartTime = 0f;
     public bool isJumping { get; private set; } = false;
+    private GameObject lastWallJumpedOffOf = null;
     #endregion
     
     public float elapsedJumpTime => isJumping ? Time.time - jumpStartTime : 0f;
@@ -28,6 +29,7 @@ public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
         jumpCount = 0;
         isJumping = false;
         dirtyRaycastInfo = true;
+        lastWallJumpedOffOf = null;
     }
 
     private enum JumpAbilityUseStatus {
@@ -44,7 +46,7 @@ public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
         get {
             if (!player.config.canJump) return JumpAbilityUseStatus.CannotJump;
             if (isPlayerGrounded) return JumpAbilityUseStatus.CanGroundJump;
-            if (player.config.canWallJump && isPlayerNearWall) return JumpAbilityUseStatus.CanWallJump;
+            if (player.config.canWallJump && isPlayerNearNewWall) return JumpAbilityUseStatus.CanWallJump;
             if (player.config.canAirJump && jumpCount < player.config.maxJumps) return JumpAbilityUseStatus.CanAirJump;
             return JumpAbilityUseStatus.CannotJump;
         }
@@ -72,6 +74,7 @@ public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
                 jumpCount = 1;
                 isJumping = true;
                 jumpStartTime = Time.time;
+                lastWallJumpedOffOf = null;
                 playerMovement.JumpToHeight(player.config.jumpHeight);
                 FireEvent(PlayerEvent.Type.FloorJump);
                 break;
@@ -79,12 +82,14 @@ public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
                 jumpCount += 1;
                 isJumping = true;
                 jumpStartTime = Time.time;
+                lastWallJumpedOffOf = null;
                 playerMovement.JumpToHeight(player.config.jumpHeight);
                 FireEvent(PlayerEvent.Type.AirJump);
                 break;
             case JumpAbilityUseStatus.CanWallJump:
                 jumpCount = 1;
                 isJumping = true;
+                lastWallJumpedOffOf = wallHitInfo.collider?.gameObject;
                 playerMovement.JumpToHeightWithWallJump(
                     player.config.jumpHeight, 
                     currentWallNormal,
@@ -118,6 +123,8 @@ public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
             return hitWall;
         }
     }
+    public bool isPlayerNearNewWall => isPlayerNearWall && lastWallJumpedOffOf != wallHitInfo.collider?.gameObject;
+    
 
     /// <summary>
     /// returns the hit wall normal iff wall raycast hit something, else Vector3.zero.
@@ -195,6 +202,8 @@ public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
         GUILayout.Label("time since jump started: " + elapsedJumpTime);
         GUILayout.Label("is on ground? " + isPlayerGrounded);
         GUILayout.Label("is near wall? " + isPlayerNearWall);
+        GUILayout.Label("is near new wall? " + isPlayerNearNewWall);
+        GUILayout.Label("last wall jumped off of: " + lastWallJumpedOffOf);
         GUILayout.Label("wall normal: " + currentWallNormal);
         GUILayout.Label("current gravity: " + (GetComponent<PlayerGravity>()?.gravity ?? 0f));
     }

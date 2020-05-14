@@ -41,8 +41,9 @@ public class PlayerAudioController : MonoBehaviourWithConfig<PlayerAudioConfig> 
             // shoot
             case PlayerEvent.Type.Shoot: PlaySound(config.shootSounds); break;
 
+            case PlayerEvent.Type.FragmentPickup: PlaySound(config.fragmentInteraction); break;
             // TODO: add audio clips for other player events
-            
+
             default: break;
                 // throw new ArgumentOutOfRangeException(nameof(eventType), eventType, null);
         }

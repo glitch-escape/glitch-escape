@@ -1,0 +1,23 @@
+title: HDB-Act1
+tags: 
+colorID: 0
+position: 533,167
+---
+<<if $curMsg eq null>> 
+    <<set $curMsg to 0>> 
+<<endif>>
+
+<<if $curMsg % 4 eq 0>> 
+    This place is the anchor point of this world. 
+    It’s tethered to all sorts of different parts of this realm through the portals here.
+<<elseif $curMsg % 4 eq 1>> 
+    I do not remember when those people got here. It is strange.
+<<elseif $curMsg % 4 eq 2>> 
+    That orb in your possession… I can see it resonating around you.
+<<else>>
+    This realm is deeply connected with you. 
+    The more you explore this realm, you might learn new things about yourself.
+<<endif>>
+
+<<set $curMsg to $curMsg + 1>>
+===

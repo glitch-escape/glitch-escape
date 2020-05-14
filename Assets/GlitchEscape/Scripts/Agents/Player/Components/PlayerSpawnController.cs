@@ -2,11 +2,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class PlayerSpawnController : PlayerComponent {
     private Vector3 respawnPosition;
     private Quaternion respawnRotation;
-    
+    private Vector3 cameraRespawnPosition;
+    private Quaternion cameraRespawnRotation;
+    private Camera sceneCam;
+
     private void OnEnable() {
         player.OnKilled += Respawn;
     }
@@ -17,6 +21,8 @@ public class PlayerSpawnController : PlayerComponent {
         Debug.Log("Set spawn position: "+position);
         respawnPosition = position;
         respawnRotation = rotation;
+        cameraRespawnPosition = sceneCam.transform.position;
+        cameraRespawnRotation = sceneCam.transform.rotation;
     }
     public void SetSpawnPosition(MazeSwitch mazeSwitch) {
         // TODO: FIX MAZE ORIENTATION!!!
@@ -38,11 +44,14 @@ public class PlayerSpawnController : PlayerComponent {
             savePoint.transform.position + Vector3.up * player.config.spawnHeight, 
             savePoint.transform.rotation);   
     }
-    private void Respawn() {
+    public void Respawn() {
+        Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.VirtualCameraGameObject.SetActive(false);
         player.transform.position = respawnPosition;
         player.transform.rotation = respawnRotation;
+        Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.VirtualCameraGameObject.SetActive(true);
     }
     private void Awake() {
+        sceneCam = Camera.main;
         SetSpawnPosition(player.transform.position, player.transform.rotation);
     }
 }

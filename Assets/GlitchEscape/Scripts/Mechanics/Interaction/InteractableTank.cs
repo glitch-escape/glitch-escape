@@ -12,12 +12,12 @@ public class InteractableTank : MonoBehaviour, IActiveInteract
 
     private FloatingTextController floatingText;
     private InteractablePolysphere interactablePolysphere;
-    private InteractablePortal interactablePortal;
+    private Portal interactablePortal;
     private const int MAX_TANK = 6;
 
     void Awake()
     {
-        interactablePortal = InteractablePortal.instance;
+        // interactablePortal = InteractablePortal.instance;
 
         // initialize and error check
         floatingText = FloatingTextController.instance;
