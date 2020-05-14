@@ -504,14 +504,6 @@ public class @Input : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
-                },
-                {
-                    ""name"": ""ClosePauseMenu"",
-                    ""type"": ""Button"",
-                    ""id"": ""6b4906a8-4168-47f0-9abf-3168040e4646"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -950,30 +942,8 @@ public class @Input : IInputActionCollection, IDisposable
                     ""path"": ""<XInputController>/start"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""PauseMenu"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""7bb62518-6fa6-4f00-aeb9-b03e7a310b00"",
-                    ""path"": """",
-                    ""interactions"": """",
-                    ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ClosePauseMenu"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""cfa427f6-70b2-47a0-a9d9-68e015076674"",
-                    ""path"": ""<XInputController>/buttonEast"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""ClosePauseMenu"",
+                    ""action"": ""PauseMenu"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1067,7 +1037,6 @@ public class @Input : IInputActionCollection, IDisposable
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
         m_UI_TrackedDeviceSelect = m_UI.FindAction("TrackedDeviceSelect", throwIfNotFound: true);
         m_UI_PauseMenu = m_UI.FindAction("PauseMenu", throwIfNotFound: true);
-        m_UI_ClosePauseMenu = m_UI.FindAction("ClosePauseMenu", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1218,7 +1187,6 @@ public class @Input : IInputActionCollection, IDisposable
     private readonly InputAction m_UI_TrackedDeviceOrientation;
     private readonly InputAction m_UI_TrackedDeviceSelect;
     private readonly InputAction m_UI_PauseMenu;
-    private readonly InputAction m_UI_ClosePauseMenu;
     public struct UIActions
     {
         private @Input m_Wrapper;
@@ -1235,7 +1203,6 @@ public class @Input : IInputActionCollection, IDisposable
         public InputAction @TrackedDeviceOrientation => m_Wrapper.m_UI_TrackedDeviceOrientation;
         public InputAction @TrackedDeviceSelect => m_Wrapper.m_UI_TrackedDeviceSelect;
         public InputAction @PauseMenu => m_Wrapper.m_UI_PauseMenu;
-        public InputAction @ClosePauseMenu => m_Wrapper.m_UI_ClosePauseMenu;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1281,9 +1248,6 @@ public class @Input : IInputActionCollection, IDisposable
                 @PauseMenu.started -= m_Wrapper.m_UIActionsCallbackInterface.OnPauseMenu;
                 @PauseMenu.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnPauseMenu;
                 @PauseMenu.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnPauseMenu;
-                @ClosePauseMenu.started -= m_Wrapper.m_UIActionsCallbackInterface.OnClosePauseMenu;
-                @ClosePauseMenu.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnClosePauseMenu;
-                @ClosePauseMenu.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnClosePauseMenu;
             }
             m_Wrapper.m_UIActionsCallbackInterface = instance;
             if (instance != null)
@@ -1324,9 +1288,6 @@ public class @Input : IInputActionCollection, IDisposable
                 @PauseMenu.started += instance.OnPauseMenu;
                 @PauseMenu.performed += instance.OnPauseMenu;
                 @PauseMenu.canceled += instance.OnPauseMenu;
-                @ClosePauseMenu.started += instance.OnClosePauseMenu;
-                @ClosePauseMenu.performed += instance.OnClosePauseMenu;
-                @ClosePauseMenu.canceled += instance.OnClosePauseMenu;
             }
         }
     }
@@ -1401,6 +1362,5 @@ public class @Input : IInputActionCollection, IDisposable
         void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
         void OnTrackedDeviceSelect(InputAction.CallbackContext context);
         void OnPauseMenu(InputAction.CallbackContext context);
-        void OnClosePauseMenu(InputAction.CallbackContext context);
     }
 }

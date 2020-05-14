@@ -41,6 +41,7 @@ public class MazeSwitch : AInteractiveObject {
         if (focused) {
             SetMazeSwitchActive(true);
             PlayerController.instance?.player.maze.SetMazeSwitch(this);
+            PlayerController.instance?.player.spawn.SetSpawnPosition(this);
         } else {
             SetMazeSwitchActive(false);
             PlayerController.instance?.player.maze.ClearMazeSwitch(this);

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using GlitchEscape.Scripts.DebugUI;
 using UnityEngine;
 using UnityEngine.UI;
 using Debug = UnityEngine.Debug;
@@ -11,7 +12,7 @@ using Debug = UnityEngine.Debug;
 // TODO: move actual maze switch component of this to a MazeController script w/ [InjectComponent] child refs
 // and rename this (which should have a much smaller impl) to PlayerMazeSwitchAbility, or something
 // (or just roll into player interaction ability...)
-public class PlayerMazeController : PlayerComponent {
+public class PlayerMazeController : PlayerComponent, IPlayerDebug {
     private float lastMazeSwitchTime = -10f;
     [Range(0f, 1f)] public float mazeSwitchCooldown = 0.2f;
 
@@ -20,14 +21,13 @@ public class PlayerMazeController : PlayerComponent {
     /// Set by SetMazeSwitch() and ClearMazeSwitch(); also cleared in OnDisable() and OnLevelTransition()
     /// </summary>
     private MazeSwitch activeMazeSwitch = null;
-    private bool onMazeSwitch = false;
+    private bool onMazeSwitch => activeMazeSwitch != null;
 
     /// <summary>
     /// Called by MazeSwitch.OnFocusChanged(true)
     /// </summary>
     public void SetMazeSwitch(MazeSwitch mazeSwitch) {
         activeMazeSwitch = mazeSwitch;
-        onMazeSwitch = mazeSwitch == null;
     }
     
     /// <summary>
@@ -36,7 +36,6 @@ public class PlayerMazeController : PlayerComponent {
     public void ClearMazeSwitch(MazeSwitch mazeSwitch = null) {
         if (mazeSwitch == null || activeMazeSwitch == mazeSwitch) {
             activeMazeSwitch = null;
-            onMazeSwitch = false;
         }
     }
     
@@ -81,4 +80,12 @@ public class PlayerMazeController : PlayerComponent {
             player.TakeDamage(10f * Time.deltaTime);
         }
     }
+
+    public void DrawDebugUI() {
+        GUILayout.Label("active maze switch: "+activeMazeSwitch);
+        GUILayout.Label("on maze switch? "+onMazeSwitch);
+        GUILayout.Label("mazes present? "+(SceneMazeController.instance != null));
+        GUILayout.Label("in glitch maze? "+(SceneMazeController.instance?.inGlitchMaze ?? false));
+    }
+    public string debugName => this.GetType().Name;
 }
