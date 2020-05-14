@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI;
 
 [RequireComponent(typeof(Renderer))]
 public class PlayerStatsView : MonoBehaviour {
@@ -82,7 +81,6 @@ public class PlayerStatsView : MonoBehaviour {
     private AttribBarSetter staminaSetter = new AttribBarSetter(0.079f, 0.592f);
     //private AttribBarSetter shardSetter = new AttribBarSetter(0.079f, 0.592f);
 
-    public Image staminaWheel;
     private void OnEnable() {
         var renderer = Enforcements.GetComponent<Renderer>(this);
         healthSetter.SetMaterial(renderer.materials[HEALTH_BAR_MATEIRAL_INDEX]);
@@ -105,7 +103,6 @@ public class PlayerStatsView : MonoBehaviour {
         //float shard = (float)player.shardcomp.value / (float)player.shardcomp.maximum;
         healthSetter.Update(health);
         staminaSetter.Update(stamina);
-        staminaWheel.fillAmount = stamina;
         //shardSetter.Update(shard);
         staminaFlash.Update();
     }
