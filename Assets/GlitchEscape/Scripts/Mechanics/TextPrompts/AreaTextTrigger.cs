@@ -8,7 +8,7 @@ public class AreaTextTrigger : MonoBehaviour, IActiveInteract
 {
      private TMP_Text text;
      public string message;
-     public TMP_Text UIText;
+     private TMP_Text UIText;
      private void Awake()
      {
           text = text ?? Enforcements.GetComponentInChildren<TMP_Text>(this);
