@@ -158,6 +158,7 @@ public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
             Vector3.down,
             out groundHitInfo,
             player.config.playerRayDistanceToGround);
+        Debug.DrawRay(player.transform.position, transform.TransformDirection(Vector3.down) * groundHitInfo.distance, Color.green, 1.0f, false);
         hitWall = Physics.Raycast(
             player.transform.position, 
             transform.forward, 
@@ -174,9 +175,10 @@ public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
     void FixedUpdate() {
         dirtyRaycastInfo = true;
         UpdateRaycastInfo();
-        
+
         // check if we're currently grounded
         // if we're not grounded and were previously jumping, update isJumping + fire an end jumping event
+        // && playerMovement.rigidbody.velocity(in ther vertical direction) == 0 */ potentially add this to fix jump reset right after jumping
         if (isPlayerGrounded && isJumping) {
             isJumping = false;
             jumpCount = 0;
@@ -201,6 +203,7 @@ public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
         GUILayout.Label("current velocity: " + currentVelocity);
         GUILayout.Label("time since jump started: " + elapsedJumpTime);
         GUILayout.Label("is on ground? " + isPlayerGrounded);
+        GUILayout.Label("ground hit info " + groundHitInfo);
         GUILayout.Label("is near wall? " + isPlayerNearWall);
         GUILayout.Label("is near new wall? " + isPlayerNearNewWall);
         GUILayout.Label("last wall jumped off of: " + lastWallJumpedOffOf);
