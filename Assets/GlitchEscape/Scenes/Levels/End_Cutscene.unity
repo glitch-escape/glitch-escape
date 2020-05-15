@@ -29968,7 +29968,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 896967559}
-  m_RootOrder: 3
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!108 &875731472
 Light:
@@ -30636,7 +30636,7 @@ PrefabInstance:
         type: 3}
       propertyPath: floatTextArea
       value: 
-      objectReference: {fileID: 896967564}
+      objectReference: {fileID: 0}
     - target: {fileID: 5574992104761488513, guid: 36155bf80aeabc543baa34d6141d19ad,
         type: 3}
       propertyPath: levelToLoad
@@ -30673,30 +30673,6 @@ PrefabInstance:
 --- !u!4 &896967559 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4238522357865078272, guid: 36155bf80aeabc543baa34d6141d19ad,
-    type: 3}
-  m_PrefabInstance: {fileID: 896967558}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &896967561 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2137029901, guid: 36155bf80aeabc543baa34d6141d19ad,
-    type: 3}
-  m_PrefabInstance: {fileID: 896967558}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &896967563
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 896967561}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a849abc455240f45b15ebbd3cbe95e1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &896967564 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2344534524734679324, guid: 36155bf80aeabc543baa34d6141d19ad,
     type: 3}
   m_PrefabInstance: {fileID: 896967558}
   m_PrefabAsset: {fileID: 0}
@@ -82272,7 +82248,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _config: {fileID: 11400000, guid: 69a57348cccd24ae499937d16ea85275, type: 2}
-  test: 1
 --- !u!4 &2302470682914261903
 Transform:
   m_ObjectHideFlags: 0
@@ -93626,11 +93601,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee577f95e950a5846b397813c877f54d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  disableOnStart: 0
-  floatTextArea: {fileID: 2344534524558990059}
+  interactTrigger: 0
+  highlightTrigger: 0
+  activePlayer: {fileID: 0}
+  showDebugGUI: 0
   interactMessage: Level 3
-  portalCutscene: {fileID: 0}
   levelToLoad: 6
+  focusedPortalSpeed:
+    minimum: 1
+    maximum: 3
+  collider: {fileID: 0}
+  renderer: {fileID: 0}
 --- !u!114 &5574992104828349732
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -93643,11 +93624,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee577f95e950a5846b397813c877f54d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  disableOnStart: 0
-  floatTextArea: {fileID: 2344534523997319353}
+  interactTrigger: 0
+  highlightTrigger: 0
+  activePlayer: {fileID: 0}
+  showDebugGUI: 0
   interactMessage: Go to exploration level
-  portalCutscene: {fileID: 0}
   levelToLoad: 3
+  focusedPortalSpeed:
+    minimum: 1
+    maximum: 3
+  collider: {fileID: 0}
+  renderer: {fileID: 0}
 --- !u!114 &5574992105811174891
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -93660,11 +93647,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee577f95e950a5846b397813c877f54d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  disableOnStart: 0
-  floatTextArea: {fileID: 2344534523684993142}
+  interactTrigger: 0
+  highlightTrigger: 0
+  activePlayer: {fileID: 0}
+  showDebugGUI: 0
   interactMessage: Go to platforming level
-  portalCutscene: {fileID: 0}
   levelToLoad: 4
+  focusedPortalSpeed:
+    minimum: 1
+    maximum: 3
+  collider: {fileID: 0}
+  renderer: {fileID: 0}
 --- !u!1 &5579557283784827902
 GameObject:
   m_ObjectHideFlags: 0
@@ -99361,6 +99354,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1e118f3463161d44bbdeb280107209a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  floatText: {fileID: 0}
 --- !u!4 &7510928870329365198
 Transform:
   m_ObjectHideFlags: 0
