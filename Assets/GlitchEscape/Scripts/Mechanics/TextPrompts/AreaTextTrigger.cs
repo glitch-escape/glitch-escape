@@ -6,19 +6,18 @@ using UnityEngine;
 
 public class AreaTextTrigger : MonoBehaviour, IActiveInteract
 {
-     public TMP_Text text;
+     private TMP_Text text;
      public string message;
      private void Awake() {
+          text = text ?? Enforcements.GetComponentInChildren<TMP_Text>(this);
      }
      private void OnEnable() {
-          text.text = message;
           text.gameObject.SetActive(false);
      }
      // non-interactive
      public void OnInteract(Player player) {}
 
      public void OnPlayerEnterInteractionRadius(Player player) {
-          text.text = message;
           text.gameObject.SetActive(true);
      }
      public void OnPlayerExitInteractionRadius(Player player) {
