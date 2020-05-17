@@ -123,7 +123,7 @@ public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
             return hitWall;
         }
     }
-    public bool isPlayerNearNewWall => isPlayerNearWall && lastWallJumpedOffOf != wallHitInfo.collider?.gameObject;
+    public bool isPlayerNearNewWall => isPlayerNearWall;// && lastWallJumpedOffOf != wallHitInfo.collider?.gameObject;
     
 
     /// <summary>
