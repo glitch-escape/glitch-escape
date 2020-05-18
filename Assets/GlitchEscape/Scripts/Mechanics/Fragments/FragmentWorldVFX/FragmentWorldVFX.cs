@@ -9,8 +9,6 @@ using Random = UnityEngine.Random;
 [ExecuteInEditMode]
 public class FragmentWorldVFX : MonoBehaviour {
     public bool simulateInEditMode = false;
-    
-    [SerializeField]
     private FragmentWorldVFXParticle[] particles;
     public FragmentWorldVFXParticle particle;
     public uint numParticles;
@@ -114,6 +112,9 @@ public class FragmentWorldVFX : MonoBehaviour {
         startTime = Time.time;
         if (particles == null) {
             particles = GetComponentsInChildren<FragmentWorldVFXParticle>();
+        }
+        if (particles.Length != numParticles) {
+            Respawn();
         }
     }
     public void Update() {

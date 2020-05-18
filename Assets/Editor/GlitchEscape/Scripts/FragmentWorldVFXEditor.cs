@@ -41,7 +41,7 @@ public class FragmentWorldVFXEditor : Editor {
     }
 
     public void OnSceneGUI() {
-        if (!EditorApplication.isPlaying) {
+        if (!EditorApplication.isPlaying && ((FragmentWorldVFX)target).simulateInEditMode) {
             UnityEditor.EditorApplication.QueuePlayerLoopUpdate();
             UnityEditor.SceneView.RepaintAll();
         }
