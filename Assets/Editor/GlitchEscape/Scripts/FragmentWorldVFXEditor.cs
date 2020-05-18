@@ -12,6 +12,11 @@ public class FragmentWorldVFXEditor : Editor {
         var height = particleSystem.spawnHeight;
         var power = particleSystem.spawnHeightPowerBias;
         var volume = particleSystem.spawnVolume;
+        var yOffset = particleSystem.yOffset;
+        var yOffsetRange = particleSystem.yOffsetRange;
+        var timeRange = particleSystem.timeOffsetRange;
+        var speed = particleSystem.speed;
+        var speedRange = particleSystem.speedRange;
 
         if (GUILayout.Button("Spawn particles")) {
             particleSystem.Respawn();
@@ -23,7 +28,12 @@ public class FragmentWorldVFXEditor : Editor {
             radius != particleSystem.numParticles ||
             height != particleSystem.spawnHeight ||
             power != particleSystem.spawnHeightPowerBias ||
-            volume != particleSystem.spawnVolume
+            volume != particleSystem.spawnVolume ||
+            yOffset != particleSystem.yOffset ||
+            yOffsetRange != particleSystem.yOffsetRange ||
+            timeRange != particleSystem.timeOffsetRange ||
+            speed != particleSystem.speed ||
+            speedRange != particleSystem.speedRange
         )) {
             particleSystem.RecalculateSpawnPositions();
         }
