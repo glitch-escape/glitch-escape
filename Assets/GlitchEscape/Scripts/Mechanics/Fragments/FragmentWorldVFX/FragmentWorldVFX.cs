@@ -1,16 +1,21 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 
 [ExecuteInEditMode]
 public class FragmentWorldVFX : MonoBehaviour {
+    public bool simulateInEditMode = false;
+    
+    [SerializeField]
     private FragmentWorldVFXParticle[] particles;
     public FragmentWorldVFXParticle particle;
     public uint numParticles;
 
+    [SerializeField]
     public Mesh[] meshes;
     
     public float spawnRadius = 0.5f;
@@ -33,11 +38,11 @@ public class FragmentWorldVFX : MonoBehaviour {
     public float speedRange = 0f;
     
     public bool initialized => particles != null;
-
+    
     Vector3 GetRandomPosition() {
         switch (spawnVolume) {
             case SpawnVolume.Sphere:
-                return Random.insideUnitSphere * spawnRadius + transform.position;
+                return Random.insideUnitSphere * spawnRadius;
             case SpawnVolume.Ellipsoid:
                 var pos = Random.insideUnitSphere;
                 pos.y *= spawnHeight * 0.5f;
@@ -49,7 +54,7 @@ public class FragmentWorldVFX : MonoBehaviour {
                 var sign = Random.value < 0.5f ? -1f : 1f;
                 var y = sign * t * spawnHeight * 0.5f;
                 var xz = Random.insideUnitCircle * spawnRadius * (1f - t);
-                return new Vector3(xz.x, y, xz.y) + transform.position;
+                return new Vector3(xz.x, y, xz.y);
             default:
                 throw new ArgumentOutOfRangeException();
         }
@@ -59,8 +64,8 @@ public class FragmentWorldVFX : MonoBehaviour {
     }
 
     void Init(FragmentWorldVFXParticle particle) {
-        if (meshes?.Length > 0) {
-            var i = (int)Mathf.Floor(Random.value * meshes.Length - 1e-6f);
+        if (meshes != null && meshes.Length > 0) {
+            var i = (int)Mathf.Clamp(Mathf.Floor(Random.value * meshes.Length - 1e-6f), 0f, meshes.Length - 1);
             particle.GetComponent<MeshFilter>().mesh = meshes[i];
         }
         particle.transform.localScale = this.particle.transform.localScale * ((1f + Random.Range(-1f,1f) * scaleVariation) * scale);
@@ -71,6 +76,7 @@ public class FragmentWorldVFX : MonoBehaviour {
         );
     }
     
+    [SerializeField]
     private Random.State spawnSeed;
     public void Respawn() {
         startTime = Time.time;
@@ -78,7 +84,7 @@ public class FragmentWorldVFX : MonoBehaviour {
         foreach (var particle in particles) {
             DestroyImmediate(particle.gameObject);
         }
-        spawnSeed = Random.state;
+        // spawnSeed = Random.state;
         particles = new FragmentWorldVFXParticle[numParticles];
         for (var i = 0; i < numParticles; ++i) {
             particles[i] = Instantiate(this.particle, 
@@ -89,7 +95,6 @@ public class FragmentWorldVFX : MonoBehaviour {
         }
     }
     public void RecalculateSpawnPositions() {
-        startTime = Time.time;
         var seed = Random.state;
         Random.state = spawnSeed;
         if (numParticles != (particles?.Length ?? 0)) {
@@ -108,11 +113,10 @@ public class FragmentWorldVFX : MonoBehaviour {
     void Start() {
         startTime = Time.time;
         if (particles == null) {
-            Respawn();
+            particles = GetComponentsInChildren<FragmentWorldVFXParticle>();
         }
     }
-    void Update() {
-        Debug.Log("update");
+    public void Update() {
         foreach (var particle in particles) {
             particle.Animate(Time.time - startTime);
         }

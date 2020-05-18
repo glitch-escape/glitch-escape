@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -17,7 +18,7 @@ public class FragmentWorldVFXEditor : Editor {
         var timeRange = particleSystem.timeOffsetRange;
         var speed = particleSystem.speed;
         var speedRange = particleSystem.speedRange;
-
+        
         if (GUILayout.Button("Spawn particles")) {
             particleSystem.Respawn();
         }
@@ -36,6 +37,13 @@ public class FragmentWorldVFXEditor : Editor {
             speedRange != particleSystem.speedRange
         )) {
             particleSystem.RecalculateSpawnPositions();
+        }
+    }
+
+    public void OnSceneGUI() {
+        if (!EditorApplication.isPlaying) {
+            UnityEditor.EditorApplication.QueuePlayerLoopUpdate();
+            UnityEditor.SceneView.RepaintAll();
         }
     }
 }
