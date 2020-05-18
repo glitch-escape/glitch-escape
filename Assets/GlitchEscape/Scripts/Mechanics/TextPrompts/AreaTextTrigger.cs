@@ -7,7 +7,6 @@ using UnityEngine;
 public class AreaTextTrigger : MonoBehaviour, IActiveInteract
 {
      private TMP_Text text;
-     public string message;
      private TMP_Text UIText;
      private void Awake()
      {
