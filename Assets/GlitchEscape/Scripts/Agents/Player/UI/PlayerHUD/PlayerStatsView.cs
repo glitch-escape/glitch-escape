@@ -83,6 +83,7 @@ public class PlayerStatsView : MonoBehaviour {
     //private AttribBarSetter shardSetter = new AttribBarSetter(0.079f, 0.592f);
 
     public Image staminaWheel;
+    public List<Image> healthSplashes;
     private void OnEnable() {
         var renderer = Enforcements.GetComponent<Renderer>(this);
         healthSetter.SetMaterial(renderer.materials[HEALTH_BAR_MATEIRAL_INDEX]);
@@ -90,6 +91,9 @@ public class PlayerStatsView : MonoBehaviour {
         //shardSetter.SetMaterial(renderer.materials[SHARD_BAR_MATERIAL_INDEX]);
         staminaFlash.SetMaterial(renderer.materials[STAMINA_BAR_MATERIAL_INDEX]);
         player.OnFailedToUseAbilityDueToLowStamina += FlashLowStamina;
+        foreach (Image i in healthSplashes) {
+            i.gameObject.SetActive(false);
+        }
     }
     private void OnDisable() {
         healthSetter.SetMaterial(null);
@@ -101,6 +105,27 @@ public class PlayerStatsView : MonoBehaviour {
     
     void Update() {
         float health = player.health.value / player.health.maximum;
+        if(health < .45 && health > .30)
+        {
+            healthSplashes[0].gameObject.SetActive(true);
+            healthSplashes[1].gameObject.SetActive(false);
+            healthSplashes[2].gameObject.SetActive(false);
+        }
+        else if (health < .30 && health > .15)
+        {
+            healthSplashes[1].gameObject.SetActive(true);
+            healthSplashes[2].gameObject.SetActive(false);
+        }
+        else if (health < .15)
+        {
+            healthSplashes[2].gameObject.SetActive(true);
+        }
+        else
+        {
+            healthSplashes[0].gameObject.SetActive(false);
+            healthSplashes[1].gameObject.SetActive(false);
+            healthSplashes[2].gameObject.SetActive(false);
+        }
         float stamina = player.stamina.value / player.stamina.maximum;
         //float shard = (float)player.shardcomp.value / (float)player.shardcomp.maximum;
         healthSetter.Update(health);
