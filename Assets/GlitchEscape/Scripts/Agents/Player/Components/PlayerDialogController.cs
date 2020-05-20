@@ -41,17 +41,6 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
         }
     }
 
-    /// <summary>
-    /// Moves dialog onto next sentence. Function is for cutscene usage
-    /// </summary>
-    public void ContinueDialog() {
-        FindObjectOfType<DialogueUI>().MarkLineComplete();
-    }
-    
-    public void WaitToHideText(GameObject text) {
-        StartCoroutine(WaitAndHide(text));
-    }
-
     private void WaitForNextLine() {
         coroutineSent = DisplayNext();
         StartCoroutine(coroutineSent);
@@ -60,10 +49,28 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
     IEnumerator DisplayNext() {
         yield return new WaitForSeconds(config.sentenceDelay);
         FindObjectOfType<DialogueUI>().MarkLineComplete();
+        print(dr);
     }
 
      IEnumerator WaitAndHide(GameObject text) {
         yield return new WaitForSeconds(config.sentenceDelay);
         text.SetActive(false);
     }
+
+    #region Public Functions for Dialog Runner to call
+    /// <summary>
+    /// Moves dialog onto next sentence. Function is for cutscene usage
+    /// </summary>
+    public void ContinueDialog() {
+        FindObjectOfType<DialogueUI>().MarkLineComplete();
+    }
+
+    public void WaitToHideText(GameObject text) {
+        StartCoroutine(WaitAndHide(text));
+    }
+
+    public void SetIcon(Sprite display) {
+       // print(dr.text);
+    }
+    #endregion
 }
