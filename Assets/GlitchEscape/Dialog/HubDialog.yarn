@@ -8,15 +8,15 @@ position: 136,108
 <<endif>>
 
 <<if $curMsg % 4 eq 0>> 
-    This place is the anchor point of this world.  #line:01554e0
-    It’s tethered to all sorts of different parts of this realm through the portals here. #line:0bb048e
+    HDB:This place is the anchor point of this world.  #line:01554e0
+    HDB:It’s tethered to all sorts of different parts of this realm through the portals here. #line:0bb048e
 <<elseif $curMsg % 4 eq 1>> 
-    I do not remember when those people got here. It is strange. #line:0105841
+    HDB:I do not remember when those people got here. It is strange. #line:0105841
 <<elseif $curMsg % 4 eq 2>> 
-    That orb in your possession… I can see it resonating around you. #line:0cb0f5c
+    HDB:That orb in your possession… I can see it resonating around you. #line:0cb0f5c
 <<else>>
-    This realm is deeply connected with you.  #line:04a8ef3
-    The more you explore this realm, you might learn new things about yourself. #line:0a638d5
+    HDB:This realm is deeply connected with you.  #line:04a8ef3
+    HDB:The more you explore this realm, you might learn new things about yourself. #line:0a638d5
 <<endif>>
 
 <<set $curMsg to $curMsg + 1>>
@@ -31,20 +31,20 @@ position: 345,108
 <<endif>>
 
 <<if $curMsg % 5 eq 0>> 
-    I can’t recall how I got trapped inside those things… #line:0e57892
-    But someone had to put me into that thing right? #line:012d0dd
+    Hostage:I can’t recall how I got trapped inside those things… #line:0e57892
+    Hostage:But someone had to put me into that thing right? #line:012d0dd
 <<elseif $curMsg % 5 eq 1>> 
-    Thank you again for freeing me. #line:0d6cfae
-    I would help you, but I can’t go outside this area without glitching out… #line:0af6847
+    Hostage:Thank you again for freeing me. #line:0d6cfae
+    Hostage:I would help you, but I can’t go outside this area without glitching out… #line:0af6847
     Good luck. #line:073992b
 <<elseif $curMsg % 5 eq 2>> 
-    Make sure you hold onto that orb. #line:01060bb
-    I hope it helps you as much as it helped me escape that thing. #line:061dd38
+    Hostage:Make sure you hold onto that orb. #line:01060bb
+    Hostage:I hope it helps you as much as it helped me escape that thing. #line:061dd38
 <<elseif $curMsg % 5 eq 3>>
-    There are other versions of us trapped here… #line:0b70f4e
-    I hope we can free them soon… #line:0c4ceb4
+    Hostage:There are other versions of us trapped here… #line:0b70f4e
+    Hostage:I hope we can free them soon… #line:0c4ceb4
 <<else>>
-    The more versions of us we free, the more information we can hopefully get. #line:0d7edcf
+    Hostage:The more versions of us we free, the more information we can hopefully get. #line:0d7edcf
 <<endif>>
 
 <<set $curMsg to $curMsg + 1>>
@@ -59,15 +59,15 @@ position: 554,108
 <<endif>>
 
 <<if $curMsg % 5 eq 0>> 
-    That... version of you... has deep... knowledge of this... realm #line:058ee3a
+    HDB:That... version of you... has deep... knowledge of this... realm #line:058ee3a
 <<elseif $curMsg % 5 eq 1>> 
-    Please... be careful of… other beings like me... #line:0c3bee3
+    HDB:Please... be careful of… other beings like me... #line:0c3bee3
 <<elseif $curMsg % 5 eq 2>> 
-    You need... to chase... after them... #line:0a82705
+    HDB:You need... to chase... after them... #line:0a82705
 <<elseif $curMsg % 5 eq 3>>
-    ... #line:01f8df6
+    HDB:... #line:01f8df6
 <<else>>
-    You... don’t have... much time... #line:081c167
+    HDB:You... don’t have... much time... #line:081c167
 <<endif>>
 
 <<set $curMsg to $curMsg + 1>>
@@ -77,21 +77,21 @@ tags:
 colorID: 0
 position: 875,105
 ---
-So you were the one freeing them.  #line:0061a43
-Do you realize what you’re doing right now?  #line:0545308
-I’m helping them right?  #line:024c194
-We all want to go home. Don’t you want to?  #line:060ffe6
-...No. I want to stay here.   #line:0ce6d22
-This place. This realm. It’s my salvation!   #line:0ee79d1
-And if even one other version of me wants to go back to our reality, then I need to stop them.  #line:006ca08
-When I freed them, they taught me something about myself.    #line:00b371b
-I feel like I’m starting to know myself better because of them, and I know I can learn something from you too!    #line:0906638
-Let’s head back together!   #line:0a6ca55
-Haha...   #line:0d0cd88
-How do you expect to get back…    #line:0fc0445
-If you’re all imprisoned in this realm!    #line:0e3285c
-I’m... I’m okay...   #line:069ad47
-...   #line:0edf446
-To think all three orbs can protect you from my power...   #line:01883ce
-I guess I’ll have to take you by force!   #line:0f66918
+Antagonist:So you were the one freeing them.  #line:0061a43
+Antagonist:Do you realize what you’re doing right now?  #line:0545308
+Protag:I’m helping them right?  #line:024c194
+Protag:We all want to go home. Don’t you want to?  #line:060ffe6
+Antagonist:...No. I want to stay here.   #line:0ce6d22
+Antagonist:This place. This realm. It’s my salvation!   #line:0ee79d1
+Antagonist:And if even one other version of me wants to go back to our reality, then I need to stop them.  #line:006ca08
+Protag:When I freed them, they taught me something about myself.    #line:00b371b
+Protag:I feel like I’m starting to know myself better because of them, and I know I can learn something from you too!    #line:0906638
+Protag:Let’s head back together!   #line:0a6ca55
+Antagonist:Haha...   #line:0d0cd88
+Antagonist:How do you expect to get back…    #line:0fc0445
+Antagonist:If you’re all imprisoned in this realm!    #line:0e3285c
+Protag:I’m... I’m okay...   #line:069ad47
+Antagonist:...   #line:0edf446
+Antagonist:To think all three orbs can protect you from my power...   #line:01883ce
+Antagonist:I guess I’ll have to take you by force!   #line:0f66918
 ===

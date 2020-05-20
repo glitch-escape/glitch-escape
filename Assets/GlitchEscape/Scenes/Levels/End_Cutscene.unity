@@ -83246,23 +83246,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04317fce65da54f4997a5c4465b4e93c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  curCharacter: 
   dialogueContainer: {fileID: 2734313069190094980}
   textSpeed: 0.025
   optionButtons: []
   onDialogueStart:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls: []
@@ -83297,6 +83287,17 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 2296462463657620839}
+        m_MethodName: SetIcon
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1887709251}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Image, UnityEngine.UI
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -83364,6 +83365,7 @@ MonoBehaviour:
   onCommand:
     m_PersistentCalls:
       m_Calls: []
+  hasNewCharacter: 0
 --- !u!4 &2582026858663590963
 Transform:
   m_ObjectHideFlags: 0

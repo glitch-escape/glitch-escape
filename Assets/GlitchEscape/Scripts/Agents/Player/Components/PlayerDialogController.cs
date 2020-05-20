@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Yarn.Unity;
+using UnityEngine.UI;
 
 public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
 {
@@ -12,6 +13,10 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
     // so I'm not sure if InjectComponent works
     private DialogueRunner dr;
     private DialogueUI dUI;
+
+    // Variables for icon
+    private string curCharacter;
+    private Image icon;
 
     
     private void Start() {
@@ -29,6 +34,16 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
         if (Input.GetKeyDown(KeyCode.L)) {
             BeginDialog("HDB-Act1");
         } 
+
+        if(icon && dUI.curCharacter != curCharacter) {
+            for(int i = 0; i < config.portraits.Length; i ++) {
+                if(dUI.curCharacter == config.portraits[i].name) {
+                    icon.sprite = config.portraits[i].icon;
+                    break;
+                }
+            }
+            curCharacter = dUI.curCharacter;
+        }
     }
 
     /// <summary>
@@ -48,8 +63,7 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
 
     IEnumerator DisplayNext() {
         yield return new WaitForSeconds(config.sentenceDelay);
-        FindObjectOfType<DialogueUI>().MarkLineComplete();
-        print(dr);
+        dUI.MarkLineComplete();
     }
 
      IEnumerator WaitAndHide(GameObject text) {
@@ -62,15 +76,15 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
     /// Moves dialog onto next sentence. Function is for cutscene usage
     /// </summary>
     public void ContinueDialog() {
-        FindObjectOfType<DialogueUI>().MarkLineComplete();
+        dUI.MarkLineComplete();
     }
 
     public void WaitToHideText(GameObject text) {
         StartCoroutine(WaitAndHide(text));
     }
 
-    public void SetIcon(Sprite display) {
-       // print(dr.text);
+    public void SetIcon(Image display) {
+       icon = display;
     }
     #endregion
 }
