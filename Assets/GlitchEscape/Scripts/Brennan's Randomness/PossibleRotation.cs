@@ -12,7 +12,7 @@ public class PossibleRotation : MonoBehaviour
     private void Update()
     {
         if(rotate) {
-            this.gameObject.transform.Rotate(rotatable, 1, Space.Self);
+            this.gameObject.transform.Rotate(rotatable, 2, Space.Self);
         }
     }
 }
