@@ -127,11 +127,23 @@ public class PlayerStatsView : MonoBehaviour {
             healthSplashes[2].gameObject.SetActive(false);
         }
         float stamina = player.stamina.value / player.stamina.maximum;
-        //float shard = (float)player.shardcomp.value / (float)player.shardcomp.maximum;
+        if(stamina < 1f)
+        {
+            if (!staminaWheel.gameObject.activeInHierarchy)
+            {
+                staminaWheel.gameObject.SetActive(true);
+            }
+            staminaWheel.fillAmount = stamina;
+        }
+        else
+        {
+            if (staminaWheel.gameObject.activeInHierarchy)
+            {
+                staminaWheel.gameObject.SetActive(false);
+            }
+        }
         healthSetter.Update(health);
         staminaSetter.Update(stamina);
-        staminaWheel.fillAmount = stamina;
-        //shardSetter.Update(shard);
         staminaFlash.Update();
     }
 }
