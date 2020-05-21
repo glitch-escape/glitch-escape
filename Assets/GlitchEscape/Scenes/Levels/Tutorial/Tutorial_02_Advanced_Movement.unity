@@ -904,7 +904,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh40518
+  m_Name: pb_Mesh27680
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1312,7 +1312,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh40428
+  m_Name: pb_Mesh27590
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1777,6 +1777,16 @@ PrefabInstance:
       propertyPath: text
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 1454180516294464616, guid: a6baf079ec86a455db60db3531a558ed,
+        type: 3}
+      propertyPath: keyboard_message
+      value: Wall Jumping resets your double jump. Use that to gain extra height.
+      objectReference: {fileID: 0}
+    - target: {fileID: 1454180516294464616, guid: a6baf079ec86a455db60db3531a558ed,
+        type: 3}
+      propertyPath: controller_message
+      value: Wall Jumping resets your double jump. Use that to gain extra height.
+      objectReference: {fileID: 0}
     - target: {fileID: 1454180516294464617, guid: a6baf079ec86a455db60db3531a558ed,
         type: 3}
       propertyPath: m_Name
@@ -1916,7 +1926,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh40344
+  m_Name: pb_Mesh27506
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2095,6 +2105,16 @@ PrefabInstance:
       propertyPath: UIText
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 1454180516294464616, guid: a6baf079ec86a455db60db3531a558ed,
+        type: 3}
+      propertyPath: keyboard_message
+      value: While moving, press <sprite=8> to dash in that direction.
+      objectReference: {fileID: 0}
+    - target: {fileID: 1454180516294464616, guid: a6baf079ec86a455db60db3531a558ed,
+        type: 3}
+      propertyPath: controller_message
+      value: While moving, press <sprite=5> to dash in that direction.
+      objectReference: {fileID: 0}
     - target: {fileID: 1454180516294464617, guid: a6baf079ec86a455db60db3531a558ed,
         type: 3}
       propertyPath: m_Name
@@ -2168,22 +2188,22 @@ PrefabInstance:
     - target: {fileID: 1454180517829018251, guid: a6baf079ec86a455db60db3531a558ed,
         type: 3}
       propertyPath: m_textInfo.characterCount
-      value: 69
+      value: 48
       objectReference: {fileID: 0}
     - target: {fileID: 1454180517829018251, guid: a6baf079ec86a455db60db3531a558ed,
         type: 3}
       propertyPath: m_textInfo.spaceCount
-      value: 12
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 1454180517829018251, guid: a6baf079ec86a455db60db3531a558ed,
         type: 3}
       propertyPath: m_textInfo.wordCount
-      value: 12
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 1454180517829018251, guid: a6baf079ec86a455db60db3531a558ed,
         type: 3}
       propertyPath: m_textInfo.lineCount
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1454180517829018251, guid: a6baf079ec86a455db60db3531a558ed,
         type: 3}
@@ -2193,13 +2213,12 @@ PrefabInstance:
     - target: {fileID: 1454180517829018251, guid: a6baf079ec86a455db60db3531a558ed,
         type: 3}
       propertyPath: m_text
-      value: 'While moving, press [SHIFT or RB] to dash in that direction. (DS4:
-        <sprite=11>)'
+      value: While moving, press <sprite=8> to dash in that direction.
       objectReference: {fileID: 0}
     - target: {fileID: 1454180517829018251, guid: a6baf079ec86a455db60db3531a558ed,
         type: 3}
       propertyPath: m_firstOverflowCharacterIndex
-      value: 37
+      value: 38
       objectReference: {fileID: 0}
     - target: {fileID: 1454180517829018251, guid: a6baf079ec86a455db60db3531a558ed,
         type: 3}
@@ -3264,100 +3283,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 680543233}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &738761627
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 738761628}
-  - component: {fileID: 738761631}
-  - component: {fileID: 738761630}
-  - component: {fileID: 738761629}
-  m_Layer: 0
-  m_Name: Cube
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &738761628
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 738761627}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -10.981951, y: 7.836835, z: -41.228848}
-  m_LocalScale: {x: 5.3059, y: 2.0857494, z: 5.3059}
-  m_Children: []
-  m_Father: {fileID: 2018803425}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &738761629
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 738761627}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!23 &738761630
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 738761627}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: b62acf5ef253d664789922ac6b17efb8, type: 2}
-  - {fileID: 2100000, guid: bae12326e0b17ae408393fb7d9e3b7b0, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
---- !u!33 &738761631
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 738761627}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1001 &776662827
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4985,6 +4910,18 @@ PrefabInstance:
       propertyPath: text
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 1454180516294464616, guid: a6baf079ec86a455db60db3531a558ed,
+        type: 3}
+      propertyPath: keyboard_message
+      value: You can wall jump off of some vertical surfaces. Climb to the top by
+        jumping between these two pillars!
+      objectReference: {fileID: 0}
+    - target: {fileID: 1454180516294464616, guid: a6baf079ec86a455db60db3531a558ed,
+        type: 3}
+      propertyPath: controller_message
+      value: You can wall jump off of some vertical surfaces. Climb to the top by
+        jumping between these two pillars!
+      objectReference: {fileID: 0}
     - target: {fileID: 1454180516294464617, guid: a6baf079ec86a455db60db3531a558ed,
         type: 3}
       propertyPath: m_Name
@@ -5556,7 +5493,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh40538
+  m_Name: pb_Mesh27700
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -6457,6 +6394,16 @@ PrefabInstance:
         type: 3}
       propertyPath: text
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1454180516294464616, guid: a6baf079ec86a455db60db3531a558ed,
+        type: 3}
+      propertyPath: keyboard_message
+      value: Press dash longer to dash further.
+      objectReference: {fileID: 0}
+    - target: {fileID: 1454180516294464616, guid: a6baf079ec86a455db60db3531a558ed,
+        type: 3}
+      propertyPath: controller_message
+      value: Press dash longer to dash further.
       objectReference: {fileID: 0}
     - target: {fileID: 1454180516294464617, guid: a6baf079ec86a455db60db3531a558ed,
         type: 3}
@@ -7451,7 +7398,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh38826
+  m_Name: pb_Mesh27634
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -10661,15 +10608,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 963194228, guid: 7fb674626e4de46f49d82caad6d6ce93, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.0779355
+      value: 0.077935494
       objectReference: {fileID: 0}
     - target: {fileID: 963194228, guid: 7fb674626e4de46f49d82caad6d6ce93, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000000008577024
+      value: -0.000000008577024
       objectReference: {fileID: 0}
     - target: {fileID: 963194228, guid: 7fb674626e4de46f49d82caad6d6ce93, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -6.70494e-10
+      value: 6.7049394e-10
       objectReference: {fileID: 0}
     - target: {fileID: 963194228, guid: 7fb674626e4de46f49d82caad6d6ce93, type: 3}
       propertyPath: m_LocalPosition.x
@@ -10714,12 +10661,12 @@ PrefabInstance:
     - target: {fileID: 4480004948019582980, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000000017326071
+      value: -0.000000017331095
       objectReference: {fileID: 0}
     - target: {fileID: 4480004948019582980, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -5.685124e-10
+      value: 7.0523454e-10
       objectReference: {fileID: 0}
     - target: {fileID: 4480004948019582980, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
@@ -10739,17 +10686,17 @@ PrefabInstance:
     - target: {fileID: 4480004948942281807, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.119584665
+      value: 0.11958466
       objectReference: {fileID: 0}
     - target: {fileID: 4480004948942281807, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.0000000042702086
+      value: -0.0000000042712465
       objectReference: {fileID: 0}
     - target: {fileID: 4480004948942281807, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -5.1010446e-10
+      value: 5.1870525e-10
       objectReference: {fileID: 0}
     - target: {fileID: 4480004948942281807, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
@@ -10759,17 +10706,17 @@ PrefabInstance:
     - target: {fileID: 4480004949643349518, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.077935494
+      value: 0.07793549
       objectReference: {fileID: 0}
     - target: {fileID: 4480004949643349518, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.0000000042630317
+      value: -0.000000004313994
       objectReference: {fileID: 0}
     - target: {fileID: 4480004949643349518, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -9.302633e-12
+      value: 6.6120753e-10
       objectReference: {fileID: 0}
     - target: {fileID: 4480004949643349518, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
@@ -10855,7 +10802,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh40572
+  m_Name: pb_Mesh27734
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -11462,7 +11409,6 @@ Transform:
   m_LocalPosition: {x: 10.851951, y: -8.073593, z: 41.28885}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 738761628}
   - {fileID: 1942184430}
   - {fileID: 1435661197}
   - {fileID: 904064685}
@@ -11487,6 +11433,16 @@ PrefabInstance:
         type: 3}
       propertyPath: text
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1454180516294464616, guid: a6baf079ec86a455db60db3531a558ed,
+        type: 3}
+      propertyPath: keyboard_message
+      value: The red barrier will instantly kill you. Avoid them.
+      objectReference: {fileID: 0}
+    - target: {fileID: 1454180516294464616, guid: a6baf079ec86a455db60db3531a558ed,
+        type: 3}
+      propertyPath: controller_message
+      value: The red barrier will instantly kill you. Avoid them.
       objectReference: {fileID: 0}
     - target: {fileID: 1454180516294464617, guid: a6baf079ec86a455db60db3531a558ed,
         type: 3}
