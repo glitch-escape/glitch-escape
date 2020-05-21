@@ -1,50 +1,40 @@
 ﻿using System;
+using UnityEngine.InputSystem;
 using UnityEngine;
 using TMPro;
+using UnityEngine.InputSystem.DualShock;
 
-public class InputDeviceCheck : MonoBehaviour
-{
-    private enum InputDevice
-    {
-        MouseKeyboard,
-        Gamepad
-    };
-
-    private InputDevice _device = InputDevice.MouseKeyboard;
-    private TMP_Text _message;
+public class InputDeviceCheck : MonoBehaviour {
+    private TMP_Text text;
     private void Awake() {
-        _message = _message ?? Enforcements.GetComponent<TMP_Text>(this);
-        _message.spriteAsset = Resources.Load<TMP_SpriteAsset>("Sprites/ds4_icons");
+        text = text ?? Enforcements.GetComponent<TMP_Text>(this);
     }
 
     private void Update() {
-        switch(_device)
-        {
-            case InputDevice.MouseKeyboard:
-                if (IsControllerInput()) {
-                    _device = InputDevice.Gamepad;
-                    _message.spriteAsset = Resources.Load<TMP_SpriteAsset>("Sprites/ds4_icons");
-                }
-                break;
-            
-            case InputDevice.Gamepad:
-                if (IsKeyboardInput()) {
-                    _device = InputDevice.MouseKeyboard;
-                    // Still need Keyboard sprites
-                    _message.spriteAsset = null;
-                }
-
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
+        if (IsControllerInput()) {
+            // DS4 controller text
+            if (DualShockGamepad.current != null)
+                text.spriteAsset = Resources.Load<TMP_SpriteAsset>("Sprites/ControllerButtons");
+            // Xbox controller text
+            else
+                text.spriteAsset = Resources.Load<TMP_SpriteAsset>("Sprites/xboxbuttons");
         }
+        else if (IsKeyboardInput()) {
+            // Mouse and keyboard text
+            text.spriteAsset = Resources.Load<TMP_SpriteAsset>("Sprites/keyboardbuttons");
+        }
+        
     }
 
-    private static bool IsControllerInput() {
+    private bool IsControllerInput() {
+        if (Gamepad.current != null)
+            return true;
         return false;
     }
     
-    private static bool IsKeyboardInput() {
+    private bool IsKeyboardInput() {
+        if (Keyboard.current != null)
+            return true;
         return false;
     }
 }
