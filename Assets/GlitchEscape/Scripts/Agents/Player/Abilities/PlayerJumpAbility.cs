@@ -21,7 +21,7 @@ public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
     #endregion
     
     public float elapsedJumpTime => isJumping ? Time.time - jumpStartTime : 0f;
-    
+
     /// <summary>
     /// should reset all player jump state
     /// </summary>
@@ -158,7 +158,6 @@ public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
             Vector3.down,
             out groundHitInfo,
             player.config.playerRayDistanceToGround);
-        Debug.DrawRay(player.transform.position, transform.TransformDirection(Vector3.down) * groundHitInfo.distance, Color.green, 1.0f, false);
         hitWall = Physics.Raycast(
             player.transform.position, 
             transform.forward, 
@@ -198,6 +197,9 @@ public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
         GUILayout.Label("calculated jump velocity " + playerMovement.CalculateJumpVector(jumpHeight));
         GUILayout.Label("calculated wall jump velocity " + playerMovement.CalculateWallJumpVector(
                             jumpHeight, currentWallNormal, player.config.wallJumpMultiplier));
+
+        Debug.DrawRay(player.transform.position, Vector3.down * groundHitInfo.distance, Color.green, 1.0f, false);
+        Debug.DrawRay(player.transform.position, Vector3.forward * wallHitInfo.distance, Color.green, 1.0f, false);
 
         var currentVelocity = playerMovement.rigidbody.velocity;
         GUILayout.Label("current velocity: " + currentVelocity);
