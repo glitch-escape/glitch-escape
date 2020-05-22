@@ -12,6 +12,7 @@ public class PlayerShadow : MonoBehaviour
     void Start()
     {
         landingIndicator = Instantiate(landingIndicator);
+        landingIndicator.transform.parent = player.transform;
         landingIndicator.SetActive(false);
         displayOffset = new Vector3(0.0f, 0.01f, 0.0f);
     }
