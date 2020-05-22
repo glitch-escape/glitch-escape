@@ -15,7 +15,7 @@ public class OrbUIController : MonoBehaviour
 
     public TextMeshProUGUI returnToPortalPrompt;
 
-    public InteractablePortal portal;
+    public Portal portal;
     public GameObject rootPortalObject;
 
     private void Awake()

@@ -21,7 +21,7 @@ public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
     #endregion
     
     public float elapsedJumpTime => isJumping ? Time.time - jumpStartTime : 0f;
-    
+
     /// <summary>
     /// should reset all player jump state
     /// </summary>
@@ -71,7 +71,7 @@ public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
                 throw new Exception(
                     "Player jump ability started but CanStartAbility() should have returned false!");
             case JumpAbilityUseStatus.CanGroundJump:
-                jumpCount = 1;
+                jumpCount = 0;
                 isJumping = true;
                 jumpStartTime = Time.time;
                 lastWallJumpedOffOf = null;
@@ -82,12 +82,11 @@ public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
                 jumpCount += 1;
                 isJumping = true;
                 jumpStartTime = Time.time;
-                lastWallJumpedOffOf = null;
                 playerMovement.JumpToHeight(player.config.jumpHeight);
                 FireEvent(PlayerEvent.Type.AirJump);
                 break;
             case JumpAbilityUseStatus.CanWallJump:
-                jumpCount = 1;
+                jumpCount = 0;
                 isJumping = true;
                 lastWallJumpedOffOf = wallHitInfo.collider?.gameObject;
                 playerMovement.JumpToHeightWithWallJump(
@@ -174,9 +173,10 @@ public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
     void FixedUpdate() {
         dirtyRaycastInfo = true;
         UpdateRaycastInfo();
-        
+
         // check if we're currently grounded
         // if we're not grounded and were previously jumping, update isJumping + fire an end jumping event
+        // && playerMovement.rigidbody.velocity(in ther vertical direction) == 0 */ potentially add this to fix jump reset right after jumping
         if (isPlayerGrounded && isJumping) {
             isJumping = false;
             jumpCount = 0;
@@ -197,10 +197,14 @@ public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
         GUILayout.Label("calculated wall jump velocity " + playerMovement.CalculateWallJumpVector(
                             jumpHeight, currentWallNormal, player.config.wallJumpMultiplier));
 
+        Debug.DrawRay(player.transform.position, Vector3.down * groundHitInfo.distance, Color.green, 1.0f, false);
+        Debug.DrawRay(player.transform.position, Vector3.forward * wallHitInfo.distance, Color.green, 1.0f, false);
+
         var currentVelocity = playerMovement.rigidbody.velocity;
         GUILayout.Label("current velocity: " + currentVelocity);
         GUILayout.Label("time since jump started: " + elapsedJumpTime);
         GUILayout.Label("is on ground? " + isPlayerGrounded);
+        GUILayout.Label("ground hit info " + groundHitInfo);
         GUILayout.Label("is near wall? " + isPlayerNearWall);
         GUILayout.Label("is near new wall? " + isPlayerNearNewWall);
         GUILayout.Label("last wall jumped off of: " + lastWallJumpedOffOf);

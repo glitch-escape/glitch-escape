@@ -76,7 +76,7 @@ public class PlayerManifestAbility : PlayerAbility, IPlayerDebug {
     #endregion
     #region ManifestImplementation
 
-    protected override PlayerControls.HybridButtonControl inputButton => PlayerControls.instance.manifest;
+    protected override PlayerControls.HybridButtonControl inputButton => null;//PlayerControls.instance.manifest;
     private void BeginManifest() {
         // begin manifest
         thisManifestWall = Instantiate(manifestWall, transform.position, transform.rotation);
