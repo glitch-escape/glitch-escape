@@ -48,6 +48,7 @@ namespace Yarn.Unity {
     /// <seealso cref="DialogueRunner"/>
     public class DialogueUI : Yarn.Unity.DialogueUIBehaviour
     {
+        public string curCharacter;
 
         /// <summary>
         /// The object that contains the dialogue and the options.
@@ -261,6 +262,13 @@ namespace Yarn.Unity {
             }
         }
 
+        /// Parses the character name out of the string 
+        private string ParseCharacter(string text) {
+            string[] array = text.Split(':');
+            curCharacter = array[0];
+            return array[1];
+        }
+
         /// Runs a line.
         /// <inheritdoc/>
         public override Dialogue.HandlerExecutionType RunLine (Yarn.Line line, ILineLocalisationProvider localisationProvider, System.Action onLineComplete)
@@ -278,7 +286,9 @@ namespace Yarn.Unity {
             userRequestedNextLine = false;
             
             // The final text we'll be showing for this line.
+            //string 
             string text = localisationProvider.GetLocalisedTextForLine(line);
+            text = ParseCharacter(text);
 
             if (text == null) {
                 Debug.LogWarning($"Line {line.ID} doesn't have any localised text.");
