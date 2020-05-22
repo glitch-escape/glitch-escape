@@ -8,6 +8,9 @@ public class PlayerShadow : MonoBehaviour
     public GameObject landingIndicator;
     private Vector3 displayOffset;
     
+    // hardcoded max raycast distance (should be sufficient, hopefully)
+    private const float MAX_RAYCAST_DISTANCE = 50f;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -42,12 +45,13 @@ public class PlayerShadow : MonoBehaviour
     }
 
     private RaycastHit surfaceHit;
-    private bool GetFloorRaycast()
-    {
+    private bool GetFloorRaycast() {
         return Physics.Raycast(
             player.transform.position,
             Vector3.down,
             out surfaceHit,
-            Mathf.Infinity);
+            MAX_RAYCAST_DISTANCE,
+            LayerMasks.FloorGeometry,
+            QueryTriggerInteraction.Ignore);
     }
 }
