@@ -71,7 +71,7 @@ public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
                 throw new Exception(
                     "Player jump ability started but CanStartAbility() should have returned false!");
             case JumpAbilityUseStatus.CanGroundJump:
-                jumpCount = 1;
+                jumpCount = 0;
                 isJumping = true;
                 jumpStartTime = Time.time;
                 lastWallJumpedOffOf = null;
@@ -82,12 +82,11 @@ public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
                 jumpCount += 1;
                 isJumping = true;
                 jumpStartTime = Time.time;
-                lastWallJumpedOffOf = null;
                 playerMovement.JumpToHeight(player.config.jumpHeight);
                 FireEvent(PlayerEvent.Type.AirJump);
                 break;
             case JumpAbilityUseStatus.CanWallJump:
-                jumpCount = 1;
+                jumpCount = 0;
                 isJumping = true;
                 lastWallJumpedOffOf = wallHitInfo.collider?.gameObject;
                 playerMovement.JumpToHeightWithWallJump(
