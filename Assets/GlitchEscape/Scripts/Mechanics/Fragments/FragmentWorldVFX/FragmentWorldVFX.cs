@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using GlitchEscape.Scripts.Utility;
 using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -10,12 +11,8 @@ using Random = UnityEngine.Random;
 public class FragmentWorldVFX : MonoBehaviour {
     public bool simulateInEditMode = false;
     private FragmentWorldVFXParticle[] particles;
-    public FragmentWorldVFXParticle particle;
+    public FragmentParticleVisualConfig particleVisualConfig;
     public uint numParticles;
-
-    [SerializeField]
-    public Mesh[] meshes;
-    
     public float spawnRadius = 0.5f;
     public float spawnHeight = 1.5f;
     public float spawnHeightPowerBias = 1.5f;
@@ -40,7 +37,7 @@ public class FragmentWorldVFX : MonoBehaviour {
     Vector3 GetRandomPosition() {
         switch (spawnVolume) {
             case SpawnVolume.Sphere:
-                return Random.insideUnitSphere * spawnRadius;
+                return Random.insideUnitSphere * spawnRadius + transform.position;
             case SpawnVolume.Ellipsoid:
                 var pos = Random.insideUnitSphere;
                 pos.y *= spawnHeight * 0.5f;
@@ -52,7 +49,7 @@ public class FragmentWorldVFX : MonoBehaviour {
                 var sign = Random.value < 0.5f ? -1f : 1f;
                 var y = sign * t * spawnHeight * 0.5f;
                 var xz = Random.insideUnitCircle * spawnRadius * (1f - t);
-                return new Vector3(xz.x, y, xz.y);
+                return new Vector3(xz.x, y, xz.y) + transform.position;
             default:
                 throw new ArgumentOutOfRangeException();
         }
@@ -61,12 +58,26 @@ public class FragmentWorldVFX : MonoBehaviour {
         return Quaternion.AngleAxis(Random.Range(-180f, 180f), Vector3.up);
     }
 
+    FragmentWorldVFXParticle CreateParticle() {
+        var particle = new GameObject("FragmentParticle",
+                typeof(MeshFilter), typeof(MeshRenderer), typeof(FragmentWorldVFXParticle))
+            .GetComponent<FragmentWorldVFXParticle>();
+        particle.transform.parent = transform;
+        var renderer = particle.GetComponent<MeshRenderer>();
+        renderer.materials = particleVisualConfig.materials;
+        Init(particle);
+        return particle;
+    }
     void Init(FragmentWorldVFXParticle particle) {
+        var meshes = particleVisualConfig.meshes;
         if (meshes != null && meshes.Length > 0) {
             var i = (int)Mathf.Clamp(Mathf.Floor(Random.value * meshes.Length - 1e-6f), 0f, meshes.Length - 1);
             particle.GetComponent<MeshFilter>().mesh = meshes[i];
         }
-        particle.transform.localScale = this.particle.transform.localScale * ((1f + Random.Range(-1f,1f) * scaleVariation) * scale);
+        particle.transform.position = GetRandomPosition();
+        particle.transform.rotation = GetRandomRotation();
+        particle.transform.localScale =
+            particleVisualConfig.scale * ((1f + Random.Range(-1f, 1f) * scaleVariation) * scale);
         particle.Init(
             Random.value * yOffsetRange + yOffset,
             Random.value * timeOffsetRange,
@@ -85,11 +96,7 @@ public class FragmentWorldVFX : MonoBehaviour {
         // spawnSeed = Random.state;
         particles = new FragmentWorldVFXParticle[numParticles];
         for (var i = 0; i < numParticles; ++i) {
-            particles[i] = Instantiate(this.particle, 
-                GetRandomPosition(),
-                GetRandomRotation(),
-                transform);
-            Init(particles[i]);
+            particles[i] = CreateParticle();
         }
     }
     public void RecalculateSpawnPositions() {
@@ -99,8 +106,6 @@ public class FragmentWorldVFX : MonoBehaviour {
             Respawn();
         } else {
             foreach (var particle in particles) {
-                particle.transform.position = GetRandomPosition();
-                particle.transform.rotation = GetRandomRotation();
                 Init(particle);
             }
         }
