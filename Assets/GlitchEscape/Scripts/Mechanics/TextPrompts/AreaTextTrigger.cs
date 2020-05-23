@@ -7,13 +7,15 @@ using UnityEngine.InputSystem;
 
 public class AreaTextTrigger : MonoBehaviour, IActiveInteract {
      private TMP_Text text;
+     private GameObject UI;
      private TMP_Text UIText;
      public string keyboard_message;
      public string controller_message;
      private void Awake()
      {
           text = text ?? Enforcements.GetComponentInChildren<TMP_Text>(this);
-          UIText = GameObject.Find("PlayerCameraRig/UI/TutorialUI").GetComponent<TMP_Text>();
+          UI = GameObject.Find("PlayerCameraRig/UI/UITextbox");
+          UIText = GameObject.Find("PlayerCameraRig/UI/UITextbox").GetComponentInChildren<TMP_Text>();
      }
      private void OnEnable() {
           text.gameObject.SetActive(false);
@@ -26,10 +28,10 @@ public class AreaTextTrigger : MonoBehaviour, IActiveInteract {
                UIText.text = controller_message;
           else if (IsKeyboardInput())
                UIText.text = keyboard_message;
-          UIText.gameObject.SetActive(true);
+          UI.gameObject.SetActive(true);
      }
      public void OnPlayerExitInteractionRadius(Player player) {
-          UIText.gameObject.SetActive(false);
+          UI.gameObject.SetActive(false);
      }
      
      private bool IsControllerInput() {
