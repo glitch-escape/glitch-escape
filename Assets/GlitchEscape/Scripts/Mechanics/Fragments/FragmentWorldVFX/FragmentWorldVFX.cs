@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using GlitchEscape.Scripts.Utility;
 using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -33,6 +32,7 @@ public class FragmentWorldVFX : MonoBehaviour {
     public float speedRange = 0f;
     
     public bool initialized => particles != null;
+    public bool lookAt = false;
     
     Vector3 GetRandomPosition() {
         switch (spawnVolume) {
@@ -122,9 +122,15 @@ public class FragmentWorldVFX : MonoBehaviour {
             Respawn();
         }
     }
+    
+    public Transform lookTarget;
     public void Update() {
         foreach (var particle in particles) {
-            particle.Animate(Time.time - startTime);
+            particle.Animate(Time.time - startTime); 
+            if (lookAt && lookTarget != null) {
+                particle.transform.LookAt(lookTarget);
+                particle.transform.Rotate(90f, 0f, 0f);
+            }
         }
     }
 }
