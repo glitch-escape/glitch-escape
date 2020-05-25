@@ -33,6 +33,18 @@ public class FragmentWorldVFX : MonoBehaviour {
     
     public bool initialized => particles != null;
     public bool lookAt = false;
+
+    public float particleCountScale {
+        get => Mathf.Abs(_particleCountScale);
+        set {
+            if (_particleCountScale != value) {
+                _particleCountScale = value;
+                Respawn();
+            }
+        }
+    }
+    private float _particleCountScale = 1f;
+    public uint currentParticleCount => (uint)Mathf.FloorToInt(numParticles * particleCountScale);
     
     Vector3 GetRandomPosition() {
         switch (spawnVolume) {
@@ -94,15 +106,16 @@ public class FragmentWorldVFX : MonoBehaviour {
             DestroyImmediate(particle.gameObject);
         }
         // spawnSeed = Random.state;
-        particles = new FragmentWorldVFXParticle[numParticles];
-        for (var i = 0; i < numParticles; ++i) {
+        var n = currentParticleCount;
+        particles = new FragmentWorldVFXParticle[n];
+        for (var i = 0; i < n; ++i) {
             particles[i] = CreateParticle();
         }
     }
     public void RecalculateSpawnPositions() {
         var seed = Random.state;
         Random.state = spawnSeed;
-        if (numParticles != (particles?.Length ?? 0)) {
+        if (currentParticleCount != (particles?.Length ?? 0)) {
             Respawn();
         } else {
             foreach (var particle in particles) {
@@ -118,7 +131,7 @@ public class FragmentWorldVFX : MonoBehaviour {
         if (particles == null) {
             particles = GetComponentsInChildren<FragmentWorldVFXParticle>();
         }
-        if (particles.Length != numParticles) {
+        if (particles.Length != currentParticleCount) {
             Respawn();
         }
     }

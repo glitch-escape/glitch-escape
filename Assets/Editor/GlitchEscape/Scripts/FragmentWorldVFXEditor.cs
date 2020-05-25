@@ -23,7 +23,7 @@ public class FragmentWorldVFXEditor : Editor {
             particleSystem.Respawn();
         }
         base.OnInspectorGUI();
-
+        
         if (particleSystem.initialized && (
             num != particleSystem.numParticles ||
             radius != particleSystem.numParticles ||
