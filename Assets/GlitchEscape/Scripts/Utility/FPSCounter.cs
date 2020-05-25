@@ -9,7 +9,9 @@ public class FPSCounter : MonoBehaviour {
     private float fps = 60f;
     void Update() {
         var step = 0.1f;
-        fps = fps * (1f - step) + step / Time.deltaTime;
-        text.text = "FPS: " + Mathf.Round(fps);
+        if (Time.deltaTime > 0f) {
+            fps = fps * (1f - step) + step / Time.deltaTime;
+            text.text = "FPS: " + Mathf.Round(fps);
+        }
     }
 }
