@@ -22,7 +22,7 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
     private void Start() {
         dUI = FindObjectOfType<DialogueUI>();
         if (dUI) {
-            if(!config.isCutscene) dUI.onLineFinishDisplaying.AddListener(WaitForNextLine);
+            //if(!config.isCutscene) dUI.onLineFinishDisplaying.AddListener(WaitForNextLine);
             dUI.textSpeed = config.textSpeed;
         }
         dr = FindObjectOfType<DialogueRunner>();
@@ -32,6 +32,7 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
     // For testing purposes [NEEDS TO BE REMOVED]
     void Update() {
         if (Input.GetKeyDown(KeyCode.L)) {
+            ContinueDialog();
             BeginDialog("HDB-Act1");
         } 
 
@@ -56,6 +57,16 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
         }
     }
 
+    /// <summary>
+    /// Moves dialog onto next sentence.
+    /// </summary>
+    public void ContinueDialog() {
+        if(dr.IsDialogueRunning) {
+            dUI.MarkLineComplete();
+        }
+    }
+
+/*
     private void WaitForNextLine() {
         coroutineSent = DisplayNext();
         StartCoroutine(coroutineSent);
@@ -64,27 +75,22 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
     IEnumerator DisplayNext() {
         yield return new WaitForSeconds(config.sentenceDelay);
         dUI.MarkLineComplete();
+        print("called");
     }
-
-     IEnumerator WaitAndHide(GameObject text) {
-        yield return new WaitForSeconds(config.sentenceDelay);
-        text.SetActive(false);
-    }
+*/
 
     #region Public Functions for Dialog Runner to call
-    /// <summary>
-    /// Moves dialog onto next sentence. Function is for cutscene usage
-    /// </summary>
-    public void ContinueDialog() {
-        dUI.MarkLineComplete();
-    }
-
     public void WaitToHideText(GameObject text) {
         StartCoroutine(WaitAndHide(text));
     }
 
     public void SetIcon(Image display) {
        icon = display;
+    }
+
+    IEnumerator WaitAndHide(GameObject text) {
+        yield return new WaitForSeconds(config.sentenceDelay);
+        text.SetActive(false);
     }
     #endregion
 }
