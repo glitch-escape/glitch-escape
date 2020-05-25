@@ -16,6 +16,7 @@ public class Player : BaseAgent<Player, PlayerConfig> {
     protected override Resource<Player, PlayerConfig, float> healthResource => health;
     protected override Resource<Player, PlayerConfig, float> staminaResource => stamina;
     protected override KillType killType => KillType.KillAndResetAgent;
+    public bool lockControls => dialog.PreventMovement();
 
     // object references
     [InjectComponent] public new Camera camera;

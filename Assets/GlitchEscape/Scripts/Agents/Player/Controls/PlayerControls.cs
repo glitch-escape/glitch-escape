@@ -137,6 +137,7 @@ public class PlayerControls : MonoBehaviour {
     //
     public Vector2 moveInput {
         get {
+            if (player.lockControls) return Vector2.zero;
             var input = Gamepad.current?.leftStick.ReadValue() ?? Vector2.zero;
             if (input.magnitude > 0f) {
                 buttonPollInfo.lastGamepadPressTime = Time.time;

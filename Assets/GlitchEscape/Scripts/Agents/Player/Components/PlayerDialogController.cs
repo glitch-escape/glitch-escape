@@ -18,6 +18,9 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
     private string curCharacter;
     private Image icon;
 
+    private string curSpeaker;
+    private PlayerControls.HybridButtonControl inputButton => PlayerControls.instance.interact;
+
     
     private void Start() {
         dUI = FindObjectOfType<DialogueUI>();
@@ -31,10 +34,23 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
     
     // For testing purposes [NEEDS TO BE REMOVED]
     void Update() {
+        /*
         if (Input.GetKeyDown(KeyCode.L)) {
             ContinueDialog();
             BeginDialog("HDB-Act1");
         } 
+        */
+
+        if((inputButton?.wasPressedThisFrame ?? false) && curSpeaker != null) {
+            if (!dr.IsDialogueRunning) {
+                dr.StartDialogue(curSpeaker);
+                // Lock player movement
+
+            }
+            else {
+                dUI.MarkLineComplete();
+            }
+        }
 
         if(icon && dUI.curCharacter != curCharacter) {
             for(int i = 0; i < config.portraits.Length; i ++) {
@@ -45,6 +61,17 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
             }
             curCharacter = dUI.curCharacter;
         }
+    }
+
+    public bool PreventMovement() {
+        return dr.IsDialogueRunning;
+    }
+
+    /// <summary>
+    /// Set the current node of text that should be played using YarnSpinner
+    /// </summary>
+    public void SetSpeaker(string dialogNode) {
+        curSpeaker = dialogNode;
     }
 
     /// <summary>
@@ -65,19 +92,6 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
             dUI.MarkLineComplete();
         }
     }
-
-/*
-    private void WaitForNextLine() {
-        coroutineSent = DisplayNext();
-        StartCoroutine(coroutineSent);
-    }
-
-    IEnumerator DisplayNext() {
-        yield return new WaitForSeconds(config.sentenceDelay);
-        dUI.MarkLineComplete();
-        print("called");
-    }
-*/
 
     #region Public Functions for Dialog Runner to call
     public void WaitToHideText(GameObject text) {
