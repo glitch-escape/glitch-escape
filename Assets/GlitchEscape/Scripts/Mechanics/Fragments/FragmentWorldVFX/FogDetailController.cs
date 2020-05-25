@@ -33,8 +33,20 @@ public class FogDetailController : MonoBehaviour {
                 presets[i].gameObject.SetActive(i == activePreset);
             }
         }
-    }
+    } 
     private void OnGUI() {
         GUILayout.Label("active preset: " + presets[activePreset].name);
+        bool changedPreset = false;
+        for (int i = 0; i < presets.Length; ++i) {
+            if (GUILayout.Button(presets[i].gameObject.name)) {
+                activePreset = i;
+                changedPreset = true;
+            }
+        }
+        if (changedPreset) {
+            for (int i = 0; i < presets.Length; ++i) {
+                presets[i].gameObject.SetActive(i == activePreset);
+            }
+        }
     }
 }
