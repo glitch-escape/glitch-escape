@@ -4777,6 +4777,9 @@ GameObject:
   - component: {fileID: 981718894}
   - component: {fileID: 981718893}
   - component: {fileID: 981718892}
+  - component: {fileID: 981718897}
+  - component: {fileID: 981718899}
+  - component: {fileID: 981718898}
   m_Layer: 0
   m_Name: Thing To Rotate Floor 1
   m_TagString: Untagged
@@ -4894,6 +4897,66 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &981718897
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 981718891}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 3.74
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &981718898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 981718891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddc4f548a5e3840e7b6d7beb0cd23c94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactTrigger: 1
+  highlightTrigger: 1
+  activePlayer: {fileID: 0}
+  showDebugGUI: 0
+  renderer: {fileID: 981718894}
+  materialColorName: _BaseColor
+  interactFlashDuration: 0.1
+  enableDebugLogging: 0
+--- !u!114 &981718899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 981718891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7c17dcb2d48444c89a805a1ec0abf7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  info: 'injecting fields on Thing To Rotate Floor 1 (InteractiveObject)
+
+    injecting
+    fields on Thing To Rotate Floor 1 (Autowire)
+
+    injecting fields on Thing To
+    Rotate Floor 1 (InteractiveObjectTest)
+
+    found injectable field UnityEngine.MeshRenderer
+    renderer, value null, is null? False
+
+'
+  log: 
+  warnings: 
+  errors: 
 --- !u!4 &991366825 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1692698066340349663, guid: 15e08187deb24da4f8f923dbc8ec5a32,
@@ -6054,7 +6117,7 @@ PrefabInstance:
     - target: {fileID: 4480004948019582980, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.036727935
+      value: 0.03672794
       objectReference: {fileID: 0}
     - target: {fileID: 4480004948019582980, guid: 7fb674626e4de46f49d82caad6d6ce93,
         type: 3}
