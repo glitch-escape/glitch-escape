@@ -154,6 +154,7 @@ public class PlayerControls : MonoBehaviour {
     }
     public Vector2 lookInput {
         get {
+            if (player.lockControls) return Vector2.zero;
             var input = Gamepad.current?.rightStick.ReadValue() ?? Vector2.zero;
             if (input.magnitude > 0f) {
                 buttonPollInfo.lastGamepadPressTime = Time.time;

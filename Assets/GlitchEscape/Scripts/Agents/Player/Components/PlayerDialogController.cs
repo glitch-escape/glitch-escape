@@ -24,34 +24,19 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
     
     private void Start() {
         dUI = FindObjectOfType<DialogueUI>();
-        if (dUI) {
-            //if(!config.isCutscene) dUI.onLineFinishDisplaying.AddListener(WaitForNextLine);
-            dUI.textSpeed = config.textSpeed;
-        }
         dr = FindObjectOfType<DialogueRunner>();
-        if (dr) dr.Add(config.coreText);
+        if (dUI) dUI.textSpeed = config.textSpeed;
+        if (dr)  dr.Add(config.coreText);
     }
     
-    // For testing purposes [NEEDS TO BE REMOVED]
     void Update() {
-        /*
-        if (Input.GetKeyDown(KeyCode.L)) {
-            ContinueDialog();
-            BeginDialog("HDB-Act1");
-        } 
-        */
-
+        // Start/Continue dialog if input was pressed with a defined speaker
         if((inputButton?.wasPressedThisFrame ?? false) && curSpeaker != null) {
-            if (!dr.IsDialogueRunning) {
-                dr.StartDialogue(curSpeaker);
-                // Lock player movement
-
-            }
-            else {
-                dUI.MarkLineComplete();
-            }
+            if (!dr.IsDialogueRunning)  dr.StartDialogue(curSpeaker);
+            else                        dUI.MarkLineComplete();
         }
 
+        // Update the textbox portrait based on name of current speaker
         if(icon && dUI.curCharacter != curCharacter) {
             for(int i = 0; i < config.portraits.Length; i ++) {
                 if(dUI.curCharacter == config.portraits[i].name) {
@@ -63,6 +48,10 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
         }
     }
 
+
+    /// <summary>
+    /// Let other scripts know if the movement should be locked
+    /// </summary>
     public bool PreventMovement() {
         return dr.IsDialogueRunning;
     }
@@ -73,6 +62,8 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
     public void SetSpeaker(string dialogNode) {
         curSpeaker = dialogNode;
     }
+
+    #region Functions to be called by Dialog Runner or Animation Timeline
 
     /// <summary>
     /// Begins to display dialog, provided a node of text was given
@@ -93,7 +84,6 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
         }
     }
 
-    #region Public Functions for Dialog Runner to call
     public void WaitToHideText(GameObject text) {
         StartCoroutine(WaitAndHide(text));
     }
@@ -106,5 +96,6 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
         yield return new WaitForSeconds(config.sentenceDelay);
         text.SetActive(false);
     }
+    
     #endregion
 }

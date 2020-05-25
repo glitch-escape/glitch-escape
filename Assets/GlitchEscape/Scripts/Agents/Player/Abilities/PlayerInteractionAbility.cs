@@ -116,6 +116,7 @@ public class PlayerInteractionAbility : PlayerAbility, IPlayerDebug {
         if (interactObj != null) {
             interactablesInRange.Add(interactObj);
             interactObj.OnPlayerEnterInteractionRadius(player);
+            print(obj.name);
         }
     }
     private void OnExit(GameObject obj) {
