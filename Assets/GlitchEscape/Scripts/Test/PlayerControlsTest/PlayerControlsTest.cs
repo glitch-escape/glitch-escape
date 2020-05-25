@@ -33,7 +33,7 @@ public class PlayerControlsTest : MonoBehaviour {
         pollButton(PlayerControls.instance.interact, "interact");
         pollButton(PlayerControls.instance.dodge, "dodge");
         pollButton(PlayerControls.instance.dash, "dash");
-        pollButton(PlayerControls.instance.manifest, "manifest");
+       // pollButton(PlayerControls.instance.manifest, "manifest");
         pollButton(PlayerControls.instance.jump, "jump");
     }
 

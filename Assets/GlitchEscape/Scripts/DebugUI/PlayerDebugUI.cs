@@ -17,13 +17,13 @@ namespace GlitchEscape.Scripts.DebugUI {
         }
         void Update() {
             if (Gamepad.current?.dpad.left.wasPressedThisFrame ?? false) visible = !visible;
+            if (Input.GetKeyDown(KeyCode.BackQuote)) visible = !visible;
             if (debugUIComponents.Length == 0) return;
             if (selectionIndex >= debugUIComponents.Length) selectionIndex = debugUIComponents.Length - 1;
             if (selectionIndex < 0) selectionIndex = 0;
             int i = selectionIndex;
             var expanded = activeComponents.Contains(debugUIComponents[i].debugName);
-            if (Gamepad.current != null) {
-                if (Gamepad.current.dpad.right.wasPressedThisFrame) {
+                if ((Gamepad.current?.dpad.right.wasPressedThisFrame ?? false) || Input.GetKeyDown(KeyCode.RightArrow)) {
                     if (expanded) {
                         activeComponents.Remove(debugUIComponents[i].debugName);
                     }
@@ -32,18 +32,17 @@ namespace GlitchEscape.Scripts.DebugUI {
                     }
                 }
 
-                if (Gamepad.current.dpad.down.wasPressedThisFrame) {
+                if ((Gamepad.current?.dpad.down.wasPressedThisFrame ?? false) || Input.GetKeyDown(KeyCode.DownArrow)) {
                     var j = i + 1;
                     if (j >= debugUIComponents.Length) j = 0;
                     selectionIndex = j;
                 }
 
-                if (Gamepad.current.dpad.up.wasPressedThisFrame) {
+                if ((Gamepad.current?.dpad.up.wasPressedThisFrame ?? false) || Input.GetKeyDown(KeyCode.UpArrow)) {
                     var j = i - 1;
                     if (j < 0) j = debugUIComponents.Length - 1;
                     selectionIndex = j;
                 }
-            }
         }
 
         private Vector2 scrollPos = Vector2.zero;
