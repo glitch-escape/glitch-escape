@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using Yarn.Unity;
 using UnityEngine.UI;
 
@@ -31,7 +32,8 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
     
     // For testing purposes [NEEDS TO BE REMOVED]
     void Update() {
-        if (Input.GetKeyDown(KeyCode.L)) {
+        // if (Input.GetKeyDown(KeyCode.L)) {
+        if (Keyboard.current?.lKey.wasPressedThisFrame ?? false) {
             BeginDialog("HDB-Act1");
         } 
 
