@@ -121,7 +121,7 @@ public class PauseMenuController : MonoBehaviour
         audioMixer.SetFloat("Music", Mathf.Log10(PlayerPrefs.GetFloat("MusicVolume")) * 20);
         sFXSlider.value = PlayerPrefs.GetFloat("SFXVolume", 1f);
         audioMixer.SetFloat("Sound Effects", Mathf.Log10(PlayerPrefs.GetFloat("SFXVolume")) * 20);
-        cameraSensitiveSlider.value = PlayerPrefs.GetFloat("CameraSensitive", 180f);
+        cameraSensitiveSlider.value = PlayerPrefs.GetFloat("CameraSensitive", 1.0f);
         // playerConfig.cameraTurnSpeed = Mathf.Lerp(5f, 360f, cameraSensitiveSlider.value);
         playerCameraController.sensitiveX = cameraSensitiveSlider.value;
         playerCameraController.sensitiveY = cameraSensitiveSlider.value;
