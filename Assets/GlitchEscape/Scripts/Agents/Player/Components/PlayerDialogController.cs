@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using Yarn.Unity;
+using UnityEngine.UI;
 
 public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
 {
@@ -12,6 +14,10 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
     // so I'm not sure if InjectComponent works
     private DialogueRunner dr;
     private DialogueUI dUI;
+
+    // Variables for icon
+    private string curCharacter;
+    private Image icon;
 
     
     private void Start() {
@@ -26,9 +32,20 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
     
     // For testing purposes [NEEDS TO BE REMOVED]
     void Update() {
-        if (Input.GetKeyDown(KeyCode.L)) {
+        // if (Input.GetKeyDown(KeyCode.L)) {
+        if (Keyboard.current?.lKey.wasPressedThisFrame ?? false) {
             BeginDialog("HDB-Act1");
         } 
+
+        if(icon && dUI.curCharacter != curCharacter) {
+            for(int i = 0; i < config.portraits.Length; i ++) {
+                if(dUI.curCharacter == config.portraits[i].name) {
+                    icon.sprite = config.portraits[i].icon;
+                    break;
+                }
+            }
+            curCharacter = dUI.curCharacter;
+        }
     }
 
     /// <summary>
@@ -41,17 +58,6 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
         }
     }
 
-    /// <summary>
-    /// Moves dialog onto next sentence. Function is for cutscene usage
-    /// </summary>
-    public void ContinueDialog() {
-        FindObjectOfType<DialogueUI>().MarkLineComplete();
-    }
-    
-    public void WaitToHideText(GameObject text) {
-        StartCoroutine(WaitAndHide(text));
-    }
-
     private void WaitForNextLine() {
         coroutineSent = DisplayNext();
         StartCoroutine(coroutineSent);
@@ -59,11 +65,28 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
 
     IEnumerator DisplayNext() {
         yield return new WaitForSeconds(config.sentenceDelay);
-        FindObjectOfType<DialogueUI>().MarkLineComplete();
+        dUI.MarkLineComplete();
     }
 
      IEnumerator WaitAndHide(GameObject text) {
         yield return new WaitForSeconds(config.sentenceDelay);
         text.SetActive(false);
     }
+
+    #region Public Functions for Dialog Runner to call
+    /// <summary>
+    /// Moves dialog onto next sentence. Function is for cutscene usage
+    /// </summary>
+    public void ContinueDialog() {
+        dUI.MarkLineComplete();
+    }
+
+    public void WaitToHideText(GameObject text) {
+        StartCoroutine(WaitAndHide(text));
+    }
+
+    public void SetIcon(Image display) {
+       icon = display;
+    }
+    #endregion
 }

@@ -28,7 +28,7 @@ public class PlayerConfig : ScriptableObject {
     #region PlayerRaycasts
 
     [Header("Raycasts")] 
-    public float playerRayDistanceToGround = 0.7f;
+    public float playerRayDistanceToGround = 0.1f;
     public float wallRaycastDistance = 1f;
     #endregion
     
@@ -48,7 +48,7 @@ public class PlayerConfig : ScriptableObject {
     [Range(0, 20)] public float jumpHeight = 10f;
     
     [Tooltip("Max number of times that player can jump consecutively before needing to touch ground")]
-    [Range(0, 10)] public int maxJumps = 2;
+    [Range(0, 10)] public int maxJumps = 1;
 
     [Tooltip("if false, disables the effects of downGravityMultiplier + upGravityModifier")]
     public bool useGravityModifications = true;

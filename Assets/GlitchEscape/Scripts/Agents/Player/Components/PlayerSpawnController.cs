@@ -45,6 +45,7 @@ public class PlayerSpawnController : PlayerComponent {
             savePoint.transform.rotation);   
     }
     public void Respawn() {
+        FireEvent(PlayerEvent.Type.PlayerRespawn);
         Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.VirtualCameraGameObject.SetActive(false);
         player.transform.position = respawnPosition;
         player.transform.rotation = respawnRotation;

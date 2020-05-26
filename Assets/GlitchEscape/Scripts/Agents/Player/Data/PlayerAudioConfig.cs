@@ -15,6 +15,7 @@ public class PlayerAudioConfig : ScriptableObject {
     public AudioClip floorJumpSound;
     public AudioClip airJumpSound;
     public AudioClip wallJumpSound;
+    public AudioClip landingSound;
     
     [Header("Dash")]
     public AudioClip dashBeginSound;
@@ -26,8 +27,14 @@ public class PlayerAudioConfig : ScriptableObject {
     [Header("Walk")]
     public AudioClip[] footstepSounds;
 
+    public float firstFootstepOffset = 0.1f;
+    public float footstepsPerSec = 1f;
+    public float footstepsPerSecVariation = 0.2f;
+
     [Header("Interaction")]
     public AudioClip fragmentInteraction;
-    
+
+    public AudioClip mazeSwitch;
+
     // TODO: add audio clips for other player events
 }
