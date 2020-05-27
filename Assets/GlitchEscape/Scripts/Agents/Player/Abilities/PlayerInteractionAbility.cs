@@ -13,8 +13,6 @@ public class Trigger : MonoBehaviour {
     public event TriggerEvent OnStay;
 
     private void OnTriggerEnter(Collider other) {
-        //print(other.gameObject.name); // Why is there a collision here?
-        print("PIII: " + this.gameObject.transform.parent.name);
         OnEnter?.Invoke(other.gameObject);
     }
     private void OnTriggerExit(Collider other) {
@@ -38,7 +36,6 @@ public class SphereTrigger : Trigger {
     public static SphereTrigger GetOrCreateInChildren (GameObject obj) {
         var instance = obj.GetComponentInChildren<SphereTrigger>();
         if (instance != null) return instance;
-        print("???");
         var emptyChild = new GameObject("Trigger", typeof(SphereCollider), typeof(SphereTrigger));
         emptyChild.transform.parent = obj.transform;
         var trigger = emptyChild.GetComponent<SphereTrigger>();
@@ -46,7 +43,6 @@ public class SphereTrigger : Trigger {
         var collider = trigger.collider;
         collider.isTrigger = true;
         collider.center = Vector3.zero;
-        print(trigger.transform.localPosition);
         return trigger;
     }
     private void OnDisable() {
