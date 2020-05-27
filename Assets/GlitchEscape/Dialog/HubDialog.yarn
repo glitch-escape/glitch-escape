@@ -95,3 +95,85 @@ Antagonist:...   #line:0edf446
 Antagonist:To think all three orbs can protect you from my power...   #line:01883ce
 Antagonist:I guess I’ll have to take you by force!   #line:0f66918
 ===
+title: Transcendence
+tags: 
+colorID: 0
+position: 137,108
+---
+<<if $curMsg eq null>> 
+    <<set $curMsg to 0>> 
+<<endif>>
+
+<<if $curMsg % 3 eq 0>> 
+    Transcendence:All my life, my room has been my little safe haven for me. #line:080159c
+    Transcendence:I did not have to deal with everything else as much and I felt safer there than anywhere else.   #line:0325baa
+<<elseif $curMsg % 3 eq 1>> 
+    Transcendence:I’ve come to realize... #line:013867e
+    Transcendence:I’ve stayed in my room too much... #line:03fb3e5
+    Transcendence:I neglected the outside world a lot and focused on going back to my room as soon as I could. #line:022dbfd
+    Transcendence:I never appreciated what the outside world truly had to offer... #line:0171731
+    Transcendence:When I go back... #line:0aaf9e3
+    Transcendence:I will change that... #line:06e47d9
+<<else>>
+    Transcendence:This realm is deeply connected with you. #line:0376ce3
+    Transcendence:The more you explore this realm, you might learn new things about yourself.  #line:040882b
+<<endif>>
+
+<<set $curMsg to $curMsg + 1>>
+===
+title: Courage
+tags: 
+colorID: 0
+position: 138,108
+---
+<<if $curMsg eq null>> 
+    <<set $curMsg to 0>> 
+<<endif>>
+
+<<if $curMsg % 4 eq 0>> 
+    Courage:Sometimes there are just things you have to do.  #line:0bb9050
+    Courage:As long as it’s possible, why not go for it? #line:0043cae
+<<elseif $curMsg % 4 eq 1>> 
+    Courage:I hate to admit it... but I can’t help you as much as I wish I could. #line:01afaf8
+    Courage:Only you can traverse your realm freely. #line:03c153f
+    Courage:I’m just... stuck here... #line:01554df
+<<elseif $curMsg % 4 eq 2>> 
+    Courage:Back home, I’d always tried out new things. #line:0768657
+    Courage:It was fun, but there were some things that people told me that I couldn’t accept... #line:065000e
+    Courage:‘Why are you trying to do this? You can’t do that.’ #line:09015d9
+    Courage:Whenever that happens, I either overthink things and think down on myself, or get angry and try too hard.  #line:015f1c0
+    Courage:I end up getting in trouble because of it... #line:008c3d6
+    Courage:Guess that’s how I ended up in that tank? #line:060ef40
+<<else>>
+    Courage:In this realm, some impossible things seem to be possible. #line:00e9648
+    Courage:It’s… kind of nice… but I need to go back like you do. #line:0c1736c
+    Courage:We can’t let the world beat us right? #line:0967e26
+<<endif>>
+
+<<set $curMsg to $curMsg + 1>>
+===
+title: Humanity
+tags: 
+colorID: 0
+position: 139,108
+---
+<<if $curMsg eq null>> 
+    <<set $curMsg to 0>> 
+<<endif>>
+
+<<if $curMsg % 3 eq 0>> 
+    Humanity:I don’t think bad people are born bad.  #line:039a584
+    Humanity:I think bad people are just good people, but heavily misguided. #line:04cae6a
+    Humanity:They can be redeemed right? #line:0776597
+    Humanity:... at least I hope so... #line:058413b
+<<elseif $curMsg % 3 eq 1>> 
+    Humanity:Whenever the news was on, I would always go straight to my room... #line:0c97260
+    Humanity:It was also so depressing... Murder, accidents, theft... #line:0bca8d9
+    Humanity:The news always shows the worst of people... #line:024f9e2
+<<else>>
+    Humanity:It’s always nice to tell people how much you appreciate them. #line:0adc2a2
+    Humanity:You never know when they might just go away unexpectedly... #line:0a64a13
+<<endif>>
+
+<<set $curMsg to $curMsg + 1>>
+===

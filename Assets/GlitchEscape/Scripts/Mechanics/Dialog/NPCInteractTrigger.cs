@@ -26,8 +26,8 @@ public class NPCInteractTrigger : MonoBehaviour
       //  print(gameObject.transform.parent.gameObject.name);
       //  print(other.transform.parent.gameObject.transform.parent.gameObject.name);
 
-        if (other.tag == "Player")
-        {
+       // if (other.tag == "Player")
+      //  {
            dialogManager.SetSpeaker(speakerName);
            inputText.OnPlayerEnterInteractionRadius(null);
            /*
@@ -38,28 +38,28 @@ public class NPCInteractTrigger : MonoBehaviour
                 eventTriggered = true;
             }
             */
-        }
+      //  }
     }
 
     void OnTriggerStay(Collider other) {
-        if (other.tag == "Player")
-        {
+    //    if (other.tag == "Player")
+    //    {
            if(dialogManager.PreventMovement()) {
                inputText.OnPlayerExitInteractionRadius(null);
            }
            else {
                 inputText.OnPlayerEnterInteractionRadius(null);
            }
-        }
+    //    }
     }
 
     void OnTriggerExit(Collider other)
     {
-        if (other.tag == "Player")
-        {
+     //   if (other.tag == "Player")
+    //    {
             dialogManager.SetSpeaker(null);
             inputText.OnPlayerExitInteractionRadius(null);
             //dialogManager.CheckPlayerNearBy(false, eventNumber);
-        }
+    //    }
     }
 }
