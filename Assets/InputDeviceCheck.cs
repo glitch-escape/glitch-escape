@@ -7,7 +7,7 @@ using UnityEngine.InputSystem.DualShock;
 public class InputDeviceCheck : MonoBehaviour {
     private TMP_Text text;
     private void Awake() {
-        text = text ?? Enforcements.GetComponent<TMP_Text>(this);
+        text = text ?? Enforcements.GetComponentInChildren<TMP_Text>(this);
     }
 
     private void Update() {
