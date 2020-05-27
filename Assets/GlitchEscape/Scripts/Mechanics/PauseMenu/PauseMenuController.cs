@@ -142,18 +142,21 @@ public class PauseMenuController : MonoBehaviour
     {
         PlayerPrefs.SetFloat("MasterVolume", val);
         audioMixer.SetFloat("Master", Mathf.Log10(PlayerPrefs.GetFloat("MasterVolume")) * 20);
+        PlayerPrefs.Save();
     }
 
     public void ChangeMusicVol(float val)
     {
         PlayerPrefs.SetFloat("MusicVolume", val);
         audioMixer.SetFloat("Music", Mathf.Log10(PlayerPrefs.GetFloat("MusicVolume")) * 20);
+        PlayerPrefs.Save();
     }
 
     public void ChangeSFXVol(float val)
     {
         PlayerPrefs.SetFloat("SFXVolume", val);
         audioMixer.SetFloat("Sound Effects", Mathf.Log10(PlayerPrefs.GetFloat("SFXVolume")) * 20);
+        PlayerPrefs.Save();
     }
 
     public void ChangeCameraSensitive(float val)
@@ -162,6 +165,7 @@ public class PauseMenuController : MonoBehaviour
         // playerConfig.cameraTurnSpeed = Mathf.Lerp(5f, 360f, val);
         playerCameraController.sensitiveX = cameraSensitiveSlider.value;
         playerCameraController.sensitiveY = cameraSensitiveSlider.value;
+        PlayerPrefs.Save();
         // Debug.Log(playerConfig.cameraTurnSpeed);
     }
 
@@ -177,11 +181,13 @@ public class PauseMenuController : MonoBehaviour
             PlayerPrefs.SetInt("InvertY", 0);
             playerCameraController.sensitiveY = Mathf.Abs(playerCameraController.sensitiveY);
         }
+        PlayerPrefs.Save();
     }
 
     public void ChangeFOV(float val)
     {
         PlayerPrefs.SetFloat("FOV", val);
         freeLookCam.m_Lens.FieldOfView = Mathf.Lerp(60f, 100f, val);
+        PlayerPrefs.Save();
     }
 }
