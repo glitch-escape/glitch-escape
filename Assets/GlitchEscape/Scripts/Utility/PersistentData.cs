@@ -20,15 +20,19 @@ public class PersistentDataStore {
 }
 
 /// boilerplate for handling objects that can be saved / unsaved using state structs
-public class PersistentObject<TState> : MonoBehaviour, IPersistentData<TState> where TState : struct {
+public abstract class PersistentObject<TState> : MonoBehaviour, IPersistentData<TState> where TState : struct {
     public TState state;
     public ref TState GetStateRef() { return ref state; }
     public virtual string GetObjectID() { return typeof(TState).FullName+" "+gameObject.GetInstanceID(); }  // can override this if you want to provide your own object IDs
     protected bool TrySaveState() { return PersistentDataStore.instance?.TrySaveState(this) ?? false; }
-    protected bool TryRestoreState() { return PersistentDataStore.instance?.TryRestoreState(this) ?? false; }
+    protected bool TryRestoreState() {
+        var stateRestored = PersistentDataStore.instance?.TryRestoreState(this) ?? false;
+        if (stateRestored) OnStateRestored();
+        return stateRestored;
+    }
     protected void OnEnable() { TryRestoreState(); }
     protected void OnDisable() { TrySaveState(); }
-    
+    protected abstract void OnStateRestored();
 }
 
 /// boilerplate for handling objects that can be saved / unsaved using state structs (and inheirits from AInteractiveObject)
@@ -37,9 +41,15 @@ public abstract class PersistentInteractiveObject<TState> : AInteractiveObject, 
     public ref TState GetStateRef() { return ref state; }
     public virtual string GetObjectID() { return typeof(TState).FullName+" "+gameObject.GetInstanceID(); }  // can override this if you want to provide your own object IDs
     protected bool TrySaveState() { return PersistentDataStore.instance?.TrySaveState(this) ?? false; }
-    protected bool TryRestoreState() { return PersistentDataStore.instance?.TryRestoreState(this) ?? false; }
+    protected bool TryRestoreState() {
+        var stateRestored = PersistentDataStore.instance?.TryRestoreState(this) ?? false;
+        if (stateRestored) OnStateRestored();
+        return stateRestored;
+    }
+
     protected void OnEnable() { TryRestoreState(); }
     protected void OnDisable() { TrySaveState(); }
+    protected abstract void OnStateRestored();
 }
 
 /// example of an object that can be collected and that will be persistent across scenes
@@ -53,8 +63,8 @@ public class PersistentDataExample : PersistentInteractiveObject<PersistentDataE
     public struct State {
         public bool collected; // = false;         <- be aware of value defaults as structs can't have user specified default values!
     }
-    void OnEnable() {
-        if (TryRestoreState() && state.collected) {
+    protected override void OnStateRestored() {
+        if (state.collected) {
             gameObject.SetActive(false);
         }
     }
