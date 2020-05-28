@@ -20,6 +20,8 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
 
     private string curSpeaker;
     private PlayerControls.HybridButtonControl inputButton => PlayerControls.instance.interact;
+    private PlayerControls.HybridButtonControl inputButton2 => PlayerControls.instance.nextDialog;
+    private bool nextDialogInput => (inputButton2?.wasPressedThisFrame ?? false) || (Input.GetKeyDown(KeyCode.Space));
 
     
     private void Start() {
@@ -31,9 +33,15 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
     
     void Update() {
         // Start/Continue dialog if input was pressed with a defined speaker
-        if((inputButton?.wasPressedThisFrame ?? false) && curSpeaker != null) {
-            if (!dr.IsDialogueRunning)  dr.StartDialogue(curSpeaker);
-            else                        dUI.MarkLineComplete();
+        if(curSpeaker != null) {
+            if((inputButton?.wasPressedThisFrame ?? false)) {
+                if (!dr.IsDialogueRunning)  dr.StartDialogue(curSpeaker);
+                else                        dUI.MarkLineComplete();
+            }
+            // Allow other buttons to continue the text
+            else if(nextDialogInput && dr.IsDialogueRunning){
+                dUI.MarkLineComplete();
+            }
         }
 
         // Update the textbox portrait based on name of current speaker

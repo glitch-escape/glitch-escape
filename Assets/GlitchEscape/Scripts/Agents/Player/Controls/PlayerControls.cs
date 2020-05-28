@@ -79,6 +79,7 @@ public class PlayerControls : MonoBehaviour {
 //    private HybridButtonControl m_manifest = null;
     private HybridButtonControl m_interact = null;
 //    private HybridButtonControl m_shoot = null;
+    private HybridButtonControl m_nextDialog = null;
 
     /// <summary>
     /// Provides hardcoded button state + callbacks for the Dash action
@@ -122,6 +123,14 @@ public class PlayerControls : MonoBehaviour {
         m_interact ?? (m_interact = new HybridButtonControl(
             new IndirectButtonControl(Keyboard.current.eKey),
             new IndirectButtonControl(() => Gamepad.current?.buttonWest)));
+
+    /// <summary>
+    /// Provides hardcoded button state + callbacks for the continue dialog action
+    /// </summary>
+    public HybridButtonControl nextDialog =>
+        m_nextDialog ?? (m_nextDialog = new HybridButtonControl(
+            new IndirectButtonControl(Keyboard.current.aKey),
+            new IndirectButtonControl(() => Gamepad.current?.buttonSouth)));
 
 /*
     /// <summary>
