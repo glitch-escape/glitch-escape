@@ -32,6 +32,7 @@ public class FragmentPickup : PersistentInteractiveObject<FragmentPickup.State> 
     public bool collected {
         get => state.collected;
         set {
+            Debug.Log("setting collected = "+value);
             state.collected = value;
             if (collected) {
                 OnFragmentPickedUp();
@@ -42,6 +43,7 @@ public class FragmentPickup : PersistentInteractiveObject<FragmentPickup.State> 
     /// called when player picks up fragments
     /// interact behavior set in inspector, implemented in <see cref="AInteractiveObject"/>
     public override void OnInteract(Player player) {
+        Debug.Log("picking up fragment");
         collected = true;
         player.GetComponent<FragmentPickupManager>()?.PickUpFragment(this);
     }
@@ -51,6 +53,7 @@ public class FragmentPickup : PersistentInteractiveObject<FragmentPickup.State> 
     /// TODO: use this to implement visual fragment pick up effect / animation / etc
     private void OnFragmentPickedUp() {
         gameObject.SetActive(false);
+        TrySaveState();
     }
     
     /// called when player is nearby / enters some interaction radius (if focused behavior is activated and set
