@@ -221,6 +221,7 @@ GameObject:
   - component: {fileID: 319962183}
   - component: {fileID: 319962184}
   - component: {fileID: 319962185}
+  - component: {fileID: 319962186}
   m_Layer: 5
   m_Name: Opening
   m_TagString: Untagged
@@ -446,6 +447,18 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
+--- !u!114 &319962186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 319962178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af59ec507405046e6a3ac7604d4b52f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &325961597
 GameObject:
   m_ObjectHideFlags: 0
@@ -936,13 +949,15 @@ GameObject:
   - component: {fileID: 855624126}
   - component: {fileID: 855624125}
   - component: {fileID: 855624124}
+  - component: {fileID: 855624127}
+  - component: {fileID: 855624128}
   m_Layer: 5
   m_Name: Continue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &855624123
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1006,8 +1021,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 319962183}
-        m_MethodName: OnContinue
+      - m_Target: {fileID: 855624127}
+        m_MethodName: LoadFirstTutorial
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1053,6 +1068,30 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 855624122}
   m_CullTransparentMesh: 0
+--- !u!114 &855624127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 855624122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af59ec507405046e6a3ac7604d4b52f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &855624128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 855624122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f62ad1e0f2418458fa0144571a7f9d57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1107035067
 GameObject:
   m_ObjectHideFlags: 0
