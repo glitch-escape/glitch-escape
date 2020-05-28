@@ -31,9 +31,10 @@ public class MainMenuController : MonoBehaviour
     {
         navTo.SetActive(true);
     }
+    public void PlayLevel (Loader.Scene scene) { Loader.Load(scene); }
     public void PlayTutorial () { Loader.Load(Loader.Scene.Tutorial_01_Movement); }
     public void PlayPlatformingLevel () { Loader.Load(Loader.Scene.Vertical_Platforming_Level); }
-    public void PlayMainLevel () { Loader.Load(Loader.Scene.Opening); }
+    public void PlayOpening () { Loader.Load(Loader.Scene.Opening); }
     public void PlayEndCutscene () { Loader.Load(Loader.Scene.End_Cutscene); }
 
     public void GameExit()
