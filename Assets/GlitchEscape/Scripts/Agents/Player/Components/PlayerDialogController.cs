@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Yarn.Unity;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
 {
@@ -24,7 +25,7 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
     private bool beginDialogInput => (inputButton?.wasPressedThisFrame ?? false);
     private bool nextDialogInput => (inputButton?.wasPressedThisFrame ?? false) 
                                     || (inputButton2?.wasPressedThisFrame ?? false) 
-                                    || (Input.GetKeyDown(KeyCode.Space));
+                                    || Keyboard.current.spaceKey.wasPressedThisFrame;
 
     
     private void Start() {
