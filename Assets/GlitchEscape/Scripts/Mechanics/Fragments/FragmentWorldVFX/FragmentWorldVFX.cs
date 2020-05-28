@@ -128,12 +128,8 @@ public class FragmentWorldVFX : MonoBehaviour {
     private float startTime = 0f;
     void Start() {
         startTime = Time.time;
-        if (particles == null) {
-            particles = GetComponentsInChildren<FragmentWorldVFXParticle>();
-        }
-        if (particles.Length != currentParticleCount) {
-            Respawn();
-        }
+        particles = particles ?? GetComponentsInChildren<FragmentWorldVFXParticle>();
+        RecalculateSpawnPositions();
     }
     
     public Transform lookTarget;
