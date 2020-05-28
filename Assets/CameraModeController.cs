@@ -9,11 +9,11 @@ public class CameraModeController : MonoBehaviour
 {
     //[InjectComponent] Player player;
     [InjectComponent] public PlayerMovement playerMovement;
-    private Vector2 lastMousePosition;
+    //private Vector2 lastMousePosition;
     public CinemachineFreeLook freelookCamera;
     private CameraMode currentCamMode;
-    private float cameraDelay = 1f;
-    private float elapsedTime = 0f;
+    //private float cameraDelay = 1f;
+    //private float elapsedTime = 0f;
 
     private enum CameraMode
     {
@@ -33,27 +33,22 @@ public class CameraModeController : MonoBehaviour
     {
         if (Keyboard.current.digit1Key.wasPressedThisFrame)
         {
-            Debug.Log("Switching to no heading");
             SetCameraMode(CameraMode.NoHeading);
         }
         if (Keyboard.current.digit2Key.wasPressedThisFrame)
         {
-            Debug.Log("Switching to slow follow");
             SetCameraMode(CameraMode.SlowFollow);
         }
         if (Keyboard.current.digit3Key.wasPressedThisFrame)
         {
-            Debug.Log("Switching to fast follow");
             SetCameraMode(CameraMode.FastFollow);
         }
         if (Keyboard.current.digit4Key.wasPressedThisFrame)
         {
-            Debug.Log("Switching to Hybrid follow");
             SetCameraMode(CameraMode.HybridFollow);
         }
         if (Keyboard.current.digit5Key.wasPressedThisFrame)
         {
-            Debug.Log("Switching to hard follow");
             SetCameraMode(CameraMode.HardFollow);
         }
 
@@ -75,7 +70,6 @@ public class CameraModeController : MonoBehaviour
     {
         if (newMode == currentCamMode)
         {
-            Debug.Log("Already in mode");
             return;
         }
         else
