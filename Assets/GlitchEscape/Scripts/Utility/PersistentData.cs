@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 /// interface for object that implement State structs that can be serialized / deserialized
@@ -15,8 +16,30 @@ public class PersistentDataStore {
     private Dictionary<string, string> serializedDataByUnityGuid = new Dictionary<string, string>();
 
     // tbd: add struct serialization to / from json
-    public bool TryRestoreState<TState>(IPersistentData<TState> obj) where TState : struct { return false; }
-    public bool TrySaveState<TState>(IPersistentData<TState> obj) where TState : struct { return false; }
+    public bool TryRestoreState<TState>(IPersistentData<TState> obj) where TState : struct {
+        var id = obj.GetObjectID();
+        if (serializedDataByUnityGuid.ContainsKey(id)) {
+            obj.GetStateRef() = JsonUtility.FromJson<TState>(serializedDataByUnityGuid[id]);
+            return true;
+        }
+        return false;
+    }
+
+    public bool TrySaveState<TState>(IPersistentData<TState> obj) where TState : struct {
+        Debug.Log("Saving object "+obj+" with key "+obj.GetObjectID());
+        serializedDataByUnityGuid[obj.GetObjectID()] = JsonUtility.ToJson(obj.GetStateRef());
+        return true;
+    }
+    public string GetSavedObjectDataAsJson() {
+        var sb = new StringBuilder();
+        sb.AppendLine("{");
+        foreach (var entry in serializedDataByUnityGuid) {
+            sb.AppendLine("    \""+ entry.Key + "\": " + entry.Value);
+        }
+        sb.AppendLine("}");
+        return sb.ToString();
+        // return JsonUtility.ToJson(serializedDataByUnityGuid);
+    }
 }
 
 /// boilerplate for handling objects that can be saved / unsaved using state structs
