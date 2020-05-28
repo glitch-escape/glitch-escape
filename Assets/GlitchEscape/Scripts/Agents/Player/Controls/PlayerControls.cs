@@ -76,9 +76,9 @@ public class PlayerControls : MonoBehaviour {
     private HybridButtonControl m_dash = null;
     private HybridButtonControl m_dodge = null;
     private HybridButtonControl m_jump = null;
-    private HybridButtonControl m_manifest = null;
+//    private HybridButtonControl m_manifest = null;
     private HybridButtonControl m_interact = null;
-    private HybridButtonControl m_shoot = null;
+//    private HybridButtonControl m_shoot = null;
 
     /// <summary>
     /// Provides hardcoded button state + callbacks for the Dash action
@@ -105,6 +105,7 @@ public class PlayerControls : MonoBehaviour {
             new IndirectButtonControl(Keyboard.current.spaceKey),
             new IndirectButtonControl(() => Gamepad.current?.buttonSouth)));
     
+    /*
     /// <summary>
     /// Provides hardcoded button state + callbacks for the Manifest action
     /// </summary>
@@ -112,7 +113,8 @@ public class PlayerControls : MonoBehaviour {
         m_manifest ?? (m_manifest = new HybridButtonControl(
             new IndirectButtonControl(Keyboard.current.tKey),
             new IndirectButtonControl(() => Gamepad.current?.leftShoulder)));
-    
+    */
+
     /// <summary>
     /// Provides hardcoded button state + callbacks for the Interact action
     /// </summary>
@@ -121,6 +123,7 @@ public class PlayerControls : MonoBehaviour {
             new IndirectButtonControl(Keyboard.current.eKey),
             new IndirectButtonControl(() => Gamepad.current?.buttonWest)));
 
+/*
     /// <summary>
     /// Provides hardcoded button state + callbacks for the Interact action
     /// </summary>
@@ -128,7 +131,7 @@ public class PlayerControls : MonoBehaviour {
         m_shoot ?? (m_shoot = new HybridButtonControl(
             new IndirectButtonControl(Mouse.current.rightButton),
             new IndirectButtonControl(() => Gamepad.current?.rightTrigger)));
-
+*/
     //
     // getters for 2d move + look inputs
     //
@@ -213,7 +216,7 @@ public class PlayerControls : MonoBehaviour {
         // check buttons + send callback events
         m_dash?.PollAndDispatchEvents(ref buttonPollInfo);
         m_dodge?.PollAndDispatchEvents(ref buttonPollInfo);
-        m_manifest?.PollAndDispatchEvents(ref buttonPollInfo);
+     //   m_manifest?.PollAndDispatchEvents(ref buttonPollInfo);
         m_jump?.PollAndDispatchEvents(ref buttonPollInfo);
         m_interact?.PollAndDispatchEvents(ref buttonPollInfo);
 

@@ -17,12 +17,13 @@ public class PlayerShootAbility : PlayerAbility, IPlayerDebug {
     /// Shoot up to n projectiles per second when fire button is pressed repeatedly
     /// </summary>
     public override float cooldownTime => 1f / player.config.shootAbilityShotsPerSec;
+
     
     /// <summary>
     /// Button we use to fire a projectile
     /// </summary>
-    protected override PlayerControls.HybridButtonControl inputButton => PlayerControls.instance.shoot;
-    
+    protected override PlayerControls.HybridButtonControl inputButton => null;//PlayerControls.instance.shoot;
+  
     /// <summary>
     /// this is a one-shot ability (doesn't have a duration)
     /// </summary>

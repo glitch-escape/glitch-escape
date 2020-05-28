@@ -11,7 +11,7 @@ public static class Loader
     {
         MainMenu, Opening, Tutorial_01_Movement, Vertical_Main_Level, Vertical_Platforming_Level, Hub_Level,
         CorruptionVisualTest, Tutorial_02_Advanced_Movement, Tutorial_03_Maze_Switch, Third_Level, SGDAEndCard,
-        Tutorial_04_Fragment, FragmentPersitance, FragmentPersitance2, None, End_Cutscene,
+        Tutorial_04_Fragment, FragmentPersitance, FragmentPersitance2, None, End_Cutscene, FragmentParticleTest
     }
 
     private static Action onLoadCallback;

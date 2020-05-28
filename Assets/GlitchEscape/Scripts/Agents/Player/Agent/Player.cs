@@ -38,6 +38,6 @@ public class Player : BaseAgent<Player, PlayerConfig> {
     [InjectComponent] public PlayerDashAbility           dash;
     [InjectComponent] public PlayerJumpAbility           jump;
     [InjectComponent] public PlayerInteractionAbility    interact;
-    [InjectComponent] public PlayerShootAbility          shoot;
-    [InjectComponent] public PlayerManifestAbility       manifest;
+    //[InjectComponent] public PlayerShootAbility          shoot;
+    //[InjectComponent] public PlayerManifestAbility       manifest;
 }
