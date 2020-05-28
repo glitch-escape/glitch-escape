@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(InteractionTrigger))]
-public class FragmentInteraction : MonoBehaviour, IActiveInteract
+public class FragmentPickup : MonoBehaviour, IActiveInteract
 {
     public Transform floatTextArea;
     public string interactMessage = "[Collect Shard]";
@@ -37,7 +37,7 @@ public class FragmentInteraction : MonoBehaviour, IActiveInteract
             this.gameObject.SetActive(false);
             //floatingText.DisableText(floatTextArea);
             _pickedUp = true;
-            player.GetComponent<FragmentComponent>()?.PickUpFragment(this);
+            player.GetComponent<FragmentPickupManager>()?.PickUpFragment(this);
             //give some sort of notification that the fragment was picked up
 
         }
