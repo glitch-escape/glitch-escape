@@ -84,6 +84,9 @@ public class PlayerStatsView : MonoBehaviour {
 
     public Image staminaWheel;
     public List<Image> healthSplashes;
+
+    public List<Material> astralPlatforms;
+    public GameObject glitchMaze;
     private void OnEnable() {
         var renderer = Enforcements.GetComponent<Renderer>(this);
         healthSetter.SetMaterial(renderer.materials[HEALTH_BAR_MATEIRAL_INDEX]);
@@ -94,6 +97,12 @@ public class PlayerStatsView : MonoBehaviour {
         foreach (Image i in healthSplashes) {
             i.gameObject.SetActive(false);
         }
+        astralPlatforms = new List<Material>();
+        foreach (Transform platform in glitchMaze.transform)
+        {
+            astralPlatforms.Add(platform.GetComponent<Renderer>().material);
+        }
+        //astralPlatforms.GetComponent<Renderer>().sharedMaterial = new Material(astralPlatforms.GetComponent<Renderer>().sharedMaterial);
     }
     private void OnDisable() {
         healthSetter.SetMaterial(null);
@@ -105,6 +114,11 @@ public class PlayerStatsView : MonoBehaviour {
     
     void Update() {
         float health = player.health.value / player.health.maximum;
+        foreach(Material m in astralPlatforms)
+        {
+            m.SetFloat("Vector1_62D5110A", health);
+        }
+
         if(health < .45 && health > .30)
         {
             healthSplashes[0].gameObject.SetActive(true);
