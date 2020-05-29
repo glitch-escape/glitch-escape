@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FragmentUI : MonoBehaviour
-{
+public class FragmentUI : PlayerComponent {
     GameObject shardsPickups;
     GameObject orbsPickups;
-    List<GameObject> fragmentPieces = new List<GameObject>();
+    private GameObject[] fragmentPieces;
 
     private Player _player = null;
     private Player player => _player ?? Enforcements.GetSingleComponentInScene<Player>(this);
@@ -39,34 +38,51 @@ public class FragmentUI : MonoBehaviour
                 }
             }
 
-            if(fragmentHolder != null)
-            {
-                foreach (Transform child in fragmentHolder.transform)
-                {
-                    fragmentPieces.Add(child.gameObject);
-                }
+            if(fragmentHolder != null) {
+                fragmentPieces = fragmentHolder.GetComponentsInChildren<GameObject>();
+                // foreach (Transform child in fragmentHolder.transform)
+                // {
+                //     fragmentPieces.Add(child.gameObject);
+                // }
             }
         }
     }
-
-    private void Update()
-    {
-        if(sceneHasFragments)
-        {
-            int fragsPickedUp = player.fragments.fragmentCount;
-            for (int i = 0; i < fragsPickedUp; i++)
-            {
-                if (!fragmentPieces[i].activeInHierarchy)
-                {
-                    fragmentPieces[i].SetActive(true);
-                }
-            }
-
-            if (fragsPickedUp == player.fragments.fragmentMax)
-            {
-                //activate orbui
-            }
+    
+    private void UpdateFragmentUI(Virtue activeVirtue, float fragmentCompletion) {
+        int fragmentsPickedUp = (int) (fragmentCompletion * (float)fragmentPieces.Length);
+        
+        // TODO: switch fragment images depending on active virtue, etc.
+        if (activeVirtue == Virtue.None) {
+            fragmentsPickedUp = 0;
         }
+        for (int i = 0; i < fragmentPieces.Length; ++i) {
+            fragmentPieces[i].SetActive(i < fragmentsPickedUp);
+        }
+    }
+    private void OnEnable() {
+        player.fragments.onActiveVirtueChanged += OnVirtueTypeChanged;
+        player.fragments.onFragmentPickedUp += OnFragmentPickedUp;
+        var activeVirtue = player.fragments.activeVirtueInThisScene;
+        UpdateFragmentUI(activeVirtue, player.fragments.GetFragmentCompletion(activeVirtue));
+    }
+    private void OnDisable() {
+        player.fragments.onActiveVirtueChanged -= OnVirtueTypeChanged;
+        player.fragments.onFragmentPickedUp -= OnFragmentPickedUp;
+    }
+    void OnVirtueTypeChanged(Virtue virtue) {
+        Debug.Log("Changed active virtue for fragment pickups to " + virtue);
+        UpdateFragmentUI(virtue, player.fragments.GetFragmentCompletion(virtue));
+    }
+    void OnFragmentPickedUp(PlayerVirtueFragments.FragmentInfo fragment) {
+        Debug.Log("Picked up fragment for " + fragment.virtue);
+        if (fragment.virtue == player.fragments.activeVirtueInThisScene) {
+            UpdateFragmentUI(Virtue.Courage, player.fragments.GetFragmentCompletion(fragment.virtue));
+        }
+        /// TODO: can play fragment pickup animation / etc here
+    }
+    void OnVirtueCompleted(Virtue virtue) {
+        Debug.Log("Picked up all fragments for " + virtue + "!");
+        /// TODO: can play virtue completion animation / etc here
     }
 
 }
