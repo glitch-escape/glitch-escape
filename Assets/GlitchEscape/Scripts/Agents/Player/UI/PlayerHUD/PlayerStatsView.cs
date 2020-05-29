@@ -114,12 +114,9 @@ public class PlayerStatsView : MonoBehaviour {
     
     void Update() {
         float health = player.health.value / player.health.maximum;
-        if(health < 1f)
+        foreach (Material m in astralPlatforms)
         {
-            foreach (Material m in astralPlatforms)
-            {
-                m.SetFloat("Vector1_62D5110A", health);
-            }
+            m.SetFloat("Vector1_62D5110A", health);
         }
 
         if(health < .45 && health > .30)
