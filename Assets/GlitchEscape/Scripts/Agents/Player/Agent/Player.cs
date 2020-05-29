@@ -32,7 +32,7 @@ public class Player : BaseAgent<Player, PlayerConfig> {
     [InjectComponent] public PlayerMazeController        maze;
     [InjectComponent] public new PlayerAnimationController animation;
     [InjectComponent] public PlayerGravity                 gravity;
-    [InjectComponent] public FragmentPickupManager             fragments;
+    [InjectComponent] public PlayerVirtueFragments             fragments;
     
     // player abilities
     [InjectComponent] public PlayerDashAbility           dash;
