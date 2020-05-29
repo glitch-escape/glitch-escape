@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
@@ -31,21 +30,30 @@ public class SceneFragmentManagerEditor : Editor {
             string sceneName = SceneManager.GetActiveScene().name;
             for (int i = 0; i < fragments.Length; ++i) {
                 string id = sceneName + " fragment " + i;
-                // infoLog.AppendLine("Set " + fragments[i] + " id = " + id + ", virtue type = " + t.virtueType);
-                fragments[i].id = id;
-                fragments[i].virtueType = t.virtueType;
+                // infoLog.AppendLine("Set " + fragments[i] + " objectPersistencyId = " + objectPersistencyId + ", virtue type = " + t.virtueType);
+                // fragments[i].objectPersistencyId = id;
+                // fragments[i].virtueType = t.virtueType;
+                var obj = new SerializedObject(fragments[i]);
+                obj.FindProperty("objectPersistencyId").stringValue = id;
+                obj.FindProperty("virtueType").enumValueIndex = (int)t.virtueType;
+                obj.ApplyModifiedProperties();
             }
         }
         if (GUILayout.Button("Clear IDs")) {
             foreach (var fragment in fragments) {
-                fragment.id = "";
+                fragment.objectPersistencyId = "";
             }
         }
         for (int i = 0; i < fragments.Length; ++i) {
             GUILayout.BeginHorizontal();
-            GUILayout.Label(fragments[i].id != "" ? fragments[i].id : "NO ID ASSIGNED");
-            fragments[i] = (FragmentPickup)EditorGUILayout.ObjectField(fragments[i], fragments[i].GetType());
-            fragments[i].virtueType = (Virtue)EditorGUILayout.EnumPopup(fragments[i].virtueType);
+            GUILayout.Label(fragments[i].objectPersistencyId != "" ? fragments[i].objectPersistencyId : "NO ID ASSIGNED");
+            EditorGUILayout.ObjectField(fragments[i], fragments[i].GetType());
+            var vt = (Virtue)EditorGUILayout.EnumPopup(fragments[i].virtueType);
+            if (vt != fragments[i].virtueType) {
+                var obj = new SerializedObject(fragments[i]);
+                obj.FindProperty("virtueType").enumValueIndex = (int) vt;
+                obj.ApplyModifiedProperties();
+            }
             GUILayout.EndHorizontal();
         }
         GUILayout.Label(infoLog.ToString());

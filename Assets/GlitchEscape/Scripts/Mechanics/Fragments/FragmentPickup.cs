@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class FragmentPickup : PersistentInteractiveObject<FragmentPickup.State> {
@@ -10,11 +11,10 @@ public class FragmentPickup : PersistentInteractiveObject<FragmentPickup.State> 
     public GameObject fragmentUI;
     public Virtue virtueType;
 
-    [HideInInspector]
     [SerializeField]
-    public string id = "";
+    public string objectPersistencyId;
 
-    public override string GetObjectID() { return id; }
+    public override string GetObjectID() { return objectPersistencyId; }
     
     /// stores persistent state for this object
     public struct State {
@@ -39,8 +39,11 @@ public class FragmentPickup : PersistentInteractiveObject<FragmentPickup.State> 
     public bool collected {
         get => state.collected;
         set {
-            Debug.Log("setting collected = "+value);
+            // Debug.Log("setting collected = "+value);
+            if (state.collected == value) return;
             state.collected = value;
+            // Debug.Log("Set collected = " + GetStateRef().collected);
+            TrySaveState();
             if (collected) {
                 OnFragmentPickedUp();
             }
@@ -50,7 +53,7 @@ public class FragmentPickup : PersistentInteractiveObject<FragmentPickup.State> 
     /// called when player picks up fragments
     /// interact behavior set in inspector, implemented in <see cref="AInteractiveObject"/>
     public override void OnInteract(Player player) {
-        Debug.Log("picking up fragment");
+        // Debug.Log("picking up fragment");
         collected = true;
         player.GetComponent<FragmentPickupManager>()?.PickUpFragment(this);
     }
@@ -60,11 +63,33 @@ public class FragmentPickup : PersistentInteractiveObject<FragmentPickup.State> 
     /// TODO: use this to implement visual fragment pick up effect / animation / etc
     private void OnFragmentPickedUp() {
         gameObject.SetActive(false);
-        TrySaveState();
     }
     
     /// called when player is nearby / enters some interaction radius (if focused behavior is activated and set
     /// to activate on trigger; if so, must use a separate collider for interact)
     /// TODO: use this to implement fragment highlighting when player gets close
     public override void OnFocusChanged(bool focused) {}
+
+    public void SaveState() {
+        TrySaveState(); 
+    }
+    public void RestoreState() {
+        TryRestoreState();
+    }
+}
+
+[CustomEditor(typeof(FragmentPickup))]
+public class FragmentPickupEditor : Editor {
+    public override void OnInspectorGUI() {
+        base.OnInspectorGUI();
+        var t = (FragmentPickup) target;
+        t.collected = EditorGUILayout.Toggle("collected", t.collected);
+        if (GUILayout.Button("save state")) {
+            t.SaveState();
+        }
+        if (GUILayout.Button("restore state")) {
+            t.RestoreState();
+        }
+        GUILayout.Label("Persistent data: " + PersistentDataStore.instance.GetSavedObjectDataAsJson());
+    }
 }

@@ -7,7 +7,7 @@ using UnityEngine;
 /// interface for object that implement State structs that can be serialized / deserialized
 public interface IPersistentData<TState> where TState : struct {
     ref TState GetStateRef(); // get a reference to this object's state (can read / write to / from this reference)
-    string GetObjectID();     // get a unique id for this object
+    string GetObjectID();     // get a unique objectPersistencyId for this object
 }
 
 /// acts as a store to manage persistent data for all objects across the scene
@@ -19,12 +19,14 @@ public class PersistentDataStore {
     public bool TryRestoreState<TState>(IPersistentData<TState> obj) where TState : struct {
         var id = obj.GetObjectID();
         if (id == null || id == "") {
-            Debug.LogError("attempted to load object of type "+obj.GetType().FullName+" with empty id. "
+            Debug.LogError("attempted to load object of type "+obj.GetType().FullName+" with empty objectPersistencyId. "
                            + "cancelling TryRestoreState() + returning false");
             return false;
         }
         if (serializedDataByObjectID.ContainsKey(id)) {
-            obj.GetStateRef() = JsonUtility.FromJson<TState>(serializedDataByObjectID[id]);
+            var state = JsonUtility.FromJson<TState>(serializedDataByObjectID[id]);
+            // Debug.Log("got state: " + state);
+            obj.GetStateRef() = state;
             return true;
         }
         return false;
@@ -33,11 +35,11 @@ public class PersistentDataStore {
     public bool TrySaveState<TState>(IPersistentData<TState> obj) where TState : struct {
         var id = obj.GetObjectID();
         if (id == null || id == "") {
-            Debug.LogError("attempted to save object of type "+obj.GetType().FullName+" with empty id. "
+            Debug.LogError("attempted to save object of type "+obj.GetType().FullName+" with empty objectPersistencyId. "
                            + "cancelling TrySaveState() with data " + JsonUtility.ToJson(obj.GetStateRef()));
             return false;
         }
-        Debug.Log("Saving object "+obj+" with key "+obj.GetObjectID());
+        // Debug.Log("Saving object "+obj+" with key "+obj.GetObjectID() + ", data = " + JsonUtility.ToJson(obj.GetStateRef()));
         serializedDataByObjectID[id] = JsonUtility.ToJson(obj.GetStateRef());
         return true;
     }
