@@ -8,7 +8,14 @@ public class FragmentPickup : PersistentInteractiveObject<FragmentPickup.State> 
     public string interactMessage = "[Collect Shard]";
     //private FloatingTextController floatingText;
     public GameObject fragmentUI;
+    public Virtue virtueType;
 
+    [HideInInspector]
+    [SerializeField]
+    public string id = "";
+
+    public override string GetObjectID() { return id; }
+    
     /// stores persistent state for this object
     public struct State {
         public bool collected; // = false
