@@ -13,27 +13,38 @@ public interface IPersistentData<TState> where TState : struct {
 /// acts as a store to manage persistent data for all objects across the scene
 public class PersistentDataStore {
     public static PersistentDataStore instance { get; } = new PersistentDataStore();
-    private Dictionary<string, string> serializedDataByUnityGuid = new Dictionary<string, string>();
+    private Dictionary<string, string> serializedDataByObjectID = new Dictionary<string, string>();
 
     // tbd: add struct serialization to / from json
     public bool TryRestoreState<TState>(IPersistentData<TState> obj) where TState : struct {
         var id = obj.GetObjectID();
-        if (serializedDataByUnityGuid.ContainsKey(id)) {
-            obj.GetStateRef() = JsonUtility.FromJson<TState>(serializedDataByUnityGuid[id]);
+        if (id == null || id == "") {
+            Debug.LogError("attempted to load object of type "+obj.GetType().FullName+" with empty id. "
+                           + "cancelling TryRestoreState() + returning false");
+            return false;
+        }
+        if (serializedDataByObjectID.ContainsKey(id)) {
+            obj.GetStateRef() = JsonUtility.FromJson<TState>(serializedDataByObjectID[id]);
             return true;
         }
         return false;
     }
 
     public bool TrySaveState<TState>(IPersistentData<TState> obj) where TState : struct {
+        var id = obj.GetObjectID();
+        if (id == null || id == "") {
+            Debug.LogError("attempted to save object of type "+obj.GetType().FullName+" with empty id. "
+                           + "cancelling TrySaveState() with data " + JsonUtility.ToJson(obj.GetStateRef()));
+            return false;
+        }
         Debug.Log("Saving object "+obj+" with key "+obj.GetObjectID());
-        serializedDataByUnityGuid[obj.GetObjectID()] = JsonUtility.ToJson(obj.GetStateRef());
+        serializedDataByObjectID[id] = JsonUtility.ToJson(obj.GetStateRef());
         return true;
     }
     public string GetSavedObjectDataAsJson() {
         var sb = new StringBuilder();
         sb.AppendLine("{");
-        foreach (var entry in serializedDataByUnityGuid) {
+        foreach (var entry in serializedDataByObjectID) {
             sb.AppendLine("    \""+ entry.Key + "\": " + entry.Value);
         }
         sb.AppendLine("}");
