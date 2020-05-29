@@ -5,7 +5,7 @@ using UnityEngine;
 public class FragmentUI : PlayerComponent {
     GameObject shardsPickups;
     GameObject orbsPickups;
-    private GameObject[] fragmentPieces;
+    private Transform[] fragmentPieces;
 
     private Player _player = null;
     private Player player => _player ?? Enforcements.GetSingleComponentInScene<Player>(this);
@@ -28,7 +28,6 @@ public class FragmentUI : PlayerComponent {
             }
 
             //get reference to fragment shards UI
-            fragmentPieces = new List<GameObject>();
             GameObject fragmentHolder = null;
             foreach (Transform child in fragmentUIIndicator.transform)
             {
@@ -37,26 +36,23 @@ public class FragmentUI : PlayerComponent {
                     fragmentHolder = child.gameObject;
                 }
             }
-
-            if(fragmentHolder != null) {
-                fragmentPieces = fragmentHolder.GetComponentsInChildren<GameObject>();
-                // foreach (Transform child in fragmentHolder.transform)
-                // {
-                //     fragmentPieces.Add(child.gameObject);
-                // }
-            }
+            fragmentPieces = fragmentHolder?.GetComponentsInChildren<Transform>() ?? null;
         }
     }
     
     private void UpdateFragmentUI(Virtue activeVirtue, float fragmentCompletion) {
-        int fragmentsPickedUp = (int) (fragmentCompletion * (float)fragmentPieces.Length);
-        
         // TODO: switch fragment images depending on active virtue, etc.
+        
+        // if fragmentPieces don't exist (for whatever reason - see above), skip
+        if (fragmentPieces == null) return;
+        
+        // update fragment UI parts currently visible
+        int fragmentsPickedUp = (int) (fragmentCompletion * (float)fragmentPieces.Length);
         if (activeVirtue == Virtue.None) {
             fragmentsPickedUp = 0;
         }
         for (int i = 0; i < fragmentPieces.Length; ++i) {
-            fragmentPieces[i].SetActive(i < fragmentsPickedUp);
+            fragmentPieces[i].gameObject.SetActive(i < fragmentsPickedUp);
         }
     }
     private void OnEnable() {

@@ -36,7 +36,7 @@ public class PlayerVirtueFragments : PlayerComponent {
     public float GetFragmentCompletion(Virtue virtue) {
         var current = (float)GetFragmentsPickedUp(virtue);
         var total = GetFragmentTotal(virtue);
-        return total == 0 ? 0f : current / (float)total;
+        return total == 0 ? 0f : Mathf.Clamp01(current / (float)total);
     }
     
     public Virtue activeVirtueInThisScene { get; private set; }
@@ -73,6 +73,8 @@ public class PlayerVirtueFragments : PlayerComponent {
     
     public void PickUpFragment(FragmentPickup fragment) {
         if (fragment.virtueType != Virtue.None) {
+            if (!fragmentsPickedUp.ContainsKey(fragment.virtueType))
+                fragmentsPickedUp[fragment.virtueType] = 0;
             fragmentsPickedUp[fragment.virtueType] += 1;
             var info = new FragmentInfo {
                 virtue = fragment.virtueType,
@@ -90,5 +92,16 @@ public class PlayerVirtueFragments : PlayerComponent {
                 + fragment + ", id = '" + fragment.objectPersistencyId + "' in scene " +
                 SceneManager.GetActiveScene().name);  
         }
+    }
+    void OnEnable() {
+        SceneManager.sceneLoaded += OnLevelLoaded;
+    }
+    void OnDisable() {
+        SceneManager.sceneLoaded -= OnLevelLoaded;
+    }
+    void OnLevelLoaded(Scene scene, LoadSceneMode loadSceneMode) {
+        var fragmentManager = GameObject.FindObjectOfType<SceneFragmentManager>();
+        activeVirtueInThisScene = fragmentManager?.virtueType ?? Virtue.None;
+        onActiveVirtueChanged?.Invoke(activeVirtueInThisScene);
     }
 }
