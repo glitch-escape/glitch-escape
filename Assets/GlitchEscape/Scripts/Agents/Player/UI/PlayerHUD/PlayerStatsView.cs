@@ -85,8 +85,8 @@ public class PlayerStatsView : MonoBehaviour {
     public Image staminaWheel;
     public List<Image> healthSplashes;
 
-    public List<Material> astralPlatforms;
-    public GameObject glitchMaze;
+    private List<Material> astralPlatforms;
+    private GameObject glitchMaze;
     private void OnEnable() {
         var renderer = Enforcements.GetComponent<Renderer>(this);
         healthSetter.SetMaterial(renderer.materials[HEALTH_BAR_MATEIRAL_INDEX]);
@@ -97,6 +97,8 @@ public class PlayerStatsView : MonoBehaviour {
         foreach (Image i in healthSplashes) {
             i.gameObject.SetActive(false);
         }
+        GlitchPlatform[] temp = Resources.FindObjectsOfTypeAll<GlitchPlatform>();
+        glitchMaze = temp[0].gameObject;
         astralPlatforms = new List<Material>();
         foreach (Transform platform in glitchMaze.transform)
         {
