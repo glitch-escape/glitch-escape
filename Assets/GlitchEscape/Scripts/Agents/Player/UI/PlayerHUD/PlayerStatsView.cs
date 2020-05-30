@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Renderer))]
 public class PlayerStatsView : MonoBehaviour {
@@ -85,8 +86,6 @@ public class PlayerStatsView : MonoBehaviour {
     public Image staminaWheel;
     public List<Image> healthSplashes;
 
-    private List<Material> astralPlatforms;
-    private GameObject glitchMaze;
     private void OnEnable() {
         var renderer = Enforcements.GetComponent<Renderer>(this);
         healthSetter.SetMaterial(renderer.materials[HEALTH_BAR_MATEIRAL_INDEX]);
@@ -97,14 +96,7 @@ public class PlayerStatsView : MonoBehaviour {
         foreach (Image i in healthSplashes) {
             i.gameObject.SetActive(false);
         }
-        GlitchPlatform[] temp = Resources.FindObjectsOfTypeAll<GlitchPlatform>();
-        glitchMaze = temp[0].gameObject;
-        astralPlatforms = new List<Material>();
-        foreach (Transform platform in glitchMaze.transform)
-        {
-            astralPlatforms.Add(platform.GetComponent<Renderer>().material);
-        }
-        //astralPlatforms.GetComponent<Renderer>().sharedMaterial = new Material(astralPlatforms.GetComponent<Renderer>().sharedMaterial);
+        SceneManager.sceneLoaded += OnSceneLoad;
     }
     private void OnDisable() {
         healthSetter.SetMaterial(null);
@@ -113,12 +105,33 @@ public class PlayerStatsView : MonoBehaviour {
         staminaFlash.SetMaterial(null);
         player.OnFailedToUseAbilityDueToLowStamina -= FlashLowStamina;
     }
+
+    private List<Material> astralPlatforms;
+    private GameObject glitchMaze;
+    private bool hasGlitchMaze = false;
+    private void OnSceneLoad(Scene scene, LoadSceneMode loadSceneMode)
+    {
+        GlitchPlatform[] temp = Resources.FindObjectsOfTypeAll<GlitchPlatform>();
+        if (temp.Length >= 1)
+        {
+            glitchMaze = temp[0].gameObject;
+            hasGlitchMaze = true;
+            astralPlatforms = new List<Material>();
+            foreach (Transform platform in glitchMaze.transform)
+            {
+                astralPlatforms.Add(platform.GetComponent<Renderer>().material);
+            }
+        }
+    }
     
     void Update() {
         float health = player.health.value / player.health.maximum;
-        foreach (Material m in astralPlatforms)
+        if(hasGlitchMaze)
         {
-            m.SetFloat("Vector1_62D5110A", health);
+            foreach (Material m in astralPlatforms)
+            {
+                m.SetFloat("Vector1_62D5110A", health);
+            }
         }
 
         if(health < .45 && health > .30)
