@@ -114,6 +114,7 @@ public class PlayerStatsView : MonoBehaviour {
         GlitchPlatform[] temp = Resources.FindObjectsOfTypeAll<GlitchPlatform>();
         if (temp.Length >= 1)
         {
+            astralPlatforms.Clear();
             glitchMaze = temp[0].gameObject;
             hasGlitchMaze = true;
             astralPlatforms = new List<Material>();
