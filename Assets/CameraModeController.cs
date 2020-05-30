@@ -7,51 +7,42 @@ using UnityEngine.InputSystem.Controls;
 
 public class CameraModeController : MonoBehaviour
 {
-    //[InjectComponent] Player player;
+    [InjectComponent] public Player player;
     [InjectComponent] public PlayerMovement playerMovement;
-    //private Vector2 lastMousePosition;
+    [InjectComponent] public Transform cameraTarget;
     public CinemachineFreeLook freelookCamera;
     private CameraMode currentCamMode;
-    //private float cameraDelay = 1f;
-    //private float elapsedTime = 0f;
+    private bool fixedFocus = false;
 
-    private enum CameraMode
+    public enum CameraMode
     {
         NoHeading,
-        SlowFollow,
-        FastFollow,
         HybridFollow,
         HardFollow,
+        FixedFocus,
     }
 
     void Start()
     {
-        NoHeadingMode();
+        SetCameraMode(CameraMode.HybridFollow);
+        //cameraTarget = new GameObject().transform;
+        //cameraTarget.transform.position = player.transform.position;
+        cameraTarget.transform.Rotate(0.0f, 0.0f, 0.0f, Space.World);
+        cameraTarget.transform.position = player.transform.position;
     }
 
     void Update()
     {
-        if (Keyboard.current.digit1Key.wasPressedThisFrame)
+        cameraTarget.transform.position = player.transform.position;
+        if (!fixedFocus)
         {
-            SetCameraMode(CameraMode.NoHeading);
+            cameraTarget.transform.rotation = player.transform.rotation;
         }
-        if (Keyboard.current.digit2Key.wasPressedThisFrame)
+        else
         {
-            SetCameraMode(CameraMode.SlowFollow);
-        }
-        if (Keyboard.current.digit3Key.wasPressedThisFrame)
-        {
-            SetCameraMode(CameraMode.FastFollow);
-        }
-        if (Keyboard.current.digit4Key.wasPressedThisFrame)
-        {
-            SetCameraMode(CameraMode.HybridFollow);
-        }
-        if (Keyboard.current.digit5Key.wasPressedThisFrame)
-        {
-            SetCameraMode(CameraMode.HardFollow);
-        }
 
+        }
+        
         // Logic for camera when player is or isnt moving
         if (currentCamMode == CameraMode.HybridFollow)
         {
@@ -64,26 +55,28 @@ public class CameraModeController : MonoBehaviour
                 freelookCamera.m_RecenterToTargetHeading.m_enabled = false;
             }
         }
+
+        //single hard reset of camera
+        if (Keyboard.current.qKey.wasPressedThisFrame && currentCamMode != CameraMode.HardFollow)
+        {
+            ResetCamera();
+            
+            //SetCameraMode(currentCamMode);
+        }
+        if (Keyboard.current.qKey.wasReleasedThisFrame)
+        {
+            SetCameraMode(currentCamMode);
+        }
     }
     
-    void SetCameraMode(CameraMode newMode)
+    public void SetCameraMode(CameraMode newMode)
     {
-        if (newMode == currentCamMode)
-        {
-            return;
-        }
-        else
+        if (!fixedFocus)
         {
             switch (newMode)
             {
                 case CameraMode.NoHeading:
                     NoHeadingMode();
-                    break;
-                case CameraMode.SlowFollow:
-                    SlowFollowMode();
-                    break;
-                case CameraMode.FastFollow:
-                    FastFollowMode();
                     break;
                 case CameraMode.HybridFollow:
                     HybridFollowMode();
@@ -91,31 +84,18 @@ public class CameraModeController : MonoBehaviour
                 case CameraMode.HardFollow:
                     HardFollowMode();
                     break;
+                case CameraMode.FixedFocus:
+                    //FixedFocusMode();
+                    break;
             }
         }
     }
 
-    void NoHeadingMode()
+    public void NoHeadingMode()
     {
         //Debug.Log("No heading mode");
         freelookCamera.m_RecenterToTargetHeading.m_enabled = false;
         currentCamMode = CameraMode.NoHeading;
-    }
-    void SlowFollowMode()
-    {
-        //Debug.Log("Slow Follow Mode");
-        freelookCamera.m_RecenterToTargetHeading.m_enabled = true;
-        freelookCamera.m_RecenterToTargetHeading.m_WaitTime = 0;
-        freelookCamera.m_RecenterToTargetHeading.m_RecenteringTime = 2;
-        currentCamMode = CameraMode.SlowFollow;
-    }
-    void FastFollowMode()
-    {
-        //Debug.Log("Fast Follow Mode");
-        freelookCamera.m_RecenterToTargetHeading.m_enabled = true;
-        freelookCamera.m_RecenterToTargetHeading.m_WaitTime = 0;
-        freelookCamera.m_RecenterToTargetHeading.m_RecenteringTime = 1;
-        currentCamMode = CameraMode.FastFollow;
     }
     void HybridFollowMode()
     {
@@ -131,5 +111,28 @@ public class CameraModeController : MonoBehaviour
         freelookCamera.m_RecenterToTargetHeading.m_WaitTime = 0;
         freelookCamera.m_RecenterToTargetHeading.m_RecenteringTime = 0;
         currentCamMode = CameraMode.HardFollow;
+    }
+
+    void ResetCamera()
+    {
+        Debug.Log("reset was called");
+        freelookCamera.m_RecenterToTargetHeading.m_enabled = true;
+        freelookCamera.m_RecenterToTargetHeading.m_WaitTime = 0;
+        freelookCamera.m_RecenterToTargetHeading.m_RecenteringTime = 0;
+    }
+
+    public void FixedFocus(float newAngle)
+    {
+        fixedFocus = true;
+
+        cameraTarget.transform.rotation = Quaternion.Euler(0f, newAngle, 0f);
+
+        freelookCamera.m_RecenterToTargetHeading.m_enabled = true;
+    }
+
+    public void ResetFocus()
+    {
+        fixedFocus = false;
+        freelookCamera.m_RecenterToTargetHeading.m_enabled = true;
     }
 }
