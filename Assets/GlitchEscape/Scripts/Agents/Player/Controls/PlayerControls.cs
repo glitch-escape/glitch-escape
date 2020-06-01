@@ -79,6 +79,7 @@ public class PlayerControls : MonoBehaviour {
 //    private HybridButtonControl m_manifest = null;
     private HybridButtonControl m_interact = null;
 //    private HybridButtonControl m_shoot = null;
+    private HybridButtonControl m_nextDialog = null;
 
     /// <summary>
     /// Provides hardcoded button state + callbacks for the Dash action
@@ -123,6 +124,14 @@ public class PlayerControls : MonoBehaviour {
             new IndirectButtonControl(Keyboard.current.eKey),
             new IndirectButtonControl(() => Gamepad.current?.buttonWest)));
 
+    /// <summary>
+    /// Provides hardcoded button state + callbacks for the continue dialog action
+    /// </summary>
+    public HybridButtonControl nextDialog =>
+        m_nextDialog ?? (m_nextDialog = new HybridButtonControl(
+            new IndirectButtonControl(Keyboard.current.aKey),
+            new IndirectButtonControl(() => Gamepad.current?.buttonSouth)));
+
 /*
     /// <summary>
     /// Provides hardcoded button state + callbacks for the Interact action
@@ -137,6 +146,7 @@ public class PlayerControls : MonoBehaviour {
     //
     public Vector2 moveInput {
         get {
+            if (player.lockControls) return Vector2.zero;
             var input = Gamepad.current?.leftStick.ReadValue() ?? Vector2.zero;
             if (input.magnitude > 0f) {
                 buttonPollInfo.lastGamepadPressTime = Time.time;
@@ -153,6 +163,7 @@ public class PlayerControls : MonoBehaviour {
     }
     public Vector2 lookInput {
         get {
+            if (player.lockControls) return Vector2.zero;
             var input = Gamepad.current?.rightStick.ReadValue() ?? Vector2.zero;
             if (input.magnitude > 0f) {
                 buttonPollInfo.lastGamepadPressTime = Time.time;
