@@ -13,8 +13,10 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
     private IEnumerator coroutineSent;
     // These are outside of the player gameObject(in UI part of prefab), 
     // so I'm not sure if InjectComponent works
-    private DialogueRunner dr;
-    private DialogueUI dUI;
+    private DialogueRunner dr => _dr ?? FindObjectOfType<DialogueRunner>();
+    private DialogueUI dUI => _dUI ?? FindObjectOfType<DialogueUI>();
+    private DialogueRunner _dr;
+    private DialogueUI _dUI;
 
     // Variables for icon
     private string curCharacter;
@@ -30,16 +32,20 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
 
     
     private void Start() {
-        dUI = FindObjectOfType<DialogueUI>();
-        dr = FindObjectOfType<DialogueRunner>();
+        _dUI = FindObjectOfType<DialogueUI>();
+        _dr = FindObjectOfType<DialogueRunner>();
         if (dUI) dUI.textSpeed = config.textSpeed;
         if (dr)  dr.Add(config.coreText);
     }
     
     void Update() {
         // Start/Continue dialog if input was pressed with a defined speaker
+                    //print(this.curSpeaker);
+
         if(!dr.IsDialogueRunning) {
+            //if(beginDialogInput) print(curSpeaker);
             if(beginDialogInput && curSpeaker != null) { 
+                //print(":]???");
                 dr.StartDialogue(curSpeaker); 
             }
         }
@@ -72,7 +78,9 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
     /// Set the current node of text that should be played using YarnSpinner
     /// </summary>
     public void SetSpeaker(string dialogNode) {
-        curSpeaker = dialogNode;
+        this.curSpeaker = dialogNode;
+        //print("AAA: " + curSpeaker);
+        //print("CAA " + gameObject.name);
     }
 
     #region Functions to be called by Dialog Runner or Animation Timeline
