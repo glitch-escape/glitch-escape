@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -15,6 +17,7 @@ public class SceneFragmentManager : MonoBehaviour {
     public Virtue virtueType;
 }
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(SceneFragmentManager))]
 public class SceneFragmentManagerEditor : Editor {
     private StringBuilder infoLog = new StringBuilder();
@@ -68,3 +71,4 @@ public class SceneFragmentManagerEditor : Editor {
         }
     }
 }
+#endif
