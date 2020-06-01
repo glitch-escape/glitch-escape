@@ -2,7 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -166,7 +168,7 @@ public class PlayerFragmentInfoLog {
     }
 }
 
-
+#if UNITY_EDITOR
 [CustomEditor(typeof(PlayerVirtueFragments))]
 [CanEditMultipleObjects]
 class PlayerFragmentEditor : Editor {
@@ -202,3 +204,4 @@ class PlayerFragmentEditor : Editor {
         RenderEditorGUI((PlayerVirtueFragments)target);
     }
 }
+#endif

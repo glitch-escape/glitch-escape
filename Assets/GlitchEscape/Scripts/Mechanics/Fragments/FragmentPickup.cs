@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 
 public class FragmentPickup : PersistentInteractiveObject<FragmentPickup.State> {
@@ -78,6 +80,7 @@ public class FragmentPickup : PersistentInteractiveObject<FragmentPickup.State> 
     }
 }
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(FragmentPickup))]
 public class FragmentPickupEditor : Editor {
     public override void OnInspectorGUI() {
@@ -93,3 +96,4 @@ public class FragmentPickupEditor : Editor {
         GUILayout.Label("Persistent data: " + PersistentDataStore.instance.GetSavedObjectDataAsJson());
     }
 }
+#endif

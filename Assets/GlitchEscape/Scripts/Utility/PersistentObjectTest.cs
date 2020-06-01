@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 
 public class PersistentObjectTest : PersistentObject<PersistentObjectTest.State> {
@@ -18,7 +20,7 @@ public class PersistentObjectTest : PersistentObject<PersistentObjectTest.State>
         TrySaveState();
     }
 }
-
+#if UNITY_EDITOR
 [CustomEditor(typeof(PersistentObjectTest))]
 public class PersistentObjectTestEditor : Editor {
     public override void OnInspectorGUI() {
@@ -36,3 +38,4 @@ public class PersistentObjectTestEditor : Editor {
         GUILayout.Label("saved data: " + PersistentDataStore.instance.GetSavedObjectDataAsJson());
     }
 }
+#endif
