@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Yarn.Unity;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
 {
@@ -19,19 +20,34 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
     private string curCharacter;
     private Image icon;
 
+    private string curSpeaker;
+    private PlayerControls.HybridButtonControl inputButton => PlayerControls.instance.interact;
+    private PlayerControls.HybridButtonControl inputButton2 => PlayerControls.instance.nextDialog;
+    private bool beginDialogInput => (inputButton?.wasPressedThisFrame ?? false);
+    private bool nextDialogInput => (inputButton?.wasPressedThisFrame ?? false) 
+                                    || (inputButton2?.wasPressedThisFrame ?? false) 
+                                    || Keyboard.current.spaceKey.wasPressedThisFrame;
+
     
     private void Start() {
         dUI = FindObjectOfType<DialogueUI>();
-        if (dUI) {
-            if(!config.isCutscene) dUI.onLineFinishDisplaying.AddListener(WaitForNextLine);
-            dUI.textSpeed = config.textSpeed;
-        }
         dr = FindObjectOfType<DialogueRunner>();
-        if (dr) dr.Add(config.coreText);
+        if (dUI) dUI.textSpeed = config.textSpeed;
+        if (dr)  dr.Add(config.coreText);
     }
     
     void Update() {
-        print(icon);
+        // Start/Continue dialog if input was pressed with a defined speaker
+        if(!dr.IsDialogueRunning) {
+            if(beginDialogInput && curSpeaker != null) { 
+                dr.StartDialogue(curSpeaker); 
+            }
+        }
+        else if(nextDialogInput) {
+            dUI.MarkLineComplete();
+        }  
+
+        // Update the textbox portrait based on name of current speaker
         if(icon && dUI.curCharacter != curCharacter) {
             for(int i = 0; i < config.portraits.Length; i ++) {
                 print(dUI.curCharacter + " " + config.portraits[i].name);
@@ -44,6 +60,23 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
         }
     }
 
+
+    /// <summary>
+    /// Let other scripts know if the movement should be locked
+    /// </summary>
+    public bool PreventMovement() {
+        return dr.IsDialogueRunning;
+    }
+
+    /// <summary>
+    /// Set the current node of text that should be played using YarnSpinner
+    /// </summary>
+    public void SetSpeaker(string dialogNode) {
+        curSpeaker = dialogNode;
+    }
+
+    #region Functions to be called by Dialog Runner or Animation Timeline
+
     /// <summary>
     /// Begins to display dialog, provided a node of text was given
     /// </summary>
@@ -54,27 +87,13 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
         }
     }
 
-    private void WaitForNextLine() {
-        coroutineSent = DisplayNext();
-        StartCoroutine(coroutineSent);
-    }
-
-    IEnumerator DisplayNext() {
-        yield return new WaitForSeconds(config.sentenceDelay);
-        dUI.MarkLineComplete();
-    }
-
-     IEnumerator WaitAndHide(GameObject text) {
-        yield return new WaitForSeconds(config.sentenceDelay);
-        text.SetActive(false);
-    }
-
-    #region Public Functions for Dialog Runner to call
     /// <summary>
-    /// Moves dialog onto next sentence. Function is for cutscene usage
+    /// Moves dialog onto next sentence.
     /// </summary>
     public void ContinueDialog() {
-        dUI.MarkLineComplete();
+        if(dr.IsDialogueRunning) {
+            dUI.MarkLineComplete();
+        }
     }
 
     public void WaitToHideText(GameObject text) {
@@ -84,5 +103,11 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
     public void SetIcon(Image display) {
        icon = display;
     }
+
+    IEnumerator WaitAndHide(GameObject text) {
+        yield return new WaitForSeconds(config.sentenceDelay);
+        text.SetActive(false);
+    }
+    
     #endregion
 }
