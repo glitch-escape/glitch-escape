@@ -57,5 +57,14 @@ public class SceneFragmentManagerEditor : Editor {
             GUILayout.EndHorizontal();
         }
         GUILayout.Label(infoLog.ToString());
+
+        // render the player fragment editor (has controls for simulating picking up fragments, etc)
+        // iff a player is present
+        var player = GameObject.FindObjectOfType<Player>();
+        var playerFragments = player?.fragments;
+        if (playerFragments != null) {
+            GUILayout.Label("Player fragment pickup debug controls:");
+            PlayerFragmentEditor.RenderEditorGUI(playerFragments);
+        }
     }
 }

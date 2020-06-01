@@ -55,7 +55,7 @@ public class FragmentPickup : PersistentInteractiveObject<FragmentPickup.State> 
     public override void OnInteract(Player player) {
         // Debug.Log("picking up fragment");
         collected = true;
-        player.GetComponent<FragmentPickupManager>()?.PickUpFragment(this);
+        player.GetComponent<PlayerVirtueFragments>()?.PickUpFragment(this);
     }
 
     /// use to implement fragment pick up transitions / effects, etc
