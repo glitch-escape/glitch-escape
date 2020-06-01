@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -46,8 +48,21 @@ public class PlayerVirtueFragments : PlayerComponent {
         public uint fragmentsPickedUp;
         public uint totalFragments;
         public float fragmentCompletion;
+
+        public override String ToString() {
+            return virtue.ToString() + " " + (fragmentCompletion * 100f) + "% complete ("
+                   + fragmentsPickedUp + " / " + totalFragments + ")";
+        }
     }
-    
+    public FragmentInfo GetCurrentFragmentInfo(Virtue virtueType) {
+        return new FragmentInfo {
+            virtue = virtueType,
+            fragmentsPickedUp = GetFragmentsPickedUp(virtueType),
+            totalFragments = GetFragmentTotal(virtueType),
+            fragmentCompletion = GetFragmentCompletion(virtueType)
+        };
+    }
+
     /// <summary>
     /// Use this callback event to listen to fragment pick ups
     /// </summary>
@@ -76,12 +91,7 @@ public class PlayerVirtueFragments : PlayerComponent {
             if (!fragmentsPickedUp.ContainsKey(fragment.virtueType))
                 fragmentsPickedUp[fragment.virtueType] = 0;
             fragmentsPickedUp[fragment.virtueType] += 1;
-            var info = new FragmentInfo {
-                virtue = fragment.virtueType,
-                fragmentsPickedUp = GetFragmentsPickedUp(fragment.virtueType),
-                totalFragments = GetFragmentTotal(fragment.virtueType),
-                fragmentCompletion = GetFragmentCompletion(fragment.virtueType)
-            };
+            var info = GetCurrentFragmentInfo(fragment.virtueType);
             onFragmentPickedUp?.Invoke(info);
             if (info.fragmentCompletion >= 1f) {
                 onVirtueCompleted?.Invoke(fragment.virtueType);
@@ -95,13 +105,100 @@ public class PlayerVirtueFragments : PlayerComponent {
     }
     void OnEnable() {
         SceneManager.sceneLoaded += OnLevelLoaded;
+        infoLog?.SetupListeners(this);
     }
     void OnDisable() {
         SceneManager.sceneLoaded -= OnLevelLoaded;
+        infoLog?.SetupListeners(null);
     }
-    void OnLevelLoaded(Scene scene, LoadSceneMode loadSceneMode) {
+    public void OnLevelLoaded(Scene scene, LoadSceneMode loadSceneMode) {
         var fragmentManager = GameObject.FindObjectOfType<SceneFragmentManager>();
         activeVirtueInThisScene = fragmentManager?.virtueType ?? Virtue.None;
         onActiveVirtueChanged?.Invoke(activeVirtueInThisScene);
+    }
+    public PlayerFragmentInfoLog infoLog { get; } = new PlayerFragmentInfoLog();
+    
+    /// <summary>
+    /// Added for debugging purposes - clears / resets a fragment type
+    /// </summary>
+    public void ClearFragments(Virtue virtue) {
+        fragmentsPickedUp.Remove(virtue);
+        fragmentCounts.Remove(virtue);
+        
+        // fire an on active virtue changed event to trigger UI updates, etc
+        onActiveVirtueChanged?.Invoke(activeVirtueInThisScene);
+    }
+}
+
+public class PlayerFragmentInfoLog {
+    private StringBuilder infoLog { get; } = new StringBuilder();
+    public PlayerVirtueFragments currentTarget { get; private set; } = null;
+
+    public String GetInfoLog() {
+        return infoLog.ToString();
+    }
+    public void Clear() {
+        infoLog.Clear();
+    }
+    public void SetupListeners(PlayerVirtueFragments target) {
+        if (currentTarget != null) {
+            currentTarget.onFragmentPickedUp -= OnFragmentPickedUp;
+            currentTarget.onVirtueCompleted -= OnVirtueCompleted;
+            currentTarget.onActiveVirtueChanged -= OnActiveVirtueChanged;
+        }
+        if (target != null) {
+            target.onFragmentPickedUp += OnFragmentPickedUp;
+            target.onVirtueCompleted += OnVirtueCompleted;
+            target.onActiveVirtueChanged += OnActiveVirtueChanged;
+        }
+        currentTarget = target;
+        infoLog.AppendLine("Setup listeners on " + target);
+        Debug.Log(GetInfoLog());
+    }
+    private void OnFragmentPickedUp(PlayerVirtueFragments.FragmentInfo info) {
+        infoLog.AppendLine("fragment picked up: " + info);
+    }
+    private void OnVirtueCompleted(Virtue virtue) {
+        infoLog.AppendLine("completed virtue: " + virtue);
+    }
+    private void OnActiveVirtueChanged(Virtue virtue) {
+        infoLog.AppendLine("changed active virtue in scene to " + virtue);
+    }
+}
+
+
+[CustomEditor(typeof(PlayerVirtueFragments))]
+[CanEditMultipleObjects]
+class PlayerFragmentEditor : Editor {
+    public void RenderEditorGUI(PlayerVirtueFragments target) {
+        var v = target.activeVirtueInThisScene;
+        var selected = (Virtue)EditorGUILayout.EnumPopup("active virtue", v);
+        if (selected != v) target.SetActiveVirtue(selected);
+        GUILayout.Label("fragment info: " + target.GetCurrentFragmentInfo(selected));
+
+        if (GUILayout.Button("Setup listeners")) {
+            target.infoLog.SetupListeners(target);
+        }
+        if (GUILayout.Button("Pick up fragment")) {
+            var tempFragment = new GameObject("temp fragment", typeof(BoxCollider),typeof(FragmentPickup));
+            var fragment = tempFragment.GetComponent<FragmentPickup>();
+            fragment.virtueType = target.activeVirtueInThisScene;
+            target.PickUpFragment(fragment);
+            DestroyImmediate(tempFragment);
+        }
+        if (GUILayout.Button("Clear fragment type")) {
+            target.ClearFragments(target.activeVirtueInThisScene);
+        }
+        if (GUILayout.Button("Simulate level load")) {
+            target.OnLevelLoaded(SceneManager.GetActiveScene(), LoadSceneMode.Single);
+        }
+        if (GUILayout.Button("Clear info log")) {
+            target.infoLog.Clear();
+        }
+        GUILayout.Label(target.infoLog.GetInfoLog());
+    }
+    public override void OnInspectorGUI() {
+        base.OnInspectorGUI();
+        RenderEditorGUI((PlayerVirtueFragments)target);
     }
 }
