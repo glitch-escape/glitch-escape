@@ -30,15 +30,11 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
         if (dr) dr.Add(config.coreText);
     }
     
-    // For testing purposes [NEEDS TO BE REMOVED]
     void Update() {
-        // if (Input.GetKeyDown(KeyCode.L)) {
-        if (Keyboard.current?.lKey.wasPressedThisFrame ?? false) {
-            BeginDialog("HDB-Act1");
-        } 
-
+        print(icon);
         if(icon && dUI.curCharacter != curCharacter) {
             for(int i = 0; i < config.portraits.Length; i ++) {
+                print(dUI.curCharacter + " " + config.portraits[i].name);
                 if(dUI.curCharacter == config.portraits[i].name) {
                     icon.sprite = config.portraits[i].icon;
                     break;
