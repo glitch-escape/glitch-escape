@@ -170,7 +170,7 @@ public class PlayerFragmentInfoLog {
 [CustomEditor(typeof(PlayerVirtueFragments))]
 [CanEditMultipleObjects]
 class PlayerFragmentEditor : Editor {
-    public void RenderEditorGUI(PlayerVirtueFragments target) {
+    public static void RenderEditorGUI(PlayerVirtueFragments target) {
         var v = target.activeVirtueInThisScene;
         var selected = (Virtue)EditorGUILayout.EnumPopup("active virtue", v);
         if (selected != v) target.SetActiveVirtue(selected);
