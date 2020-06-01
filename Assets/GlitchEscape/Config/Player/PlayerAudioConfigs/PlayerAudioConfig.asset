@@ -13,11 +13,17 @@ MonoBehaviour:
   m_Name: PlayerAudioConfig
   m_EditorClassIdentifier: 
   interactSounds: []
-  floorJumpSound: {fileID: 8300000, guid: dba84796a81d37646ba485612156886a, type: 3}
-  airJumpSound: {fileID: 8300000, guid: dba84796a81d37646ba485612156886a, type: 3}
-  wallJumpSound: {fileID: 8300000, guid: dba84796a81d37646ba485612156886a, type: 3}
+  floorJumpSound: {fileID: 8300000, guid: e399b78ee3fc44f0a9135121464c7a87, type: 3}
+  airJumpSound: {fileID: 8300000, guid: 8559ac38f380c419bb7395a0e2e10f73, type: 3}
+  wallJumpSound: {fileID: 8300000, guid: 8559ac38f380c419bb7395a0e2e10f73, type: 3}
+  landingSound: {fileID: 8300000, guid: e399b78ee3fc44f0a9135121464c7a87, type: 3}
   dashBeginSound: {fileID: 8300000, guid: 6ae9e8e0087124e059597a798e4a7147, type: 3}
   dashEndSound: {fileID: 0}
   shootSounds: []
-  footstepSounds: []
-  fragmentInteraction: {fileID: 8300000, guid: c6299c4f1cb233d4aabf3efd6d326395, type: 3}
+  footstepSounds:
+  - {fileID: 8300000, guid: 753bcd597a16044498ab15b5636e33ca, type: 3}
+  firstFootstepOffset: 0.1
+  footstepsPerSec: 2.21
+  footstepsPerSecVariation: 0.03
+  fragmentInteraction: {fileID: 8300000, guid: 448027fffa8dd48e1bfd1a70a0d1c60a, type: 3}
+  mazeSwitch: {fileID: 8300000, guid: 4f03349711ae941ffa1200eeb5250935, type: 3}

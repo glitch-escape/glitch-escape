@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using TMPro;
+using UnityEngine.InputSystem;
 using Yarn.Unity;
 
 public class Dialog : MonoBehaviour {
@@ -48,7 +49,7 @@ public class Dialog : MonoBehaviour {
 
     void Update() {
             // For testing purposes
-        if (Input.GetKeyDown(KeyCode.I)) {
+        if (Keyboard.current.iKey.wasPressedThisFrame) {
             dr.StartDialogue(textNode);
         } 
     }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using Yarn.Unity;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
@@ -49,6 +50,7 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
         // Update the textbox portrait based on name of current speaker
         if(icon && dUI.curCharacter != curCharacter) {
             for(int i = 0; i < config.portraits.Length; i ++) {
+                print(dUI.curCharacter + " " + config.portraits[i].name);
                 if(dUI.curCharacter == config.portraits[i].name) {
                     icon.sprite = config.portraits[i].icon;
                     break;
