@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Player))]
-public class FragmentComponent : PlayerComponent
+public class FragmentPickupManager : PlayerComponent
 {
     public int fragmentMax => player.config.fragmentTotal;
     public int fragmentCount;
 
     private void Start()
     {
-        FragmentInteraction[] allFragments = FindObjectsOfType<FragmentInteraction>();
+        FragmentPickup[] allFragments = FindObjectsOfType<FragmentPickup>();
         player.config.fragmentTotal = allFragments.Length;
     }
     
-    public void PickUpFragment(FragmentInteraction someFragment)
+    public void PickUpFragment(FragmentPickup someFragment)
     {
         fragmentCount++;
         FireEvent(PlayerEvent.Type.FragmentPickup);
