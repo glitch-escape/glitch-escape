@@ -22,7 +22,6 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
     private string curCharacter;
     private Image icon;
 
-    private int testingtons;
     private string curSpeaker;
     private PlayerControls.HybridButtonControl inputButton => PlayerControls.instance.interact;
     private PlayerControls.HybridButtonControl inputButton2 => PlayerControls.instance.nextDialog;
@@ -40,25 +39,21 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
     }
     
     void Update() {
-        // Start/Continue dialog if input was pressed with a defined speaker
-                    //print(this.curSpeaker);
-
-        print(testingtons);
-        if(!dr.IsDialogueRunning) {
-            //if(beginDialogInput) print(curSpeaker);
-            if(beginDialogInput && curSpeaker != null) { 
-                //print(":]???");
-                dr.StartDialogue(curSpeaker); 
+        // Start/Continue dialog if input was pressed with a defined speaker 
+        if(!config.isCutscene){ // Don't do this during a cutscene
+            if(!dr.IsDialogueRunning) {
+                if(beginDialogInput && curSpeaker != null) { 
+                    dr.StartDialogue(curSpeaker); 
+                }
             }
+            else if(nextDialogInput) {
+                dUI.MarkLineComplete();
+            }  
         }
-        else if(nextDialogInput) {
-            dUI.MarkLineComplete();
-        }  
 
         // Update the textbox portrait based on name of current speaker
         if(icon && dUI.curCharacter != curCharacter) {
             for(int i = 0; i < config.portraits.Length; i ++) {
-                print(dUI.curCharacter + " " + config.portraits[i].name);
                 if(dUI.curCharacter == config.portraits[i].name) {
                     icon.sprite = config.portraits[i].icon;
                     break;
@@ -83,9 +78,6 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
         this.curSpeaker = dialogNode;
         //print("AAA: " + curSpeaker);
         //print("CAA " + gameObject.name);
-        if(curSpeaker == null) testingtons = 0;
-        else testingtons = 1;
-        print("CAA " + testingtons);
     }
 
     #region Functions to be called by Dialog Runner or Animation Timeline
