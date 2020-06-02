@@ -26367,9 +26367,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e477fd7ef77eb74081e51f41e5456b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogManager: {fileID: 537790827}
-  floatTextArea: {fileID: 726623433}
-  eventNumber: 0
+  dialogManager: {fileID: 0}
+  inputText: {fileID: 0}
+  speakerName: 
 --- !u!135 &770355327
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -35645,6 +35645,75 @@ Transform:
   m_Father: {fileID: 2142508222}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1049717164
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6983259549623366170, guid: f318086e07101447894ceeed589994fb,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 3.115767
+      objectReference: {fileID: 0}
+    - target: {fileID: 6983259549623366170, guid: f318086e07101447894ceeed589994fb,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 10.404789
+      objectReference: {fileID: 0}
+    - target: {fileID: 6983259549623366170, guid: f318086e07101447894ceeed589994fb,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.32875252
+      objectReference: {fileID: 0}
+    - target: {fileID: 6983259549623366170, guid: f318086e07101447894ceeed589994fb,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6983259549623366170, guid: f318086e07101447894ceeed589994fb,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6983259549623366170, guid: f318086e07101447894ceeed589994fb,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6983259549623366170, guid: f318086e07101447894ceeed589994fb,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6983259549623366170, guid: f318086e07101447894ceeed589994fb,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 6983259549623366170, guid: f318086e07101447894ceeed589994fb,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6983259549623366170, guid: f318086e07101447894ceeed589994fb,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6983259549623366170, guid: f318086e07101447894ceeed589994fb,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6983259549623366180, guid: f318086e07101447894ceeed589994fb,
+        type: 3}
+      propertyPath: m_Name
+      value: Cutscene Manager
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f318086e07101447894ceeed589994fb, type: 3}
 --- !u!1 &1050627713
 GameObject:
   m_ObjectHideFlags: 0
@@ -93798,6 +93867,8 @@ MonoBehaviour:
   showDebugGUI: 0
   interactMessage: Level 3
   levelToLoad: 6
+  cutSceneToLoad: 0
+  levelVirtueType: 0
   focusedPortalSpeed:
     minimum: 1
     maximum: 3
@@ -93821,6 +93892,8 @@ MonoBehaviour:
   showDebugGUI: 0
   interactMessage: Go to exploration level
   levelToLoad: 3
+  cutSceneToLoad: 0
+  levelVirtueType: 0
   focusedPortalSpeed:
     minimum: 1
     maximum: 3
@@ -93844,6 +93917,8 @@ MonoBehaviour:
   showDebugGUI: 0
   interactMessage: Go to platforming level
   levelToLoad: 4
+  cutSceneToLoad: 0
+  levelVirtueType: 0
   focusedPortalSpeed:
     minimum: 1
     maximum: 3
