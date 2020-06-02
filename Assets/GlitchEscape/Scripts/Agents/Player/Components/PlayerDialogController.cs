@@ -20,7 +20,7 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
 
     // Variables for icon
     private string curCharacter;
-    private Image icon;
+    public Image icon;
 
     private string curSpeaker;
     private PlayerControls.HybridButtonControl inputButton => PlayerControls.instance.interact;
@@ -36,6 +36,12 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
         _dr = FindObjectOfType<DialogueRunner>();
         if (dUI) dUI.textSpeed = config.textSpeed;
         if (dr)  dr.Add(config.coreText);
+
+        // Try to find the textbox if the icon hasn't been set yet
+        if(!icon) {
+            Image i = GameObject.Find("PlayerCameraRig/UI/HUD/InteractFloatPanel/Textbox Image").GetComponent<Image>();
+            if(i) SetIcon(i);
+        }
     }
     
     void Update() {
