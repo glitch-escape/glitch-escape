@@ -31,8 +31,18 @@ public class CameraModeController : MonoBehaviour
         cameraTarget.transform.position = player.transform.position;
     }
 
+    void FixedUpdate()
+    {
+        cameraTarget.transform.position = player.transform.position;
+        if (!fixedFocus)
+        {
+            cameraTarget.transform.rotation = player.transform.rotation;
+        }
+    }
+
     void Update()
     {
+        /*
         cameraTarget.transform.position = player.transform.position;
         if (!fixedFocus)
         {
@@ -40,8 +50,8 @@ public class CameraModeController : MonoBehaviour
         }
         else
         {
-
-        }
+        
+        }*/
         
         // Logic for camera when player is or isnt moving
         if (currentCamMode == CameraMode.HybridFollow)
@@ -57,7 +67,8 @@ public class CameraModeController : MonoBehaviour
         }
 
         //single hard reset of camera
-        if (Keyboard.current.qKey.wasPressedThisFrame && currentCamMode != CameraMode.HardFollow)
+        if ((Keyboard.current.qKey.wasPressedThisFrame || Gamepad.current.rightStickButton.wasPressedThisFrame) 
+            && currentCamMode != CameraMode.HardFollow)
         {
             ResetCamera();
             
@@ -118,7 +129,7 @@ public class CameraModeController : MonoBehaviour
         Debug.Log("reset was called");
         freelookCamera.m_RecenterToTargetHeading.m_enabled = true;
         freelookCamera.m_RecenterToTargetHeading.m_WaitTime = 0;
-        freelookCamera.m_RecenterToTargetHeading.m_RecenteringTime = 0;
+        freelookCamera.m_RecenterToTargetHeading.m_RecenteringTime = 0.2f;
     }
 
     public void FixedFocus(float newAngle)
