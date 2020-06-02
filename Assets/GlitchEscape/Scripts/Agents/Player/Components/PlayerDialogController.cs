@@ -20,7 +20,7 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
 
     // Variables for icon
     private string curCharacter;
-    private Image icon;
+    public Image icon;
 
     private string curSpeaker;
     private PlayerControls.HybridButtonControl inputButton => PlayerControls.instance.interact;
@@ -36,27 +36,30 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
         _dr = FindObjectOfType<DialogueRunner>();
         if (dUI) dUI.textSpeed = config.textSpeed;
         if (dr)  dr.Add(config.coreText);
+
+        // Try to find the textbox if the icon hasn't been set yet
+        if(!icon) {
+            Image i = GameObject.Find("PlayerCameraRig/UI/HUD/InteractFloatPanel/Textbox Image").GetComponent<Image>();
+            if(i) SetIcon(i);
+        }
     }
     
     void Update() {
-        // Start/Continue dialog if input was pressed with a defined speaker
-                    //print(this.curSpeaker);
-
-        if(!dr.IsDialogueRunning) {
-            //if(beginDialogInput) print(curSpeaker);
-            if(beginDialogInput && curSpeaker != null) { 
-                //print(":]???");
-                dr.StartDialogue(curSpeaker); 
+        // Start/Continue dialog if input was pressed with a defined speaker 
+        if(!config.isCutscene){ // Don't do this during a cutscene
+            if(!dr.IsDialogueRunning) {
+                if(beginDialogInput && curSpeaker != null) { 
+                    dr.StartDialogue(curSpeaker); 
+                }
             }
+            else if(nextDialogInput) {
+                dUI.MarkLineComplete();
+            }  
         }
-        else if(nextDialogInput) {
-            dUI.MarkLineComplete();
-        }  
 
         // Update the textbox portrait based on name of current speaker
         if(icon && dUI.curCharacter != curCharacter) {
             for(int i = 0; i < config.portraits.Length; i ++) {
-                print(dUI.curCharacter + " " + config.portraits[i].name);
                 if(dUI.curCharacter == config.portraits[i].name) {
                     icon.sprite = config.portraits[i].icon;
                     break;

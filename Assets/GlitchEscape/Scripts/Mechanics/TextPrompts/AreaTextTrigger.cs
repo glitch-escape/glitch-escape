@@ -14,7 +14,7 @@ public class AreaTextTrigger : MonoBehaviour, IActiveInteract {
      private void Awake()
      {
           text = text ?? Enforcements.GetComponentInChildren<TMP_Text>(this);
-          UIText = GameObject.Find("PlayerCameraRig/UI/TutorialUI").GetComponent<TMP_Text>();
+          UIText = GameObject.Find("PlayerCameraRig/UI/Tutorial Textbox/TutorialUI").GetComponent<TMP_Text>();
           UITextbox = GameObject.Find("PlayerCameraRig/UI/Tutorial Textbox");
      }
      private void OnEnable() {
