@@ -133,27 +133,103 @@ public class PlayerStatsView : MonoBehaviour {
             }
         }
 
-        if(health < .45 && health > .30)
+        if (health <= .8 && health > .7)
         {
             healthSplashes[0].gameObject.SetActive(true);
             healthSplashes[1].gameObject.SetActive(false);
             healthSplashes[2].gameObject.SetActive(false);
+            healthSplashes[3].gameObject.SetActive(false);
+            healthSplashes[4].gameObject.SetActive(false);
+            healthSplashes[5].gameObject.SetActive(false);
+            healthSplashes[6].gameObject.SetActive(false);
+            healthSplashes[7].gameObject.SetActive(false);
         }
-        else if (health < .30 && health > .15)
+        else if (health <= .7 && health > .6)
         {
+            healthSplashes[0].gameObject.SetActive(true);
             healthSplashes[1].gameObject.SetActive(true);
             healthSplashes[2].gameObject.SetActive(false);
+            healthSplashes[3].gameObject.SetActive(false);
+            healthSplashes[4].gameObject.SetActive(false);
+            healthSplashes[5].gameObject.SetActive(false);
+            healthSplashes[6].gameObject.SetActive(false);
+            healthSplashes[7].gameObject.SetActive(false);
         }
-        else if (health < .15)
+        else if (health <= .6 && health > .5)
         {
+            healthSplashes[0].gameObject.SetActive(true);
+            healthSplashes[1].gameObject.SetActive(true);
             healthSplashes[2].gameObject.SetActive(true);
+            healthSplashes[3].gameObject.SetActive(false);
+            healthSplashes[4].gameObject.SetActive(false);
+            healthSplashes[5].gameObject.SetActive(false);
+            healthSplashes[6].gameObject.SetActive(false);
+            healthSplashes[7].gameObject.SetActive(false);
+        }
+        else if (health <= .5 && health > .4)
+        {
+            healthSplashes[0].gameObject.SetActive(true);
+            healthSplashes[1].gameObject.SetActive(true);
+            healthSplashes[2].gameObject.SetActive(true);
+            healthSplashes[3].gameObject.SetActive(true);
+            healthSplashes[4].gameObject.SetActive(false);
+            healthSplashes[5].gameObject.SetActive(false);
+            healthSplashes[6].gameObject.SetActive(false);
+            healthSplashes[7].gameObject.SetActive(false);
+        }
+        else if (health <= .4 && health > .3)
+        {
+            healthSplashes[0].gameObject.SetActive(true);
+            healthSplashes[1].gameObject.SetActive(true);
+            healthSplashes[2].gameObject.SetActive(true);
+            healthSplashes[3].gameObject.SetActive(true);
+            healthSplashes[4].gameObject.SetActive(true);
+            healthSplashes[5].gameObject.SetActive(false);
+            healthSplashes[6].gameObject.SetActive(false);
+            healthSplashes[7].gameObject.SetActive(false);
+        }
+        else if (health <= .3 && health > .2)
+        {
+            healthSplashes[0].gameObject.SetActive(true);
+            healthSplashes[1].gameObject.SetActive(true);
+            healthSplashes[2].gameObject.SetActive(true);
+            healthSplashes[3].gameObject.SetActive(true);
+            healthSplashes[4].gameObject.SetActive(true);
+            healthSplashes[5].gameObject.SetActive(true);
+            healthSplashes[6].gameObject.SetActive(false);
+            healthSplashes[7].gameObject.SetActive(false);
+        }
+        else if (health <= .2 && health > .1)
+        {
+            healthSplashes[0].gameObject.SetActive(true);
+            healthSplashes[1].gameObject.SetActive(true);
+            healthSplashes[2].gameObject.SetActive(true);
+            healthSplashes[3].gameObject.SetActive(true);
+            healthSplashes[4].gameObject.SetActive(true);
+            healthSplashes[5].gameObject.SetActive(true);
+            healthSplashes[6].gameObject.SetActive(true);
+            healthSplashes[7].gameObject.SetActive(false);
+        }
+        else if (health <= .1 )
+        {
+            healthSplashes[0].gameObject.SetActive(true);
+            healthSplashes[1].gameObject.SetActive(true);
+            healthSplashes[2].gameObject.SetActive(true);
+            healthSplashes[3].gameObject.SetActive(true);
+            healthSplashes[4].gameObject.SetActive(true);
+            healthSplashes[5].gameObject.SetActive(true);
+            healthSplashes[6].gameObject.SetActive(true);
+            healthSplashes[7].gameObject.SetActive(true);
         }
         else
         {
-            healthSplashes[0].gameObject.SetActive(false);
-            healthSplashes[1].gameObject.SetActive(false);
-            healthSplashes[2].gameObject.SetActive(false);
+            foreach(Image i in healthSplashes)
+            {
+                i.gameObject.SetActive(false);
+            }
         }
+
+
         float stamina = player.stamina.value / player.stamina.maximum;
         if(stamina < 1f)
         {
