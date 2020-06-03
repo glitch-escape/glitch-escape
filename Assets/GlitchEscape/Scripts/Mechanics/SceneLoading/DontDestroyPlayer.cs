@@ -8,7 +8,7 @@ public class DontDestroyPlayer : MonoBehaviour
     //GameObject thePlayer = player.get
     void Awake()
     {
-        //FragmentPickup[] allFragments = FindObjectsOfType<FragmentPickup>();
+        //FragmentInteraction[] allFragments = FindObjectsOfType<FragmentInteraction>();
         DontDestroyOnLoad(FindObjectOfType<PlayerController>());
     }
 }

@@ -39,7 +39,6 @@ public class SphereTrigger : Trigger {
         var emptyChild = new GameObject("Trigger", typeof(SphereCollider), typeof(SphereTrigger));
         emptyChild.transform.parent = obj.transform;
         var trigger = emptyChild.GetComponent<SphereTrigger>();
-        trigger.transform.localPosition = Vector3.zero; // TEMP fix
         var collider = trigger.collider;
         collider.isTrigger = true;
         collider.center = Vector3.zero;
@@ -117,7 +116,6 @@ public class PlayerInteractionAbility : PlayerAbility, IPlayerDebug {
         if (interactObj != null) {
             interactablesInRange.Add(interactObj);
             interactObj.OnPlayerEnterInteractionRadius(player);
-            //print("PIII: " + gameObject.name);print("PIII: " + gameObject.name);
         }
     }
     private void OnExit(GameObject obj) {

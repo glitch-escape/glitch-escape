@@ -16,7 +16,6 @@ public class Player : BaseAgent<Player, PlayerConfig> {
     protected override Resource<Player, PlayerConfig, float> healthResource => health;
     protected override Resource<Player, PlayerConfig, float> staminaResource => stamina;
     protected override KillType killType => KillType.KillAndResetAgent;
-    public bool lockControls => dialog.PreventMovement();
 
     // object references
     [InjectComponent] public new Camera camera;
@@ -33,7 +32,7 @@ public class Player : BaseAgent<Player, PlayerConfig> {
     [InjectComponent] public PlayerMazeController        maze;
     [InjectComponent] public new PlayerAnimationController animation;
     [InjectComponent] public PlayerGravity                 gravity;
-    [InjectComponent] public PlayerVirtueFragments             fragments;
+    [InjectComponent] public FragmentComponent             fragments;
     
     // player abilities
     [InjectComponent] public PlayerDashAbility           dash;

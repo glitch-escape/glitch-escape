@@ -10,7 +10,7 @@ public abstract class BaseAbility : MonoBehaviour, IAgentAbility {
     public enum State { None, Active }
     public State state { get; private set; } = State.None;
 
-    public virtual bool canUseAbility => !isOnCooldown && CanStartAbility();
+    public bool canUseAbility => !isOnCooldown && CanStartAbility();
     public bool isAbilityActive => state == State.Active;
     
     private float abilityStartTime { get; set; } = -10f;

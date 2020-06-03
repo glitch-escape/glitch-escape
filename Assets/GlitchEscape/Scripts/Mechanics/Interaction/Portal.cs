@@ -10,8 +10,6 @@ public class Portal : AInteractiveObject
 {
     public string interactMessage = "[Step through the portal]";
     public Loader.Scene levelToLoad = Loader.Scene.MainMenu;
-    public Loader.Scene cutSceneToLoad = Loader.Scene.MainMenu;
-    public Virtue levelVirtueType;
     public FloatRange focusedPortalSpeed = new FloatRange { maximum = 3f, minimum = 1f };
     [InjectComponent] public SphereCollider collider;
     [InjectComponent] public MeshRenderer renderer;
@@ -33,12 +31,7 @@ public class Portal : AInteractiveObject
     public bool focused { get; private set; } = false;
     
     public override void OnInteract(Player player) {
-        //print(player.fragments.IsVirtueCompleted(Virtue.Courage));
-        if(levelVirtueType != Virtue.None && cutSceneToLoad != Loader.Scene.None 
-            && player.fragments.IsVirtueCompleted(levelVirtueType)) {
-            Application.LoadLevel(cutSceneToLoad.ToString());
-        }
-        else if (levelToLoad != Loader.Scene.None) {
+        if (levelToLoad != Loader.Scene.None) {
             Application.LoadLevel(levelToLoad.ToString());
         }
     }
