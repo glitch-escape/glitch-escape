@@ -104,34 +104,8 @@ public class PlayerStatsView : MonoBehaviour {
         staminaFlash.SetMaterial(null);
         player.OnFailedToUseAbilityDueToLowStamina -= FlashLowStamina;
     }
-
-    private List<Material> astralPlatforms;
-    public GameObject glitchMaze;
-    private bool hasGlitchMaze = false;
-    private void OnSceneLoad(Scene scene, LoadSceneMode loadSceneMode)
-    {
-        GlitchPlatform[] temp = Resources.FindObjectsOfTypeAll<GlitchPlatform>();
-        if (temp.Length >= 1)
-        {
-            glitchMaze = temp[0].gameObject;
-            hasGlitchMaze = true;
-            astralPlatforms = new List<Material>();
-            foreach (Transform platform in glitchMaze.transform)
-            {
-                astralPlatforms.Add(platform.GetComponent<Renderer>().material);
-            }
-        }
-    }
-    
     void Update() {
         float health = player.health.value / player.health.maximum;
-        if(hasGlitchMaze)
-        {
-            foreach (Material m in astralPlatforms)
-            {
-                m.SetFloat("Vector1_62D5110A", health);
-            }
-        }
 
         if(health < .45 && health > .30)
         {
