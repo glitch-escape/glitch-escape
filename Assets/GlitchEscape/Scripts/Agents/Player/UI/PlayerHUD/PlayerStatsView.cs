@@ -106,7 +106,7 @@ public class PlayerStatsView : MonoBehaviour {
     }
 
     private List<Material> astralPlatforms;
-    private GameObject glitchMaze;
+    public GameObject glitchMaze;
     private bool hasGlitchMaze = false;
     private void OnSceneLoad(Scene scene, LoadSceneMode loadSceneMode)
     {
