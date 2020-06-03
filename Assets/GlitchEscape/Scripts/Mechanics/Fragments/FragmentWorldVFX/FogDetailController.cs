@@ -13,6 +13,7 @@ public class FogDetailController : MonoBehaviour {
     public bool enableFogLODControlsWithGamepadTriggers = true;
 
     void Start() {
+        activePreset = PlayerPrefs.GetInt("fogLOD", activePreset);
         if (activePreset >= presets.Length) activePreset = 0;
         if (activePreset < 0) activePreset = presets.Length - 1;
         for (int i = 0; i < presets.Length; ++i) {
@@ -42,6 +43,8 @@ public class FogDetailController : MonoBehaviour {
         if (activePreset >= presets.Length) activePreset = 0;
         if (activePreset < 0) activePreset = presets.Length - 1;
         if (activePreset != prevPreset) {
+            PlayerPrefs.SetFloat("fogLOD", activePreset);
+            PlayerPrefs.Save();
             for (int i = 0; i < presets.Length; ++i) {
                 presets[i].gameObject.SetActive(i == activePreset);
             }
