@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: CorruptedGeometricQuadrupedEnemy 1
+  m_Name: RadialEnemyBase
   m_Shader: {fileID: -6465566751694194690, guid: 2bda3a9c8d104fd45a11fdf95c3ff5d4,
     type: 3}
   m_ShaderKeywords: 
@@ -25,11 +25,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - Texture2D_43E50C9:
-        m_Texture: {fileID: 2800000, guid: 36610014cbdcf2c418ff7b41e60da97b, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - Texture2D_A420C17B:
-        m_Texture: {fileID: 2800000, guid: f54ad0e081654f843a6ed811ef35a116, type: 3}
+        m_Texture: {fileID: 2800000, guid: facc6656ecba20f4fb700245f73ea3cc, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
@@ -61,13 +57,8 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - Vector1_42331ED8: 0.1
-    - Vector1_58CB3106: 15
-    - Vector1_5E00BC63: 3.43
-    - Vector1_62D5110A: 0.39
-    - Vector1_6FF8D773: 0.3
-    - Vector1_81B4FBF9: 1.39
-    - Vector1_CB0FCEC2: 1
+    - Vector1_58CB3106: 10.62
+    - Vector1_81B4FBF9: 1
     - Vector1_F0268D0: 1
     - _AlphaClip: 0
     - _Blend: 0
@@ -91,14 +82,13 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - Color_D196C53: {r: 0.75686276, g: 0.25882354, b: 0.38039216, a: 0}
-    - Color_DF36E9EB: {r: 0.8962264, g: 0.15641688, b: 0.26928452, a: 0}
-    - Vector2_4E821D3B: {r: -10.74, g: -4.63, b: 0, a: 0}
+    - Color_D196C53: {r: 0.1153435, g: 0.7084825, b: 0.9056604, a: 0}
+    - Vector2_4E821D3B: {r: -3.23, g: -1.01, b: 0, a: 0}
     - _BaseColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
---- !u!114 &7377722489780041451
+--- !u!114 &1835312850749300423
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
