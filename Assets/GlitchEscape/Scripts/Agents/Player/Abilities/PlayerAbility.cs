@@ -44,6 +44,11 @@ public abstract class PlayerAbility : BaseAbility, IPlayerEventSource {
     /// specifies the button control that this ability uses
     /// </summary>
     protected abstract PlayerControls.HybridButtonControl inputButton { get; }
+
+    /// <summary>
+    /// overridden to let abilities be locked based on player variable
+    /// </summary>
+    public override bool canUseAbility => !isOnCooldown && CanStartAbility() && !player.lockControls;
     
     protected override void Update() {
         base.Update();

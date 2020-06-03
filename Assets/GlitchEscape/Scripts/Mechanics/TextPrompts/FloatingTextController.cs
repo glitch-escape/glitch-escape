@@ -20,6 +20,7 @@ public class FloatingTextController : MonoBehaviour
             instance = this;
         } else if (instance != this) {
             Destroy(gameObject);
+            print("called");
         }
         floatPanel = this.transform.parent.gameObject;
         floatPanel.SetActive(false);
