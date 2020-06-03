@@ -45,6 +45,7 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
     }
     
     void Update() {
+        print(icon == null);
         // Start/Continue dialog if input was pressed with a defined speaker 
         if(!config.isCutscene){ // Don't do this during a cutscene
             if(!dr.IsDialogueRunning) {
