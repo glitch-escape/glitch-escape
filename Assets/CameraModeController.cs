@@ -10,9 +10,13 @@ public class CameraModeController : MonoBehaviour
     [InjectComponent] public Player player;
     [InjectComponent] public PlayerMovement playerMovement;
     [InjectComponent] public Transform cameraTarget;
+    [InjectComponent] public PlayerJumpAbility playerJumpAbility;
     public CinemachineFreeLook freelookCamera;
     private CameraMode currentCamMode;
     private bool fixedFocus = false;
+    private bool cameraRecenter = false;
+    //private float cameraCenterTime = 1f;
+    private float cameraRecenterTimer = 0f;
 
     public enum CameraMode
     {
@@ -42,21 +46,10 @@ public class CameraModeController : MonoBehaviour
 
     void Update()
     {
-        /*
-        cameraTarget.transform.position = player.transform.position;
-        if (!fixedFocus)
-        {
-            cameraTarget.transform.rotation = player.transform.rotation;
-        }
-        else
-        {
-        
-        }*/
-        
         // Logic for camera when player is or isnt moving
-        if (currentCamMode == CameraMode.HybridFollow)
+        if (currentCamMode == CameraMode.HybridFollow && !cameraRecenter)
         {
-            if (playerMovement.isMoving)
+            if (playerMovement.isMoving && !playerJumpAbility.isJumping)
             {
                 freelookCamera.m_RecenterToTargetHeading.m_enabled = true;
             }
@@ -67,15 +60,22 @@ public class CameraModeController : MonoBehaviour
         }
 
         //single hard reset of camera
-        if ((Keyboard.current.qKey.wasPressedThisFrame || Gamepad.current.rightStickButton.wasPressedThisFrame) 
+        if (((Keyboard.current?.qKey.wasPressedThisFrame ?? false) || (Gamepad.current?.rightStickButton.wasPressedThisFrame ?? false)) 
             && currentCamMode != CameraMode.HardFollow)
         {
             ResetCamera();
             
-            //SetCameraMode(currentCamMode);
         }
-        if (Keyboard.current.qKey.wasReleasedThisFrame)
+
+        
+        if (cameraRecenter)
         {
+            cameraRecenterTimer += Time.deltaTime;
+        }
+        if (cameraRecenterTimer > 0.3f )
+        {
+            cameraRecenter = false;
+            cameraRecenterTimer = 0f;
             SetCameraMode(currentCamMode);
         }
     }
@@ -129,7 +129,9 @@ public class CameraModeController : MonoBehaviour
         Debug.Log("reset was called");
         freelookCamera.m_RecenterToTargetHeading.m_enabled = true;
         freelookCamera.m_RecenterToTargetHeading.m_WaitTime = 0;
-        freelookCamera.m_RecenterToTargetHeading.m_RecenteringTime = 0.2f;
+        freelookCamera.m_RecenterToTargetHeading.m_RecenteringTime = 0.1f;
+
+        cameraRecenter = true;
     }
 
     public void FixedFocus(float newAngle)
@@ -139,6 +141,7 @@ public class CameraModeController : MonoBehaviour
         cameraTarget.transform.rotation = Quaternion.Euler(0f, newAngle, 0f);
 
         freelookCamera.m_RecenterToTargetHeading.m_enabled = true;
+
     }
 
     public void ResetFocus()
