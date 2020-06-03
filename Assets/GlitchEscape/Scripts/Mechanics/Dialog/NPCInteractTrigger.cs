@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-[RequireComponent(typeof(AreaTextTrigger))]
+//[RequireComponent(typeof(AreaTextTrigger))]
 public class NPCInteractTrigger : MonoBehaviour
 {
     
@@ -48,22 +48,24 @@ public class NPCInteractTrigger : MonoBehaviour
     }
 
     void OnTriggerEnter(Collider other) {
-           dialogManager.SetSpeaker(speakerName);
-           inputText.OnPlayerEnterInteractionRadius(null);
-           playerDetected = true;
-           if(!isTank) Halt();
+        if(!isTank) {
+            dialogManager.SetSpeaker(speakerName);
+            inputText.OnPlayerEnterInteractionRadius(null);
+            Halt();
+        }
+        playerDetected = true;
     }
 
     void OnTriggerStay(Collider other) {
-        if(dialogManager.PreventMovement()) {
-            inputText.OnPlayerExitInteractionRadius(null);
-        }
-        else {
-            inputText.OnPlayerEnterInteractionRadius(null);
-        }
-
         // Look at player
         if(!isTank) {
+            if(dialogManager.PreventMovement()) {
+                inputText.OnPlayerExitInteractionRadius(null);
+            }
+            else {
+                inputText.OnPlayerEnterInteractionRadius(null);
+            }
+
             Vector3 targetDirection = other.transform.position - theNPC.position;
             float singleStep = turnSpeed * Time.deltaTime;
             Vector3 newDirection = Vector3.RotateTowards(theNPC.forward, targetDirection, singleStep, 0.0f);
@@ -72,8 +74,10 @@ public class NPCInteractTrigger : MonoBehaviour
     }
 
     void OnTriggerExit(Collider other) {
-        dialogManager.SetSpeaker(null);
-        inputText.OnPlayerExitInteractionRadius(null);
+        if(!isTank) {
+            dialogManager.SetSpeaker(null);
+            inputText.OnPlayerExitInteractionRadius(null);
+        }
         playerDetected = false;
     }
 
