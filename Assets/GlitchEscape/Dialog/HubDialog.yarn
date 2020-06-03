@@ -36,7 +36,7 @@ position: 345,108
 <<elseif $curMsg % 5 eq 1>> 
     Hostage:Thank you again for freeing me. #line:0d6cfae
     Hostage:I would help you, but I can’t go outside this area without glitching out… #line:0af6847
-    Good luck. #line:073992b
+    Hostage:Good luck. #line:073992b
 <<elseif $curMsg % 5 eq 2>> 
     Hostage:Make sure you hold onto that orb. #line:01060bb
     Hostage:I hope it helps you as much as it helped me escape that thing. #line:061dd38
@@ -94,4 +94,161 @@ Protag:I’m... I’m okay...   #line:069ad47
 Antagonist:...   #line:0edf446
 Antagonist:To think all three orbs can protect you from my power...   #line:01883ce
 Antagonist:I guess I’ll have to take you by force!   #line:0f66918
+===
+title: Transcendence
+tags: 
+colorID: 0
+position: 137,108
+---
+<<if $curMsg eq null>> 
+    <<set $curMsg to 0>> 
+<<endif>>
+
+<<if $curMsg % 3 eq 0>> 
+    Hostage:All my life, my room has been my little safe haven for me. #line:080159c
+    Hostage:I did not have to deal with everything else as much and I felt safer there than anywhere else.   #line:0325baa
+<<elseif $curMsg % 3 eq 1>> 
+    Hostage:I’ve come to realize... #line:013867e
+    Hostage:I’ve stayed in my room too much... #line:03fb3e5
+    Hostage:I neglected the outside world a lot and focused on going back to my room as soon as I could. #line:022dbfd
+    Hostage:I never appreciated what the outside world truly had to offer... #line:0171731
+    Hostage:When I go back... #line:0aaf9e3
+    Hostage:I will change that... #line:06e47d9
+<<else>>
+    Hostage:This realm is deeply connected with you. #line:0376ce3
+    Hostage:The more you explore this realm, you might learn new things about yourself.  #line:040882b
+<<endif>>
+
+<<set $curMsg to $curMsg + 1>>
+===
+title: Courage
+tags: 
+colorID: 0
+position: 138,108
+---
+<<if $curMsg eq null>> 
+    <<set $curMsg to 0>> 
+<<endif>>
+
+<<if $curMsg % 4 eq 0>> 
+    Hostage2:Sometimes there are just things you have to do.  #line:0bb9050
+    Hostage2:As long as it’s possible, why not go for it? #line:0043cae
+<<elseif $curMsg % 4 eq 1>> 
+    Hostage2:I hate to admit it... but I can’t help you as much as I wish I could. #line:01afaf8
+    Hostage2:Only you can traverse your realm freely. #line:03c153f
+    Hostage2:I’m just... stuck here... #line:01554df
+<<elseif $curMsg % 4 eq 2>> 
+    Hostage2:Back home, I’d always tried out new things. #line:0768657
+    Hostage2:It was fun, but there were some things that people told me that I couldn’t accept... #line:065000e
+    Hostage2:‘Why are you trying to do this? You can’t do that.’ #line:09015d9
+    Hostage2:Whenever that happens, I either overthink things and think down on myself, or get angry and try too hard.  #line:015f1c0
+    Hostage2:I end up getting in trouble because of it... #line:008c3d6
+    Hostage2:Guess that’s how I ended up in that tank? #line:060ef40
+<<else>>
+    Hostage2:In this realm, some impossible things seem to be possible. #line:00e9648
+    Hostage2:It’s… kind of nice… but I need to go back like you do. #line:0c1736c
+    Hostage2:We can’t let the world beat us right? #line:0967e26
+<<endif>>
+
+<<set $curMsg to $curMsg + 1>>
+===
+title: Humanity
+tags: 
+colorID: 0
+position: 139,108
+---
+<<if $curMsg eq null>> 
+    <<set $curMsg to 0>> 
+<<endif>>
+
+<<if $curMsg % 3 eq 0>> 
+    Hostage3:I don’t think bad people are born bad.  #line:039a584
+    Hostage3:I think bad people are just good people, but heavily misguided. #line:04cae6a
+    Hostage3:They can be redeemed right? #line:0776597
+    Hostage3:... at least I hope so... #line:058413b
+<<elseif $curMsg % 3 eq 1>> 
+    Hostage3:Whenever the news was on, I would always go straight to my room... #line:0c97260
+    Hostage3:It was also so depressing... Murder, accidents, theft... #line:0bca8d9
+    Hostage3:The news always shows the worst of people... #line:024f9e2
+<<else>>
+    Hostage3:It’s always nice to tell people how much you appreciate them. #line:0adc2a2
+    Hostage3:You never know when they might just go away unexpectedly... #line:0a64a13
+<<endif>>
+
+<<set $curMsg to $curMsg + 1>>
+===
+title: Act1-Transcendence-Cutscene
+tags: 
+colorID: 0
+position: 870,105
+---
+Hostage:You look just like me... #line:0835ebc
+Protag:Are you okay? How did you get trapped in there? #line:0f84109
+Hostage:I-I don’t know… I don’t like this place! It’s scary! I want to leave! #line:008682b
+Protag:Hey, hey... calm down #line:0d1d73c
+Protag:Everything is going to be okay. #line:0bc51cd
+Protag:Do you remember anything? #line:0f6d8ed
+Hostage:I remember going to sleep in my safe place... #line:050083c
+Hostage:But when I woke I was in this place and I can’t remember anything past that... #line:0bb265e
+Protag:Your... safe place...? #line:07e2edd
+Hostage:My room. Nowhere else is safe in my eyes. #line:08a7201
+Protag:I like my room too but, I think it’s fun to go outside every so often. #line:0180d45
+Hostage:You think it’s fun...? #line:0d276cb
+Protag:Mhm! There are so many cool things that you can only find when you go out of your room! #line:0bc6bd9
+Hostage:Hm... I like cool things... #line:00fe70d
+Protag:You should try it when we leave! We can get out of here together! #line:0dcb7d9
+Hostage: ...okay. Let’s leave together...! #line:0d42fd4
+===
+title: Act1-Courage-Cutscene
+tags: 
+colorID: 0
+position: 840,105
+---
+Hostage2:Did you get me out of there? 
+Protag:Yeah. Are you okay?
+Hostage2:I feel fine. Thanks a lot.
+Protag:Can I ask you a question?
+Protag:Do you know anything about this place?
+Hostage2:This place...
+Hostage2:It’s a realm that’s hard to comprehend.
+Hostage2:Yet it feels like it’s a part of us...
+Protag:This place does look like nothing I’ve ever imagined before...
+Hostage2:Still... I was trapped in a tank waiting to be saved... that sucks...
+Protag:What do you mean?
+Hostage2:I couldn’t do anything about it... I don’t like feeling like I can’t do anything.
+Hostage2:People would always tell me that I couldn’t do certain things or tell me what I should be doing...
+Hostage2:I feel helpless sometimes...
+Protag:But the feeling of proving them wrong feels really nice doesn’t it?
+Protag:I think that no matter what people want you to be or tell you…
+Protag:Having the courage to be true to yourself is really cool!
+Hostage2:...!
+Hostage2:...you’re right. Even when it feels like I can’t do anything...
+Hostage2:If I believe that I can, then it makes it all the worth while!
+Protag:That’s a good way of thinking about it!
+Protag:Maybe with the others we can think of a way to get out of here together!
+===
+title: Act1-Humanity-Cutscene
+tags: 
+colorID: 0
+position: 872,105
+---
+Hostage3:…?
+Hostage3:Am I looking in a mirror right now? 
+Protag:I don’t think so. Are you okay? You were trapped in this weird tank thingy.
+Hostage3:This place...
+Protag:Do you know anything about this place? 
+Hostage3:Not really… I was walking around when I first got here…
+Hostage3:but then suddenly everything turned red…
+Hostage3:I can’t remember anything after that.
+Protag:Everything turned red?
+Hostage3:Mhm.
+Hostage3:...Hey can I ask you a question?
+Protag:Yeah. Go ahead.
+Hostage3:What do you think of bad people? Like if someone put me in that tank, do you think they are a bad person?
+Protag:Hm… I don’t think the action makes someone a bad person.
+Protag:It’s more like…  Whatever drives them to perform that action determines if they are bad or not. You know?
+Hostage3:...That’s a good way of thinking of it.
+Protag:If someone did put you in that tank, then we can ask them why they did it!
+Protag:Sound good?
+Hostage3:yeah… Sounds good!
 ===

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Yarn.Unity;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
 {
@@ -12,31 +13,51 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
     private IEnumerator coroutineSent;
     // These are outside of the player gameObject(in UI part of prefab), 
     // so I'm not sure if InjectComponent works
-    private DialogueRunner dr;
-    private DialogueUI dUI;
+    private DialogueRunner dr => _dr ?? FindObjectOfType<DialogueRunner>();
+    private DialogueUI dUI => _dUI ?? FindObjectOfType<DialogueUI>();
+    private DialogueRunner _dr;
+    private DialogueUI _dUI;
 
     // Variables for icon
     private string curCharacter;
-    private Image icon;
+    public Image icon;
+
+    private string curSpeaker;
+    private PlayerControls.HybridButtonControl inputButton => PlayerControls.instance.interact;
+    private PlayerControls.HybridButtonControl inputButton2 => PlayerControls.instance.nextDialog;
+    private bool beginDialogInput => (inputButton?.wasPressedThisFrame ?? false);
+    private bool nextDialogInput => (inputButton?.wasPressedThisFrame ?? false) 
+                                    || (inputButton2?.wasPressedThisFrame ?? false) 
+                                    || Keyboard.current.spaceKey.wasPressedThisFrame;
 
     
     private void Start() {
-        dUI = FindObjectOfType<DialogueUI>();
-        if (dUI) {
-            if(!config.isCutscene) dUI.onLineFinishDisplaying.AddListener(WaitForNextLine);
-            dUI.textSpeed = config.textSpeed;
+        _dUI = FindObjectOfType<DialogueUI>();
+        _dr = FindObjectOfType<DialogueRunner>();
+        if (dUI) dUI.textSpeed = config.textSpeed;
+        if (dr)  dr.Add(config.coreText);
+
+        // Try to find the textbox if the icon hasn't been set yet
+        if(!icon) {
+            Image i = GameObject.Find("PlayerCameraRig/UI/HUD/InteractFloatPanel/Textbox Image").GetComponent<Image>();
+            if(i) SetIcon(i);
         }
-        dr = FindObjectOfType<DialogueRunner>();
-        if (dr) dr.Add(config.coreText);
     }
     
-    // For testing purposes [NEEDS TO BE REMOVED]
     void Update() {
-        // if (Input.GetKeyDown(KeyCode.L)) {
-        if (Keyboard.current?.lKey.wasPressedThisFrame ?? false) {
-            BeginDialog("HDB-Act1");
-        } 
+        // Start/Continue dialog if input was pressed with a defined speaker 
+        if(!config.isCutscene){ // Don't do this during a cutscene
+            if(!dr.IsDialogueRunning) {
+                if(beginDialogInput && curSpeaker != null) { 
+                    dr.StartDialogue(curSpeaker); 
+                }
+            }
+            else if(nextDialogInput) {
+                dUI.MarkLineComplete();
+            }  
+        }
 
+        // Update the textbox portrait based on name of current speaker
         if(icon && dUI.curCharacter != curCharacter) {
             for(int i = 0; i < config.portraits.Length; i ++) {
                 if(dUI.curCharacter == config.portraits[i].name) {
@@ -48,6 +69,25 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
         }
     }
 
+
+    /// <summary>
+    /// Let other scripts know if the movement should be locked
+    /// </summary>
+    public bool PreventMovement() {
+        return dr.IsDialogueRunning;
+    }
+
+    /// <summary>
+    /// Set the current node of text that should be played using YarnSpinner
+    /// </summary>
+    public void SetSpeaker(string dialogNode) {
+        this.curSpeaker = dialogNode;
+        //print("AAA: " + curSpeaker);
+        //print("CAA " + gameObject.name);
+    }
+
+    #region Functions to be called by Dialog Runner or Animation Timeline
+
     /// <summary>
     /// Begins to display dialog, provided a node of text was given
     /// </summary>
@@ -58,27 +98,13 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
         }
     }
 
-    private void WaitForNextLine() {
-        coroutineSent = DisplayNext();
-        StartCoroutine(coroutineSent);
-    }
-
-    IEnumerator DisplayNext() {
-        yield return new WaitForSeconds(config.sentenceDelay);
-        dUI.MarkLineComplete();
-    }
-
-     IEnumerator WaitAndHide(GameObject text) {
-        yield return new WaitForSeconds(config.sentenceDelay);
-        text.SetActive(false);
-    }
-
-    #region Public Functions for Dialog Runner to call
     /// <summary>
-    /// Moves dialog onto next sentence. Function is for cutscene usage
+    /// Moves dialog onto next sentence.
     /// </summary>
     public void ContinueDialog() {
-        dUI.MarkLineComplete();
+        if(dr.IsDialogueRunning) {
+            dUI.MarkLineComplete();
+        }
     }
 
     public void WaitToHideText(GameObject text) {
@@ -88,5 +114,11 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
     public void SetIcon(Image display) {
        icon = display;
     }
+
+    IEnumerator WaitAndHide(GameObject text) {
+        yield return new WaitForSeconds(config.sentenceDelay);
+        text.SetActive(false);
+    }
+    
     #endregion
 }
