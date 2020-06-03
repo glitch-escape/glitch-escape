@@ -109,7 +109,6 @@ public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
     public bool isPlayerGrounded {
         get {
             if (dirtyRaycastInfo || floorWindow > 0f) UpdateRaycastInfo();
-            Debug.Log("floor jump status: " + floorWindow);
             return hitGround;
         }
     }
