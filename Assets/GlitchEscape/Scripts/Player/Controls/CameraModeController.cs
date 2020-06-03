@@ -64,7 +64,6 @@ public class CameraModeController : MonoBehaviour
             && currentCamMode != CameraMode.HardFollow)
         {
             ResetCamera();
-            
         }
 
         
