@@ -48,7 +48,10 @@ public class PlayerConfig : ScriptableObject {
     [Range(0, 20)] public float jumpHeight = 10f;
     
     [Tooltip("Max number of times that player can jump consecutively before needing to touch ground")]
-    [Range(0, 10)] public int maxJumps = 1;
+    [Range(0, 10)] public int maxJumps = 2;
+
+    [Tooltip("How long of a window the player has after leaving a patform to still floor jump")]
+    [Range(0, 1)] public float floorJumpWindow = 0.3f;
 
     [Tooltip("if false, disables the effects of downGravityMultiplier + upGravityModifier")]
     public bool useGravityModifications = true;
