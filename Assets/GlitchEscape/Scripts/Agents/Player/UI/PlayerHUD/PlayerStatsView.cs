@@ -81,10 +81,7 @@ public class PlayerStatsView : MonoBehaviour {
     private AttribBarSetter healthSetter = new AttribBarSetter(0.081f, 0.82f);
     private AttribBarSetter staminaSetter = new AttribBarSetter(0.079f, 0.592f);
     //private AttribBarSetter shardSetter = new AttribBarSetter(0.079f, 0.592f);
-
-    public Image staminaWheel;
-    public List<Image> healthSplashes;
-
+    
     private void OnEnable() {
         var renderer = Enforcements.GetComponent<Renderer>(this);
         healthSetter.SetMaterial(renderer.materials[HEALTH_BAR_MATEIRAL_INDEX]);
@@ -92,10 +89,7 @@ public class PlayerStatsView : MonoBehaviour {
         //shardSetter.SetMaterial(renderer.materials[SHARD_BAR_MATERIAL_INDEX]);
         staminaFlash.SetMaterial(renderer.materials[STAMINA_BAR_MATERIAL_INDEX]);
         player.OnFailedToUseAbilityDueToLowStamina += FlashLowStamina;
-        foreach (Image i in healthSplashes) {
-            i.gameObject.SetActive(false);
-        }
-        SceneManager.sceneLoaded += OnSceneLoad;
+        
     }
     private void OnDisable() {
         healthSetter.SetMaterial(null);
@@ -104,148 +98,9 @@ public class PlayerStatsView : MonoBehaviour {
         staminaFlash.SetMaterial(null);
         player.OnFailedToUseAbilityDueToLowStamina -= FlashLowStamina;
     }
-
-    private List<Material> astralPlatforms;
-    public GameObject glitchMaze;
-    private bool hasGlitchMaze = false;
-    private void OnSceneLoad(Scene scene, LoadSceneMode loadSceneMode)
-    {
-        GlitchPlatform[] temp = Resources.FindObjectsOfTypeAll<GlitchPlatform>();
-        if (temp.Length >= 1)
-        {
-            glitchMaze = temp[0].gameObject;
-            hasGlitchMaze = true;
-            astralPlatforms = new List<Material>();
-            foreach (Transform platform in glitchMaze.transform)
-            {
-                astralPlatforms.Add(platform.GetComponent<Renderer>().material);
-            }
-        }
-    }
-    
     void Update() {
         float health = player.health.value / player.health.maximum;
-        if(hasGlitchMaze)
-        {
-            foreach (Material m in astralPlatforms)
-            {
-                m.SetFloat("Vector1_62D5110A", health);
-            }
-        }
-
-        if (health <= .8 && health > .7)
-        {
-            healthSplashes[0].gameObject.SetActive(true);
-            healthSplashes[1].gameObject.SetActive(false);
-            healthSplashes[2].gameObject.SetActive(false);
-            healthSplashes[3].gameObject.SetActive(false);
-            healthSplashes[4].gameObject.SetActive(false);
-            healthSplashes[5].gameObject.SetActive(false);
-            healthSplashes[6].gameObject.SetActive(false);
-            healthSplashes[7].gameObject.SetActive(false);
-        }
-        else if (health <= .7 && health > .6)
-        {
-            healthSplashes[0].gameObject.SetActive(true);
-            healthSplashes[1].gameObject.SetActive(true);
-            healthSplashes[2].gameObject.SetActive(false);
-            healthSplashes[3].gameObject.SetActive(false);
-            healthSplashes[4].gameObject.SetActive(false);
-            healthSplashes[5].gameObject.SetActive(false);
-            healthSplashes[6].gameObject.SetActive(false);
-            healthSplashes[7].gameObject.SetActive(false);
-        }
-        else if (health <= .6 && health > .5)
-        {
-            healthSplashes[0].gameObject.SetActive(true);
-            healthSplashes[1].gameObject.SetActive(true);
-            healthSplashes[2].gameObject.SetActive(true);
-            healthSplashes[3].gameObject.SetActive(false);
-            healthSplashes[4].gameObject.SetActive(false);
-            healthSplashes[5].gameObject.SetActive(false);
-            healthSplashes[6].gameObject.SetActive(false);
-            healthSplashes[7].gameObject.SetActive(false);
-        }
-        else if (health <= .5 && health > .4)
-        {
-            healthSplashes[0].gameObject.SetActive(true);
-            healthSplashes[1].gameObject.SetActive(true);
-            healthSplashes[2].gameObject.SetActive(true);
-            healthSplashes[3].gameObject.SetActive(true);
-            healthSplashes[4].gameObject.SetActive(false);
-            healthSplashes[5].gameObject.SetActive(false);
-            healthSplashes[6].gameObject.SetActive(false);
-            healthSplashes[7].gameObject.SetActive(false);
-        }
-        else if (health <= .4 && health > .3)
-        {
-            healthSplashes[0].gameObject.SetActive(true);
-            healthSplashes[1].gameObject.SetActive(true);
-            healthSplashes[2].gameObject.SetActive(true);
-            healthSplashes[3].gameObject.SetActive(true);
-            healthSplashes[4].gameObject.SetActive(true);
-            healthSplashes[5].gameObject.SetActive(false);
-            healthSplashes[6].gameObject.SetActive(false);
-            healthSplashes[7].gameObject.SetActive(false);
-        }
-        else if (health <= .3 && health > .2)
-        {
-            healthSplashes[0].gameObject.SetActive(true);
-            healthSplashes[1].gameObject.SetActive(true);
-            healthSplashes[2].gameObject.SetActive(true);
-            healthSplashes[3].gameObject.SetActive(true);
-            healthSplashes[4].gameObject.SetActive(true);
-            healthSplashes[5].gameObject.SetActive(true);
-            healthSplashes[6].gameObject.SetActive(false);
-            healthSplashes[7].gameObject.SetActive(false);
-        }
-        else if (health <= .2 && health > .1)
-        {
-            healthSplashes[0].gameObject.SetActive(true);
-            healthSplashes[1].gameObject.SetActive(true);
-            healthSplashes[2].gameObject.SetActive(true);
-            healthSplashes[3].gameObject.SetActive(true);
-            healthSplashes[4].gameObject.SetActive(true);
-            healthSplashes[5].gameObject.SetActive(true);
-            healthSplashes[6].gameObject.SetActive(true);
-            healthSplashes[7].gameObject.SetActive(false);
-        }
-        else if (health <= .1 )
-        {
-            healthSplashes[0].gameObject.SetActive(true);
-            healthSplashes[1].gameObject.SetActive(true);
-            healthSplashes[2].gameObject.SetActive(true);
-            healthSplashes[3].gameObject.SetActive(true);
-            healthSplashes[4].gameObject.SetActive(true);
-            healthSplashes[5].gameObject.SetActive(true);
-            healthSplashes[6].gameObject.SetActive(true);
-            healthSplashes[7].gameObject.SetActive(true);
-        }
-        else
-        {
-            foreach(Image i in healthSplashes)
-            {
-                i.gameObject.SetActive(false);
-            }
-        }
-
-
         float stamina = player.stamina.value / player.stamina.maximum;
-        if(stamina < 1f)
-        {
-            if (!staminaWheel.gameObject.activeInHierarchy)
-            {
-                staminaWheel.gameObject.SetActive(true);
-            }
-            staminaWheel.fillAmount = stamina;
-        }
-        else
-        {
-            if (staminaWheel.gameObject.activeInHierarchy)
-            {
-                staminaWheel.gameObject.SetActive(false);
-            }
-        }
         healthSetter.Update(health);
         staminaSetter.Update(stamina);
         staminaFlash.Update();
