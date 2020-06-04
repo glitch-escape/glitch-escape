@@ -8,7 +8,7 @@ public class InputDeviceCheck : MonoBehaviour {
 
     // Optional inspector variables
     public bool changeText;
-    public string keyboard, controller;
+    public string keyboard, controller, xbox;
 
     private TMP_Text text;
     private void Awake() {
@@ -24,7 +24,8 @@ public class InputDeviceCheck : MonoBehaviour {
             else
                 text.spriteAsset = Resources.Load<TMP_SpriteAsset>("Sprites/xboxbuttons");
 
-            if(changeText) text.text = controller;
+            if(changeText && DualShockGamepad.current != null) text.text = controller;
+            else if(changeText) text.text = xbox;
         }
         else if (IsKeyboardInput()) {
             // Mouse and keyboard text
