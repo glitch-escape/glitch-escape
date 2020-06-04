@@ -14,30 +14,7 @@ public class FragmentUI : PlayerComponent {
 
     void Awake()
     {
-        sceneHasFragments = FindObjectOfType<Fragment>() != null;
-        if(sceneHasFragments)
-        {
-            List<GameObject> orbIndicators = new List<GameObject>();
-            GameObject fragmentUIIndicator = null;
-            foreach (Transform child in transform)
-            {
-                if (child.gameObject.CompareTag("OrbUI") && child.gameObject.activeInHierarchy)
-                    orbIndicators.Add(child.gameObject);
-                else if (child.gameObject.activeInHierarchy)
-                    fragmentUIIndicator = child.gameObject;
-            }
 
-            //get reference to fragment shards UI
-            GameObject fragmentHolder = null;
-            foreach (Transform child in fragmentUIIndicator.transform)
-            {
-                if (!child.gameObject.CompareTag("FragBG") && child.gameObject.activeInHierarchy)
-                {
-                    fragmentHolder = child.gameObject;
-                }
-            }
-            fragmentPieces = fragmentHolder?.GetComponentsInChildren<Transform>() ?? null;
-        }
     }
     
     private void UpdateFragmentUI(Virtue activeVirtue, float fragmentCompletion) {
@@ -51,8 +28,8 @@ public class FragmentUI : PlayerComponent {
         if (activeVirtue == Virtue.None) {
             fragmentsPickedUp = 0;
         }
-        for (int i = 0; i < fragmentPieces.Length; ++i) {
-            fragmentPieces[i].gameObject.SetActive(i < fragmentsPickedUp);
+        for (int i = 1; i < fragmentPieces.Length; ++i) {
+            fragmentPieces[i].gameObject.SetActive(i <= fragmentsPickedUp);
         }
     }
     private void OnEnable() {
@@ -67,12 +44,54 @@ public class FragmentUI : PlayerComponent {
     }
     void OnVirtueTypeChanged(Virtue virtue) {
         Debug.Log("Changed active virtue for fragment pickups to " + virtue);
+        Virtue sceneVirtue = player.fragments.activeVirtueInThisScene;
+        sceneHasFragments = FindObjectOfType<Fragment>() != null;
+
+        if (sceneHasFragments)
+        {
+            string virtueTag = "Blank";
+            if (sceneVirtue == Virtue.Courage)
+                virtueTag = "Courage";
+            else if (sceneVirtue == Virtue.Humanity)
+                virtueTag = "Humanity";
+            else if (sceneVirtue == Virtue.Transcendence)
+                virtueTag = "Transcendence";
+            List<GameObject> orbIndicators = new List<GameObject>();
+            GameObject fragmentUIIndicator = null;
+            GameObject fragmentUIBackground = null;
+            foreach (Transform child in transform)
+            {
+                if (child.gameObject.CompareTag("OrbUI") && child.gameObject.activeInHierarchy)
+                {
+                    orbIndicators.Add(child.gameObject);
+                }
+                else if (child.gameObject.CompareTag(virtueTag))
+                {
+                    if (child.childCount != 0)
+                    {
+                        fragmentUIIndicator = child.gameObject;
+                    }
+                    else
+                    {
+                        fragmentUIBackground = child.gameObject;
+                    }
+                }
+                else
+                {
+                    child.gameObject.SetActive(false);
+                }
+            }
+            fragmentUIIndicator.SetActive(true);
+            fragmentUIBackground.SetActive(true);
+
+            fragmentPieces = fragmentUIIndicator?.GetComponentsInChildren<Transform>() ?? null;
+        }
         UpdateFragmentUI(virtue, player.fragments.GetFragmentCompletion(virtue));
     }
     void OnFragmentPickedUp(PlayerVirtueFragments.FragmentInfo fragment) {
         Debug.Log("Picked up fragment for " + fragment.virtue);
         if (fragment.virtue == player.fragments.activeVirtueInThisScene) {
-            UpdateFragmentUI(Virtue.Courage, player.fragments.GetFragmentCompletion(fragment.virtue));
+            UpdateFragmentUI(fragment.virtue, player.fragments.GetFragmentCompletion(fragment.virtue));
         }
         /// TODO: can play fragment pickup animation / etc here
     }
