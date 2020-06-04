@@ -1,5 +1,63 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!64 &5188194865053154720
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3236676859280110984}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 3909233067320746374, guid: 2d129fc5df38244f08fd7bda20a9c9a1, type: 3}
+--- !u!64 &8333329155652298220
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5371592397309687581}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -2309305249758762421, guid: 2d129fc5df38244f08fd7bda20a9c9a1, type: 3}
+--- !u!135 &8536356113214120143
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6838432402532812397}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 3.08
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3698718145296929739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6838432402532812397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 511ca0a0740be456eb0b60536b617728, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactTrigger: 1
+  highlightTrigger: 1
+  activePlayer: {fileID: 0}
+  showDebugGUI: 0
+  target: {fileID: 0}
 --- !u!1001 &3298626278947692388
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7,6 +65,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -4937062936340611053, guid: 2d129fc5df38244f08fd7bda20a9c9a1,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 2d129fc5df38244f08fd7bda20a9c9a1,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -67,5 +130,28 @@ PrefabInstance:
       propertyPath: m_Name
       value: InteractiveWheel
       objectReference: {fileID: 0}
+    - target: {fileID: 3014614768876417435, guid: 2d129fc5df38244f08fd7bda20a9c9a1,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2d129fc5df38244f08fd7bda20a9c9a1, type: 3}
+--- !u!1 &6838432402532812397 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 2d129fc5df38244f08fd7bda20a9c9a1,
+    type: 3}
+  m_PrefabInstance: {fileID: 3298626278947692388}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3236676859280110984 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -9138384822779237652, guid: 2d129fc5df38244f08fd7bda20a9c9a1,
+    type: 3}
+  m_PrefabInstance: {fileID: 3298626278947692388}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5371592397309687581 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7443510982013823097, guid: 2d129fc5df38244f08fd7bda20a9c9a1,
+    type: 3}
+  m_PrefabInstance: {fileID: 3298626278947692388}
+  m_PrefabAsset: {fileID: 0}
