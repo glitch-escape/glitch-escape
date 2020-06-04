@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using GlitchEscape.Scripts.DebugUI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Debug = UnityEngine.Debug;
 
@@ -65,22 +66,54 @@ public class PlayerMazeController : PlayerComponent, IPlayerDebug {
 
     private void OnEnable() {
         player.OnKilled += OnPlayerRespawn;
+        SceneManager.sceneLoaded += OnSceneLoad;
+        GetGlitchPlatformMaterials();
     }
     private void OnDisable() {
         player.OnKilled -= OnPlayerRespawn;
+        SceneManager.sceneLoaded -= OnSceneLoad;
         ClearMazeSwitch();
     }
     private void OnPlayerRespawn() {
         SceneMazeController.instance?.ResetMaze();
     }
     void Update() {
-        if (!onMazeSwitch && (SceneMazeController.instance?.inGlitchMaze ?? false)) {
+        bool inGlitchMaze = SceneMazeController.instance?.inGlitchMaze ?? false;
+        if (!onMazeSwitch && inGlitchMaze) {
             // instead of updating maze timer, just apply damage over time
             // 10 damage / sec, default 100 health = 10 seconds, same as we had previously
             player.TakeDamage(10f * Time.deltaTime);
         }
-    }
 
+        // apply maze fade out
+        if (inGlitchMaze) {
+            var playerHealth = player.health.value / player.health.maximum;
+            foreach (Material m in astralPlatforms) {
+                m.SetFloat("Vector1_62D5110A", playerHealth);
+            }
+        }
+    }
+    private List<Material> astralPlatforms = new List<Material>();
+    public GameObject glitchMaze;
+    private bool hasGlitchMaze = false;
+
+    private void GetGlitchPlatformMaterials() {
+        GlitchPlatform[] temp = Resources.FindObjectsOfTypeAll<GlitchPlatform>();
+        if (temp.Length >= 1)
+        {
+            glitchMaze = temp[0].gameObject;
+            hasGlitchMaze = true;
+            astralPlatforms = new List<Material>();
+            foreach (Transform platform in glitchMaze.transform)
+            {
+                astralPlatforms.Add(platform.GetComponent<Renderer>().material);
+            }
+        }
+    }
+    private void OnSceneLoad(Scene scene, LoadSceneMode loadSceneMode) {
+        GetGlitchPlatformMaterials();
+    }
+    
     public void DrawDebugUI() {
         GUILayout.Label("active maze switch: "+activeMazeSwitch);
         GUILayout.Label("on maze switch? "+onMazeSwitch);
