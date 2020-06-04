@@ -39,7 +39,7 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
 
         // Try to find the textbox if the icon hasn't been set yet
         if(!icon) {
-            Image i = GameObject.Find("PlayerCameraRig/UI/HUD/InteractFloatPanel/Textbox Image").GetComponent<Image>();
+            Image i = GameObject.Find("PlayerCameraRig/UI/HUD/InteractFloatPanel/Image").GetComponent<Image>();
             if(i) SetIcon(i);
         }
     }
