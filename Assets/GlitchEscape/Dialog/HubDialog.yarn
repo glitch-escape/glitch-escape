@@ -276,7 +276,32 @@ position: 116,108
 <<else>>
     Protag:Hey!
     Protag:…
-    Protag:...nope. They can’t hear me.0a638d5
+    Protag:...nope. They can’t hear me.
+<<endif>>
+
+<<set $curMsg to $curMsg + 1>>
+===
+title: Tank2
+tags: 
+colorID: 0
+position: 110,108
+---
+<<if $curMsg eq null>> 
+    <<set $curMsg to 0>> 
+<<endif>>
+
+<<if $curMsg % 4 eq 0>> 
+    Protag:I need to find the fragments to open this tank...
+    Protag:I’ll try the next portal for them.
+<<elseif $curMsg % 4 eq 1>> 
+    Protag:This one is a different color than the last one.
+    Protag:I wonder if it stands for anything?
+<<elseif $curMsg % 4 eq 2>> 
+    Protag:The orb I used for the last tank does not work with this one…
+    Protag:I guess each one has a specific orb to it…
+<<else>>
+    Protag:Open Sesame!
+    Protag:…worth a shot.
 <<endif>>
 
 <<set $curMsg to $curMsg + 1>>
