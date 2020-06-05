@@ -31,7 +31,7 @@ public class AreaTextTrigger : MonoBehaviour, IActiveInteract {
 
      public void OnPlayerEnterInteractionRadius(Player player) {
           if (IsControllerInput()) {
-               if (DualShockGamepad.current != null && changeToXbox)
+               if (DualShockGamepad.current == null && changeToXbox)
                     UIText.text = xbox_message;
                else 
                     UIText.text = controller_message;
