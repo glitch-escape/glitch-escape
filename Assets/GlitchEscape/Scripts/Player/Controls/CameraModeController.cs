@@ -85,16 +85,12 @@ public class CameraModeController : MonoBehaviour
         if (dampenReset)
         {
             dampenTimer -= Time.deltaTime;
-            //freelookCamera.m_YAxis.Value = 0.5f;
-            //freelookCamera.m_XAxis.Value = ConvertCameraAnlge(cameraTarget.localEulerAngles.y);
             //once timer hits 0, reset dampening values
             if (dampenTimer < 0f)
             {
                 freelookCamera.GetRig(0).GetCinemachineComponent<CinemachineOrbitalTransposer>().m_ZDamping = 3;
                 freelookCamera.GetRig(1).GetCinemachineComponent<CinemachineOrbitalTransposer>().m_ZDamping = 3;
                 freelookCamera.GetRig(2).GetCinemachineComponent<CinemachineOrbitalTransposer>().m_ZDamping = 3;
-                freelookCamera.m_YAxis.Value = 0.5f;
-                freelookCamera.m_XAxis.Value = ConvertCameraAnlge(cameraTarget.localEulerAngles.y);
                 ResetCamera();
                 dampenReset = false;
             }
@@ -106,6 +102,7 @@ public class CameraModeController : MonoBehaviour
             cameraRecenterTimer += Time.deltaTime;
             if (cameraRecenterTimer > 0.3f)
             {
+                freelookCamera.m_XAxis.Value = ConvertCameraAnlge(cameraTarget.localEulerAngles.y);
                 cameraRecenter = false;
                 cameraRecenterTimer = 0f;
                 SetCameraMode(currentCamMode);
@@ -200,7 +197,6 @@ public class CameraModeController : MonoBehaviour
     //starts a delay for the camera to go back to normal dampening (delay is checked for in Update())
     private void OnKilledReset()
     {
-        
         freelookCamera.GetRig(0).GetCinemachineComponent<CinemachineOrbitalTransposer>().m_ZDamping = 0;
         freelookCamera.GetRig(1).GetCinemachineComponent<CinemachineOrbitalTransposer>().m_ZDamping = 0;
         freelookCamera.GetRig(2).GetCinemachineComponent<CinemachineOrbitalTransposer>().m_ZDamping = 0;
@@ -211,10 +207,6 @@ public class CameraModeController : MonoBehaviour
         freelookCamera.m_RecenterToTargetHeading.m_enabled = true;
         freelookCamera.m_RecenterToTargetHeading.m_WaitTime = 0;
         freelookCamera.m_RecenterToTargetHeading.m_RecenteringTime = 0f;
-        
-        //freelookCamera.m_YAxis.Value = 0.5f;
-        //freelookCamera.m_XAxis.Value = ConvertCameraAnlge(cameraTarget.localEulerAngles.y);
-
 
         dampenReset = true;
         dampenTimer = 0.1f;
