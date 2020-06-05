@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class RotationPuzzleWheel : AInteractiveObject {
-    private bool focused = false;
     private Player player;
     public PossibleRotation target;
     void OnEnable() {
@@ -16,7 +16,5 @@ public class RotationPuzzleWheel : AInteractiveObject {
     public override void OnInteract(Player player) {
         target?.flickIt();
     }
-    public override void OnFocusChanged(bool focused) {
-        this.focused = focused;
-    }
+    public override void OnFocusChanged(bool focused) {}
 }
