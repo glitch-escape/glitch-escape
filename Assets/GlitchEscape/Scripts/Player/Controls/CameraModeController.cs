@@ -75,6 +75,12 @@ public class CameraModeController : MonoBehaviour
             ResetCamera();
         }
 
+        if ((Keyboard.current?.rKey.wasPressedThisFrame ?? false))
+        {
+            freelookCamera.m_YAxis.Value = 0.5f;
+            freelookCamera.m_XAxis.Value = ConvertCameraAnlge(cameraTarget.localEulerAngles.y);
+        }
+
         //checks if the camera dampening is enabled (for instant camera transform to player position)
         if (dampenReset)
         {
@@ -94,8 +100,10 @@ public class CameraModeController : MonoBehaviour
         if (cameraRecenter)
         {
             cameraRecenterTimer += Time.deltaTime;
+            freelookCamera.m_YAxis.Value = Mathf.Lerp(freelookCamera.m_YAxis.Value, 0.5f, 0.3f);
             if (cameraRecenterTimer > 0.3f)
             {
+                freelookCamera.m_XAxis.Value = ConvertCameraAnlge(cameraTarget.localEulerAngles.y);
                 cameraRecenter = false;
                 cameraRecenterTimer = 0f;
                 SetCameraMode(currentCamMode);
@@ -194,11 +202,26 @@ public class CameraModeController : MonoBehaviour
         freelookCamera.GetRig(1).GetCinemachineComponent<CinemachineOrbitalTransposer>().m_ZDamping = 0;
         freelookCamera.GetRig(2).GetCinemachineComponent<CinemachineOrbitalTransposer>().m_ZDamping = 0;
 
+        freelookCamera.m_YAxis.Value = 0.5f;
+        freelookCamera.m_XAxis.Value = ConvertCameraAnlge(cameraTarget.localEulerAngles.y);
+
         freelookCamera.m_RecenterToTargetHeading.m_enabled = true;
         freelookCamera.m_RecenterToTargetHeading.m_WaitTime = 0;
         freelookCamera.m_RecenterToTargetHeading.m_RecenteringTime = 0f;
 
         dampenReset = true;
         dampenTimer = 0.1f;
+    }
+
+    private float ConvertCameraAnlge(float cameraAngle)
+    {
+        if (cameraAngle > 180)
+        {
+            return (cameraAngle - 360f);
+        }
+        else
+        {
+            return cameraAngle;
+        }
     }
 }

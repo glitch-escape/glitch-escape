@@ -3,18 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-[RequireComponent(typeof(AreaTextTrigger))]
+//[RequireComponent(typeof(AreaTextTrigger))]
 public class NPCInteractTrigger : MonoBehaviour
 {
-    
+    public Player player;
     public PlayerDialogController dialogManager;
     public AreaTextTrigger inputText;
     public string speakerName;
+    public string postOrbSpeaker; // keep empty if it's the same
     public bool isTank;
     public float turnSpeed, wanderRange;
     public float minIdle, maxIdle; // range for npc standing still
     public Virtue virtueType;
 
+    private bool hasPostOrbSpeaker => postOrbSpeaker != "";
     private Transform theNPC => transform.parent;
     private Animator _anim;
     private NavMeshAgent m_Agent;
@@ -23,11 +25,15 @@ public class NPCInteractTrigger : MonoBehaviour
     private float nextWaitTime;
 
     private bool eventTriggered = false;
+    private bool hasCollectedOrb
+        => player.fragments.IsVirtueCompleted(Virtue.Courage) 
+            || player.fragments.IsVirtueCompleted(Virtue.Humanity)
+            || player.fragments.IsVirtueCompleted(Virtue.Transcendence);
 
     void Start() {
         if(!dialogManager) dialogManager = FindObjectOfType<PlayerDialogController>();
         if(!inputText) inputText = GetComponent<AreaTextTrigger>();
-        Player player = FindObjectOfType<Player>();
+        player = FindObjectOfType<Player>();
         _anim = theNPC.GetComponent<Animator>();
         if(!isTank) {
             m_Agent = theNPC.GetComponent<NavMeshAgent>();
@@ -48,10 +54,14 @@ public class NPCInteractTrigger : MonoBehaviour
     }
 
     void OnTriggerEnter(Collider other) {
-           dialogManager.SetSpeaker(speakerName);
-           inputText.OnPlayerEnterInteractionRadius(null);
-           playerDetected = true;
-           if(!isTank) Halt();
+        if(hasPostOrbSpeaker && hasCollectedOrb) {
+            dialogManager.SetSpeaker(postOrbSpeaker);
+        }
+        else { dialogManager.SetSpeaker(speakerName); }
+
+        inputText.OnPlayerEnterInteractionRadius(null);
+        if(!isTank) { Halt(); }
+        playerDetected = true;
     }
 
     void OnTriggerStay(Collider other) {
@@ -59,9 +69,8 @@ public class NPCInteractTrigger : MonoBehaviour
             inputText.OnPlayerExitInteractionRadius(null);
         }
         else {
-            inputText.OnPlayerEnterInteractionRadius(null);
+           inputText.OnPlayerEnterInteractionRadius(null);
         }
-
         // Look at player
         if(!isTank) {
             Vector3 targetDirection = other.transform.position - theNPC.position;
