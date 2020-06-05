@@ -13,6 +13,7 @@ public class PossibleRotation : MonoBehaviour {
                     var randomClip = audioClips[Mathf.FloorToInt(Random.Range(0f, audioClips.Length - 1e-6f))];
                     audioSource.clip = randomClip;
                     audioSource.Play();
+                    audioSource.playOnAwake = false;
                 }
             }
             
