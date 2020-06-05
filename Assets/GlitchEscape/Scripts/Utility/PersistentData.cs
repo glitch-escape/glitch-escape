@@ -14,7 +14,17 @@ public interface IPersistentData<TState> where TState : struct {
 public class PersistentDataStore {
     public static PersistentDataStore instance { get; } = new PersistentDataStore();
     private Dictionary<string, string> serializedDataByObjectID = new Dictionary<string, string>();
-
+    
+    public bool TryLoadValue<T>(string name, ref T value) {
+        if (!serializedDataByObjectID.ContainsKey(name)) return false;
+        value = JsonUtility.FromJson<T>(serializedDataByObjectID[name]);
+        return true;
+    }
+    public bool TryStoreValue<T>(string name, T value) {
+        if (name == null || name == "") return false;
+        serializedDataByObjectID[name] = JsonUtility.ToJson(value);
+        return true;
+    }
     // tbd: add struct serialization to / from json
     public bool TryRestoreState<TState>(IPersistentData<TState> obj) where TState : struct {
         var id = obj.GetObjectID();

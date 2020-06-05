@@ -11,10 +11,11 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
     //[InjectComponent] public Player player;
     
     private IEnumerator coroutineSent;
+    
     // These are outside of the player gameObject(in UI part of prefab), 
     // so I'm not sure if InjectComponent works
-    private DialogueRunner dr => _dr ?? FindObjectOfType<DialogueRunner>();
-    private DialogueUI dUI => _dUI ?? FindObjectOfType<DialogueUI>();
+    private DialogueRunner dr => _dr ?? (_dr = FindObjectOfType<DialogueRunner>());
+    private DialogueUI dUI => _dUI ?? (_dUI = FindObjectOfType<DialogueUI>());
     private DialogueRunner _dr;
     private DialogueUI _dUI;
 
@@ -32,16 +33,10 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
 
     
     private void Start() {
-        _dUI = FindObjectOfType<DialogueUI>();
-        _dr = FindObjectOfType<DialogueRunner>();
         if (dUI) dUI.textSpeed = config.textSpeed;
         if (dr)  dr.Add(config.coreText);
 
-        // Try to find the textbox if the icon hasn't been set yet
-        if(!icon) {
-            Image i = GameObject.Find("PlayerCameraRig/UI/HUD/InteractFloatPanel/Textbox Image").GetComponent<Image>();
-            if(i) SetIcon(i);
-        }
+        SearchForIcon();
     }
     
     void Update() {
@@ -69,6 +64,14 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
         }
     }
 
+    private void SearchForIcon() {
+        // Try to find the textbox if the icon hasn't been set yet
+        if(!icon) {
+            Image i = GameObject.Find("PlayerCameraRig/UI/HUD/InteractFloatPanel/Image").GetComponent<Image>();
+            if(i) SetIcon(i);
+        }
+    }
+
 
     /// <summary>
     /// Let other scripts know if the movement should be locked
@@ -84,6 +87,7 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
         this.curSpeaker = dialogNode;
         //print("AAA: " + curSpeaker);
         //print("CAA " + gameObject.name);
+        SearchForIcon();
     }
 
     #region Functions to be called by Dialog Runner or Animation Timeline
