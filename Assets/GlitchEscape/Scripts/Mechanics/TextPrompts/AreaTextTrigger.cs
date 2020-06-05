@@ -4,8 +4,14 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.DualShock;
 
 public class AreaTextTrigger : MonoBehaviour, IActiveInteract {
+
+     // Optional inspector variables (sorry for messy code)
+     public bool changeToXbox;
+     public string xbox_message;
+
      private TMP_Text text;
      private TMP_Text UIText;
      private GameObject UITextbox;
@@ -24,8 +30,12 @@ public class AreaTextTrigger : MonoBehaviour, IActiveInteract {
      public void OnInteract(Player player) {}
 
      public void OnPlayerEnterInteractionRadius(Player player) {
-          if (IsControllerInput())
-               UIText.text = controller_message;
+          if (IsControllerInput()) {
+               if (DualShockGamepad.current == null && changeToXbox)
+                    UIText.text = xbox_message;
+               else 
+                    UIText.text = controller_message;
+          }
           else if (IsKeyboardInput())
                UIText.text = keyboard_message;
           UIText.gameObject.SetActive(true);

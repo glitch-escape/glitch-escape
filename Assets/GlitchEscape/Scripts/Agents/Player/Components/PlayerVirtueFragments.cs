@@ -42,7 +42,11 @@ public class PlayerVirtueFragments : PlayerComponent {
         var total = GetFragmentTotal(virtue);
         return total == 0 ? 0f : Mathf.Clamp01(current / (float)total);
     }
-    
+
+    public bool HasCompletedAllVirtues
+        => IsVirtueCompleted(Virtue.Humanity) && IsVirtueCompleted(Virtue.Courage) &&
+           IsVirtueCompleted(Virtue.Transcendence);
+
     public Virtue activeVirtueInThisScene { get; private set; }
     
     public struct FragmentInfo {

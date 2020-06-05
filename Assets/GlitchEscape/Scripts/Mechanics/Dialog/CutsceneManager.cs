@@ -22,6 +22,7 @@ public class CutsceneManager : MonoBehaviour {
     public void EndScene() {
         if(playerController) { 
             playerController.gameObject.SetActive(true); 
+            /*
             bool hasAllVirtues = true;
             for(int i = 0; i < endingVirtuesRequired.Length; i++) {
                 if(!playerController.player.fragments.IsVirtueCompleted(endingVirtuesRequired[i])) {
@@ -29,7 +30,8 @@ public class CutsceneManager : MonoBehaviour {
                     break;
                 }
             }
-            if(endCutsceneToLoad != Loader.Scene.None && hasAllVirtues) {
+            */
+            if(endCutsceneToLoad != Loader.Scene.None && playerController.player.fragments.HasCompletedAllVirtues) {
                 Application.LoadLevel(endCutsceneToLoad.ToString());
                 return;
             }
@@ -42,10 +44,10 @@ public class CutsceneManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        /*
-        if(Input.GetKeyDown(KeyCode.Q)) {
+        
+        if(Input.GetKeyDown(KeyCode.Escape)) {
             EndScene();
         }
-        */
+        
     }
 }
