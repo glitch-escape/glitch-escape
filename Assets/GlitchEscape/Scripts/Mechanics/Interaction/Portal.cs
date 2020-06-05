@@ -74,7 +74,7 @@ public class Portal : AInteractiveObject
             PlayCutscene(levelVirtueType, cutSceneToLoad);
         
         // load normal scene otherwise
-        } else {
+        } else if (levelToLoad != Loader.Scene.None) {
             Application.LoadLevel(levelToLoad.ToString());
         }
     }
