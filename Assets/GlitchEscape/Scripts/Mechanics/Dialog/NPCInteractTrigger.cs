@@ -42,7 +42,7 @@ public class NPCInteractTrigger : MonoBehaviour
         }
 
         if(isTank && player.fragments.IsVirtueCompleted(virtueType))    Destroy(theNPC.gameObject);
-        if(!isTank && !player.fragments.IsVirtueCompleted(virtueType))  //Destroy(theNPC.gameObject);
+        if(!isTank && !player.fragments.IsVirtueCompleted(virtueType))  Destroy(theNPC.gameObject);
         if(!isTank && _anim) { _anim.SetFloat("runSpeed", 0); }
     }
 
