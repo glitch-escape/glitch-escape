@@ -24,17 +24,21 @@ namespace GlitchEscape.Scripts.Utility {
             nextSampleIndex = (nextSampleIndex + 1) % ((uint) samples.Length);
         }
         public float average => currentSampleTotal / numSamples;
+        public uint sampleCount => numSamples;
     }
     
     public class FramerateSampler {
         private RingBufferAverageSampler dtSamples { get; } = new RingBufferAverageSampler(64);
+        private uint skipFrames = 4;     // skip first N frames
 
         /// <summary>
         /// Should be called every frame
         /// </summary>
         public void Update() {
-            dtSamples.AddSample(Time.unscaledDeltaTime);
+            if (skipFrames > 0) --skipFrames;
+            else dtSamples.AddSample(Time.unscaledDeltaTime);
         }
-        public float framerate => 1f / dtSamples.average;
+        public float framerate => dtSamples.sampleCount > 0 ? 1f / dtSamples.average : 0f;
+        public bool hasSamples => dtSamples.sampleCount > 0;
     }
 }
