@@ -8834,7 +8834,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.671, g: 0, b: 0.671, a: 1}
+  m_Color: {r: 0.65469056, g: 0.16442403, b: 0.66300005, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -16046,6 +16046,7 @@ MonoBehaviour:
     m_Signals:
     - {fileID: 11400000, guid: 231e8da0dabf94ce58d6bcfba9e19feb, type: 2}
     - {fileID: 11400000, guid: d4a5b4f1b28ff486b962134a28df0148, type: 2}
+    - {fileID: 11400000, guid: 1a75f177eef6749cfb0ff5d0721bb922, type: 2}
     m_Events:
     - m_PersistentCalls:
         m_Calls:
@@ -16064,6 +16065,19 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 2296462463657620839}
           m_MethodName: ContinueDialog
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1049717165}
+          m_MethodName: EndScene
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -35978,8 +35992,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cutscene Manager
       objectReference: {fileID: 0}
+    - target: {fileID: 6983259549623366181, guid: f318086e07101447894ceeed589994fb,
+        type: 3}
+      propertyPath: levelToLoad
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6983259549623366181, guid: f318086e07101447894ceeed589994fb,
+        type: 3}
+      propertyPath: endCutsceneToLoad
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f318086e07101447894ceeed589994fb, type: 3}
+--- !u!114 &1049717165 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6983259549623366181, guid: f318086e07101447894ceeed589994fb,
+    type: 3}
+  m_PrefabInstance: {fileID: 1049717164}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab6ba2650ac2b4b959a91321248e7f39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1050627713
 GameObject:
   m_ObjectHideFlags: 0
@@ -87602,7 +87638,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2209053367165940142}
-  m_LocalRotation: {x: 0.00090058974, y: 0.00067578227, z: 0.5982672, w: 0.8012958}
+  m_LocalRotation: {x: 0.0009005898, y: 0.0006757823, z: 0.59826726, w: 0.8012959}
   m_LocalPosition: {x: 0.0000020565656, y: 0.00027630496, z: -0.000030579125}
   m_LocalScale: {x: 0.9999999, y: 0.99999964, z: 1.0000005}
   m_Children:
@@ -94119,6 +94155,8 @@ MonoBehaviour:
   levelToLoad: 6
   cutSceneToLoad: 0
   levelVirtueType: 0
+  loadAntagonistSceneWhenAllFragmentsPickedUp: 0
+  antagonistCutsceneLevel: 14
   focusedPortalSpeed:
     minimum: 1
     maximum: 3
@@ -94144,6 +94182,8 @@ MonoBehaviour:
   levelToLoad: 3
   cutSceneToLoad: 0
   levelVirtueType: 0
+  loadAntagonistSceneWhenAllFragmentsPickedUp: 0
+  antagonistCutsceneLevel: 14
   focusedPortalSpeed:
     minimum: 1
     maximum: 3
@@ -94169,6 +94209,8 @@ MonoBehaviour:
   levelToLoad: 4
   cutSceneToLoad: 0
   levelVirtueType: 0
+  loadAntagonistSceneWhenAllFragmentsPickedUp: 0
+  antagonistCutsceneLevel: 14
   focusedPortalSpeed:
     minimum: 1
     maximum: 3
@@ -95287,7 +95329,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5871613230677893784}
-  m_LocalRotation: {x: 0.00090059417, y: -0.00067577895, z: -0.5982672, w: 0.8012958}
+  m_LocalRotation: {x: 0.0009005942, y: -0.000675779, z: -0.59826726, w: 0.8012959}
   m_LocalPosition: {x: -0.000002056567, y: 0.00027630493, z: -0.00003057924}
   m_LocalScale: {x: 0.9999997, y: 0.99999964, z: 1.0000004}
   m_Children:
