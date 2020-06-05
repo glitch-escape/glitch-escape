@@ -187,7 +187,7 @@ public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
         // check if we're currently grounded
         // if we're not grounded and were previously jumping, update isJumping + fire an end jumping event
         // && playerMovement.rigidbody.velocity(in ther vertical direction) == 0 */ potentially add this to fix jump reset right after jumping
-        if (isPlayerGrounded && isJumping && playerMovement.rigidbody.velocity.y == 0) {
+        if (isPlayerGrounded && isJumping && playerMovement.rigidbody.velocity.y <= 0.0001) {
             isJumping = false;
             jumpCount = 0;
             FireEvent(PlayerEvent.Type.EndJump);
@@ -198,7 +198,9 @@ public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
         GUILayout.Label("is jumping? " + isJumping);
         GUILayout.Label("jump count: " + jumpCount + " / " + player.config.maxJumps);
         GUILayout.Label("can jump? " + jumpAbilityStatus);
+        GUILayout.Label("floor window: " + floorWindow);
 
+        GUILayout.Label("player has vertical velocity " + Math.Abs(playerMovement.rigidbody.velocity.y));
         var jumpHeight = player.config.jumpHeight;
         GUILayout.Label("jump height: " + jumpHeight);
         GUILayout.Label("gravity: " + player.gravity.standingGravity);
