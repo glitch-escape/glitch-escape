@@ -14,7 +14,7 @@ public class RotationPuzzleWheel : AInteractiveObject {
         player = null;
     }
     public override void OnInteract(Player player) {
-        target?.flickIt();
+        target?.StartStopRotation();
     }
     public override void OnFocusChanged(bool focused) {}
 }

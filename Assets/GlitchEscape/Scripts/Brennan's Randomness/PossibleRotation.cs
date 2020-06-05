@@ -19,28 +19,23 @@ public class PossibleRotation : MonoBehaviour {
             
         }
     }
-
     private bool rotating = false;
-    Vector3 rotatable = new Vector3(0f, 1f, 0f);
-    int degrees = 0;
-    int howMuchToRotate = 2;
+    public float rotationAngle = 45f;   // full angle to rotate
+    private float angleRotated = 0f;    // current degrees rotated
+    public float fullRotationTime = 6f; // default clip is 6 seconds long
+    private float rotationDegreesPerSec => rotationAngle / fullRotationTime;
     public AudioClip[] audioClips;
     private AudioSource audioSource;
 
-    public void flickIt() { audioSource?.Stop(); rotate = !rotate; degrees = 0; }
+    public void StartStopRotation() { audioSource?.Stop(); rotate = !rotate; angleRotated = 0; }
     private void Update() {
-        if(rotate && degrees != 45) {
-            this.gameObject.transform.Rotate(rotatable, howMuchToRotate, Space.Self);
-            degrees += howMuchToRotate;
-            if(degrees >= 45)
-            {
-                rotate = false;
-            }
-        }
-
-        if(!rotate && degrees >= 45)
-        {
-            degrees = 0;
+        if (!rotating) return;
+        if (angleRotated < Mathf.Abs(rotationAngle)) {
+            var angle = rotationDegreesPerSec * Time.deltaTime;
+            angleRotated += angle;
+            this.gameObject.transform.Rotate(Vector3.up, angle, Space.Self);
+        } else {
+            rotate = false;
         }
     }
 }
