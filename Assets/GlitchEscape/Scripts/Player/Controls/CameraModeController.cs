@@ -100,6 +100,7 @@ public class CameraModeController : MonoBehaviour
         if (cameraRecenter)
         {
             cameraRecenterTimer += Time.deltaTime;
+            freelookCamera.m_YAxis.Value = Mathf.Lerp(freelookCamera.m_YAxis.Value, 0.5f, 0.3f);
             if (cameraRecenterTimer > 0.3f)
             {
                 freelookCamera.m_XAxis.Value = ConvertCameraAnlge(cameraTarget.localEulerAngles.y);
