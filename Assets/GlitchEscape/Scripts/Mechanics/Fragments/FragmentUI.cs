@@ -67,9 +67,9 @@ public class FragmentUI : PlayerComponent {
         
         // update fragment UI parts currently visible
         int fragmentsPickedUp = (int) (fragmentCompletion * (float)fragmentPieces.Length);
-        /*if (activeVirtue == Virtue.None) {
+        if (activeVirtue == Virtue.None) {
             fragmentsPickedUp = 0;
-        }*/
+        }
         for (int i = 1; i < fragmentPieces.Length; ++i) {
             fragmentPieces[i].gameObject.SetActive(i <= fragmentsPickedUp);
         }
@@ -91,15 +91,16 @@ public class FragmentUI : PlayerComponent {
         Virtue sceneVirtue = player.fragments.activeVirtueInThisScene;
         sceneHasFragments = FindObjectOfType<Fragment>() != null;
         Debug.Log("Scenevirtue " + sceneVirtue);
-        if (sceneHasFragments)
-        {
-            string virtueTag = "Blank";
+
+        string virtueTag = "None";
             if (sceneVirtue == Virtue.Courage)
                 virtueTag = "Courage";
             else if (sceneVirtue == Virtue.Humanity)
                 virtueTag = "Humanity";
             else if (sceneVirtue == Virtue.Transcendence)
                 virtueTag = "Transcendence";
+            else if (sceneVirtue == Virtue.Justice)
+                virtueTag = "Blank";
 
             GameObject fragmentUIIndicator = null;
             GameObject fragmentUIBackground = null;
@@ -121,14 +122,17 @@ public class FragmentUI : PlayerComponent {
                 }
                 else
                 {
+                    Debug.Log("Set inactive");
                     child.gameObject.SetActive(false);
                 }
             }
-            fragmentUIIndicator.SetActive(true);
-            fragmentUIBackground.SetActive(true);
+            if(virtueTag != "None")
+            {
+                fragmentUIIndicator.SetActive(true);
+                fragmentUIBackground.SetActive(true);
+            }
 
             fragmentPieces = fragmentUIIndicator?.GetComponentsInChildren<Transform>() ?? null;
-        }
         UpdateFragmentUI(virtue, player.fragments.GetFragmentCompletion(virtue));
     }
     void OnFragmentPickedUp(PlayerVirtueFragments.FragmentInfo fragment) {
