@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class RotationPuzzleWheel : AInteractiveObject {
     private Player player;
-    public PossibleRotation target;
+    public RotationPuzzleRotator target;
     void OnEnable() {
         player = FindObjectOfType<Player>();
     }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PossibleRotation : MonoBehaviour {
+public class RotationPuzzleRotator : MonoBehaviour {
     private bool rotate {
         get => rotating;
         set {
