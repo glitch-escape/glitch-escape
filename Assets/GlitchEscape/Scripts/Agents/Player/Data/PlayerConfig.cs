@@ -109,4 +109,7 @@ public class PlayerConfig : ScriptableObject {
 
     [Header("Fragments in level")]
     public int fragmentTotal = 10;
+    
+    [Header("Rotation puzzle config(s)")]
+    public RotationPuzzleConfig rotationPuzzleConfig;
 }
