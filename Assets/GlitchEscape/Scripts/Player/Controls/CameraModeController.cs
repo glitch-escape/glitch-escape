@@ -75,16 +75,26 @@ public class CameraModeController : MonoBehaviour
             ResetCamera();
         }
 
+        if ((Keyboard.current?.rKey.wasPressedThisFrame ?? false))
+        {
+            freelookCamera.m_YAxis.Value = 0.5f;
+            freelookCamera.m_XAxis.Value = ConvertCameraAnlge(cameraTarget.localEulerAngles.y);
+        }
+
         //checks if the camera dampening is enabled (for instant camera transform to player position)
         if (dampenReset)
         {
             dampenTimer -= Time.deltaTime;
+            //freelookCamera.m_YAxis.Value = 0.5f;
+            //freelookCamera.m_XAxis.Value = ConvertCameraAnlge(cameraTarget.localEulerAngles.y);
             //once timer hits 0, reset dampening values
             if (dampenTimer < 0f)
             {
                 freelookCamera.GetRig(0).GetCinemachineComponent<CinemachineOrbitalTransposer>().m_ZDamping = 3;
                 freelookCamera.GetRig(1).GetCinemachineComponent<CinemachineOrbitalTransposer>().m_ZDamping = 3;
                 freelookCamera.GetRig(2).GetCinemachineComponent<CinemachineOrbitalTransposer>().m_ZDamping = 3;
+                freelookCamera.m_YAxis.Value = 0.5f;
+                freelookCamera.m_XAxis.Value = ConvertCameraAnlge(cameraTarget.localEulerAngles.y);
                 ResetCamera();
                 dampenReset = false;
             }
@@ -190,15 +200,35 @@ public class CameraModeController : MonoBehaviour
     //starts a delay for the camera to go back to normal dampening (delay is checked for in Update())
     private void OnKilledReset()
     {
+        
         freelookCamera.GetRig(0).GetCinemachineComponent<CinemachineOrbitalTransposer>().m_ZDamping = 0;
         freelookCamera.GetRig(1).GetCinemachineComponent<CinemachineOrbitalTransposer>().m_ZDamping = 0;
         freelookCamera.GetRig(2).GetCinemachineComponent<CinemachineOrbitalTransposer>().m_ZDamping = 0;
 
+        freelookCamera.m_YAxis.Value = 0.5f;
+        freelookCamera.m_XAxis.Value = ConvertCameraAnlge(cameraTarget.localEulerAngles.y);
+
         freelookCamera.m_RecenterToTargetHeading.m_enabled = true;
         freelookCamera.m_RecenterToTargetHeading.m_WaitTime = 0;
         freelookCamera.m_RecenterToTargetHeading.m_RecenteringTime = 0f;
+        
+        //freelookCamera.m_YAxis.Value = 0.5f;
+        //freelookCamera.m_XAxis.Value = ConvertCameraAnlge(cameraTarget.localEulerAngles.y);
+
 
         dampenReset = true;
         dampenTimer = 0.1f;
+    }
+
+    private float ConvertCameraAnlge(float cameraAngle)
+    {
+        if (cameraAngle > 180)
+        {
+            return (cameraAngle - 360f);
+        }
+        else
+        {
+            return cameraAngle;
+        }
     }
 }
