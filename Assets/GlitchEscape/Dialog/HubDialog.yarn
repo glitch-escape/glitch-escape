@@ -253,3 +253,31 @@ Protag:If someone did put you in that tank, then we can ask them why they did it
 Protag:Sound good?
 Hostage3:yeah… Sounds good!
 ===
+title: Tank1
+tags: 
+colorID: 0
+position: 116,108
+---
+<<if $curMsg eq null>> 
+    <<set $curMsg to 0>> 
+<<endif>>
+
+<<if $curMsg % 4 eq 0>> 
+    Protag:Are these tanks holding… me? If only I can get them out somehow.
+    Protag:It looks like there is a slot for something on the tank.
+    Protag:If I can just find whatever fits in here, I think the tank will let them go.
+    Protag:Maybe it’s through that portal behind it.
+<<elseif $curMsg % 4 eq 1>> 
+    Protag:It’s kind of creepy…
+    Protag:They’re just floating inside it unconsciously…
+<<elseif $curMsg % 4 eq 2>> 
+    Protag: The slot looks like a circle.
+    Protag: Maybe the key is some kind of ball.
+<<else>>
+    Protag:Hey!
+    Protag:…
+    Protag:...nope. They can’t hear me.0a638d5
+<<endif>>
+
+<<set $curMsg to $curMsg + 1>>
+===

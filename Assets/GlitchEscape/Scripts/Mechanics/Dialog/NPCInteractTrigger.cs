@@ -48,8 +48,8 @@ public class NPCInteractTrigger : MonoBehaviour
     }
 
     void OnTriggerEnter(Collider other) {
+        dialogManager.SetSpeaker(speakerName);
         if(!isTank) {
-            dialogManager.SetSpeaker(speakerName);
             inputText.OnPlayerEnterInteractionRadius(null);
             Halt();
         }
@@ -74,8 +74,8 @@ public class NPCInteractTrigger : MonoBehaviour
     }
 
     void OnTriggerExit(Collider other) {
+        dialogManager.SetSpeaker(null);
         if(!isTank) {
-            dialogManager.SetSpeaker(null);
             inputText.OnPlayerExitInteractionRadius(null);
         }
         playerDetected = false;
