@@ -9,39 +9,33 @@ public class InteractiveButtonPrompt : AInteractiveObject {
     public TMP_Text xboxButtonPrompt;
     public TMP_Text keyboardButtonPrompt;
     private bool hasFocus = false;
+    private PlayerControls.InputControlType lastControlType;
 
     void SetActive(bool active, PlayerControls.InputControlType inputType) {
+        if (inputType != PlayerControls.InputControlType.None) {
+            lastControlType = inputType;
+        } else {
+            inputType = lastControlType;
+        }
         dualshockButtonPrompt?.gameObject.SetActive(active && inputType == PlayerControls.InputControlType.DualshockGamepad);
         xboxButtonPrompt?.gameObject.SetActive(active && inputType == PlayerControls.InputControlType.XboxGamepad);
         keyboardButtonPrompt?.gameObject.SetActive(active && inputType == PlayerControls.InputControlType.MouseAndKeyboard);
     }
     public override void OnInteract(Player player) {}
     public override void OnFocusChanged(bool focused) {
-        if (focused != hasFocus) {
-            hasFocus = focused;
-            var player = GameObject.FindObjectOfType<Player>();
-            if (focused && player != null) {
-                player.input.onInputControlTypeChanged += OnActiveInputTypeChanged;
-            }
-            else if (player != null) {
-                player.input.onInputControlTypeChanged -= OnActiveInputTypeChanged;
-            }
-        }
+        SetActive(hasFocus = focused, PlayerControls.activeControlType);
     }
     private void OnActiveInputTypeChanged(PlayerControls.InputControlType type) {
         SetActive(hasFocus, type);
     }
     private void OnEnable() {
         SetActive(hasFocus, PlayerControls.activeControlType);
+        var player = GameObject.FindObjectOfType<Player>();
+        if (player) player.input.onInputControlTypeChanged += OnActiveInputTypeChanged;
     }
     private void OnDisable() {
-        if (hasFocus) {
-            var player = GameObject.FindObjectOfType<Player>();
-            if (player != null) {
-                player.input.onInputControlTypeChanged -= OnActiveInputTypeChanged;
-            }
-
-            hasFocus = false;
-        }
+        var player = GameObject.FindObjectOfType<Player>();
+        if (player) player.input.onInputControlTypeChanged -= OnActiveInputTypeChanged;
+        SetActive(hasFocus = false, PlayerControls.activeControlType);
     }
 }
