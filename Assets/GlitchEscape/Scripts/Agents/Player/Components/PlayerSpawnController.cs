@@ -55,14 +55,14 @@ public class PlayerSpawnController : PlayerComponent, IPlayerDebug {
             Quaternion.identity);
     }
 
-    private void SetSpawnPositionAtGroundBelowPoint(Transform transform) {
+    private void SetSpawnPositionAtGroundBelowPoint(Transform transform, Vector3 offset) {
         RaycastHit hit;
         var spawnPoint =
-            (Physics.Raycast(transform.position, Vector3.down, out hit, 25f, LayerMasks.FloorAndWalls) 
+            (Physics.Raycast(transform.position + offset, Vector3.down, out hit, 25f, LayerMasks.FloorAndWalls) 
                 ? hit.point 
                 : transform.position)
             + Vector3.up * player.config.spawnHeight;
-        SetSpawnPosition(spawnPoint, transform.rotation);
+        SetSpawnPosition(spawnPoint, player.transform.rotation);
     }
 
     public void SetSpawnPosition(SavePoint savePoint) {
@@ -70,9 +70,10 @@ public class PlayerSpawnController : PlayerComponent, IPlayerDebug {
             SetSpawnPosition(
                 savePoint.savePointTarget.position + Vector3.up * player.config.spawnHeight,
                 savePoint.savePointTarget.rotation);
-        }
-        else {
-            SetSpawnPositionAtGroundBelowPoint(savePoint.transform);    
+        } else if (savePoint.isPlatformCollider) {
+            SetSpawnPositionAtGroundBelowPoint(savePoint.transform, Vector3.up * savePoint.platformRaycastHeightOffset);
+        } else {
+            SetSpawnPositionAtGroundBelowPoint(savePoint.transform, Vector3.zero);
         }
     }
     public void Respawn() {
