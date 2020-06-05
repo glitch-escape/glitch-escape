@@ -58,6 +58,7 @@ public class Portal : AInteractiveObject
     public override void OnInteract(Player player) {
         if (levelToLoad == Loader.Scene.None) return;
         
+        /* Antag cutscene auto plays after last hostage cutscene
         // load antagonist cutscene level iff requirements met
         if (loadAntagonistSceneWhenAllFragmentsPickedUp
             && player.fragments.HasCompletedAllVirtues
@@ -65,8 +66,10 @@ public class Portal : AInteractiveObject
         ) {
             Application.LoadLevel(antagonistCutsceneLevel.ToString());
         
+        } else 
+        */
         // load NPC freeing cutscene iff requirements met 
-        } else if (levelVirtueType != Virtue.None
+        if (levelVirtueType != Virtue.None
             && cutSceneToLoad != Loader.Scene.None
             && player.fragments.IsVirtueCompleted(levelVirtueType)
             && !HasPlayedCutscene(levelVirtueType)
