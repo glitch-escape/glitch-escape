@@ -1,17 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using GlitchEscape.Scripts.Utility;
 using TMPro;
 using UnityEngine;
 
 [RequireComponent(typeof(TextMeshProUGUI))]
 public class FPSCounter : MonoBehaviour {
     [InjectComponent] public TextMeshProUGUI text;
-    private float fps = 60f;
+    private FramerateSampler framerateSampler { get; } = new FramerateSampler();
+    public float currentFramerate => framerateSampler.framerate;
     void Update() {
-        var step = 0.1f;
-        if (Time.deltaTime > 0f) {
-            fps = fps * (1f - step) + step / Time.deltaTime;
-            text.text = "FPS: " + Mathf.Round(fps);
+        framerateSampler.Update();
+        if (framerateSampler.hasSamples) {
+            text.text = "FPS: " + Mathf.Round(currentFramerate);
+                        // + "\n" + (1f / Time.smoothDeltaTime) + "\n" + Time.unscaledDeltaTime;
+        } else {
+            text.text = "";
         }
     }
+    // void OnGUI() {
+    //     GUILayout.Label("\n\n\n\n\n\n\n" +  Mathf.Round(currentFramerate) + "\n" + (1f / Time.smoothDeltaTime) + "\n" + Time.unscaledDeltaTime);
+    // }
 }
