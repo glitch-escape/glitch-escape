@@ -37,11 +37,7 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
         if (dUI) dUI.textSpeed = config.textSpeed;
         if (dr)  dr.Add(config.coreText);
 
-        // Try to find the textbox if the icon hasn't been set yet
-        if(!icon) {
-            Image i = GameObject.Find("PlayerCameraRig/UI/HUD/InteractFloatPanel/Textbox Image").GetComponent<Image>();
-            if(i) SetIcon(i);
-        }
+        SearchForIcon();
     }
     
     void Update() {
@@ -69,6 +65,14 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
         }
     }
 
+    private void SearchForIcon() {
+        // Try to find the textbox if the icon hasn't been set yet
+        if(!icon) {
+            Image i = GameObject.Find("PlayerCameraRig/UI/HUD/InteractFloatPanel/Image").GetComponent<Image>();
+            if(i) SetIcon(i);
+        }
+    }
+
 
     /// <summary>
     /// Let other scripts know if the movement should be locked
@@ -84,6 +88,7 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
         this.curSpeaker = dialogNode;
         //print("AAA: " + curSpeaker);
         //print("CAA " + gameObject.name);
+        SearchForIcon();
     }
 
     #region Functions to be called by Dialog Runner or Animation Timeline

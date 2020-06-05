@@ -5,6 +5,11 @@ using TMPro;
 using UnityEngine.InputSystem.DualShock;
 
 public class InputDeviceCheck : MonoBehaviour {
+
+    // Optional inspector variables
+    public bool changeText;
+    public string keyboard, controller, xbox;
+
     private TMP_Text text;
     private void Awake() {
         text = text ?? Enforcements.GetComponentInChildren<TMP_Text>(this);
@@ -18,10 +23,15 @@ public class InputDeviceCheck : MonoBehaviour {
             // Xbox controller text
             else
                 text.spriteAsset = Resources.Load<TMP_SpriteAsset>("Sprites/xboxbuttons");
+
+            if(changeText && DualShockGamepad.current != null) text.text = controller;
+            else if(changeText) text.text = xbox;
         }
         else if (IsKeyboardInput()) {
             // Mouse and keyboard text
             text.spriteAsset = Resources.Load<TMP_SpriteAsset>("Sprites/keyboardbuttons");
+
+            if(changeText) text.text = keyboard;
         }
         
     }
