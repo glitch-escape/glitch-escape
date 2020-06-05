@@ -11,10 +11,14 @@ public class FPSCounter : MonoBehaviour {
     public float currentFramerate => framerateSampler.framerate;
     void Update() {
         framerateSampler.Update();
-        text.text = "FPS: " + Mathf.Round(currentFramerate) + "\n" + (1f / Time.smoothDeltaTime) + "\n" + Time.unscaledDeltaTime;
+        if (framerateSampler.hasSamples) {
+            text.text = "FPS: " + Mathf.Round(currentFramerate);
+                        // + "\n" + (1f / Time.smoothDeltaTime) + "\n" + Time.unscaledDeltaTime;
+        } else {
+            text.text = "";
+        }
     }
-
-    void OnGUI() {
-        GUILayout.Label("\n\n\n\n\n\n\n" +  Mathf.Round(currentFramerate) + "\n" + (1f / Time.smoothDeltaTime) + "\n" + Time.unscaledDeltaTime);
-    }
+    // void OnGUI() {
+    //     GUILayout.Label("\n\n\n\n\n\n\n" +  Mathf.Round(currentFramerate) + "\n" + (1f / Time.smoothDeltaTime) + "\n" + Time.unscaledDeltaTime);
+    // }
 }
