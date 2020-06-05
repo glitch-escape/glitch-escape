@@ -6,12 +6,9 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Renderer))]
-public class PlayerStatsView : MonoBehaviour {
+public class PlayerStatsView : PlayerComponent {
     public static PlayerStatsView instance = null;
     void Awake() { instance = this; }
-    
-    private Player _player = null;
-    private Player player => _player ?? Enforcements.GetSingleComponentInScene<Player>(this);
 
     private const int HEALTH_BAR_MATEIRAL_INDEX = 1;
     private const int STAMINA_BAR_MATERIAL_INDEX = 0;
