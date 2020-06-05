@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 
 [RequireComponent(typeof(TextMeshProUGUI))]
+[ExecuteInEditMode]
 public class FPSCounter : MonoBehaviour {
     [InjectComponent] public TextMeshProUGUI text;
     private FramerateSampler framerateSampler { get; } = new FramerateSampler();
