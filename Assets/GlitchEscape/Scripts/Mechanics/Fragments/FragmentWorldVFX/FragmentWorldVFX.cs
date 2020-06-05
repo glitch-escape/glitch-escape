@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using Random = UnityEngine.Random;
 
-
 [ExecuteInEditMode]
 public class FragmentWorldVFX : MonoBehaviour {
     public bool simulateInEditMode = false;
@@ -135,6 +134,9 @@ public class FragmentWorldVFX : MonoBehaviour {
     
     public Transform lookTarget;
     public void Update() {
+#if UNITY_EDITOR
+        if (!simulateInEditMode) return;
+#endif
         foreach (var particle in particles) {
             particle.Animate(Time.time - startTime); 
             if (lookAt && lookTarget != null) {
