@@ -12,6 +12,8 @@ public class Portal : AInteractiveObject
     public Loader.Scene levelToLoad = Loader.Scene.MainMenu;
     public Loader.Scene cutSceneToLoad = Loader.Scene.MainMenu;
     public Virtue levelVirtueType;
+    public bool loadAntagonistSceneWhenAllFragmentsPickedUp = false;
+    public Loader.Scene antagonistCutsceneLevel = Loader.Scene.None;
     public FloatRange focusedPortalSpeed = new FloatRange { maximum = 3f, minimum = 1f };
     [InjectComponent] public SphereCollider collider;
     [InjectComponent] public MeshRenderer renderer;
@@ -26,19 +28,53 @@ public class Portal : AInteractiveObject
             gameObject.SetActive(value);
         }
     }
-
+    
     /// <summary>
     /// Is this portal currently focused by a nearby player?
     /// </summary>
     public bool focused { get; private set; } = false;
     
+    
+    // hack for cutscenes
+    // use persistent data as this saved data is debuggable + can be listed in game under
+    // debug menu (` or dpad left) -> player persistent data (should list info incl fragment pick up counts and
+    // w/ this cutscene visits as well)
+    struct CutsceneState {
+        public bool hasPlayedCutscene;
+    }
+    bool HasPlayedCutscene (Virtue virtueType) {
+        var cutsceneState = new CutsceneState { hasPlayedCutscene = false };
+        var cutsceneKey = "Hub Cutscene " + virtueType;
+        return PersistentDataStore.instance.TryLoadValue(cutsceneKey, ref cutsceneState) 
+               && cutsceneState.hasPlayedCutscene;
+    }
+    void PlayCutscene (Virtue virtueType, Loader.Scene cutsceneLevel) {
+        var cutsceneKey = "Hub Cutscene " + virtueType;
+        PersistentDataStore.instance.TryStoreValue(cutsceneKey, new CutsceneState {
+            hasPlayedCutscene = true
+        });
+        Application.LoadLevel(cutsceneLevel.ToString());
+    }
     public override void OnInteract(Player player) {
-        //print(player.fragments.IsVirtueCompleted(Virtue.Courage));
-        if(levelVirtueType != Virtue.None && cutSceneToLoad != Loader.Scene.None 
-            && player.fragments.IsVirtueCompleted(levelVirtueType)) {
-            Application.LoadLevel(cutSceneToLoad.ToString());
-        }
-        else if (levelToLoad != Loader.Scene.None) {
+        if (levelToLoad == Loader.Scene.None) return;
+        
+        // load antagonist cutscene level iff requirements met
+        if (loadAntagonistSceneWhenAllFragmentsPickedUp
+            && player.fragments.HasCompletedAllVirtues
+            && antagonistCutsceneLevel != Loader.Scene.None
+        ) {
+            Application.LoadLevel(antagonistCutsceneLevel.ToString());
+        
+        // load NPC freeing cutscene iff requirements met 
+        } else if (levelVirtueType != Virtue.None
+            && cutSceneToLoad != Loader.Scene.None
+            && player.fragments.IsVirtueCompleted(levelVirtueType)
+            && !HasPlayedCutscene(levelVirtueType)
+        ) {
+            PlayCutscene(levelVirtueType, cutSceneToLoad);
+        
+        // load normal scene otherwise
+        } else {
             Application.LoadLevel(levelToLoad.ToString());
         }
     }
