@@ -23,6 +23,9 @@ public class NPCInteractTrigger : MonoBehaviour
     private bool playerDetected;
     private float idleTime;
     private float nextWaitTime;
+    //sound source for completion sound
+    [InjectComponent] public AudioSource soundSource;
+    public AudioClip taskComplete;
 
     private bool eventTriggered = false;
     private bool hasCollectedOrb
@@ -55,6 +58,11 @@ public class NPCInteractTrigger : MonoBehaviour
 
     void OnTriggerEnter(Collider other) {
         if(hasPostOrbSpeaker && hasCollectedOrb) {
+            //sound clip
+            if (taskComplete != null)
+            {
+                soundSource.PlayOneShot(taskComplete);
+            }
             dialogManager.SetSpeaker(postOrbSpeaker);
         }
         else { dialogManager.SetSpeaker(speakerName); }

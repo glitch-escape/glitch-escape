@@ -33,6 +33,7 @@ public class PlayerAudioConfig : ScriptableObject {
 
     [Header("Interaction")]
     public AudioClip fragmentInteraction;
+    public AudioClip taskComplete;
 
     public AudioClip mazeSwitch;
 
