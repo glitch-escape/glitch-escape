@@ -42,6 +42,7 @@ public static class PlayerEvent {
         BeginHealthRegen, EndHealthRegen,
         BeginStaminaRegen, EndStaminaRegen,
 
+
         // TODO: add any other events, and wire up / use these events
     }
     /// <summary>

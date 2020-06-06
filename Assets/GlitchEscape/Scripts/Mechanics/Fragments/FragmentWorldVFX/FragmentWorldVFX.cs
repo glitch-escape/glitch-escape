@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering;
 using Random = UnityEngine.Random;
-
 
 [ExecuteInEditMode]
 public class FragmentWorldVFX : MonoBehaviour {
@@ -77,6 +76,7 @@ public class FragmentWorldVFX : MonoBehaviour {
         particle.transform.parent = transform;
         var renderer = particle.GetComponent<MeshRenderer>();
         renderer.materials = particleVisualConfig.materials;
+        renderer.shadowCastingMode = ShadowCastingMode.Off;
         Init(particle);
         return particle;
     }
@@ -128,16 +128,15 @@ public class FragmentWorldVFX : MonoBehaviour {
     private float startTime = 0f;
     void Start() {
         startTime = Time.time;
-        if (particles == null) {
-            particles = GetComponentsInChildren<FragmentWorldVFXParticle>();
-        }
-        if (particles.Length != currentParticleCount) {
-            Respawn();
-        }
+        particles = particles ?? GetComponentsInChildren<FragmentWorldVFXParticle>();
+        RecalculateSpawnPositions();
     }
     
     public Transform lookTarget;
     public void Update() {
+#if UNITY_EDITOR
+        if (!simulateInEditMode) return;
+#endif
         foreach (var particle in particles) {
             particle.Animate(Time.time - startTime); 
             if (lookAt && lookTarget != null) {
