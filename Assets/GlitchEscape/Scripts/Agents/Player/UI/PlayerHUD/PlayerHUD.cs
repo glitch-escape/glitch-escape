@@ -14,7 +14,6 @@ public class PlayerHUD : PlayerComponent {
         }
     }
 
-    // Update is called once per frame
     void Update() {
         float health = player.health.value / player.health.maximum;
         if(health < .45 && health > .30)
