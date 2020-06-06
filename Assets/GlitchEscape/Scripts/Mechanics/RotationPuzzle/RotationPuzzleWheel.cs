@@ -5,14 +5,7 @@ using TMPro;
 using UnityEngine;
 
 public class RotationPuzzleWheel : AInteractiveObject {
-    private Player player;
     public RotationPuzzleRotator target;
-    void OnEnable() {
-        player = FindObjectOfType<Player>();
-    }
-    private void OnDisable() {
-        player = null;
-    }
     public override void OnInteract(Player player) {
         target?.StartStopRotation();
     }
