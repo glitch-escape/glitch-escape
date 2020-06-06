@@ -6,16 +6,24 @@ using UnityEngine.UI;
 using UnityEngine.Audio;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using Cinemachine;
 
 public class PauseMenuController : MonoBehaviour
 {
+    public CinemachineFreeLook freeLookCam;
+    public PlayerCameraController playerCameraController;
     public GameObject menus;
     public GameObject main;
     public Slider masterSlider;
     public Slider musicSlider;
-    public Slider SFXSlider;
+    public Slider sFXSlider;
+    public Slider cameraSensitiveSlider;
+    public Slider fOVSlider;
+    public Toggle invertYToggle;
     public AudioMixer audioMixer;
     public Button mainResumeButton;
+
+    private int isInvert = 0;
 
     void Awake()
     {
@@ -38,6 +46,14 @@ public class PauseMenuController : MonoBehaviour
             mainResumeButton.Select();
         }
         else
+        {
+            GameResume();
+        }
+    }
+
+    public void OnClosePauseMenu()
+    {
+        if (menus.activeInHierarchy)
         {
             GameResume();
         }
@@ -103,25 +119,75 @@ public class PauseMenuController : MonoBehaviour
         audioMixer.SetFloat("Master", Mathf.Log10(PlayerPrefs.GetFloat("MasterVolume")) * 20);
         musicSlider.value = PlayerPrefs.GetFloat("MusicVolume", 1f);
         audioMixer.SetFloat("Music", Mathf.Log10(PlayerPrefs.GetFloat("MusicVolume")) * 20);
-        SFXSlider.value = PlayerPrefs.GetFloat("SFXVolume", 1f);
+        sFXSlider.value = PlayerPrefs.GetFloat("SFXVolume", 1f);
         audioMixer.SetFloat("Sound Effects", Mathf.Log10(PlayerPrefs.GetFloat("SFXVolume")) * 20);
+        cameraSensitiveSlider.value = PlayerPrefs.GetFloat("CameraSensitive", 1.0f);
+        // playerConfig.cameraTurnSpeed = Mathf.Lerp(5f, 360f, cameraSensitiveSlider.value);
+        playerCameraController.sensitiveX = cameraSensitiveSlider.value;
+        playerCameraController.sensitiveY = cameraSensitiveSlider.value;
+        isInvert = PlayerPrefs.GetInt("InvertY", 0);
+        if (isInvert == 1)
+        {
+            invertYToggle.isOn = true;
+        }
+        else
+        {
+            invertYToggle.isOn = false;
+        }
+        fOVSlider.value = PlayerPrefs.GetFloat("FOV", 1f);
+        freeLookCam.m_Lens.FieldOfView = Mathf.Lerp(60f, 100f, PlayerPrefs.GetFloat("FOV"));
     }
 
     public void ChangeMasterVol(float val)
     {
         PlayerPrefs.SetFloat("MasterVolume", val);
         audioMixer.SetFloat("Master", Mathf.Log10(PlayerPrefs.GetFloat("MasterVolume")) * 20);
+        PlayerPrefs.Save();
     }
 
     public void ChangeMusicVol(float val)
     {
         PlayerPrefs.SetFloat("MusicVolume", val);
         audioMixer.SetFloat("Music", Mathf.Log10(PlayerPrefs.GetFloat("MusicVolume")) * 20);
+        PlayerPrefs.Save();
     }
 
     public void ChangeSFXVol(float val)
     {
         PlayerPrefs.SetFloat("SFXVolume", val);
         audioMixer.SetFloat("Sound Effects", Mathf.Log10(PlayerPrefs.GetFloat("SFXVolume")) * 20);
+        PlayerPrefs.Save();
+    }
+
+    public void ChangeCameraSensitive(float val)
+    {
+        PlayerPrefs.SetFloat("CameraSensitive", val);
+        // playerConfig.cameraTurnSpeed = Mathf.Lerp(5f, 360f, val);
+        playerCameraController.sensitiveX = cameraSensitiveSlider.value;
+        playerCameraController.sensitiveY = cameraSensitiveSlider.value;
+        PlayerPrefs.Save();
+        // Debug.Log(playerConfig.cameraTurnSpeed);
+    }
+
+    public void ChangeInvertY(bool isInvert)
+    {
+        if (isInvert)
+        {
+            PlayerPrefs.SetInt("InvertY", 1);
+            playerCameraController.sensitiveY = -Mathf.Abs(playerCameraController.sensitiveY);
+        }
+        else
+        {
+            PlayerPrefs.SetInt("InvertY", 0);
+            playerCameraController.sensitiveY = Mathf.Abs(playerCameraController.sensitiveY);
+        }
+        PlayerPrefs.Save();
+    }
+
+    public void ChangeFOV(float val)
+    {
+        PlayerPrefs.SetFloat("FOV", val);
+        freeLookCam.m_Lens.FieldOfView = Mathf.Lerp(60f, 100f, val);
+        PlayerPrefs.Save();
     }
 }
