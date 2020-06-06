@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Renderer))]
+[RequireComponent(typeof(Player))]
 public class PlayerStatsView : PlayerComponent {
     public static PlayerStatsView instance = null;
     void Awake() { instance = this; }
@@ -85,7 +86,8 @@ public class PlayerStatsView : PlayerComponent {
         staminaSetter.SetMaterial(renderer.materials[STAMINA_BAR_MATERIAL_INDEX]);
         //shardSetter.SetMaterial(renderer.materials[SHARD_BAR_MATERIAL_INDEX]);
         staminaFlash.SetMaterial(renderer.materials[STAMINA_BAR_MATERIAL_INDEX]);
-        player.OnFailedToUseAbilityDueToLowStamina += FlashLowStamina;
+        //player.OnFailedToUseAbilityDueToLowStamina += FlashLowStamina;
+        Player player = GetComponent<Player>();
         
     }
     private void OnDisable() {
@@ -93,7 +95,7 @@ public class PlayerStatsView : PlayerComponent {
         staminaSetter.SetMaterial(null);
         //shardSetter.SetMaterial(null);
         staminaFlash.SetMaterial(null);
-        player.OnFailedToUseAbilityDueToLowStamina -= FlashLowStamina;
+        //player.OnFailedToUseAbilityDueToLowStamina -= FlashLowStamina;
     }
     void Update() {
         float health = player.health.value / player.health.maximum;
