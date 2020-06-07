@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class EnemyPatrolAction : EnemyAbility {
     protected override bool hasSetDuration => false;
 
-    private NavMeshAgent agent => enemy.navMeshAgent;
+    private NavMeshAgent navAgent => enemy.navMeshAgent;
     public Transform[] patrolPoints;
     public float ptLeniency;
 
@@ -25,7 +25,7 @@ public class EnemyPatrolAction : EnemyAbility {
 
     protected override void OnAbilityStart() {
         if (patrolPoints.Length > 0) {
-            agent.SetDestination(patrolPoints[curDest].position);
+            navAgent.SetDestination(patrolPoints[curDest].position);
         }
         else {
             isIdle = true;
@@ -35,7 +35,7 @@ public class EnemyPatrolAction : EnemyAbility {
     protected override void OnAbilityUpdate() {
         base.OnAbilityUpdate();
         // Update destination point if needed
-        if (Vector3.Distance(enemy.transform.position, agent.destination) <= ptLeniency) {
+        if (Vector3.Distance(enemy.transform.position, navAgent.destination) <= ptLeniency) {
             if (isReturnTrip) {
                 curDest -= 1;
                 if (curDest < 0) {
@@ -51,7 +51,7 @@ public class EnemyPatrolAction : EnemyAbility {
                 }
             }
 
-            agent.SetDestination(patrolPoints[curDest].position);
+            navAgent.SetDestination(patrolPoints[curDest].position);
         }
     }
     #endregion

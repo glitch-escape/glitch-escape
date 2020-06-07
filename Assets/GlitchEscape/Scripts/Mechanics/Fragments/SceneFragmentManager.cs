@@ -50,7 +50,7 @@ public class SceneFragmentManagerEditor : Editor {
         for (int i = 0; i < fragments.Length; ++i) {
             GUILayout.BeginHorizontal();
             GUILayout.Label(fragments[i].objectPersistencyId != "" ? fragments[i].objectPersistencyId : "NO ID ASSIGNED");
-            EditorGUILayout.ObjectField(fragments[i], fragments[i].GetType());
+            EditorGUILayout.ObjectField(fragments[i], fragments[i].GetType(), true);
             var vt = (Virtue)EditorGUILayout.EnumPopup(fragments[i].virtueType);
             if (vt != fragments[i].virtueType) {
                 var obj = new SerializedObject(fragments[i]);
