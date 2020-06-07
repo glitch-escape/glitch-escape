@@ -20,8 +20,8 @@ public class FloatingObject : MonoBehaviour {
         }
     }
     
-    public float cycleDuration = 1f;
-    public float floatOffsetDistance = 0.2f;
+    public float cycleDuration = 10f;
+    public float floatOffsetDistance = 0.05f;
     public bool randomizeFloatStartTimes;
     
     void Update() {
