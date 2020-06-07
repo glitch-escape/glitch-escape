@@ -256,7 +256,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -447, y: -279}
-  m_SizeDelta: {x: 851.1, y: 1293.4}
+  m_SizeDelta: {x: 851.1, y: 3200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &138795467
 MonoBehaviour:
@@ -289,22 +289,102 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Scrungus
+  m_Text: 'Producer
 
 
-    Bungo
+    Art Producer
 
 
-
-    Chungus
-
+    Technical Producer
 
 
 
-    Plantains
+    Creative Director
 
 
-    Bananas
+    Music
+    + Sound Design
+
+
+    Lead Character Artist
+
+
+    Lead Environmental Artist
+
+
+    3D
+    Artists
+
+
+
+
+    Visual Effects & Shaders
+
+
+
+
+    Lead Programmer
+
+
+    Gameplay
+    Programmers
+
+
+
+
+    Additional Programming
+
+
+
+
+    Level Design
+
+
+    Narrative
+    Director
+
+
+    Cutscene Design
+
+
+
+
+    Concept Art
+
+
+
+
+
+
+    UI & 2D Art
+
+
+
+    UI
+    Programming
+
+
+
+    Rigging & Animation
+
+
+
+
+
+    Trailer & Marketing
+
+
+
+    Many
+    Thanks To!
+
+
+
+
+
+
+
+
 
 '
 --- !u!222 &138795468
@@ -415,6 +495,7 @@ RectTransform:
   m_Children:
   - {fileID: 1896737223}
   - {fileID: 138795466}
+  - {fileID: 1332554606}
   m_Father: {fileID: 100537591}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -591,6 +672,89 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1332554605
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1332554606}
+  - component: {fileID: 1332554608}
+  - component: {fileID: 1332554607}
+  m_Layer: 5
+  m_Name: End
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1332554606
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1332554605}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 483025582}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -2350}
+  m_SizeDelta: {x: 1700, y: 800}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1332554607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1332554605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 40
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 4
+    m_MaxSize: 40
+    m_Alignment: 1
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: "All the folks at the CMPM + AGPM games depts at UCSC\n\n(and in particular,
+    all of the fellow 17X students that we weathered together with under a global
+    pandemic + everything else 2020 decided to throw at us, and still made some kick-ass
+    games with regardless :) )\n\nAnd last but not least, all of our supportive friends
+    + family, both in and outside of the UCSC games program\t\n\n\nCopyright 2020 
+    The Glitch Escape Team\n\nglitchescape.itch.io              @glitch_escape\n\nThanks
+    for playing!\n"
+--- !u!222 &1332554608
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1332554605}
+  m_CullTransparentMesh: 0
 --- !u!1 &1896737222
 GameObject:
   m_ObjectHideFlags: 0
@@ -626,7 +790,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 457, y: -279}
-  m_SizeDelta: {x: 851.1, y: 1293.4}
+  m_SizeDelta: {x: 851.1, y: 3200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1896737224
 MonoBehaviour:
@@ -659,29 +823,15 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '
-
-    Jimmy
-
-
-    Tommy
-
-    Samantha
-
-
-    Green
-
-    Black
-
-    Red
-
-
-    Plantains
-
-
-    Phones
-
-'
+  m_Text: "\nDavid Monroe\n\nTiffany Phan\n\nSeiji Emery\nRachel Haub\n\nTiffany
+    Phan\n\nCoy Youngblood\n\nErica Li\n\nSam Feng\n\nSam Feng\nErica Li\nEizi Yu\n\nSam
+    Feng\nSeiji Emery\nRachel Haub\n\nSeiji Emery\n\nSeiji Emery\nVladislav Kardash\nRachel
+    Haub\n\nHardwin Bui\nLubin Tu\nBrennan McCulloch\n\nBenjamin Chen\n\nKris Torres\n\nTiffany
+    Phan\nKris Torres\nHardwin Bui\n\nTiffany Phan\nErica Li\nSam Feng\nManon Lefebvre\nKris
+    Torres\n\nTiffany Phan\nKris Torres\n\nLubin Tu\nRachel Haub\n\nSam Feng\nEizi
+    Yu\nErica Li\nSam Wolfe\n\nTiffany Phan\nBrennan McCulloch\n\nEddie Melcer\nRobin
+    Hunicke\nMarcelo D\xEDaz Viana Neto\nElin Carstendottir\nTad Leckman\nMax Kreminski\nSean
+    Douglas"
 --- !u!222 &1896737225
 CanvasRenderer:
   m_ObjectHideFlags: 0
