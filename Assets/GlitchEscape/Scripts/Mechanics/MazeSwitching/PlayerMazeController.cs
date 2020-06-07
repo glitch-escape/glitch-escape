@@ -98,15 +98,13 @@ public class PlayerMazeController : PlayerComponent, IPlayerDebug {
     private bool hasGlitchMaze = false;
 
     private void GetGlitchPlatformMaterials() {
-        GlitchPlatform[] temp = Resources.FindObjectsOfTypeAll<GlitchPlatform>();
-        if (temp.Length >= 1)
-        {
-            glitchMaze = temp[0].gameObject;
-            hasGlitchMaze = true;
-            astralPlatforms = new List<Material>();
-            foreach (Transform platform in glitchMaze.transform)
-            {
-                astralPlatforms.Add(platform.GetComponent<Renderer>().material);
+        astralPlatforms.Clear();
+        hasGlitchMaze = false;
+        foreach (var platform in GameObject.FindGameObjectsWithTag("GlitchMazePlatform")) {
+            var renderer = platform.GetComponent<Renderer>();
+            if (renderer != null) { 
+                hasGlitchMaze = true;
+                astralPlatforms.Add(renderer.material);
             }
         }
     }
