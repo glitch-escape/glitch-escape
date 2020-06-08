@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class FragmentUI : PlayerComponent {
     GameObject shardsPickups;
@@ -10,36 +11,54 @@ public class FragmentUI : PlayerComponent {
     private Player _player = null;
     private Player player => _player ?? Enforcements.GetSingleComponentInScene<Player>(this);
 
+    List<GameObject> orbHolders = new List<GameObject>();
+
     bool sceneHasFragments;
+    Transform humanityUI;
+    Transform courageUI;
+    Transform transUI;
 
-    void Awake()
+    private void Awake()
     {
-        sceneHasFragments = FindObjectOfType<Fragment>() != null;
-        if(sceneHasFragments)
-        {
-            List<GameObject> orbIndicators = new List<GameObject>();
-            GameObject fragmentUIIndicator = null;
-            foreach (Transform child in transform)
-            {
-                if (child.gameObject.CompareTag("OrbUI") && child.gameObject.activeInHierarchy)
-                    orbIndicators.Add(child.gameObject);
-                else if (child.gameObject.activeInHierarchy)
-                    fragmentUIIndicator = child.gameObject;
-            }
+        Transform parentTrans = transform.parent;
 
-            //get reference to fragment shards UI
-            GameObject fragmentHolder = null;
-            foreach (Transform child in fragmentUIIndicator.transform)
+        foreach (Transform child in parentTrans)
+        {
+            if (child.gameObject.CompareTag("OrbUI"))
             {
-                if (!child.gameObject.CompareTag("FragBG") && child.gameObject.activeInHierarchy)
+                orbHolders.Add(child.gameObject);
+            }
+        }
+
+        foreach(GameObject holder in orbHolders)
+        {
+            foreach(Transform child in holder.transform)
+            {
+                if (child.gameObject.CompareTag("Humanity"))
                 {
-                    fragmentHolder = child.gameObject;
+                    humanityUI = child;
+                    humanityUI.gameObject.SetActive(false);
+                }
+                else if (child.gameObject.CompareTag("Courage"))
+                {
+                    courageUI = child;
+                    courageUI.gameObject.SetActive(false);
+                }
+                else if (child.gameObject.CompareTag("Transcendence"))
+                {
+                    transUI = child;
+                    transUI.gameObject.SetActive(false);
                 }
             }
-            fragmentPieces = fragmentHolder?.GetComponentsInChildren<Transform>() ?? null;
         }
     }
-    
+
+    private void OnLevelLoaded(Scene scene, LoadSceneMode loadSceneMode)
+    {
+        var activeVirtue = player.fragments.activeVirtueInThisScene;
+        UpdateFragmentUI(activeVirtue, player.fragments.GetFragmentCompletion(activeVirtue));
+    }
+
     private void UpdateFragmentUI(Virtue activeVirtue, float fragmentCompletion) {
         // TODO: switch fragment images depending on active virtue, etc.
         
@@ -51,34 +70,100 @@ public class FragmentUI : PlayerComponent {
         if (activeVirtue == Virtue.None) {
             fragmentsPickedUp = 0;
         }
-        for (int i = 0; i < fragmentPieces.Length; ++i) {
-            fragmentPieces[i].gameObject.SetActive(i < fragmentsPickedUp);
+        for (int i = 1; i < fragmentPieces.Length; ++i) {
+            fragmentPieces[i].gameObject.SetActive(i <= fragmentsPickedUp);
         }
     }
     private void OnEnable() {
         player.fragments.onActiveVirtueChanged += OnVirtueTypeChanged;
         player.fragments.onFragmentPickedUp += OnFragmentPickedUp;
         var activeVirtue = player.fragments.activeVirtueInThisScene;
+        SceneManager.sceneLoaded += OnLevelLoaded;
         UpdateFragmentUI(activeVirtue, player.fragments.GetFragmentCompletion(activeVirtue));
     }
     private void OnDisable() {
         player.fragments.onActiveVirtueChanged -= OnVirtueTypeChanged;
         player.fragments.onFragmentPickedUp -= OnFragmentPickedUp;
+        SceneManager.sceneLoaded -= OnLevelLoaded;
     }
     void OnVirtueTypeChanged(Virtue virtue) {
         Debug.Log("Changed active virtue for fragment pickups to " + virtue);
+        Virtue sceneVirtue = player.fragments.activeVirtueInThisScene;
+        sceneHasFragments = FindObjectOfType<Fragment>() != null;
+        Debug.Log("Scenevirtue " + sceneVirtue);
+
+        string virtueTag = "None";
+            if (sceneVirtue == Virtue.Courage)
+                virtueTag = "Courage";
+            else if (sceneVirtue == Virtue.Humanity)
+                virtueTag = "Humanity";
+            else if (sceneVirtue == Virtue.Transcendence)
+                virtueTag = "Transcendence";
+            else if (sceneVirtue == Virtue.Justice)
+                virtueTag = "Blank";
+
+            GameObject fragmentUIIndicator = null;
+            GameObject fragmentUIBackground = null;
+
+            foreach (Transform child in transform)
+            {
+                if (child.gameObject.CompareTag(virtueTag))
+                {
+                    if (child.childCount != 0)
+                    {
+                        Debug.Log(virtueTag + " active");
+                        fragmentUIIndicator = child.gameObject;
+                    }
+                    else
+                    {
+                        Debug.Log(virtueTag + " active");
+                        fragmentUIBackground = child.gameObject;
+                    }
+                }
+                else
+                {
+                    Debug.Log("Set inactive");
+                    child.gameObject.SetActive(false);
+                }
+            }
+            if(virtueTag != "None")
+            {
+                fragmentUIIndicator.SetActive(true);
+                fragmentUIBackground.SetActive(true);
+            }
+
+            fragmentPieces = fragmentUIIndicator?.GetComponentsInChildren<Transform>() ?? null;
         UpdateFragmentUI(virtue, player.fragments.GetFragmentCompletion(virtue));
     }
     void OnFragmentPickedUp(PlayerVirtueFragments.FragmentInfo fragment) {
         Debug.Log("Picked up fragment for " + fragment.virtue);
         if (fragment.virtue == player.fragments.activeVirtueInThisScene) {
-            UpdateFragmentUI(Virtue.Courage, player.fragments.GetFragmentCompletion(fragment.virtue));
+            UpdateFragmentUI(fragment.virtue, player.fragments.GetFragmentCompletion(fragment.virtue));
+        }
+        
+        int fragmentsPickedUp = (int)(player.fragments.GetFragmentCompletion(fragment.virtue) * (float)fragmentPieces.Length);
+        if (fragmentsPickedUp >= 7)
+        {
+            OnVirtueCompleted(fragment.virtue);
         }
         /// TODO: can play fragment pickup animation / etc here
     }
     void OnVirtueCompleted(Virtue virtue) {
         Debug.Log("Picked up all fragments for " + virtue + "!");
         /// TODO: can play virtue completion animation / etc here
+        
+        if(virtue == Virtue.Humanity)
+        {
+            humanityUI.gameObject.SetActive(true);
+        }
+        else if (virtue == Virtue.Courage)
+        {
+            courageUI.gameObject.SetActive(true);
+        }
+        else if (virtue == Virtue.Transcendence)
+        {
+            transUI.gameObject.SetActive(true);
+        }
     }
 
 }
