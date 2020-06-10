@@ -8,5 +8,9 @@ public class ResetGameTime : MonoBehaviour
     void Start()
     {
         Time.timeScale = 1;
+        foreach (PlayerController thePlayer in FindObjectsOfType<PlayerController>())
+        {
+            Destroy(thePlayer.gameObject);
+        }
     }
 }
