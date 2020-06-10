@@ -31,7 +31,7 @@ public class FogDetailController : MonoBehaviour {
         activePreset = preset;
         if (activePreset >= presets.Length) activePreset = 0;
         if (activePreset < 0) activePreset = presets.Length - 1;
-        PlayerPrefs.SetFloat("fogLOD", activePreset);
+        PlayerPrefs.SetInt("fogLOD", activePreset);
         PlayerPrefs.Save();
         for (int i = 0; i < presets.Length; ++i) {
             presets[i].gameObject.SetActive(i == activePreset);
@@ -71,7 +71,7 @@ public class FogDetailController : MonoBehaviour {
             }
         }
         if (changedPreset) {
-            PlayerPrefs.SetFloat("fogLOD", activePreset);
+            PlayerPrefs.SetInt("fogLOD", activePreset);
             PlayerPrefs.Save();
             for (int i = 0; i < presets.Length; ++i) {
                 presets[i].gameObject.SetActive(i == activePreset);
