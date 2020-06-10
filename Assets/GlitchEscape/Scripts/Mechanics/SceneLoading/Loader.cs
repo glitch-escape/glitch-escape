@@ -12,7 +12,7 @@ public static class Loader
         MainMenu, Opening, Tutorial_01_Movement, Vertical_Main_Level, Vertical_Platforming_Level, Hub_Level,
         CorruptionVisualTest, Tutorial_02_Advanced_Movement, Tutorial_03_Maze_Switch, Third_Level, SGDAEndCard,
         Tutorial_04_Fragment, FragmentPersitance, FragmentPersitance2, None, End_Cutscene, FragmentParticleTest,
-        Transcendence_Cutscene, Courage_Cutscene, Humanity_Cutscene
+        Transcendence_Cutscene, Courage_Cutscene, Humanity_Cutscene, Credits,
     }
 
     private static Action onLoadCallback;
