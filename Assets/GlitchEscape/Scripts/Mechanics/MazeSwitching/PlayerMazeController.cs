@@ -66,14 +66,10 @@ public class PlayerMazeController : PlayerComponent, IPlayerDebug {
 
     private void OnEnable() {
         player.OnKilled += OnPlayerRespawn;
-        SceneManager.sceneLoaded += OnSceneLoad;
-        mazeOpacityController.ResetAndSetupMaterials();
     }
     private void OnDisable() {
         player.OnKilled -= OnPlayerRespawn;
-        SceneManager.sceneLoaded -= OnSceneLoad;
         ClearMazeSwitch();
-        mazeOpacityController.ClearMaterials();
     }
     private void OnPlayerRespawn() {
         SceneMazeController.instance?.ResetMaze();
@@ -89,40 +85,11 @@ public class PlayerMazeController : PlayerComponent, IPlayerDebug {
         // apply maze fade out
         if (inGlitchMaze) {
             var playerHealth = player.health.value / player.health.maximum;
-            mazeOpacityController.SetOpacity(playerHealth);
+            SetMazeGlitchMazeOpacity(playerHealth);
+            // SceneMazeController.instance?.SetMazeGlitchMazeOpacity(playerHealth);
         }
     }
-    public class MazeOpacityController {
-        private List<Material> activeGlitchMazeMaterials { get; } = new List<Material>();
-        public float opacity { get; private set; } = 1f;
-        private const string MAZE_OPACITY = "Vector1_62D5110A";
-        public void ResetAndSetupMaterials() {
-            activeGlitchMazeMaterials.Clear();
-            foreach (var platform in GameObject.FindGameObjectsWithTag("GlitchMazePlatform")) {
-                var renderer = platform.GetComponent<Renderer>();
-                if (renderer != null) { 
-                    activeGlitchMazeMaterials.Add(renderer.material);
-                }
-            }
-            opacity = 0f;
-            SetOpacity(1f);
-        }
-        public void ClearMaterials() {
-            activeGlitchMazeMaterials.Clear();
-        }
-        public void SetOpacity(float opacity) {
-            if (opacity == this.opacity) return;
-            this.opacity = opacity;
-            foreach (var material in activeGlitchMazeMaterials) {
-                material.SetFloat(MAZE_OPACITY, opacity);
-            }
-        }
-    }
-    public MazeOpacityController mazeOpacityController { get; } = new MazeOpacityController();
     
-    private void OnSceneLoad(Scene scene, LoadSceneMode loadSceneMode) {
-        mazeOpacityController.ResetAndSetupMaterials();
-    }
     
     public void DrawDebugUI() {
         GUILayout.Label("active maze switch: "+activeMazeSwitch);
@@ -131,4 +98,13 @@ public class PlayerMazeController : PlayerComponent, IPlayerDebug {
         GUILayout.Label("in glitch maze? "+(SceneMazeController.instance?.inGlitchMaze ?? false));
     }
     public string debugName => this.GetType().Name;
+    
+    private const string MAZE_OPACITY = "Vector1_62D5110A";
+    public void SetMazeGlitchMazeOpacity(float opacity) {
+        glitchMazeOpacity = opacity;
+        foreach (var material in player.config.glitchMazeMaterials) {
+            material?.SetFloat(MAZE_OPACITY, opacity);
+        }
+    }
+    public float glitchMazeOpacity { get; private set; } = 1f;
 }
