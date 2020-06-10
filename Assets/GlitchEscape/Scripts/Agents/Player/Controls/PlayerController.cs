@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using GlitchEscape.Effects;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 public class PlayerController : MonoBehaviour, IResettable {
@@ -13,12 +15,15 @@ public class PlayerController : MonoBehaviour, IResettable {
         void Update(PlayerController provider);
     }
     private List<IPlayerAbilityController> controllers;
+
+    public Player globalPlayerInstance;
+    public PlayerController globalPlayerControllerInstance;
     
     private void Awake() {
         if (instance != null) {
             instance.player.spawn.SetSpawnPosition(player.transform.position, player.transform.rotation);
             instance.player.spawn.Respawn();
-            Destroy(gameObject);
+            DestroyImmediate(gameObject);
         } else {
             instance = this;
             DontDestroyOnLoad(gameObject);
@@ -41,6 +46,13 @@ public class PlayerController : MonoBehaviour, IResettable {
     }
     private void Update() {
         controllers?.ForEach(controller => controller.Update(this));
+        globalPlayerInstance = Player.instance;
+        globalPlayerControllerInstance = PlayerController.instance;
+        if (player.config.enableLevelDebugNavTools &&
+            Keyboard.current.f9Key.wasPressedThisFrame
+        ) {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
     }
     public void Reset() {
         controllers?.ForEach(controller => controller.Reset());

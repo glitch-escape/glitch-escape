@@ -114,4 +114,7 @@ public class PlayerConfig : ScriptableObject {
     public RotationPuzzleConfig rotationPuzzleConfig;
 
     [Header("Maze fadeout")] public Material[] glitchMazeMaterials;
+    
+    [Header("Debug")]
+    public bool enableLevelDebugNavTools = true;
 }

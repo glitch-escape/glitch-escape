@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 #if UNITY_EDITOR
 using UnityEditor;
+using UnityEngine.InputSystem;
 #endif
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -48,7 +49,15 @@ public class PlayerVirtueFragments : PlayerComponent {
            IsVirtueCompleted(Virtue.Transcendence);
 
     public Virtue activeVirtueInThisScene { get; private set; }
-    
+
+    #if UNITY_EDITOR
+    public void Update() {
+        if (player.config.enableLevelDebugNavTools && Keyboard.current.f10Key.wasPressedThisFrame) {
+            PickupFragment(activeVirtueInThisScene);
+        }   
+    }
+    #endif
+
     public struct FragmentInfo {
         public Virtue virtue;
         public uint fragmentsPickedUp;
@@ -91,18 +100,23 @@ public class PlayerVirtueFragments : PlayerComponent {
             onActiveVirtueChanged?.Invoke(virtue);
         }
     }
-    
-    public void PickUpFragment(FragmentPickup fragment) {
-        if (fragment.virtueType != Virtue.None) {
-            if (!fragmentsPickedUp.ContainsKey(fragment.virtueType))
-                fragmentsPickedUp[fragment.virtueType] = 0;
-            fragmentsPickedUp[fragment.virtueType] += 1;
-            var info = GetCurrentFragmentInfo(fragment.virtueType);
+
+    private void PickupFragment(Virtue virtueType) {
+        if (virtueType != Virtue.None) {
+            if (!fragmentsPickedUp.ContainsKey(virtueType))
+                fragmentsPickedUp[virtueType] = 0;
+            fragmentsPickedUp[virtueType] += 1;
+            var info = GetCurrentFragmentInfo(virtueType);
             onFragmentPickedUp?.Invoke(info);
             if (info.fragmentCompletion >= 1f) {
-                onVirtueCompleted?.Invoke(fragment.virtueType);
+                onVirtueCompleted?.Invoke(virtueType);
             }
             FireEvent(PlayerEvent.Type.FragmentPickup);
+        }
+    }
+    public void PickUpFragment(FragmentPickup fragment) {
+        if (fragment.virtueType != Virtue.None) {
+            PickupFragment(fragment.virtueType);
         } else {
             Debug.LogWarning("picked up fragment with no assigned virtue type: "
                 + fragment + ", id = '" + fragment.objectPersistencyId + "' in scene " +
