@@ -112,4 +112,6 @@ public class PlayerConfig : ScriptableObject {
     
     [Header("Rotation puzzle config(s)")]
     public RotationPuzzleConfig rotationPuzzleConfig;
+
+    [Header("Maze fadeout")] public Material[] glitchMazeMaterials;
 }

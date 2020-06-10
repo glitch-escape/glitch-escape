@@ -97,7 +97,7 @@ public class RotationPuzzleRotatorEditor : Editor {
             GUILayout.Label("can't get config (missing player in this scene...?)");
             return;
         }
-        EditorGUILayout.ObjectField(conf, conf.GetType());
+        EditorGUILayout.ObjectField(conf, conf.GetType(), true);
         if (GUILayout.Button(("Start / Stop"))) target.StartStopRotation();
         
         // var obj = new SerializedObject(conf);

@@ -32,13 +32,13 @@ public class CutsceneManager : MonoBehaviour {
             }
             */
             if(endCutsceneToLoad != Loader.Scene.None && playerController.player.fragments.HasCompletedAllVirtues) {
-                Application.LoadLevel(endCutsceneToLoad.ToString());
+                Loader.Load(endCutsceneToLoad);
                 return;
             }
         }
         
         if (levelToLoad != Loader.Scene.None) {
-            Application.LoadLevel(levelToLoad.ToString());
+            Loader.Load(levelToLoad);
         }
     }
 
