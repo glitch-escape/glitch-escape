@@ -98,21 +98,25 @@ public class MusicController : MonoBehaviour {
         {
             Debug.Log("playing first song");
             PlayTrack(0);
+            currentTrackIndex = 0;
         }
         else if (scene.name == "Vertical_Main_Level")
         {
             Debug.Log("playing second song");
             PlayTrack(2);
+            currentTrackIndex = 2;
         }
         else if (scene.name == "Third_Level")
         {
             Debug.Log("playing third song");
             PlayTrack(3);
+            currentTrackIndex = 3;
         }
         else
         {
             Debug.Log("playing first song");
             PlayTrack(0);
+            currentTrackIndex = 0;
         }
     }
 }
