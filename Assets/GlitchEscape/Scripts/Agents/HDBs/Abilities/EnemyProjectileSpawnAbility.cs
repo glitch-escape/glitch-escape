@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class EnemyProjectileSpawnAbility : EnemyAbility {
 
-    private NavMeshAgent navAgent => enemy.navMeshAgent;
+    private NavMeshAgent agent => enemy.navMeshAgent;
 
     private float curAtkTime;
     private int shotsMade;
@@ -54,7 +54,7 @@ public class EnemyProjectileSpawnAbility : EnemyAbility {
         shotsMade = 0;
 
         // Make the enemy stand still
-        navAgent.SetDestination(enemy.transform.position);
+        agent.SetDestination(enemy.transform.position);
     }
 
     protected override void OnAbilityUpdate() {

@@ -8,6 +8,9 @@ public class FragmentUI : PlayerComponent {
     GameObject orbsPickups;
     private Transform[] fragmentPieces;
 
+    private Player _player = null;
+    private Player player => _player ?? Enforcements.GetSingleComponentInScene<Player>(this);
+
     List<GameObject> orbHolders = new List<GameObject>();
 
     bool sceneHasFragments;
@@ -108,18 +111,18 @@ public class FragmentUI : PlayerComponent {
                 {
                     if (child.childCount != 0)
                     {
-                        // Debug.Log(virtueTag + " active");
+                        Debug.Log(virtueTag + " active");
                         fragmentUIIndicator = child.gameObject;
                     }
                     else
                     {
-                        // Debug.Log(virtueTag + " active");
+                        Debug.Log(virtueTag + " active");
                         fragmentUIBackground = child.gameObject;
                     }
                 }
                 else
                 {
-                    // Debug.Log("Set inactive");
+                    Debug.Log("Set inactive");
                     child.gameObject.SetActive(false);
                 }
             }

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Yarn.Unity;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
 {

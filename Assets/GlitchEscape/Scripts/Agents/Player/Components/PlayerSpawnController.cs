@@ -22,6 +22,7 @@ public class PlayerSpawnController : PlayerComponent, IPlayerDebug {
         player.OnKilled -= Respawn;
     }
     public void SetSpawnPosition(Vector3 position, Quaternion rotation) {
+        Debug.Log("Set spawn position: "+position);
         respawnPosition = position;
         respawnRotation = rotation;
         cameraRespawnPosition = sceneCam.transform.position;

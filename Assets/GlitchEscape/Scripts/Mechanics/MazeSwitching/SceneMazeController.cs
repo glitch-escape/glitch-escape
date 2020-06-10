@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 
 public class SceneMazeController : MonoBehaviour {
@@ -21,10 +20,7 @@ public class SceneMazeController : MonoBehaviour {
         instance = this;
         SetActiveMaze(activeMaze);
     }
-
-    private void OnEnable() {
-        instance = this;
-    }
+    private void OnEnable() { instance = this; }
     private void OnDisable() {
         if (instance == this) {
             instance = null;
@@ -56,10 +52,5 @@ public class SceneMazeController : MonoBehaviour {
     }
     public void ResetMaze() {
         SetActiveMaze(ActiveMaze.Normal);
-    }
-
-    public float glitchMazeOpacity => Player.instance?.maze.glitchMazeOpacity ?? 1f;
-    public void SetMazeGlitchMazeOpacity(float opacity) {
-        Player.instance?.maze.SetMazeGlitchMazeOpacity(opacity);
     }
 }

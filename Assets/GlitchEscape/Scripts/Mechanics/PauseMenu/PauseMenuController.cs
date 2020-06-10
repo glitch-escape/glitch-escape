@@ -123,10 +123,8 @@ public class PauseMenuController : MonoBehaviour
         audioMixer.SetFloat("Sound Effects", Mathf.Log10(PlayerPrefs.GetFloat("SFXVolume")) * 20);
         cameraSensitiveSlider.value = PlayerPrefs.GetFloat("CameraSensitive", 1.0f);
         // playerConfig.cameraTurnSpeed = Mathf.Lerp(5f, 360f, cameraSensitiveSlider.value);
-        if (playerCameraController != null) {
-            playerCameraController.sensitiveX = cameraSensitiveSlider.value;
-            playerCameraController.sensitiveY = cameraSensitiveSlider.value;
-        }
+        playerCameraController.sensitiveX = cameraSensitiveSlider.value;
+        playerCameraController.sensitiveY = cameraSensitiveSlider.value;
         isInvert = PlayerPrefs.GetInt("InvertY", 0);
         if (isInvert == 1)
         {
@@ -137,7 +135,7 @@ public class PauseMenuController : MonoBehaviour
             invertYToggle.isOn = false;
         }
         fOVSlider.value = PlayerPrefs.GetFloat("FOV", 1f);
-        if (freeLookCam != null) freeLookCam.m_Lens.FieldOfView = Mathf.Lerp(60f, 100f, PlayerPrefs.GetFloat("FOV"));
+        freeLookCam.m_Lens.FieldOfView = Mathf.Lerp(60f, 100f, PlayerPrefs.GetFloat("FOV"));
     }
 
     public void ChangeMasterVol(float val)
@@ -165,10 +163,8 @@ public class PauseMenuController : MonoBehaviour
     {
         PlayerPrefs.SetFloat("CameraSensitive", val);
         // playerConfig.cameraTurnSpeed = Mathf.Lerp(5f, 360f, val);
-        if (playerCameraController != null) {
-            playerCameraController.sensitiveX = cameraSensitiveSlider.value;
-            playerCameraController.sensitiveY = cameraSensitiveSlider.value;
-        }
+        playerCameraController.sensitiveX = cameraSensitiveSlider.value;
+        playerCameraController.sensitiveY = cameraSensitiveSlider.value;
         PlayerPrefs.Save();
         // Debug.Log(playerConfig.cameraTurnSpeed);
     }
@@ -178,12 +174,12 @@ public class PauseMenuController : MonoBehaviour
         if (isInvert)
         {
             PlayerPrefs.SetInt("InvertY", 1);
-            if (playerCameraController != null) playerCameraController.sensitiveY = -Mathf.Abs(playerCameraController.sensitiveY);
+            playerCameraController.sensitiveY = -Mathf.Abs(playerCameraController.sensitiveY);
         }
         else
         {
             PlayerPrefs.SetInt("InvertY", 0);
-            if (playerCameraController != null) playerCameraController.sensitiveY = Mathf.Abs(playerCameraController.sensitiveY);
+            playerCameraController.sensitiveY = Mathf.Abs(playerCameraController.sensitiveY);
         }
         PlayerPrefs.Save();
     }
@@ -191,7 +187,7 @@ public class PauseMenuController : MonoBehaviour
     public void ChangeFOV(float val)
     {
         PlayerPrefs.SetFloat("FOV", val);
-        if (freeLookCam != null) freeLookCam.m_Lens.FieldOfView = Mathf.Lerp(60f, 100f, val);
+        freeLookCam.m_Lens.FieldOfView = Mathf.Lerp(60f, 100f, val);
         PlayerPrefs.Save();
     }
 }

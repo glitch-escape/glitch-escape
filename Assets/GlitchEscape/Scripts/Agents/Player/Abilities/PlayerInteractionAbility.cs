@@ -26,7 +26,7 @@ public class Trigger : MonoBehaviour {
 // TODO: split out into separate class
 public class SphereTrigger : Trigger {
     private SphereCollider _collider = null;
-    public new SphereCollider collider => _collider ??
+    public SphereCollider collider => _collider ??
                                       (_collider = GetComponent<SphereCollider>() ??
                                                    gameObject.AddComponent<SphereCollider>());
     public float radius {
@@ -127,7 +127,7 @@ public class PlayerInteractionAbility : PlayerAbility, IPlayerDebug {
             interactObj.OnPlayerExitInteractionRadius(player);
         }
     }
-    protected override void OnAbilityReset() {
+    private void Reset() {
         interactablesInRange.Clear();
         activeInRange.Clear();
         lastNearestObject?.OnDeselected(player);

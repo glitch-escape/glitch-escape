@@ -75,7 +75,7 @@ public class ComplexInteractionTest : AInteractiveObject {
         currentMessage = -1;
         ShowNextMessage();
     }
-    private new void Update() {
+    void Update() {
         base.Update();
         if (showMessages && elapsedTime > messageDisplayTime) {
             ShowNextMessage();

@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class EnemyChaseAction : EnemyAbility {
     protected override bool hasSetDuration => false;
 
-    private NavMeshAgent navAgent => enemy.navMeshAgent;
+    private NavMeshAgent agent => enemy.navMeshAgent;
     private Player player => enemy.player;
 
     public override bool AbilityFinished(out EnemyBehaviorState nextAction) {
@@ -21,13 +21,13 @@ public class EnemyChaseAction : EnemyAbility {
 
     protected override void OnAbilityStart() {
         // Update destination to current player position
-        navAgent.SetDestination(player.transform.position);
+        agent.SetDestination(player.transform.position);
     }
 
     protected override void OnAbilityUpdate() {
         base.OnAbilityUpdate();
         // Update destination to current player position
-        navAgent.SetDestination(player.transform.position);
+        agent.SetDestination(player.transform.position);
     }
     #endregion
 }

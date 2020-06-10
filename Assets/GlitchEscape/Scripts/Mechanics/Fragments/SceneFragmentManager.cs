@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 #if UNITY_EDITOR
-using GlitchEscape.Scripts.Utility;
 using UnityEditor;
 #endif
 using UnityEngine;
@@ -22,50 +21,39 @@ public class SceneFragmentManager : MonoBehaviour {
 [CustomEditor(typeof(SceneFragmentManager))]
 public class SceneFragmentManagerEditor : Editor {
     private StringBuilder infoLog = new StringBuilder();
-    
-    public void AssignFragmentIDs(IEnumerable<FragmentPickup> fragments, Virtue virtueType) {
-        int nextId = 1;
-        foreach (var fragment in fragments) {
-            string id = fragment.gameObject.scene.name + " fragment " + nextId++;
-            var so = new SerializedObject(fragment);
-            so.FindProperty("objectPersistencyId").stringValue = id;
-            so.FindProperty("virtueType").enumValueIndex = (int)virtueType;
-            so.ApplyModifiedProperties();
-        }
-    }
-
-    public void ClearFragmentIDs(IEnumerable<FragmentPickup> fragments) {
-        if (GUILayout.Button("Clear IDs")) {
-            foreach (var fragment in fragments) {
-                var so = new SerializedObject(fragment);
-                so.FindProperty("objectPersistencyId").stringValue = "";
-            }
-        }
-    }
-
-    public void RenderEditorUI(SceneFragmentManager target) {
-        var fragments = GlitchEscapeEditorUtilities.FindAllObjectsInScene<FragmentPickup>();
+    public override void OnInspectorGUI() {
+        base.OnInspectorGUI();
+        var t = (SceneFragmentManager) target;
+        var fragments = GameObject.FindObjectsOfType<FragmentPickup>();
         if (GUILayout.Button("Assign virtue type + fragment IDs")) {
             infoLog.Clear();
-            if (fragments.Count == 0) {
+            if (fragments.Length == 0) {
                 infoLog.AppendLine("no fragments in scene!");
             }
-            AssignFragmentIDs(fragments, target.virtueType);
+            string sceneName = SceneManager.GetActiveScene().name;
+            for (int i = 0; i < fragments.Length; ++i) {
+                string id = sceneName + " fragment " + i;
+                // infoLog.AppendLine("Set " + fragments[i] + " objectPersistencyId = " + objectPersistencyId + ", virtue type = " + t.virtueType);
+                // fragments[i].objectPersistencyId = id;
+                // fragments[i].virtueType = t.virtueType;
+                var obj = new SerializedObject(fragments[i]);
+                obj.FindProperty("objectPersistencyId").stringValue = id;
+                obj.FindProperty("virtueType").enumValueIndex = (int)t.virtueType;
+                obj.ApplyModifiedProperties();
+            }
         }
         if (GUILayout.Button("Clear IDs")) {
-            ClearFragmentIDs(fragments);
+            foreach (var fragment in fragments) {
+                fragment.objectPersistencyId = "";
+            }
         }
-        foreach (var fragment in fragments) {
+        for (int i = 0; i < fragments.Length; ++i) {
             GUILayout.BeginHorizontal();
-            GUILayout.Label(fragment.objectPersistencyId != "" ? fragment.objectPersistencyId : "NO ID ASSIGNED");
-            EditorGUILayout.ObjectField(fragment, fragment.GetType(), true);
-            // var root = GlitchEscapeEditorUtilities.GetRootTransform(fragment.transform);
-            // EditorGUILayout.ObjectField(root, root.GetType(), true);
-            // GUILayout.Label("active scene: '" + root.gameObject.scene.name + "', handle = " + root.gameObject.scene.handle + ", active scene handle = " + SceneManager.GetActiveScene().handle);
-            // GUILayout.Toggle(GlitchEscapeEditorUtilities.IsObjectInScene(root.gameObject, SceneManager.GetActiveScene()), "in scene?");
-            var vt = (Virtue)EditorGUILayout.EnumPopup(fragment.virtueType);
-            if (vt != fragment.virtueType) {
-                var obj = new SerializedObject(fragment);
+            GUILayout.Label(fragments[i].objectPersistencyId != "" ? fragments[i].objectPersistencyId : "NO ID ASSIGNED");
+            EditorGUILayout.ObjectField(fragments[i], fragments[i].GetType());
+            var vt = (Virtue)EditorGUILayout.EnumPopup(fragments[i].virtueType);
+            if (vt != fragments[i].virtueType) {
+                var obj = new SerializedObject(fragments[i]);
                 obj.FindProperty("virtueType").enumValueIndex = (int) vt;
                 obj.ApplyModifiedProperties();
             }
@@ -81,10 +69,6 @@ public class SceneFragmentManagerEditor : Editor {
             GUILayout.Label("Player fragment pickup debug controls:");
             PlayerFragmentEditor.RenderEditorGUI(playerFragments);
         }
-    }
-    public override void OnInspectorGUI() {
-        base.OnInspectorGUI();
-        RenderEditorUI((SceneFragmentManager)target);
     }
 }
 #endif
