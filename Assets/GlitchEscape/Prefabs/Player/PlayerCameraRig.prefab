@@ -1386,6 +1386,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 6000536029174171417}
   playerControls: {fileID: 4636275800829124483}
+  globalPlayerInstance: {fileID: 0}
+  globalPlayerControllerInstance: {fileID: 0}
 --- !u!1 &1075822495205013574
 GameObject:
   m_ObjectHideFlags: 0
@@ -2843,11 +2845,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3287276606733306769, guid: 47b3f72640edb462196f4dd2fbd4eae2,
         type: 3}
-      propertyPath: m_TagString
-      value: Humanity
-      objectReference: {fileID: 0}
-    - target: {fileID: 3287276606733306769, guid: 47b3f72640edb462196f4dd2fbd4eae2,
-        type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -2869,11 +2866,6 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 4427092407865978729, guid: 47b3f72640edb462196f4dd2fbd4eae2,
         type: 3}
-      propertyPath: m_TagString
-      value: Humanity
-      objectReference: {fileID: 0}
-    - target: {fileID: 4427092407865978729, guid: 47b3f72640edb462196f4dd2fbd4eae2,
-        type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -2881,11 +2873,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4749569174916039946, guid: 47b3f72640edb462196f4dd2fbd4eae2,
-        type: 3}
-      propertyPath: m_TagString
-      value: Transcendence
       objectReference: {fileID: 0}
     - target: {fileID: 4749569174916039946, guid: 47b3f72640edb462196f4dd2fbd4eae2,
         type: 3}
@@ -2902,11 +2889,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4878701475729531124, guid: 47b3f72640edb462196f4dd2fbd4eae2,
-        type: 3}
-      propertyPath: m_TagString
-      value: Transcendence
       objectReference: {fileID: 0}
     - target: {fileID: 4878701475729531124, guid: 47b3f72640edb462196f4dd2fbd4eae2,
         type: 3}
@@ -2927,11 +2909,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TagString
       value: Blank
-      objectReference: {fileID: 0}
-    - target: {fileID: 6038171848765725007, guid: 47b3f72640edb462196f4dd2fbd4eae2,
-        type: 3}
-      propertyPath: m_TagString
-      value: Humanity
       objectReference: {fileID: 0}
     - target: {fileID: 6038171848765725007, guid: 47b3f72640edb462196f4dd2fbd4eae2,
         type: 3}
@@ -3098,11 +3075,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8899413094949556230, guid: 47b3f72640edb462196f4dd2fbd4eae2,
-        type: 3}
-      propertyPath: m_TagString
-      value: Transcendence
       objectReference: {fileID: 0}
     - target: {fileID: 8899413094949556230, guid: 47b3f72640edb462196f4dd2fbd4eae2,
         type: 3}
