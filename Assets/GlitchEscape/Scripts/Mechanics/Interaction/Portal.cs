@@ -117,13 +117,13 @@ public class Portal : AInteractiveObject
             if (player == null || collider == null) return;
             
             // get distance to player but only along the x / z plane
-            var toPlayer = player.transform.position - transform.position;
-            var distanceToPlayer = Mathf.Sqrt(toPlayer.x * toPlayer.x + toPlayer.z * toPlayer.z);
+            // var toPlayer = player.transform.position - transform.position;
+            // var distanceToPlayer = Mathf.Sqrt(toPlayer.x * toPlayer.x + toPlayer.z * toPlayer.z);
             
             // normalize against sphere collider radius + sample from min / max focusedPortalSpeed
-            var normalizedDistance = 1f - Mathf.Clamp01(distanceToPlayer / collider.radius * 1.5f);
-            var portalSpeedWhenFocused = focusedPortalSpeed.Lerp(normalizedDistance);
-            portalShaderSpeed = portalSpeedWhenFocused;
+            // var normalizedDistance = 1f - Mathf.Clamp01(distanceToPlayer / collider.radius * 1.5f);
+            // var portalSpeedWhenFocused = focusedPortalSpeed.Lerp(normalizedDistance);
+            portalShaderSpeed = focusedPortalSpeed.maximum;
         }
     }
 }
