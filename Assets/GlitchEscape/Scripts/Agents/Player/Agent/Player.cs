@@ -10,6 +10,7 @@ using UnityEngine.InputSystem;
 // [RequireComponent(typeof(PlayerHealth))]
 // [RequireComponent(typeof(PlayerStamina))]
 public class Player : BaseAgent<Player, PlayerConfig> {
+    
     public static Player instance => _instance ?? (_instance = FindObjectOfType<Player>());
     private static Player _instance = null;
     private void OnEnable() { _instance = this; }

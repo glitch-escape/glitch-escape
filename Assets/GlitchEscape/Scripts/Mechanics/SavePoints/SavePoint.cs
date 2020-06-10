@@ -16,8 +16,21 @@ public class SavePoint : MonoBehaviour {
         if (isPlatformCollider) return;
         other.GetComponent<Player>()?.spawn.SetSpawnPosition(this);
     }
-    private void OnCollisionEnter(Collision other) {
+    private void OnCollisionEnter(Collision collision) {
         if (!isPlatformCollider) return;
-        other.gameObject.GetComponent<Player>()?.spawn.SetSpawnPosition(this);
+        
+        // calculate averaged normal
+        var normal = Vector3.up;
+        if (collision.contacts.Length > 0) {
+            normal = Vector3.zero;
+            foreach (var cp in collision.contacts) {
+                normal += cp.normal;
+            }
+            normal /= collision.contacts.Length;
+        }
+        // reject assigning spawn point if we're not hitting the top face
+        if (Vector3.Dot(normal, Vector3.up) > 0.5f) return;
+        
+        collision.gameObject.GetComponent<Player>()?.spawn.SetSpawnPosition(this);
     }
 }

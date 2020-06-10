@@ -11,11 +11,28 @@ public class FogDetailController : MonoBehaviour {
     public bool showDebugUI = true;
     public bool enableFogLODControlsWithF7AndF8Keys = true;
     public bool enableFogLODControlsWithGamepadTriggers = true;
+    public bool enableAutoGraphicsScaling = true;
 
+    public int detailLevel {
+        get => activePreset;
+        set => SetActivePreset(value);
+    }
     void Start() {
         activePreset = PlayerPrefs.GetInt("fogLOD", activePreset);
+        enableAutoGraphicsScaling = PlayerPrefs.GetInt("enableGraphicsScaling", enableAutoGraphicsScaling ? 1 : 0) != 0;
         if (activePreset >= presets.Length) activePreset = 0;
         if (activePreset < 0) activePreset = presets.Length - 1;
+        for (int i = 0; i < presets.Length; ++i) {
+            presets[i].gameObject.SetActive(i == activePreset);
+        }
+    }
+
+    public void SetActivePreset(int preset) {
+        activePreset = preset;
+        if (activePreset >= presets.Length) activePreset = 0;
+        if (activePreset < 0) activePreset = presets.Length - 1;
+        PlayerPrefs.SetFloat("fogLOD", activePreset);
+        PlayerPrefs.Save();
         for (int i = 0; i < presets.Length; ++i) {
             presets[i].gameObject.SetActive(i == activePreset);
         }
@@ -40,16 +57,9 @@ public class FogDetailController : MonoBehaviour {
                 --activePreset;
             }
         }
-        if (activePreset >= presets.Length) activePreset = 0;
-        if (activePreset < 0) activePreset = presets.Length - 1;
-        if (activePreset != prevPreset) {
-            PlayerPrefs.SetFloat("fogLOD", activePreset);
-            PlayerPrefs.Save();
-            for (int i = 0; i < presets.Length; ++i) {
-                presets[i].gameObject.SetActive(i == activePreset);
-            }
-        }
+        SetActivePreset(activePreset);
     } 
+    #if UNITY_EDITOR
     private void OnGUI() {
         if (!showDebugUI) return;
         GUILayout.Label("active preset: " + presets[activePreset].name);
@@ -68,4 +78,5 @@ public class FogDetailController : MonoBehaviour {
             }
         }
     }
+    #endif
 }
