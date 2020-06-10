@@ -4,6 +4,7 @@ using UnityEngine;
 using Cinemachine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
+using UnityEngine.SceneManagement;
 
 //this could be cleaned up for sure, but messing with Cinemachine is weird in general
 public class CameraModeController : MonoBehaviour
@@ -187,10 +188,12 @@ public class CameraModeController : MonoBehaviour
     private void OnEnable()
     {
         player.OnKilled += OnKilledReset;
+        SceneManager.sceneLoaded += OnLevelLoaded;
     }
     private void OnDisable()
     {
         player.OnKilled -= OnKilledReset;
+        SceneManager.sceneLoaded -= OnLevelLoaded;
     }
 
     //called on player respawn
@@ -223,5 +226,10 @@ public class CameraModeController : MonoBehaviour
         {
             return cameraAngle;
         }
+    }
+
+    void OnLevelLoaded(Scene scene, LoadSceneMode loadSceneMode)
+    {
+        OnKilledReset();
     }
 }
