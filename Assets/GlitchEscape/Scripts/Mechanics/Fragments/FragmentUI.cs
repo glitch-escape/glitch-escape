@@ -130,7 +130,7 @@ public class FragmentUI : PlayerComponent {
                 fragmentUIBackground.SetActive(true);
             }
 
-            fragmentPieces = fragmentUIIndicator?.GetComponentsInChildren<Transform>() ?? null;
+            fragmentPieces = fragmentUIIndicator?.GetComponentsInChildren<Transform>(true) ?? null;
         UpdateFragmentUI(virtue, player.fragments.GetFragmentCompletion(virtue));
     }
     void OnFragmentPickedUp(PlayerVirtueFragments.FragmentInfo fragment) {
