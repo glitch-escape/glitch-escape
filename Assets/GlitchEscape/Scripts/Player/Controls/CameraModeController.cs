@@ -161,7 +161,7 @@ public class CameraModeController : MonoBehaviour
     //function used to reset camera angle with a slight delay
     void ResetCamera()
     {
-        Debug.Log("reset was called");
+        // Debug.Log("reset was called");
         freelookCamera.m_RecenterToTargetHeading.m_enabled = true;
         freelookCamera.m_RecenterToTargetHeading.m_WaitTime = 0;
         freelookCamera.m_RecenterToTargetHeading.m_RecenteringTime = 0.1f;

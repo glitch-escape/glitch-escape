@@ -13,7 +13,7 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 [RequireComponent(typeof(Autowire))]
 public class InteractiveObjectTest : AInteractiveObject {
-    [InjectComponent] public MeshRenderer renderer;
+    [InjectComponent] public new MeshRenderer renderer;
     public string materialColorName = "_BaseColor";
     public float interactFlashDuration = 0.1f;
     public bool enableDebugLogging = false;
