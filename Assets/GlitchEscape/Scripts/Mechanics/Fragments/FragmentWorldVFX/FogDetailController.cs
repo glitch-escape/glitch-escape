@@ -61,6 +61,8 @@ public class FogDetailController : MonoBehaviour {
             }
         }
         if (changedPreset) {
+            PlayerPrefs.SetFloat("fogLOD", activePreset);
+            PlayerPrefs.Save();
             for (int i = 0; i < presets.Length; ++i) {
                 presets[i].gameObject.SetActive(i == activePreset);
             }
