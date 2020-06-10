@@ -214,11 +214,11 @@ public class CameraModeController : MonoBehaviour
     {
         if (cameraAngle > 180)
         {
-            return cameraAngle-180f;
+            return cameraAngle-360f;
         }
         else
         {
-            return cameraAngle+180f;
+            return cameraAngle;
         }
     }
 
