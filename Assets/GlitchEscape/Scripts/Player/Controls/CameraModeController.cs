@@ -76,12 +76,6 @@ public class CameraModeController : MonoBehaviour
             ResetCamera();
         }
 
-        if ((Keyboard.current?.rKey.wasPressedThisFrame ?? false))
-        {
-            freelookCamera.m_YAxis.Value = 0.5f;
-            freelookCamera.m_XAxis.Value = ConvertCameraAnlge(cameraTarget.localEulerAngles.y);
-        }
-
         //checks if the camera dampening is enabled (for instant camera transform to player position)
         if (dampenReset)
         {
@@ -220,11 +214,11 @@ public class CameraModeController : MonoBehaviour
     {
         if (cameraAngle > 180)
         {
-            return (cameraAngle - 360f);
+            return cameraAngle-180f;
         }
         else
         {
-            return cameraAngle;
+            return cameraAngle+180f;
         }
     }
 
