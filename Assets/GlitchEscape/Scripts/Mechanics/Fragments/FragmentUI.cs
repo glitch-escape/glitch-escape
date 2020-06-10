@@ -77,6 +77,7 @@ public class FragmentUI : PlayerComponent {
         var activeVirtue = player.fragments.activeVirtueInThisScene;
         SceneManager.sceneLoaded += OnLevelLoaded;
         UpdateFragmentUI(activeVirtue, player.fragments.GetFragmentCompletion(activeVirtue));
+        OnVirtueTypeChanged(activeVirtue);
     }
     private void OnDisable() {
         player.fragments.onActiveVirtueChanged -= OnVirtueTypeChanged;
