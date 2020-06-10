@@ -218,7 +218,7 @@ public class CameraModeController : MonoBehaviour
 
     private float ConvertCameraAnlge(float cameraAngle)
     {
-        freelookCamera.m_BindingMode = CinemachineOrbitalTransposer.BindingMode.LockToTargetOnAssign;
+        //freelookCamera.m_BindingMode = CinemachineOrbitalTransposer.BindingMode.LockToTargetOnAssign;
         if (cameraAngle > 180)
         {
             return (cameraAngle - 360f);
