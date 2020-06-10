@@ -4,16 +4,24 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.DualShock;
 
 public class AreaTextTrigger : MonoBehaviour, IActiveInteract {
+
+     // Optional inspector variables (sorry for messy code)
+     public bool changeToXbox;
+     public string xbox_message;
+
      private TMP_Text text;
      private TMP_Text UIText;
+     private GameObject UITextbox;
      public string keyboard_message;
      public string controller_message;
      private void Awake()
      {
           text = text ?? Enforcements.GetComponentInChildren<TMP_Text>(this);
-          UIText = GameObject.Find("PlayerCameraRig/UI/TutorialUI").GetComponent<TMP_Text>();
+          UIText = GameObject.Find("PlayerCameraRig/UI/Tutorial Textbox/TutorialUI").GetComponent<TMP_Text>();
+          UITextbox = GameObject.Find("PlayerCameraRig/UI/Tutorial Textbox");
      }
      private void OnEnable() {
           text.gameObject.SetActive(false);
@@ -22,14 +30,20 @@ public class AreaTextTrigger : MonoBehaviour, IActiveInteract {
      public void OnInteract(Player player) {}
 
      public void OnPlayerEnterInteractionRadius(Player player) {
-          if (IsControllerInput())
-               UIText.text = controller_message;
+          if (IsControllerInput()) {
+               if (DualShockGamepad.current == null && changeToXbox)
+                    UIText.text = xbox_message;
+               else 
+                    UIText.text = controller_message;
+          }
           else if (IsKeyboardInput())
                UIText.text = keyboard_message;
           UIText.gameObject.SetActive(true);
+          UITextbox.SetActive(true);
      }
      public void OnPlayerExitInteractionRadius(Player player) {
           UIText.gameObject.SetActive(false);
+          UITextbox.SetActive(false);
      }
      
      private bool IsControllerInput() {

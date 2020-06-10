@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(FragmentWorldVFX))]
 public class FragmentWorldVFXEditor : Editor {
     public override void OnInspectorGUI() {
@@ -47,3 +50,4 @@ public class FragmentWorldVFXEditor : Editor {
         }
     }
 }
+#endif

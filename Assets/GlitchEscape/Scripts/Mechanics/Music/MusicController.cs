@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(AudioSource))]
 public class MusicController : MonoBehaviour {
@@ -81,5 +82,41 @@ public class MusicController : MonoBehaviour {
     public void PlayPrevTrack() {
         currentTrackIndex = currentTrackIndex > 0 ? currentTrackIndex - 1 : audioTracks.Length - 1;
         PlayTrack(currentTrackIndex);
+    }
+
+    void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnLevelLoaded;
+    }
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnLevelLoaded;
+    }
+    void OnLevelLoaded(Scene scene, LoadSceneMode loadSceneMode)
+    {
+        if (scene.name == "Vertical_Platforming_Level")
+        {
+            Debug.Log("playing first song");
+            PlayTrack(0);
+            currentTrackIndex = 0;
+        }
+        else if (scene.name == "Vertical_Main_Level")
+        {
+            Debug.Log("playing second song");
+            PlayTrack(2);
+            currentTrackIndex = 2;
+        }
+        else if (scene.name == "Third_Level")
+        {
+            Debug.Log("playing third song");
+            PlayTrack(3);
+            currentTrackIndex = 3;
+        }
+        else
+        {
+            Debug.Log("playing first song");
+            PlayTrack(0);
+            currentTrackIndex = 0;
+        }
     }
 }

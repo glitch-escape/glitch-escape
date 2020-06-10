@@ -26,7 +26,7 @@ public class Trigger : MonoBehaviour {
 // TODO: split out into separate class
 public class SphereTrigger : Trigger {
     private SphereCollider _collider = null;
-    public SphereCollider collider => _collider ??
+    public new SphereCollider collider => _collider ??
                                       (_collider = GetComponent<SphereCollider>() ??
                                                    gameObject.AddComponent<SphereCollider>());
     public float radius {
@@ -39,6 +39,7 @@ public class SphereTrigger : Trigger {
         var emptyChild = new GameObject("Trigger", typeof(SphereCollider), typeof(SphereTrigger));
         emptyChild.transform.parent = obj.transform;
         var trigger = emptyChild.GetComponent<SphereTrigger>();
+        trigger.transform.localPosition = Vector3.zero; // TEMP fix
         var collider = trigger.collider;
         collider.isTrigger = true;
         collider.center = Vector3.zero;
@@ -116,6 +117,7 @@ public class PlayerInteractionAbility : PlayerAbility, IPlayerDebug {
         if (interactObj != null) {
             interactablesInRange.Add(interactObj);
             interactObj.OnPlayerEnterInteractionRadius(player);
+            //print("PIII: " + gameObject.name);print("PIII: " + gameObject.name);
         }
     }
     private void OnExit(GameObject obj) {
@@ -125,7 +127,7 @@ public class PlayerInteractionAbility : PlayerAbility, IPlayerDebug {
             interactObj.OnPlayerExitInteractionRadius(player);
         }
     }
-    private void Reset() {
+    protected override void OnAbilityReset() {
         interactablesInRange.Clear();
         activeInRange.Clear();
         lastNearestObject?.OnDeselected(player);

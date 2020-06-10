@@ -18,8 +18,9 @@ public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
     private float jumpStartTime = 0f;
     public bool isJumping { get; private set; } = false;
     private GameObject lastWallJumpedOffOf = null;
+    private float floorWindow = 0f;
     #endregion
-    
+
     public float elapsedJumpTime => isJumping ? Time.time - jumpStartTime : 0f;
 
     /// <summary>
@@ -45,9 +46,9 @@ public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
     JumpAbilityUseStatus jumpAbilityStatus {
         get {
             if (!player.config.canJump) return JumpAbilityUseStatus.CannotJump;
-            if (isPlayerGrounded) return JumpAbilityUseStatus.CanGroundJump;
+            if (floorWindow > 0 && jumpCount == 0) return JumpAbilityUseStatus.CanGroundJump;
             if (player.config.canWallJump && isPlayerNearNewWall) return JumpAbilityUseStatus.CanWallJump;
-            if (player.config.canAirJump && jumpCount < player.config.maxJumps) return JumpAbilityUseStatus.CanAirJump;
+            if (player.config.canAirJump && jumpCount < player.config.maxJumps && !isPlayerGrounded) return JumpAbilityUseStatus.CanAirJump;
             return JumpAbilityUseStatus.CannotJump;
         }
     }
@@ -71,7 +72,7 @@ public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
                 throw new Exception(
                     "Player jump ability started but CanStartAbility() should have returned false!");
             case JumpAbilityUseStatus.CanGroundJump:
-                jumpCount = 0;
+                jumpCount = 1;
                 isJumping = true;
                 jumpStartTime = Time.time;
                 lastWallJumpedOffOf = null;
@@ -79,7 +80,7 @@ public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
                 FireEvent(PlayerEvent.Type.FloorJump);
                 break;
             case JumpAbilityUseStatus.CanAirJump:
-                jumpCount += 1;
+                jumpCount = 2;
                 isJumping = true;
                 jumpStartTime = Time.time;
                 playerMovement.JumpToHeight(player.config.jumpHeight);
@@ -107,7 +108,7 @@ public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
     /// </summary>
     public bool isPlayerGrounded {
         get {
-            if (dirtyRaycastInfo) UpdateRaycastInfo();
+            if (dirtyRaycastInfo || floorWindow > 0f) UpdateRaycastInfo();
             return hitGround;
         }
     }
@@ -122,7 +123,7 @@ public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
             return hitWall;
         }
     }
-    public bool isPlayerNearNewWall => isPlayerNearWall;// && lastWallJumpedOffOf != wallHitInfo.collider?.gameObject;
+    public bool isPlayerNearNewWall => isPlayerNearWall && lastWallJumpedOffOf != wallHitInfo.collider?.gameObject;
     
 
     /// <summary>
@@ -174,10 +175,19 @@ public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
         dirtyRaycastInfo = true;
         UpdateRaycastInfo();
 
+        if (isPlayerGrounded)
+        {
+            floorWindow = player.config.floorJumpWindow;
+        }
+        else
+        {
+            floorWindow -= Time.deltaTime;
+        }
+
         // check if we're currently grounded
         // if we're not grounded and were previously jumping, update isJumping + fire an end jumping event
         // && playerMovement.rigidbody.velocity(in ther vertical direction) == 0 */ potentially add this to fix jump reset right after jumping
-        if (isPlayerGrounded && isJumping) {
+        if (isPlayerGrounded && isJumping && playerMovement.rigidbody.velocity.y <= 0.0001) {
             isJumping = false;
             jumpCount = 0;
             FireEvent(PlayerEvent.Type.EndJump);
@@ -188,7 +198,9 @@ public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
         GUILayout.Label("is jumping? " + isJumping);
         GUILayout.Label("jump count: " + jumpCount + " / " + player.config.maxJumps);
         GUILayout.Label("can jump? " + jumpAbilityStatus);
+        GUILayout.Label("floor window: " + floorWindow);
 
+        GUILayout.Label("player has vertical velocity " + Math.Abs(playerMovement.rigidbody.velocity.y));
         var jumpHeight = player.config.jumpHeight;
         GUILayout.Label("jump height: " + jumpHeight);
         GUILayout.Label("gravity: " + player.gravity.standingGravity);
@@ -207,7 +219,7 @@ public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
         GUILayout.Label("ground hit info " + groundHitInfo);
         GUILayout.Label("is near wall? " + isPlayerNearWall);
         GUILayout.Label("is near new wall? " + isPlayerNearNewWall);
-        GUILayout.Label("last wall jumped off of: " + lastWallJumpedOffOf);
+        GUILayout.Label("last wall jumped off of: " + lastWallJumpedOffOf?.name);
         GUILayout.Label("wall normal: " + currentWallNormal);
         GUILayout.Label("current gravity: " + (GetComponent<PlayerGravity>()?.gravity ?? 0f));
     }

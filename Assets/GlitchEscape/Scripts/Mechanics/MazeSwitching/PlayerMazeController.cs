@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using GlitchEscape.Scripts.DebugUI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Debug = UnityEngine.Debug;
 
@@ -74,13 +75,22 @@ public class PlayerMazeController : PlayerComponent, IPlayerDebug {
         SceneMazeController.instance?.ResetMaze();
     }
     void Update() {
-        if (!onMazeSwitch && (SceneMazeController.instance?.inGlitchMaze ?? false)) {
+        bool inGlitchMaze = SceneMazeController.instance?.inGlitchMaze ?? false;
+        if (!onMazeSwitch && inGlitchMaze) {
             // instead of updating maze timer, just apply damage over time
             // 10 damage / sec, default 100 health = 10 seconds, same as we had previously
             player.TakeDamage(10f * Time.deltaTime);
         }
-    }
 
+        // apply maze fade out
+        if (inGlitchMaze) {
+            var playerHealth = player.health.value / player.health.maximum;
+            SetMazeGlitchMazeOpacity(playerHealth);
+            // SceneMazeController.instance?.SetMazeGlitchMazeOpacity(playerHealth);
+        }
+    }
+    
+    
     public void DrawDebugUI() {
         GUILayout.Label("active maze switch: "+activeMazeSwitch);
         GUILayout.Label("on maze switch? "+onMazeSwitch);
@@ -88,4 +98,13 @@ public class PlayerMazeController : PlayerComponent, IPlayerDebug {
         GUILayout.Label("in glitch maze? "+(SceneMazeController.instance?.inGlitchMaze ?? false));
     }
     public string debugName => this.GetType().Name;
+    
+    private const string MAZE_OPACITY = "Vector1_62D5110A";
+    public void SetMazeGlitchMazeOpacity(float opacity) {
+        glitchMazeOpacity = opacity;
+        foreach (var material in player.config.glitchMazeMaterials) {
+            material?.SetFloat(MAZE_OPACITY, opacity);
+        }
+    }
+    public float glitchMazeOpacity { get; private set; } = 1f;
 }

@@ -10,12 +10,21 @@ using UnityEngine.InputSystem;
 // [RequireComponent(typeof(PlayerHealth))]
 // [RequireComponent(typeof(PlayerStamina))]
 public class Player : BaseAgent<Player, PlayerConfig> {
+    
+    public static Player instance => _instance ?? (_instance = FindObjectOfType<Player>());
+    private static Player _instance = null;
+    private void OnEnable() { _instance = this; }
+    private void OnDisable() {
+        if (_instance == this) _instance = null; 
+    }
+
     // Agent info (abstract properties from BaseAgent)
     public override AgentType agentType => AgentType.Player;
     public override bool isTargetableBy(AgentType type) { return type != agentType; }
     protected override Resource<Player, PlayerConfig, float> healthResource => health;
     protected override Resource<Player, PlayerConfig, float> staminaResource => stamina;
     protected override KillType killType => KillType.KillAndResetAgent;
+    public bool lockControls => dialog.PreventMovement();
 
     // object references
     [InjectComponent] public new Camera camera;
@@ -32,7 +41,7 @@ public class Player : BaseAgent<Player, PlayerConfig> {
     [InjectComponent] public PlayerMazeController        maze;
     [InjectComponent] public new PlayerAnimationController animation;
     [InjectComponent] public PlayerGravity                 gravity;
-    [InjectComponent] public FragmentComponent             fragments;
+    [InjectComponent] public PlayerVirtueFragments             fragments;
     
     // player abilities
     [InjectComponent] public PlayerDashAbility           dash;

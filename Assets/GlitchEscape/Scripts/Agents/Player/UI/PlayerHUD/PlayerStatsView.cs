@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Renderer))]
-public class PlayerStatsView : MonoBehaviour {
+[RequireComponent(typeof(Player))]
+public class PlayerStatsView : PlayerComponent {
     public static PlayerStatsView instance = null;
     void Awake() { instance = this; }
-    
-    private Player _player = null;
-    private Player player => _player ?? Enforcements.GetSingleComponentInScene<Player>(this);
 
     private const int HEALTH_BAR_MATEIRAL_INDEX = 1;
     private const int STAMINA_BAR_MATERIAL_INDEX = 0;
@@ -81,67 +79,27 @@ public class PlayerStatsView : MonoBehaviour {
     private AttribBarSetter healthSetter = new AttribBarSetter(0.081f, 0.82f);
     private AttribBarSetter staminaSetter = new AttribBarSetter(0.079f, 0.592f);
     //private AttribBarSetter shardSetter = new AttribBarSetter(0.079f, 0.592f);
-
-    public Image staminaWheel;
-    public List<Image> healthSplashes;
+    
     private void OnEnable() {
         var renderer = Enforcements.GetComponent<Renderer>(this);
         healthSetter.SetMaterial(renderer.materials[HEALTH_BAR_MATEIRAL_INDEX]);
         staminaSetter.SetMaterial(renderer.materials[STAMINA_BAR_MATERIAL_INDEX]);
         //shardSetter.SetMaterial(renderer.materials[SHARD_BAR_MATERIAL_INDEX]);
         staminaFlash.SetMaterial(renderer.materials[STAMINA_BAR_MATERIAL_INDEX]);
-        player.OnFailedToUseAbilityDueToLowStamina += FlashLowStamina;
-        foreach (Image i in healthSplashes) {
-            i.gameObject.SetActive(false);
-        }
+        //player.OnFailedToUseAbilityDueToLowStamina += FlashLowStamina;
+        Player player = GetComponent<Player>();
+        
     }
     private void OnDisable() {
         healthSetter.SetMaterial(null);
         staminaSetter.SetMaterial(null);
         //shardSetter.SetMaterial(null);
         staminaFlash.SetMaterial(null);
-        player.OnFailedToUseAbilityDueToLowStamina -= FlashLowStamina;
+        //player.OnFailedToUseAbilityDueToLowStamina -= FlashLowStamina;
     }
-    
     void Update() {
         float health = player.health.value / player.health.maximum;
-        if(health < .45 && health > .30)
-        {
-            healthSplashes[0].gameObject.SetActive(true);
-            healthSplashes[1].gameObject.SetActive(false);
-            healthSplashes[2].gameObject.SetActive(false);
-        }
-        else if (health < .30 && health > .15)
-        {
-            healthSplashes[1].gameObject.SetActive(true);
-            healthSplashes[2].gameObject.SetActive(false);
-        }
-        else if (health < .15)
-        {
-            healthSplashes[2].gameObject.SetActive(true);
-        }
-        else
-        {
-            healthSplashes[0].gameObject.SetActive(false);
-            healthSplashes[1].gameObject.SetActive(false);
-            healthSplashes[2].gameObject.SetActive(false);
-        }
         float stamina = player.stamina.value / player.stamina.maximum;
-        if(stamina < 1f)
-        {
-            if (!staminaWheel.gameObject.activeInHierarchy)
-            {
-                staminaWheel.gameObject.SetActive(true);
-            }
-            staminaWheel.fillAmount = stamina;
-        }
-        else
-        {
-            if (staminaWheel.gameObject.activeInHierarchy)
-            {
-                staminaWheel.gameObject.SetActive(false);
-            }
-        }
         healthSetter.Update(health);
         staminaSetter.Update(stamina);
         staminaFlash.Update();

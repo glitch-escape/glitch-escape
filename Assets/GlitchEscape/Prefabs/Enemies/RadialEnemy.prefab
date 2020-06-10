@@ -113,6 +113,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 0}
+  patrolPoints: []
+  ptLeniency: 1.05
 --- !u!95 &2748114265300061920
 Animator:
   serializedVersion: 3
@@ -307,7 +309,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 0ccc92b0c00fd4bdb92ad8c238cc5204, type: 2}
-  - {fileID: 2100000, guid: ba97fc0dc257b41749a503ef99466da1, type: 2}
+  - {fileID: 2100000, guid: d4d841cfe64e12041abb34c88660583d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1025,7 +1027,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dad0ffdb1721d4be58ac75ee6d5cb371, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 7279777295829818214}
+  oldEnemy: {fileID: 0}
   player: {fileID: 0}
   isHostileToPlayer: 1
 --- !u!114 &8141533660960057923
@@ -1084,7 +1086,6 @@ MonoBehaviour:
   duration: 5
   cooldown: 5
   strikeDist: 2
-  projYShift: 1
   bullPrefab: {fileID: 8397468704266547772, guid: b97b2f2721a744414a6b8b1ed326c644,
     type: 3}
   bulletAmt: 1
