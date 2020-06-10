@@ -13,12 +13,15 @@ public class PlayerController : MonoBehaviour, IResettable {
         void Update(PlayerController provider);
     }
     private List<IPlayerAbilityController> controllers;
+
+    public Player globalPlayerInstance;
+    public PlayerController globalPlayerControllerInstance;
     
     private void Awake() {
         if (instance != null) {
             instance.player.spawn.SetSpawnPosition(player.transform.position, player.transform.rotation);
             instance.player.spawn.Respawn();
-            Destroy(gameObject);
+            DestroyImmediate(gameObject);
         } else {
             instance = this;
             DontDestroyOnLoad(gameObject);
@@ -41,6 +44,8 @@ public class PlayerController : MonoBehaviour, IResettable {
     }
     private void Update() {
         controllers?.ForEach(controller => controller.Update(this));
+        globalPlayerInstance = Player.instance;
+        globalPlayerControllerInstance = PlayerController.instance;
     }
     public void Reset() {
         controllers?.ForEach(controller => controller.Reset());
