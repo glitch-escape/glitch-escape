@@ -123,7 +123,7 @@ public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
             return hitWall;
         }
     }
-    public bool isPlayerNearNewWall => isPlayerNearWall;// && lastWallJumpedOffOf != wallHitInfo.collider?.gameObject;
+    public bool isPlayerNearNewWall => isPlayerNearWall && lastWallJumpedOffOf?.name != wallHitInfo.collider?.gameObject.name;
     
 
     /// <summary>
@@ -219,7 +219,7 @@ public class PlayerJumpAbility : PlayerAbility, IPlayerDebug {
         GUILayout.Label("ground hit info " + groundHitInfo);
         GUILayout.Label("is near wall? " + isPlayerNearWall);
         GUILayout.Label("is near new wall? " + isPlayerNearNewWall);
-        GUILayout.Label("last wall jumped off of: " + lastWallJumpedOffOf);
+        GUILayout.Label("last wall jumped off of: " + lastWallJumpedOffOf?.name);
         GUILayout.Label("wall normal: " + currentWallNormal);
         GUILayout.Label("current gravity: " + (GetComponent<PlayerGravity>()?.gravity ?? 0f));
     }
