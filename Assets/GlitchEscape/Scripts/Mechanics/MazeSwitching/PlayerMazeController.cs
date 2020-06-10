@@ -66,12 +66,9 @@ public class PlayerMazeController : PlayerComponent, IPlayerDebug {
 
     private void OnEnable() {
         player.OnKilled += OnPlayerRespawn;
-        SceneManager.sceneLoaded += OnSceneLoad;
-        GetGlitchPlatformMaterials();
     }
     private void OnDisable() {
         player.OnKilled -= OnPlayerRespawn;
-        SceneManager.sceneLoaded -= OnSceneLoad;
         ClearMazeSwitch();
     }
     private void OnPlayerRespawn() {
@@ -88,31 +85,11 @@ public class PlayerMazeController : PlayerComponent, IPlayerDebug {
         // apply maze fade out
         if (inGlitchMaze) {
             var playerHealth = player.health.value / player.health.maximum;
-            foreach (Material m in astralPlatforms) {
-                m.SetFloat("Vector1_62D5110A", playerHealth);
-            }
+            SetMazeGlitchMazeOpacity(playerHealth);
+            // SceneMazeController.instance?.SetMazeGlitchMazeOpacity(playerHealth);
         }
     }
-    private List<Material> astralPlatforms = new List<Material>();
-    public GameObject glitchMaze;
-    private bool hasGlitchMaze = false;
-
-    private void GetGlitchPlatformMaterials() {
-        GlitchPlatform[] temp = Resources.FindObjectsOfTypeAll<GlitchPlatform>();
-        if (temp.Length >= 1)
-        {
-            glitchMaze = temp[0].gameObject;
-            hasGlitchMaze = true;
-            astralPlatforms = new List<Material>();
-            foreach (Transform platform in glitchMaze.transform)
-            {
-                astralPlatforms.Add(platform.GetComponent<Renderer>().material);
-            }
-        }
-    }
-    private void OnSceneLoad(Scene scene, LoadSceneMode loadSceneMode) {
-        GetGlitchPlatformMaterials();
-    }
+    
     
     public void DrawDebugUI() {
         GUILayout.Label("active maze switch: "+activeMazeSwitch);
@@ -121,4 +98,13 @@ public class PlayerMazeController : PlayerComponent, IPlayerDebug {
         GUILayout.Label("in glitch maze? "+(SceneMazeController.instance?.inGlitchMaze ?? false));
     }
     public string debugName => this.GetType().Name;
+    
+    private const string MAZE_OPACITY = "Vector1_62D5110A";
+    public void SetMazeGlitchMazeOpacity(float opacity) {
+        glitchMazeOpacity = opacity;
+        foreach (var material in player.config.glitchMazeMaterials) {
+            material?.SetFloat(MAZE_OPACITY, opacity);
+        }
+    }
+    public float glitchMazeOpacity { get; private set; } = 1f;
 }

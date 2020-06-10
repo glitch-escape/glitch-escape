@@ -15,8 +15,8 @@ public class Portal : AInteractiveObject
     public bool loadAntagonistSceneWhenAllFragmentsPickedUp = false;
     public Loader.Scene antagonistCutsceneLevel = Loader.Scene.None;
     public FloatRange focusedPortalSpeed = new FloatRange { maximum = 3f, minimum = 1f };
-    [InjectComponent] public SphereCollider collider;
-    [InjectComponent] public MeshRenderer renderer;
+    [InjectComponent] public new SphereCollider collider;
+    [InjectComponent] public new MeshRenderer renderer;
     
     /// <summary>
     /// Enable / disable this portal
@@ -53,7 +53,7 @@ public class Portal : AInteractiveObject
         PersistentDataStore.instance.TryStoreValue(cutsceneKey, new CutsceneState {
             hasPlayedCutscene = true
         });
-        Application.LoadLevel(cutsceneLevel.ToString());
+        Loader.Load(cutsceneLevel);
     }
     public override void OnInteract(Player player) {
         if (levelToLoad == Loader.Scene.None) return;
@@ -78,7 +78,7 @@ public class Portal : AInteractiveObject
         
         // load normal scene otherwise
         } else if (levelToLoad != Loader.Scene.None) {
-            Application.LoadLevel(levelToLoad.ToString());
+            Loader.Load(levelToLoad);
         }
     }
     public override void OnFocusChanged(bool focused) {
@@ -110,7 +110,8 @@ public class Portal : AInteractiveObject
     void Awake() {
         defaultPortalSpeed = portalShaderSpeed;
     }
-    private void Update() {
+    private new void Update() {
+        base.Update();
         if (focused) {
             var player = PlayerController.instance?.player;
             if (player == null || collider == null) return;
