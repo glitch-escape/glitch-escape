@@ -59,6 +59,7 @@ public class FogDetailController : MonoBehaviour {
         }
         SetActivePreset(activePreset);
     } 
+    #if UNITY_EDITOR
     private void OnGUI() {
         if (!showDebugUI) return;
         GUILayout.Label("active preset: " + presets[activePreset].name);
@@ -77,4 +78,5 @@ public class FogDetailController : MonoBehaviour {
             }
         }
     }
+    #endif
 }
