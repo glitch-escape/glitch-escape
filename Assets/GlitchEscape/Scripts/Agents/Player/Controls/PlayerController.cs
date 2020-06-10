@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using GlitchEscape.Effects;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 public class PlayerController : MonoBehaviour, IResettable {
@@ -46,6 +48,11 @@ public class PlayerController : MonoBehaviour, IResettable {
         controllers?.ForEach(controller => controller.Update(this));
         globalPlayerInstance = Player.instance;
         globalPlayerControllerInstance = PlayerController.instance;
+        if (player.config.enableLevelDebugNavTools &&
+            Keyboard.current.f9Key.wasPressedThisFrame
+        ) {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
     }
     public void Reset() {
         controllers?.ForEach(controller => controller.Reset());
