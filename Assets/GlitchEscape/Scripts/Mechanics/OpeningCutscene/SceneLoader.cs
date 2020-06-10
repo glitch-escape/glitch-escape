@@ -8,15 +8,15 @@ public class SceneLoader : MonoBehaviour {
     private AsyncOperation asyncSceneLoad;
     
     public void LoadNextSceneAsync() {
-        asyncSceneLoad = SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
-        asyncSceneLoad.allowSceneActivation = false;
+        // asyncSceneLoad = SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
+        // asyncSceneLoad.allowSceneActivation = false;
     }
     public void LoadNextScene() {
-        if (asyncSceneLoad == null) {
+        // if (asyncSceneLoad == null) {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-        } else {
-            asyncSceneLoad.allowSceneActivation = true;
-        }
+        // } else {
+        //     asyncSceneLoad.allowSceneActivation = true;
+        // }
     }
     public void LoadMainMenu() {
         Loader.Load(Loader.Scene.MainMenu);   
