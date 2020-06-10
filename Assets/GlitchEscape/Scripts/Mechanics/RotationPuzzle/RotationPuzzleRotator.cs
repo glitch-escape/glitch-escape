@@ -17,8 +17,7 @@ public class RotationPuzzleConfig : ScriptableObject {
 
 public class RotationPuzzleRotator : MonoBehaviour {
     private RotationPuzzleConfig _config;
-    public RotationPuzzleConfig config =>
-        _config ?? (_config = GameObject.FindObjectOfType<Player>()?.config.rotationPuzzleConfig);
+    public RotationPuzzleConfig config => Player.instance?.config.rotationPuzzleConfig;
     
     public bool rotating = false;
     public AudioSource audioSource;
