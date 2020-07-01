@@ -20,7 +20,7 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
 
     // Variables for icon
     private string curCharacter;
-    public Image icon;
+    private Image icon;
 
     private string curSpeaker;
     private PlayerControls.HybridButtonControl inputButton => PlayerControls.instance.interact;
@@ -31,7 +31,7 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
                                     || Keyboard.current.spaceKey.wasPressedThisFrame;
 
     
-    private void Start() {
+    private void Awake() {
         if (dUI) dUI.textSpeed = config.textSpeed;
         if (dr)  dr.Add(config.coreText);
 
@@ -42,7 +42,7 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
         // Start/Continue dialog if input was pressed with a defined speaker 
         if(!config.isCutscene){ // Don't do this during a cutscene
             if(!dr.IsDialogueRunning) {
-                if(beginDialogInput && curSpeaker != null) { 
+                if(beginDialogInput && curSpeaker != null) {
                     dr.StartDialogue(curSpeaker); 
                 }
             }
@@ -52,7 +52,9 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
         }
 
         // Update the textbox portrait based on name of current speaker
-        if(icon && dUI.curCharacter != curCharacter) {
+        if(dUI.curCharacter != curCharacter) {
+            SearchForIcon(); // make sure icon is set
+            if(!icon) return;
             for(int i = 0; i < config.portraits.Length; i ++) {
                 if(dUI.curCharacter == config.portraits[i].name) {
                     icon.sprite = config.portraits[i].icon;
@@ -60,6 +62,7 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
                 }
             }
             curCharacter = dUI.curCharacter;
+            
         }
     }
 
@@ -67,7 +70,7 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
         // Try to find the textbox if the icon hasn't been set yet
         if(!icon) {
             Image i = GameObject.Find("PlayerCameraRig/UI/HUD/InteractFloatPanel/Image").GetComponent<Image>();
-            if(i) SetIcon(i);
+            if(i) icon = i;
         }
     }
 
@@ -115,7 +118,7 @@ public class PlayerDialogController : MonoBehaviourWithConfig<DialogConfig>
     }
 
     public void SetIcon(Image display) {
-       icon = display;
+        if(config.isCutscene) icon = display;
     }
 
     IEnumerator WaitAndHide(GameObject text) {
